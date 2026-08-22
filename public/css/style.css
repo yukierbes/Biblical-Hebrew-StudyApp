@@ -1038,7 +1038,10 @@ select:focus-visible,
 .auth-gate {
   position: fixed;
   inset: 0;
-  z-index: 300;
+  /* Deliberately modest — the Netlify Identity widget's own popups
+     (set password, confirm email, etc.) must always be able to render
+     on top of this without a z-index tug-of-war. */
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;

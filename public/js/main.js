@@ -500,6 +500,17 @@ function showGateError(message) {
   authGateMessageEl.classList.add("auth-gate-error");
 }
 
+/** True while the URL carries one of Netlify Identity's own action
+ * tokens (from an invite, email confirmation, password recovery, or
+ * email-change link). While one of these is present, Identity's widget
+ * is supposed to automatically pop open its own modal (e.g. "set your
+ * password") — our full-screen gate must stay out of its way
+ * completely rather than rendering anything on top of it, or the
+ * widget's popup can end up hidden/unclickable behind ours. */
+function hasPendingIdentityToken() {
+  return /(invite_token|confirmation_token|recovery_token|email_change_token)=/.test(window.location.hash);
+}
+
 let appStarted = false;
 
 function handleAuthState(user) {
@@ -522,6 +533,23 @@ function handleAuthState(user) {
     window.location.reload();
     return;
   }
+
+  if (hasPendingIdentityToken()) {
+    // Stay completely out of the way — no full-screen gate of ours,
+    // no competing "Sign In" button — so Identity's own popup (set a
+    // password, confirm an email, etc.) is the only thing visible and
+    // clickable. It'll fire our "login" handler above once finished.
+    appEl.classList.add("hidden");
+    authGateEl.classList.add("hidden");
+    showToast({
+      icon: "🔑",
+      title: "Completing sign-up…",
+      body: "A window should appear in a moment. If nothing shows up, try refreshing this page.",
+      duration: 10000,
+    });
+    return;
+  }
+
   showGate("Sign in to access this study app.", { showSignIn: true });
 }
 
