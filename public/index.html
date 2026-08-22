@@ -38,6 +38,23 @@
     </div>
   </div>
 
+  <!-- Shown instead of relying on Netlify Identity's own invite/recovery
+       modal, whose "set a new password" screen is a known, longstanding
+       widget bug and can silently fail to render. This form talks to the
+       same underlying auth service directly. -->
+  <div id="set-password-gate" class="auth-gate hidden">
+    <div class="auth-gate-box">
+      <h1 id="set-password-title">Set a new password</h1>
+      <p class="caption">Choose a password for your account. You'll use this to sign in from now on.</p>
+      <form id="set-password-form" class="set-password-form">
+        <input id="set-password-input" type="password" placeholder="New password" autocomplete="new-password" required minlength="6" class="set-password-input" />
+        <input id="set-password-confirm-input" type="password" placeholder="Confirm password" autocomplete="new-password" required minlength="6" class="set-password-input" />
+        <p id="set-password-error" class="auth-gate-error caption"></p>
+        <button id="set-password-submit-btn" type="submit" class="btn">Set password</button>
+      </form>
+    </div>
+  </div>
+
   <div id="app" class="hidden">
 
     <button id="sidebar-toggle" aria-label="Collapse sidebar" aria-expanded="true" title="Collapse sidebar">

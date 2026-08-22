@@ -487,8 +487,17 @@ const authGateEl = document.getElementById("auth-gate");
 const authGateMessageEl = document.getElementById("auth-gate-message");
 const authGateSignInBtn = document.getElementById("auth-gate-signin-btn");
 
+const setPasswordGateEl = document.getElementById("set-password-gate");
+const setPasswordTitleEl = document.getElementById("set-password-title");
+const setPasswordFormEl = document.getElementById("set-password-form");
+const setPasswordInputEl = document.getElementById("set-password-input");
+const setPasswordConfirmInputEl = document.getElementById("set-password-confirm-input");
+const setPasswordErrorEl = document.getElementById("set-password-error");
+const setPasswordSubmitBtnEl = document.getElementById("set-password-submit-btn");
+
 function showGate(message, { showSignIn }) {
   appEl.classList.add("hidden");
+  setPasswordGateEl.classList.add("hidden");
   authGateEl.classList.remove("hidden");
   authGateMessageEl.textContent = message;
   authGateMessageEl.classList.remove("auth-gate-error");
@@ -500,15 +509,47 @@ function showGateError(message) {
   authGateMessageEl.classList.add("auth-gate-error");
 }
 
-/** True while the URL carries one of Netlify Identity's own action
- * tokens (from an invite, email confirmation, password recovery, or
- * email-change link). While one of these is present, Identity's widget
- * is supposed to automatically pop open its own modal (e.g. "set your
- * password") — our full-screen gate must stay out of its way
- * completely rather than rendering anything on top of it, or the
- * widget's popup can end up hidden/unclickable behind ours. */
+/** True while the URL carries a plain confirmation or email-change token
+ * (invite/recovery tokens are handled entirely by our own form below, not
+ * this path — see the block right after this function). While one of
+ * these two is present, Identity's widget is supposed to automatically
+ * pop open its own modal — our full-screen gate must stay out of its way
+ * completely rather than rendering anything on top of it. */
 function hasPendingIdentityToken() {
-  return /(invite_token|confirmation_token|recovery_token|email_change_token)=/.test(window.location.hash);
+  return /(confirmation_token|email_change_token)=/.test(window.location.hash);
+}
+
+// Netlify Identity's own modal for invite/recovery links (the "create a
+// password" / "set a new password" screen) is a known, longstanding bug
+// in that widget — it can silently fail to render at all, while the
+// token underneath still gets consumed and logs the person in with no
+// password ever actually set (see
+// https://answers.netlify.com/t/missing-netlify-identity-modal-on-password-reset/33107).
+// Rather than depend on that modal, we pull the raw token straight out of
+// the URL ourselves — before the widget's own iframe gets a chance to see
+// and consume it — and drive GoTrue (the auth service the widget itself
+// wraps) directly through our own small form.
+const IDENTITY_TOKEN_RE = /(confirmation_token|invite_token|recovery_token|email_change_token)=([^&]+)/;
+const _identityTokenMatch = IDENTITY_TOKEN_RE.exec(window.location.hash);
+const pendingToken = _identityTokenMatch
+  ? { kind: _identityTokenMatch[1], value: decodeURIComponent(_identityTokenMatch[2]) }
+  : null;
+const needsCustomPasswordForm =
+  !!pendingToken && (pendingToken.kind === "invite_token" || pendingToken.kind === "recovery_token");
+if (needsCustomPasswordForm) {
+  // Claim the hash now so the widget's iframe — which reads and clears
+  // this same hash once it finishes loading, asynchronously — never
+  // sees it and never tries to process it a second time.
+  history.replaceState(null, "", window.location.pathname + window.location.search);
+}
+
+function showSetPasswordGate() {
+  appEl.classList.add("hidden");
+  authGateEl.classList.add("hidden");
+  setPasswordTitleEl.textContent =
+    pendingToken.kind === "invite_token" ? "Create your account" : "Set a new password";
+  setPasswordErrorEl.textContent = "";
+  setPasswordGateEl.classList.remove("hidden");
 }
 
 let appStarted = false;
@@ -520,6 +561,7 @@ function handleAuthState(user) {
       appStarted = true;
       appEl.classList.remove("hidden");
       authGateEl.classList.add("hidden");
+      setPasswordGateEl.classList.add("hidden");
       init();
     }
     return;
@@ -534,11 +576,16 @@ function handleAuthState(user) {
     return;
   }
 
+  if (needsCustomPasswordForm) {
+    showSetPasswordGate();
+    return;
+  }
+
   if (hasPendingIdentityToken()) {
     // Stay completely out of the way — no full-screen gate of ours,
-    // no competing "Sign In" button — so Identity's own popup (set a
-    // password, confirm an email, etc.) is the only thing visible and
-    // clickable. It'll fire our "login" handler above once finished.
+    // no competing "Sign In" button — so Identity's own popup (confirm
+    // an email, etc.) is the only thing visible and clickable. It'll
+    // fire our "login" handler above once finished.
     appEl.classList.add("hidden");
     authGateEl.classList.add("hidden");
     showToast({
@@ -547,10 +594,51 @@ function handleAuthState(user) {
       body: "A window should appear in a moment. If nothing shows up, try refreshing this page.",
       duration: 10000,
     });
+    if (identity) identity.open();
     return;
   }
 
   showGate("Sign in to access this study app.", { showSignIn: true });
+}
+
+if (setPasswordFormEl) {
+  setPasswordFormEl.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const pw = setPasswordInputEl.value;
+    const pw2 = setPasswordConfirmInputEl.value;
+    setPasswordErrorEl.textContent = "";
+    if (pw.length < 6) {
+      setPasswordErrorEl.textContent = "Password must be at least 6 characters.";
+      return;
+    }
+    if (pw !== pw2) {
+      setPasswordErrorEl.textContent = "Those passwords don't match.";
+      return;
+    }
+    setPasswordSubmitBtnEl.disabled = true;
+    setPasswordSubmitBtnEl.textContent = "Saving…";
+    try {
+      const gotrue = identity && identity.gotrue;
+      if (!gotrue) throw new Error("Sign-in isn't ready yet — please refresh and try again.");
+      let user;
+      if (pendingToken.kind === "invite_token") {
+        user = await gotrue.acceptInvite(pendingToken.value, pw, true);
+      } else {
+        user = await gotrue.recover(pendingToken.value, true);
+        user = await user.update({ password: pw });
+      }
+      // This bypasses Identity's widget entirely, so its own "login"
+      // event (driven by its internal store, which we never touched)
+      // won't fire on its own — hand the now-authenticated user to the
+      // same gate logic manually.
+      handleAuthState(user);
+    } catch (err) {
+      setPasswordErrorEl.textContent =
+        "Couldn't set that password" + (err && err.message ? ": " + err.message : ". Please try again.");
+      setPasswordSubmitBtnEl.disabled = false;
+      setPasswordSubmitBtnEl.textContent = "Set password";
+    }
+  });
 }
 
 authGateSignInBtn.addEventListener("click", openSignIn);

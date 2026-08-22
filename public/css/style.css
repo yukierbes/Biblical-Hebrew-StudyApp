@@ -1067,6 +1067,35 @@ select:focus-visible,
   color: var(--bad);
 }
 
+.set-password-form {
+  text-align: left;
+  margin-top: 8px;
+}
+.set-password-input {
+  display: block;
+  width: 100%;
+  padding: 9px 10px;
+  margin-bottom: 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--hairline);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+.set-password-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.set-password-form .auth-gate-error {
+  margin: -4px 0 12px;
+  min-height: 1.1em;
+  font-size: 0.88rem;
+}
+.set-password-form .btn {
+  width: 100%;
+}
+
 #toast-container {
   position: fixed;
   top: 18px;
