@@ -1,0 +1,21 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+# Only the "public" folder is served as static content. Everything the
+# app needs to run lives inside it (index.html, css/, js/, icons/,
+# manifest, service worker). The datasets (netlify/functions/data/) and
+# the sync/get-data functions live outside "public" entirely — there is
+# no URL that serves them directly; they're only reachable through the
+# Identity-protected Netlify Functions (see netlify/functions/get-data.js
+# and sync.js), which read them from inside their own function bundle,
+# not from anything the CDN publishes.
+#
+# No build command is needed — this is a static site with no build step.
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    # The service worker itself must never be cached, or browsers won't
+    # pick up a new CACHE_VERSION (and thus won't pick up app updates).
+    Cache-Control = "no-cache"

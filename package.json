@@ -1,0 +1,15 @@
+{
+  "name": "hebrew-verb-app-tests",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only package for running this static app's test suite. Not required to run or deploy the app itself.",
+  "scripts": {
+    "test": "node tests/run-all.mjs"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  }
+}

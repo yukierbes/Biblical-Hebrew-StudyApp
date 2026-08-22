@@ -1,0 +1,475 @@
+{
+  "rows": [
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "1",
+      "HebrewName": "סוֺף פָּסוּק",
+      "EnglishName": "sof pasuq",
+      "Symbol": "◌׃",
+      "Placement": "דָּבָר׃",
+      "Keyboard": "Option+Shift+;"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "1",
+      "HebrewName": "סִלּוּק",
+      "EnglishName": "silluq",
+      "Symbol": "◌ֽ",
+      "Placement": "דָּבָֽר",
+      "Keyboard": "Option+1"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "1",
+      "HebrewName": "אַתְנָח",
+      "EnglishName": "atnakh",
+      "Symbol": "◌֑",
+      "Placement": "דָּבָ֑ר",
+      "Keyboard": "Option+="
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "2",
+      "HebrewName": "סְגוֺלְתָּא",
+      "EnglishName": "segolta",
+      "Symbol": "◌֒",
+      "Placement": "דָּבָר֒",
+      "Keyboard": "Option+Shift+]"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "2",
+      "HebrewName": "שַׁלְשֶׁלֶת",
+      "EnglishName": "shalshelet",
+      "Symbol": "◌֓׀",
+      "Placement": "דָּבָ֓ר׀",
+      "Keyboard": "Option+Shift+9&Shift+\\"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "2",
+      "HebrewName": "זָקֵן קָטוֺן",
+      "EnglishName": "zaqeph qaton",
+      "Symbol": "◌֔",
+      "Placement": "דָּבָ֔ר",
+      "Keyboard": "Option+Shift+["
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "2",
+      "HebrewName": "זָקֵן גָּדוֺל",
+      "EnglishName": "zaqeph gadol",
+      "Symbol": "◌֕",
+      "Placement": "דָּבָ֕ר",
+      "Keyboard": "Option+Shift+8"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "2",
+      "HebrewName": "טִפְחָה",
+      "EnglishName": "tiphkha",
+      "Symbol": "◌֖",
+      "Placement": "דָּבָ֖ר",
+      "Keyboard": "Option+3"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "3",
+      "HebrewName": "רְבִיעַ",
+      "EnglishName": "revia",
+      "Symbol": "◌֗",
+      "Placement": "דָּבָ֗ר",
+      "Keyboard": "Shift+Q"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "3",
+      "HebrewName": "זַרְקָא",
+      "EnglishName": "zarqa",
+      "Symbol": "◌֮",
+      "Placement": "דָּבָר֮",
+      "Keyboard": "Option+Shift+2"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "3",
+      "HebrewName": "פַּשְׁטָא",
+      "EnglishName": "pashta",
+      "Symbol": "◌֙",
+      "Placement": "דָּבָר֙",
+      "Keyboard": "Option+Shift+3"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "3",
+      "HebrewName": "תְּבִיר",
+      "EnglishName": "tevir",
+      "Symbol": "◌֛",
+      "Placement": "דָּבָ֛ר",
+      "Keyboard": "Option+8"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "3",
+      "HebrewName": "יְתִיב",
+      "EnglishName": "yetiv",
+      "Symbol": "◌֚",
+      "Placement": "דָּ֚בָר",
+      "Keyboard": "Option+]"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "4",
+      "HebrewName": "פַָּּזֵר",
+      "EnglishName": "pazer",
+      "Symbol": "◌֡",
+      "Placement": "דָּבָ֡ר",
+      "Keyboard": "Option+Shift+7"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "4",
+      "HebrewName": "קַרְנֵי פָרָה",
+      "EnglishName": "qarne parah",
+      "Symbol": "◌֟",
+      "Placement": "דָּבָ֟ר",
+      "Keyboard": "Option+Shift+6"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "4",
+      "HebrewName": "תְְּּלִישָׁא גְּדוֺלָה",
+      "EnglishName": "telisha gedolah",
+      "Symbol": "◌֠",
+      "Placement": "דָּ֠בָר",
+      "Keyboard": "Option+Shift+4"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "4",
+      "HebrewName": "גֶּרֶשׁ",
+      "EnglishName": "geresh",
+      "Symbol": "◌֜",
+      "Placement": "דָּבָ֜ר",
+      "Keyboard": "Shift+4"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "4",
+      "HebrewName": "גֶֶּּרְשַׁיִם",
+      "EnglishName": "gershayim",
+      "Symbol": "◌֞",
+      "Placement": "דָּבָ֞ר",
+      "Keyboard": "Shift+5"
+    },
+    {
+      "Type": "Prose Disjunctive",
+      "Group": "4",
+      "HebrewName": "לְגַרְמֶהּ",
+      "EnglishName": "legarmeh",
+      "Symbol": "◌֣׀",
+      "Placement": "דָּבָ֣ר׀",
+      "Keyboard": "Option+7&Shift+\\"
+    },
+    {
+      "Type": "Prose Conjunctive",
+      "Group": "",
+      "HebrewName": "מֵרְכָא",
+      "EnglishName": "merekha",
+      "Symbol": "◌֥",
+      "Placement": "דָּבָ֥ר",
+      "Keyboard": "Option+4"
+    },
+    {
+      "Type": "Prose Conjunctive",
+      "Group": "",
+      "HebrewName": "מֵרְכָא כְּפוּלָה",
+      "EnglishName": "merekha kephulah",
+      "Symbol": "◌֦",
+      "Placement": "דָּבָ֦ר",
+      "Keyboard": "Option+5"
+    },
+    {
+      "Type": "Prose Conjunctive",
+      "Group": "",
+      "HebrewName": "מוּנָח",
+      "EnglishName": "munakh",
+      "Symbol": "◌֣",
+      "Placement": "דָּבָ֣ר",
+      "Keyboard": "Option+7"
+    },
+    {
+      "Type": "Prose Conjunctive",
+      "Group": "",
+      "HebrewName": "מְהֻפָּח",
+      "EnglishName": "mehuppakh",
+      "Symbol": "◌֤",
+      "Placement": "דָּבָ֤ר",
+      "Keyboard": "Option+\\"
+    },
+    {
+      "Type": "Prose Conjunctive",
+      "Group": "",
+      "HebrewName": "דַּרְגָּא",
+      "EnglishName": "darga",
+      "Symbol": "◌֧",
+      "Placement": "דָּבָ֧ר",
+      "Keyboard": "Option+9"
+    },
+    {
+      "Type": "Prose Conjunctive",
+      "Group": "",
+      "HebrewName": "אַזְלָא",
+      "EnglishName": "azla",
+      "Symbol": "◌֨",
+      "Placement": "דָּבָ֨ר",
+      "Keyboard": "Shift+3"
+    },
+    {
+      "Type": "Prose Conjunctive",
+      "Group": "",
+      "HebrewName": "תְְּּלִישָׁא קְטַנָּה",
+      "EnglishName": "telisha qetannah",
+      "Symbol": "◌֩",
+      "Placement": "דָּבָר֩",
+      "Keyboard": "Option+Shift+5"
+    },
+    {
+      "Type": "Prose Conjunctive",
+      "Group": "",
+      "HebrewName": "גַּלְגַּל",
+      "EnglishName": "galgal",
+      "Symbol": "◌֪",
+      "Placement": "דָּבָ֪ר",
+      "Keyboard": "Option+0"
+    },
+    {
+      "Type": "Prose Conjunctive",
+      "Group": "",
+      "HebrewName": "מַיֶאלָה",
+      "EnglishName": "mayela",
+      "Symbol": "◌֖◌֑",
+      "Placement": "דָּ֖בָ֑ר",
+      "Keyboard": "Option+3&Option+="
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "1",
+      "HebrewName": "סוֺף פָּסוּק",
+      "EnglishName": "sof pasuq",
+      "Symbol": "◌׃",
+      "Placement": "דָּבָר׃",
+      "Keyboard": "Option+Shift+;"
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "1",
+      "HebrewName": "סִלּוּק",
+      "EnglishName": "silluq",
+      "Symbol": "◌ֽ",
+      "Placement": "דָּבָֽר",
+      "Keyboard": "Option+1"
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "1",
+      "HebrewName": "עוֺלֶה וְיוֺרֵד",
+      "EnglishName": "ole veyored",
+      "Symbol": "◌֫◌֥",
+      "Placement": "דָּ֫בָ֥ר",
+      "Keyboard": "Option+Shift+\\&Option+4"
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "1",
+      "HebrewName": "אַתְנָח",
+      "EnglishName": "atnakh",
+      "Symbol": "◌֑",
+      "Placement": "דָּבָ֑ר",
+      "Keyboard": "Option+="
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "2",
+      "HebrewName": "רְבִיעַ גָּדוֺל",
+      "EnglishName": "revia gadol",
+      "Symbol": "◌֗",
+      "Placement": "דָּבָ֗ר",
+      "Keyboard": "Shift+Q"
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "2",
+      "HebrewName": "רְבִיעַ מֻגְרָשׁ",
+      "EnglishName": "revia mugrash",
+      "Symbol": "◌֜◌֗",
+      "Placement": "דָּ֜בָ֗ר",
+      "Keyboard": "Shift+4&Shift+Q"
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "2",
+      "HebrewName": "שַׁלְשֶׁלֶת גָּדוֺל",
+      "EnglishName": "shalshelet gadol",
+      "Symbol": "◌֓׀",
+      "Placement": "דָּבָ֓ר׀",
+      "Keyboard": "Option+Shift+9&Shift+\\"
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "2",
+      "HebrewName": "רְבִיעַ קָטוֺן",
+      "EnglishName": "revia qaton",
+      "Symbol": "◌֗",
+      "Placement": "דָּבָ֗ר",
+      "Keyboard": "Shift+Q"
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "2",
+      "HebrewName": "צִנּוֺר",
+      "EnglishName": "tsinnor",
+      "Symbol": "◌֮",
+      "Placement": "דָּבָר֮",
+      "Keyboard": "Option+Shift+2"
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "2",
+      "HebrewName": "דְּחִי",
+      "EnglishName": "dechi",
+      "Symbol": "◌֭",
+      "Placement": "דָּ֭בָר",
+      "Keyboard": "Option+6"
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "3",
+      "HebrewName": "פַָּּזֵר",
+      "EnglishName": "pazer",
+      "Symbol": "◌֡",
+      "Placement": "דָּבָ֡ר",
+      "Keyboard": "Option+Shift+7"
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "3",
+      "HebrewName": "מְהֻפָּח לְגַרְמֶהּ",
+      "EnglishName": "mehuppakh legarmeh",
+      "Symbol": "◌֤׀",
+      "Placement": "דָּבָ֤ר׀",
+      "Keyboard": "Option+\\&Shift+\\"
+    },
+    {
+      "Type": "Poetry Disjunctive",
+      "Group": "3",
+      "HebrewName": "אַזְלָא לְגַרְמֶהּ",
+      "EnglishName": "azla legarmeh",
+      "Symbol": "◌֨׀",
+      "Placement": "דָּבָ֨ר׀",
+      "Keyboard": "Shift+3&Shift+\\"
+    },
+    {
+      "Type": "Poetry Conjunctive",
+      "Group": "",
+      "HebrewName": "מוּנָח",
+      "EnglishName": "munakh",
+      "Symbol": "◌֣",
+      "Placement": "דָּבָ֣ר",
+      "Keyboard": "Option+7"
+    },
+    {
+      "Type": "Poetry Conjunctive",
+      "Group": "",
+      "HebrewName": "מֵרְכָא",
+      "EnglishName": "merekha",
+      "Symbol": "◌֥",
+      "Placement": "דָּבָ֥ר",
+      "Keyboard": "Option+4"
+    },
+    {
+      "Type": "Poetry Conjunctive",
+      "Group": "",
+      "HebrewName": "עִלּוּי",
+      "EnglishName": "illuy",
+      "Symbol": "◌֬",
+      "Placement": "דָּבָ֬ר",
+      "Keyboard": "Shift+7"
+    },
+    {
+      "Type": "Poetry Conjunctive",
+      "Group": "",
+      "HebrewName": "טַרְחָא",
+      "EnglishName": "tarkha",
+      "Symbol": "◌֖",
+      "Placement": "דָּבָ֖ר",
+      "Keyboard": "Option+3"
+    },
+    {
+      "Type": "Poetry Conjunctive",
+      "Group": "",
+      "HebrewName": "גַּלְגַּל",
+      "EnglishName": "galgal",
+      "Symbol": "◌֪",
+      "Placement": "דָּבָ֪ר",
+      "Keyboard": "Option+0"
+    },
+    {
+      "Type": "Poetry Conjunctive",
+      "Group": "",
+      "HebrewName": "מְהֻפָּח",
+      "EnglishName": "mehuppakh",
+      "Symbol": "◌֤",
+      "Placement": "דָּבָ֤ר",
+      "Keyboard": "Option+\\"
+    },
+    {
+      "Type": "Poetry Conjunctive",
+      "Group": "",
+      "HebrewName": "אַזְלָא",
+      "EnglishName": "azla",
+      "Symbol": "◌֨",
+      "Placement": "דָּבָ֨ר",
+      "Keyboard": "Shift+3"
+    },
+    {
+      "Type": "Poetry Conjunctive",
+      "Group": "",
+      "HebrewName": "שַׁלְשֶׁלֶת קְטַנָּה",
+      "EnglishName": "shalshelet qetannah",
+      "Symbol": "◌֓",
+      "Placement": "דָּבָ֓ר",
+      "Keyboard": "Option+Shift+9"
+    },
+    {
+      "Type": "Poetry Conjunctive",
+      "Group": "",
+      "HebrewName": "צִנּּוֺרִית מֵרְכָא",
+      "EnglishName": "tsinnorit merekha",
+      "Symbol": "◌֘◌֥",
+      "Placement": "דָּ֮בָ֥ר",
+      "Keyboard": "Option+Shift+2&Option+4"
+    },
+    {
+      "Type": "Poetry Conjunctive",
+      "Group": "",
+      "HebrewName": "צִנּּוֺרִית מְהֻפָּח",
+      "EnglishName": "tsinnorit mehuppakh",
+      "Symbol": "◌֘◌֤",
+      "Placement": "דָּ֮בָ֤ר",
+      "Keyboard": "Option+Shift+2&Option+\\"
+    }
+  ],
+  "typeOrder": [
+    "Prose Disjunctive",
+    "Prose Conjunctive",
+    "Poetry Disjunctive",
+    "Poetry Conjunctive"
+  ],
+  "groupOrder": [
+    "1",
+    "2",
+    "3",
+    "4"
+  ]
+}
