@@ -105,6 +105,16 @@ export function renderPresetControls(container, { pageKey, getSnapshot, applySna
  * onChange(newSelectedArray)
  */
 export function renderCheckboxList(container, { label, options, selected, onChange, emptyText }) {
+  // This whole box gets torn down and rebuilt as a brand-new element every
+  // time any box in it is checked (so the "Select all"/"Clear all" label
+  // and the checked state of every other box stay in sync) — a fresh
+  // element naturally starts scrolled to the top, which is what made
+  // picking several options in a row from partway down the list (e.g.
+  // several lessons) annoying. Carry the previous scroll position over
+  // to the new element to fix that.
+  const previousList = container.querySelector(".checkbox-list");
+  const previousScrollTop = previousList ? previousList.scrollTop : 0;
+
   container.innerHTML = "";
 
   if (label) {
@@ -162,6 +172,7 @@ export function renderCheckboxList(container, { label, options, selected, onChan
   }
 
   container.appendChild(list);
+  list.scrollTop = previousScrollTop;
 }
 
 /**
