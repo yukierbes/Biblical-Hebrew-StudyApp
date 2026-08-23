@@ -10,19 +10,21 @@
 // Classic (Lambda-compatible) function, same reasoning as sync.js: this
 // format is what gets `context.clientContext.user` populated from the
 // Identity JWT automatically.
+//
+// The three datasets are imported statically below, using the standard
+// JSON import-attribute syntax, rather than loaded at request time via
+// createRequire(import.meta.url) — that approach crashed in Netlify's
+// deployed function environment with "The argument 'filename' must be
+// a file URL object... Received undefined", because import.meta.url
+// comes back undefined there. A static import has no such dependency.
+import verbsData from "./data/verbs.json" with { type: "json" };
+import vocabularyData from "./data/vocabulary.json" with { type: "json" };
+import accentsData from "./data/accents.json" with { type: "json" };
 
-import { createRequire } from "node:module";
-
-// A plain CommonJS require() reads JSON with zero import-syntax version
-// concerns (unlike ESM JSON import attributes, whose exact syntax has
-// shifted across Node versions) — the most portable way to pull these
-// files into the bundle.
-const require = createRequire(import.meta.url);
-
-const LOADERS = {
-  verbs: () => require("./data/verbs.json"),
-  vocabulary: () => require("./data/vocabulary.json"),
-  accents: () => require("./data/accents.json"),
+const DATASETS = {
+  verbs: verbsData,
+  vocabulary: vocabularyData,
+  accents: accentsData,
 };
 
 export const handler = async (event, context) => {
@@ -36,8 +38,8 @@ export const handler = async (event, context) => {
   }
 
   const dataset = (event.queryStringParameters || {}).dataset;
-  const loader = LOADERS[dataset];
-  if (!loader) {
+  const data = DATASETS[dataset];
+  if (!data) {
     return {
       statusCode: 400,
       headers: { "Content-Type": "application/json" },
@@ -45,20 +47,11 @@ export const handler = async (event, context) => {
     };
   }
 
-  try {
-    const data = loader();
-    return {
-      statusCode: 200,
-      // Cached only in the requester's own browser (never a shared/CDN
-      // cache), since the response requires their personal auth token.
-      headers: { "Content-Type": "application/json", "Cache-Control": "private, max-age=300" },
-      body: JSON.stringify(data),
-    };
-  } catch (e) {
-    return {
-      statusCode: 500,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Failed to load dataset: " + e.message }),
-    };
-  }
+  return {
+    statusCode: 200,
+    // Cached only in the requester's own browser (never a shared/CDN
+    // cache), since the response requires their personal auth token.
+    headers: { "Content-Type": "application/json", "Cache-Control": "private, max-age=300" },
+    body: JSON.stringify(data),
+  };
 };
