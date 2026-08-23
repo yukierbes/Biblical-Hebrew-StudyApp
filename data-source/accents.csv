@@ -1,9 +1,9 @@
-Type,Group,HebrewName,EnglishName,Symbol,Placement,Keyboard
+Type,Group,Hebrew Name,English Name,Symbol,Placement,Keyboard Key
 Prose Disjunctive,1,סוֺף פָּסוּק,sof pasuq,◌׃,דָּבָר׃,Option+Shift+;
 Prose Disjunctive,1,סִלּוּק,silluq,◌ֽ,דָּבָֽר,Option+1
 Prose Disjunctive,1,אַתְנָח,atnakh,◌֑,דָּבָ֑ר,Option+=
 Prose Disjunctive,2,סְגוֺלְתָּא,segolta,◌֒,דָּבָר֒,Option+Shift+]
-Prose Disjunctive,2,שַׁלְשֶׁלֶת,shalshelet,◌֓׀,דָּבָ֓ר׀,Option+Shift+9&Shift+\
+Prose Disjunctive,2,שַׁלְשֶׁלֶת,shalshelet,◌֓׀,דָּבָ֓ר׀,Option+Shift+9 & Shift+\
 Prose Disjunctive,2,זָקֵן קָטוֺן,zaqeph qaton,◌֔,דָּבָ֔ר,Option+Shift+[
 Prose Disjunctive,2,זָקֵן גָּדוֺל,zaqeph gadol,◌֕,דָּבָ֕ר,Option+Shift+8
 Prose Disjunctive,2,טִפְחָה,tiphkha,◌֖,דָּבָ֖ר,Option+3
@@ -17,7 +17,7 @@ Prose Disjunctive,4,קַרְנֵי פָרָה,qarne parah,◌֟,דָּבָ֟ר,O
 Prose Disjunctive,4,תְְּּלִישָׁא גְּדוֺלָה,telisha gedolah,◌֠,דָּ֠בָר,Option+Shift+4
 Prose Disjunctive,4,גֶּרֶשׁ,geresh,◌֜,דָּבָ֜ר,Shift+4
 Prose Disjunctive,4,גֶֶּּרְשַׁיִם,gershayim,◌֞,דָּבָ֞ר,Shift+5
-Prose Disjunctive,4,לְגַרְמֶהּ,legarmeh,◌֣׀,דָּבָ֣ר׀,Option+7&Shift+\
+Prose Disjunctive,4,לְגַרְמֶהּ,legarmeh,◌֣׀,דָּבָ֣ר׀,Option+7 & Shift+\
 Prose Conjunctive,,מֵרְכָא,merekha,◌֥,דָּבָ֥ר,Option+4
 Prose Conjunctive,,מֵרְכָא כְּפוּלָה,merekha kephulah,◌֦,דָּבָ֦ר,Option+5
 Prose Conjunctive,,מוּנָח,munakh,◌֣,דָּבָ֣ר,Option+7
@@ -26,20 +26,20 @@ Prose Conjunctive,,דַּרְגָּא,darga,◌֧,דָּבָ֧ר,Option+9
 Prose Conjunctive,,אַזְלָא,azla,◌֨,דָּבָ֨ר,Shift+3
 Prose Conjunctive,,תְְּּלִישָׁא קְטַנָּה,telisha qetannah,◌֩,דָּבָר֩,Option+Shift+5
 Prose Conjunctive,,גַּלְגַּל,galgal,◌֪,דָּבָ֪ר,Option+0
-Prose Conjunctive,,מַיֶאלָה,mayela,◌֖◌֑,דָּ֖בָ֑ר,Option+3&Option+=
+Prose Conjunctive,,מַיֶאלָה,mayela,◌֖◌֑,דָּ֖בָ֑ר,Option+3 & Option+=
 Poetry Disjunctive,1,סוֺף פָּסוּק,sof pasuq,◌׃,דָּבָר׃,Option+Shift+;
 Poetry Disjunctive,1,סִלּוּק,silluq,◌ֽ,דָּבָֽר,Option+1
-Poetry Disjunctive,1,עוֺלֶה וְיוֺרֵד,ole veyored,◌֫◌֥,דָּ֫בָ֥ר,Option+Shift+\&Option+4
+Poetry Disjunctive,1,עוֺלֶה וְיוֺרֵד,ole veyored,◌֫◌֥,דָּ֫בָ֥ר,Option+Shift+\ & Option+4
 Poetry Disjunctive,1,אַתְנָח,atnakh,◌֑,דָּבָ֑ר,Option+=
 Poetry Disjunctive,2,רְבִיעַ גָּדוֺל,revia gadol,◌֗,דָּבָ֗ר,Shift+Q
-Poetry Disjunctive,2,רְבִיעַ מֻגְרָשׁ,revia mugrash,◌֜◌֗,דָּ֜בָ֗ר,Shift+4&Shift+Q
-Poetry Disjunctive,2,שַׁלְשֶׁלֶת גָּדוֺל,shalshelet gadol,◌֓׀,דָּבָ֓ר׀,Option+Shift+9&Shift+\
+Poetry Disjunctive,2,רְבִיעַ מֻגְרָשׁ,revia mugrash,◌֜◌֗,דָּ֜בָ֗ר,Shift+4 & Shift+Q
+Poetry Disjunctive,2,שַׁלְשֶׁלֶת גָּדוֺל,shalshelet gadol,◌֓׀,דָּבָ֓ר׀,Option+Shift+9 & Shift+\
 Poetry Disjunctive,2,רְבִיעַ קָטוֺן,revia qaton,◌֗,דָּבָ֗ר,Shift+Q
 Poetry Disjunctive,2,צִנּוֺר,tsinnor,◌֮,דָּבָר֮,Option+Shift+2
 Poetry Disjunctive,2,דְּחִי,dechi,◌֭,דָּ֭בָר,Option+6
 Poetry Disjunctive,3,פַָּּזֵר,pazer,◌֡,דָּבָ֡ר,Option+Shift+7
-Poetry Disjunctive,3,מְהֻפָּח לְגַרְמֶהּ,mehuppakh legarmeh,◌֤׀,דָּבָ֤ר׀,Option+\&Shift+\
-Poetry Disjunctive,3,אַזְלָא לְגַרְמֶהּ,azla legarmeh,◌֨׀,דָּבָ֨ר׀,Shift+3&Shift+\
+Poetry Disjunctive,3,מְהֻפָּח לְגַרְמֶהּ,mehuppakh legarmeh,◌֤׀,דָּבָ֤ר׀,Option+\ & Shift+\
+Poetry Disjunctive,3,אַזְלָא לְגַרְמֶהּ,azla legarmeh,◌֨׀,דָּבָ֨ר׀,Shift+3 & Shift+\
 Poetry Conjunctive,,מוּנָח,munakh,◌֣,דָּבָ֣ר,Option+7
 Poetry Conjunctive,,מֵרְכָא,merekha,◌֥,דָּבָ֥ר,Option+4
 Poetry Conjunctive,,עִלּוּי,illuy,◌֬,דָּבָ֬ר,Shift+7
@@ -48,5 +48,5 @@ Poetry Conjunctive,,גַּלְגַּל,galgal,◌֪,דָּבָ֪ר,Option+0
 Poetry Conjunctive,,מְהֻפָּח,mehuppakh,◌֤,דָּבָ֤ר,Option+\
 Poetry Conjunctive,,אַזְלָא,azla,◌֨,דָּבָ֨ר,Shift+3
 Poetry Conjunctive,,שַׁלְשֶׁלֶת קְטַנָּה,shalshelet qetannah,◌֓,דָּבָ֓ר,Option+Shift+9
-Poetry Conjunctive,,צִנּּוֺרִית מֵרְכָא,tsinnorit merekha,◌֘◌֥,דָּ֮בָ֥ר,Option+Shift+2&Option+4
-Poetry Conjunctive,,צִנּּוֺרִית מְהֻפָּח,tsinnorit mehuppakh,◌֘◌֤,דָּ֮בָ֤ר,Option+Shift+2&Option+\
+Poetry Conjunctive,,צִנּּוֺרִית מֵרְכָא,tsinnorit merekha,◌֘◌֥,דָּ֮בָ֥ר,Option+Shift+2 & Option+4
+Poetry Conjunctive,,צִנּּוֺרִית מְהֻפָּח,tsinnorit mehuppakh,◌֘◌֤,דָּ֮בָ֤ר,Option+Shift+2 & Option+\

@@ -162,7 +162,7 @@ Lesson,Frequency,Hebrew,English,POS,Category
 2B,378,נְאֻם,"utterance, declaration",Noun,Worship/Cultic
 2B,313,נָבִיא,prophet,Noun,Worship/Cultic
 2B,369,נָגַד,"(Hi) to make known, report, tell",Verb,Action and Stative Verbs
-2B,314,עָנָה,to answer,Verb,Personal Interactions
+2B,314,עָנָה (I),to answer,Verb,Personal Interactions
 2B,330,עֵץ,"(also coll) tree, wood",Noun,Plants and Animals
 2B,376,ר֫וּחַ,"spirit, wind, breath",Noun,Worship/Cultic
 2B,332,שָׂדֶה ; שָׂדַי,"field, country",Noun,Heavens and Earth
@@ -214,7 +214,7 @@ Lesson,Frequency,Hebrew,English,POS,Category
 2D,269,לְמַ֫עַן,"(prep) for the sake of, on account of; (conj) in order that",Preposition,
 2D,223,מוֹעֵד,appointed place or time; season,Noun,Time and Seasons
 2D,252,מַטֶּה,"rod, staff; (ext) tribe",Noun,Family and Tribe
-2D,250,מָלֵא,"(stat) to be full; (Pi) to fill, fulfill",Verb,Action and Stative Verbs
+2D,250,מָלֵא (I),"(stat) to be full; (Pi) to fill, fulfill",Verb,Action and Stative Verbs
 2D,235,מַעֲשֶׂה,work,Noun,Humans and Anatomy
 2D,223,נַחֲלָה,inheritance,Noun,Family and Tribe
 2D,240,נַ֫עַר,"lad, youth",Noun,Humans and Anatomy
@@ -351,7 +351,7 @@ Lesson,Frequency,Hebrew,English,POS,Category
 3D,139,שַׁ־ ּ,"(pref rel particle) who, which; that (with dages in following cons)",Particle,
 3D,139,שְׁמוּאֵל,Samuel,Proper Noun,
 3D,134,שֶׁ֫מֶשׁ,sun,Noun,Heavens and Earth
-3E,125,אוֹר,light,Noun,Heavens and Earth
+3E,125,אוֹר (I),light,Noun,Heavens and Earth
 3E,127,אֱמֶת,"trustworthiness, stability, truth",Noun,"People, Law, and Covenant"
 3E,130,אַף,"(conj) also, even, the more so",Conjunction,
 3E,126,בּוֹשׁ,to be ashamed,Verb,Action and Stative Verbs
@@ -467,7 +467,7 @@ Lesson,Frequency,Hebrew,English,POS,Category
 4B,91,זְר֫וֹעַ,"arm, forearm",Noun,Humans and Anatomy
 4B,92,חֵ֫לֶב,fat,Noun,Food
 4B,86,חָפֵץ,"to please, delight, take pleasure",Verb,Action and Stative Verbs
-4B,90,טוֹב*,"to be good, pleasant (Cf. יָטַב, 3.F; טוּב, 1.D)",Verb,Humans and Anatomy
+4B,90,טוֹב,"to be good, pleasant (Cf. יָטַב, 3.F; טוּב, 1.D)",Verb,Humans and Anatomy
 4B,88,טָמֵא ; טְמֵאָה,"(adj, m; f) unclean",Adjective,Worship/Cultic
 4B,86,יְהוֹשָׁפָט,Jehoshaphat,Proper Noun,
 4B,92,יֶ֫לֶד ; יַלְדָּה,"male child, boy; girl",Noun,Family and Tribe
@@ -499,7 +499,7 @@ Lesson,Frequency,Hebrew,English,POS,Category
 4C,81,דָּנִיֵּאל,Daniel,Proper Noun,
 4C,80,הֵיכָל,"palace, temple",Noun,Worship/Cultic
 4C,82,זָכָר,man; male (animal),Noun,Humans and Anatomy
-4C,82,חֶֹ֫שׁךְ,darkness,Noun,Heavens and Earth
+4C,82,חֹ֫שֶׁךְ,darkness,Noun,Heavens and Earth
 4C,82,יָעַץ,"to give counsel, advice",Verb,Action and Stative Verbs
 4C,85,לָמַד,to learn; (Pi) teach,Verb,Action and Stative Verbs
 4C,83,מָהַר,(Pi) to hasten,Verb,Action and Stative Verbs
@@ -508,7 +508,7 @@ Lesson,Frequency,Hebrew,English,POS,Category
 4C,83,סָתַר,"(Ni, intrans) to conceal, hide; (Hi, trans) hide (someone)",Verb,Action and Stative Verbs
 4C,83,עֵדוּת ; עֵדָה,"warning sign, reminder, precept, commandment",Noun,"People, Law, and Covenant"
 4C,82,עָזַר,"to help, assist",Verb,Action and Stative Verbs
-4C,79,עָנָה (2),"to bend down, be afflicted, humble; (Pi) oppress, humiliate",Verb,Worship/Cultic
+4C,79,עָנָה (II),"to bend down, be afflicted, humble; (Pi) oppress, humiliate",Verb,Worship/Cultic
 4C,80,פָּלַל,(Hith) to pray,Verb,Worship/Cultic
 4C,82,קָלַל,"to be slight, trifling, swift; (Pi) declare cursed; (Hi) make light",Verb,Action and Stative Verbs
 4C,80,קָרְבָּן,"offering, gift",Noun,Worship/Cultic
@@ -589,7 +589,7 @@ Lesson,Frequency,Hebrew,English,POS,Category
 4F,67,כָּתֵף,shoulder(-blade),Noun,Humans and Anatomy
 4F,67,לְפִי,"(conj) according to, as; so that",Noun,Humans and Anatomy
 4F,67,מִדְיָן ; מִדְיָנִי,Midian; (gent) Midianite,Proper Noun,
-4F,67,מָלֵא (2),"(adj, n, pred adj) full",Adjective,
+4F,67,מָלֵא (II),"(adj, n, pred adj) full",Adjective,
 4F,70,מָשַׁח,to anoint,Verb,Worship/Cultic
 4F,70,נָבַט,"(Pi, Hi) to look at, regard",Verb,Action and Stative Verbs
 4F,68,עֵ֫מֶק,valley,Noun,Heavens and Earth
@@ -830,7 +830,7 @@ Lesson,Frequency,Hebrew,English,POS,Category
 5C,45,רֶ֫שַׁע ; רִשְׁעָה,"(s m; f) wrong, injustice, guilt",Noun,Worship/Cultic
 5C,44,"שֶׁ֫בֶר , שֵׁ֫בֶר","breaking, fracture; interpretation",Noun,
 5C,44,שֶׂה,"lamb, kid",Noun,Plants and Animals
-5D,43,אוֹר (2),"(Hi) to shine, give light, illuminate",Verb,Action and Stative Verbs
+5D,43,אוֹר (II),"(Hi) to shine, give light, illuminate",Verb,Action and Stative Verbs
 5D,42,אֱנוֹשׁ,"man, mankind, men",Noun,Humans and Anatomy
 5D,42,אֶפֶס,"end, nothing",Noun,
 5D,42,בַּד,"poles, shoots",Noun,Building and Travel
