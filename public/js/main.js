@@ -672,10 +672,16 @@ if ("serviceWorker" in navigator) {
   // (after sw.js bumps CACHE_VERSION and calls skipWaiting/clients.claim),
   // the page's already-loaded JS modules are stale until the next
   // navigation. Reload automatically, once, so people don't have to
-  // know to hit refresh twice to see a new deploy.
+  // know to hit refresh twice to see a new deploy — but never while an
+  // invite/recovery token is actively being handled by the custom
+  // password form above: the token only lives in memory at that point
+  // (already stripped from the URL), so an unexpected reload here would
+  // silently discard it mid-flow. The person will pick up the new
+  // version on their next ordinary page load instead.
   let hasReloadedForNewWorker = false;
   navigator.serviceWorker.addEventListener("controllerchange", () => {
     if (hasReloadedForNewWorker) return;
+    if (needsCustomPasswordForm && !appStarted) return;
     hasReloadedForNewWorker = true;
     window.location.reload();
   });
