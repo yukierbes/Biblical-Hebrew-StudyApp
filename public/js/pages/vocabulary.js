@@ -60,9 +60,23 @@ function render(content, sidebarExtra, navigate) {
   // inner section of it, alongside Navigation/Account/Progress/etc.
   const __scrollContainer = sidebarExtra.closest("#sidebar") || sidebarExtra;
   const __sidebarScrollTop = __scrollContainer.scrollTop;
+  // Each individual checkbox list (Lesson/POS/Category/Root/etc., a
+  // separately-scrollable box — see .checkbox-list in css/style.css) is
+  // also torn down and rebuilt as a brand-new element by renderCheckboxList
+  // every time any box anywhere changes, so it needs its own scroll
+  // restored too, in addition to the outer panel above. Matched up by
+  // position, since every page here renders its lists in the same fixed
+  // order every time.
+  const __checklistScrollTops = [...sidebarExtra.querySelectorAll(".checkbox-list")].map(
+    (el) => el.scrollTop
+  );
   sidebarExtra.innerHTML = "";
   requestAnimationFrame(() => {
     __scrollContainer.scrollTop = __sidebarScrollTop;
+    const newLists = sidebarExtra.querySelectorAll(".checkbox-list");
+    newLists.forEach((el, i) => {
+      if (__checklistScrollTops[i] != null) el.scrollTop = __checklistScrollTops[i];
+    });
   });
   content.innerHTML = "";
 

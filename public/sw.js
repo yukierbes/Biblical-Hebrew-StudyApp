@@ -1,6 +1,6 @@
 // Bump this whenever any cached file changes, so old clients pick up
 // the new version instead of being stuck on a stale cache forever.
-const CACHE_VERSION = "hebrew-verb-app-v34";
+const CACHE_VERSION = "hebrew-verb-app-v35";
 
 const APP_SHELL = [
   "./",
