@@ -76,10 +76,14 @@ function render(content, sidebarExtra, navigate) {
   // each time and make picking several boxes in a row from a scrolled-down
   // section (e.g. several lessons) annoying. rAF runs after this
   // function finishes rebuilding the DOM below, so the restore sticks.
-  const __sidebarScrollTop = sidebarExtra.scrollTop;
+  // The panel that actually scrolls is the outer #sidebar element (see
+  // css/style.css), not sidebarExtra itself — sidebarExtra is just one
+  // inner section of it, alongside Navigation/Account/Progress/etc.
+  const __scrollContainer = sidebarExtra.closest("#sidebar") || sidebarExtra;
+  const __sidebarScrollTop = __scrollContainer.scrollTop;
   sidebarExtra.innerHTML = "";
   requestAnimationFrame(() => {
-    sidebarExtra.scrollTop = __sidebarScrollTop;
+    __scrollContainer.scrollTop = __sidebarScrollTop;
   });
   content.innerHTML = "";
 
