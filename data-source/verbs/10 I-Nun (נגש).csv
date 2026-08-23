@@ -1,0 +1,251 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,נָגַשׁ,he drew near
+Qal,Perfect,3,F,S,נָֽגְשָׁה,she drew near
+Qal,Perfect,2,M,S,נָגַ֫שְׁתָּ,you drew near
+Qal,Perfect,2,F,S,נָגַשְׁתְּ,you drew near
+Qal,Perfect,1,C,S,נָגַ֫שְׁתִּי,I drew near
+Qal,Perfect,3,C,P,נָֽגְשׁוּ,they drew near
+Qal,Perfect,2,M,P,נְגַשְׁתֶּם,you all drew near
+Qal,Perfect,2,F,P,נְגַשְׁתֶּן,you all drew near
+Qal,Perfect,1,C,P,נָגַ֫שְׁנוּ,we drew near
+Qal,Imperfect,3,M,S,יִגַּשׁ,he will draw near
+Qal,Imperfect,3,F,S,תִּגַּשׁ,she will draw near
+Qal,Imperfect,2,M,S,תִּגַּשׁ,you will draw near
+Qal,Imperfect,2,F,S,תִּגְּשִׁי,you will draw near
+Qal,Imperfect,1,C,S,אֶגַּשׁ,I will draw near
+Qal,Imperfect,3,M,P,יִגְּשׁוּ,they will draw near
+Qal,Imperfect,3,F,P,תִּגַּ֫שְׁנָה,they will draw near
+Qal,Imperfect,2,M,P,תִּגְּשׁוּ,you all will draw near
+Qal,Imperfect,2,F,P,תִּגַּ֫שְׁנָה,you all will draw near
+Qal,Imperfect,1,C,P,נִגַּשׁ,we will draw near
+Qal,Jussive,3,M,S,יִגַּשׁ,may he draw near
+Qal,Jussive,3,F,S,תִּגַּשׁ,may she draw near
+Qal,Jussive,2,M,S,תִּגַּשׁ,may you draw near
+Qal,Jussive,2,F,S,תִּגְּשִׁי,may you draw near
+Qal,Jussive,3,M,P,יִגְּשׁוּ,may they draw near
+Qal,Jussive,3,F,P,תִּגַּ֫שְׁנָה,may they draw near
+Qal,Jussive,2,M,P,תִּגְּשׁוּ,may you all draw near
+Qal,Jussive,2,F,P,תִּגַּ֫שְׁנָה,may you all draw near
+Qal,Cohortative,1,C,S,אֶגְּשָׁה,may I draw near
+Qal,Cohortative,1,C,P,נִגְּשָׁה,may we draw near
+Qal,Imperative,2,M,S,גַּשׁ,draw near!
+Qal,Imperative,2,F,S,גְּשִׁי,draw near!
+Qal,Imperative,2,M,P,גְּשׁוּ,draw near!
+Qal,Imperative,2,F,P,גַּ֫שְׁנָה,draw near!
+Qal,Infinitive Absolute,,,,נָגוֹשׁ,to draw near
+Qal,Infinitive Construct,,,,גֶּ֫שֶׁת,to draw near
+Qal,Active Participle,,M,S,נֹגֵשׁ,drawing near
+Qal,Active Participle,,F,S,נֹֽגְשָׁה,drawing near
+Qal,Active Participle,,M,P,נֹֽגְשִׁים,drawing near
+Qal,Active Participle,,F,P,נֹֽגְשׁוֹת,drawing near
+Qal,Passive Participle,,M,S,נָגוּשׁ,drew near
+Qal,Passive Participle,,F,S,נְגוּשָׁה,drew near
+Qal,Passive Participle,,M,P,נְגוּשִׁים,drew near
+Qal,Passive Participle,,F,P,נְגוּשׁוֹת,drew near
+Niphal,Perfect,3,M,S,נִגַּשׁ,he was drawn near
+Niphal,Perfect,3,F,S,נִגְּשָׁה,she was drawn near
+Niphal,Perfect,2,M,S,נִגַּ֫שְׁתָּ,you were drawn near
+Niphal,Perfect,2,F,S,נִגַּשְׁתְּ,you were drawn near
+Niphal,Perfect,1,C,S,נִגַּ֫שְׁתִּי,I was drawn near
+Niphal,Perfect,3,C,P,נִגְּשׁוּ,they were drawn near
+Niphal,Perfect,2,M,P,נִגַּשְׁתֶּם,you all were drawn near
+Niphal,Perfect,2,F,P,נִגַּשְׁתֶּן,you all were drawn near
+Niphal,Perfect,1,C,P,נִגַּ֫שְׁנוּ,we were drawn near
+Niphal,Imperfect,3,M,S,יִנָּגֵשׁ,he will be drawn near
+Niphal,Imperfect,3,F,S,תִּנָּגֵשׁ,she will be drawn near
+Niphal,Imperfect,2,M,S,תִּנָּגֵשׁ,you will be drawn near
+Niphal,Imperfect,2,F,S,תִּנָּֽגְשִׁי,you will be drawn near
+Niphal,Imperfect,1,C,S,אֶנָּגֵשׁ,I will be drawn near
+Niphal,Imperfect,3,M,P,יִנָּֽגְשׁוּ,they will be drawn near
+Niphal,Imperfect,3,F,P,תִּנָּגַ֫שְׁנָה,they will be drawn near
+Niphal,Imperfect,2,M,P,תִּנָּֽגְשׁוּ,you all will be drawn near
+Niphal,Imperfect,2,F,P,תִּנָּגַ֫שְׁנָה,you all will be drawn near
+Niphal,Imperfect,1,C,P,נִנָּגֵשׁ,we will be drawn near
+Niphal,Jussive,3,M,S,יִנָּגֵשׁ,may he be drawn near
+Niphal,Jussive,3,F,S,תִּנָּגֵשׁ,may she be drawn near
+Niphal,Jussive,2,M,S,תִּנָּגֵשׁ,may you be drawn near
+Niphal,Jussive,2,F,S,תִּנָּֽגְשִׁי,may you be drawn near
+Niphal,Jussive,3,M,P,יִנָּֽגְשׁוּ,may they be drawn near
+Niphal,Jussive,3,F,P,תִּנָּגַ֫שְׁנָה,may they be drawn near
+Niphal,Jussive,2,M,P,תִּנָּֽגְשׁוּ,may you all be drawn near
+Niphal,Jussive,2,F,P,תִּנָּגַ֫שְׁנָה,may you all be drawn near
+Niphal,Cohortative,1,C,S,אֶנָּֽגְשָׁה,may I be drawn near
+Niphal,Cohortative,1,C,P,נִנָּֽגְשָׁה,may we be drawn near
+Niphal,Imperative,2,M,S,הִנָּגֵשׁ,be drawn near!
+Niphal,Imperative,2,F,S,הִנָּֽגְשִׁי,be drawn near!
+Niphal,Imperative,2,M,P,הִנָּֽגְשׁוּ,be drawn near!
+Niphal,Imperative,2,F,P,הִנָּגַ֫שְׁנָה,be drawn near!
+Niphal,Infinitive Absolute,,,,נִגּוֹשׁ,to be drawn near
+Niphal,Infinitive Construct,,,,הִנָּגֵשׁ,to be drawn near
+Niphal,Passive Participle,,M,S,נִגָּשׁ,being drawn near
+Niphal,Passive Participle,,F,S,נִגָּשָׁה,being drawn near
+Niphal,Passive Participle,,M,P,נִגָּשִׁים,being drawn near
+Niphal,Passive Participle,,F,P,נִגָּשׁוֹת,being drawn near
+Piel,Perfect,3,M,S,נִגֵּשׁ,he drew near
+Piel,Perfect,3,F,S,נִגְּשָׁה,she drew near
+Piel,Perfect,2,M,S,נִגַּ֫שְׁתָּ,you drew near
+Piel,Perfect,2,F,S,נִגַּשְׁתְּ,you drew near
+Piel,Perfect,1,C,S,נִגַּ֫שְׁתִּי,I drew near
+Piel,Perfect,3,C,P,נִגְּשׁוּ,they drew near
+Piel,Perfect,2,M,P,נִגַּשְׁתֶּם,you all drew near
+Piel,Perfect,2,F,P,נִגַּשְׁתֶּן,you all drew near
+Piel,Perfect,1,C,P,נִגַּ֫שְׁנוּ,we drew near
+Piel,Imperfect,3,M,S,יְנַגֵּשׁ,he will draw near
+Piel,Imperfect,3,F,S,תְּנַגֵּשׁ,she will draw near
+Piel,Imperfect,2,M,S,תְּנַגֵּשׁ,you will draw near
+Piel,Imperfect,2,F,S,תְּנַגְּשִׁי,you will draw near
+Piel,Imperfect,1,C,S,אֲנַגֵּשׁ,I will draw near
+Piel,Imperfect,3,M,P,יְנַגְּשׁוּ,they will draw near
+Piel,Imperfect,3,F,P,תְּנַגֵּ֫שְׁנָה,they will draw near
+Piel,Imperfect,2,M,P,תְּנַגְּשׁוּ,you all will draw near
+Piel,Imperfect,2,F,P,תְּנַגֵּ֫שְׁנָה,you all will draw near
+Piel,Imperfect,1,C,P,נְנַגֵּשׁ,we will draw near
+Piel,Jussive,3,M,S,יְנַגֵּשׁ,may he draw near
+Piel,Jussive,3,F,S,תְּנַגֵּשׁ,may she draw near
+Piel,Jussive,2,M,S,תְּנַגֵּשׁ,may you draw near
+Piel,Jussive,2,F,S,תְּנַגְּשִׁי,may you draw near
+Piel,Jussive,3,M,P,יְנַגְּשׁוּ,may they draw near
+Piel,Jussive,3,F,P,תְּנַגֵּ֫שְׁנָה,may they draw near
+Piel,Jussive,2,M,P,תְּנַגְּשׁוּ,may you all draw near
+Piel,Jussive,2,F,P,תְּנַגֵּ֫שְׁנָה,may you all draw near
+Piel,Cohortative,1,C,S,אֲנַגְּשָׁה,may I draw near
+Piel,Cohortative,1,C,P,נְנַגְּשָׁה,may we draw near
+Piel,Imperative,2,M,S,נַגֵּשׁ,draw near!
+Piel,Imperative,2,F,S,נַגְּשִׁי,draw near!
+Piel,Imperative,2,M,P,נַגְּשׁוּ,draw near!
+Piel,Imperative,2,F,P,נַגֵּ֫שְׁנָה,draw near!
+Piel,Infinitive Absolute,,,,נַגֹּשׁ,to draw near
+Piel,Infinitive Absolute,,,,נַגֵּשׁ,to draw near
+Piel,Infinitive Construct,,,,נַגֵּשׁ,to draw near
+Piel,Active Participle,,M,S,מְנַגֵּשׁ,drawing near
+Piel,Active Participle,,F,S,מְנַגְּשָׁה,drawing near
+Piel,Active Participle,,M,P,מְנַגְּשִׁים,drawing near
+Piel,Active Participle,,F,P,מְנַגְּשׁוֹת,drawing near
+Pual,Perfect,3,M,S,נֻגַּשׁ,he was drawn near
+Pual,Perfect,3,F,S,נֻגְּשָׁה,she was drawn near
+Pual,Perfect,2,M,S,נֻגַּ֫שְׁתָּ,you were drawn near
+Pual,Perfect,2,F,S,נֻגַּשְׁתְּ,you were drawn near
+Pual,Perfect,1,C,S,נֻגַּ֫שְׁתִּי,I was drawn near
+Pual,Perfect,3,C,P,נֻגְּשׁוּ,they were drawn near
+Pual,Perfect,2,M,P,נֻגַּשְׁתֶּם,you all were drawn near
+Pual,Perfect,2,F,P,נֻגַּשְׁתֶּן,you all were drawn near
+Pual,Perfect,1,C,P,נֻגַּ֫שְׁנוּ,we were drawn near
+Pual,Imperfect,3,M,S,יְנֻגַּשׁ,he will be drawn near
+Pual,Imperfect,3,F,S,תְּנֻגַּשׁ,she will be drawn near
+Pual,Imperfect,2,M,S,תְּנֻגַּשׁ,you will be drawn near
+Pual,Imperfect,2,F,S,תְּנֻגְּשִׁי,you will be drawn near
+Pual,Imperfect,1,C,S,אֲנֻגַּשׁ,I will be drawn near
+Pual,Imperfect,3,M,P,יְנֻגְּשׁוּ,they will be drawn near
+Pual,Imperfect,3,F,P,תְּנֻגַּ֫שְׁנָה,they will be drawn near
+Pual,Imperfect,2,M,P,תְּנֻגְּשׁוּ,you all will be drawn near
+Pual,Imperfect,2,F,P,תְּנֻגַּ֫שְׁנָה,you all will be drawn near
+Pual,Imperfect,1,C,P,נְנֻגַּשׁ,we will be drawn near
+Pual,Infinitive Absolute,,,,נֻגֹּשׁ,to be drawn near
+Pual,Infinitive Construct,,,,נֻגַּשׁ,to be drawn near
+Pual,Passive Participle,,M,S,מְנֻגָּשׁ,being drawn near
+Pual,Passive Participle,,F,S,מְנֻגָּשָׁה,being drawn near
+Pual,Passive Participle,,M,P,מְנֻגָּשִׁים,being drawn near
+Pual,Passive Participle,,F,P,מְנֻגָּשׁוֹת,being drawn near
+Hitpael,Perfect,3,M,S,הִתְנַגֵּשׁ,he drew near himself
+Hitpael,Perfect,3,F,S,הִתְנַגְּשָׁה,she drew near herself
+Hitpael,Perfect,2,M,S,הִתְנַגַּ֫שְׁתָּ,you drew near yourself
+Hitpael,Perfect,2,F,S,הִתְנַגַּשְׁתְּ,you drew near yourself
+Hitpael,Perfect,1,C,S,הִתְנַגַּ֫שְׁתִּי,I drew near myself
+Hitpael,Perfect,3,C,P,הִתְנַגְּשׁוּ,they drew near themselves
+Hitpael,Perfect,2,M,P,הִתְנַגַּשְׁתֶּם,you all drew near yourselves
+Hitpael,Perfect,2,F,P,הִתְנַגַּשְׁתֶּן,you all drew near yourselves
+Hitpael,Perfect,1,C,P,הִתְנַגַּ֫שְׁנוּ,we drew near ourselves
+Hitpael,Imperfect,3,M,S,יִתְנַגֵּשׁ,he will draw near himself
+Hitpael,Imperfect,3,F,S,תִּתְנַגֵּשׁ,she will draw near herself
+Hitpael,Imperfect,2,M,S,תִּתְנַגֵּשׁ,you will draw near yourself
+Hitpael,Imperfect,2,F,S,תִּתְנַגְּשִׁי,you will draw near yourself
+Hitpael,Imperfect,1,C,S,אֶתְנַגֵּשׁ,I will draw near myself
+Hitpael,Imperfect,3,M,P,יִתְנַגְּשׁוּ,they will draw near themselves
+Hitpael,Imperfect,3,F,P,תִּתְנַגֵּ֫שְׁנָה,they will draw near themselves
+Hitpael,Imperfect,2,M,P,תִּתְנַגְּשׁוּ,you all will draw near yourselves
+Hitpael,Imperfect,2,F,P,תִּתְנַגֵּ֫שְׁנָה,you all will draw near yourselves
+Hitpael,Imperfect,1,C,P,נִתְנַגֵּשׁ,we will draw near ourselves
+Hitpael,Jussive,3,M,S,יִתְנַגֵּשׁ,may he draw near himself
+Hitpael,Jussive,3,F,S,תִּתְנַגֵּשׁ,may she draw near herself
+Hitpael,Jussive,2,M,S,תִּתְנַגֵּשׁ,may you draw near yourself
+Hitpael,Jussive,2,F,S,תִּתְנַגְּשִׁי,may you draw near yourself
+Hitpael,Jussive,3,M,P,יִתְנַגְּשׁוּ,may they draw near themselves
+Hitpael,Jussive,3,F,P,תִּתְנַגֵּ֫שְׁנָה,may they draw near themselves
+Hitpael,Jussive,2,M,P,תִּתְנַגְּשׁוּ,may you all draw near yourselves
+Hitpael,Jussive,2,F,P,תִּתְנַגֵּ֫שְׁנָה,may you all draw near yourselves
+Hitpael,Cohortative,1,C,S,אֶתְנַגְּשָׁה,may I draw near myself
+Hitpael,Cohortative,1,C,P,נִתְנַגְּשָׁה,may we draw near ourselves
+Hitpael,Imperative,2,M,S,הִתְנַגֵּשׁ,draw near yourself!
+Hitpael,Imperative,2,F,S,הִתְנַגְּשִׁי,draw near yourself!
+Hitpael,Imperative,2,M,P,הִתְנַגְּשׁוּ,draw near yourselves!
+Hitpael,Imperative,2,F,P,הִתְנַגֵּ֫שְׁנָה,draw near yourselves!
+Hitpael,Infinitive Absolute,,,,הִתְנַגֵּשׁ,to draw near oneself
+Hitpael,Infinitive Construct,,,,הִתְנַגֵּשׁ,to draw near oneself
+Hitpael,Active Participle,,M,S,מִתְנַגֵּשׁ,drawing near oneself
+Hitpael,Active Participle,,F,S,מִתְנַגְּשָׁה,drawing near oneself
+Hitpael,Active Participle,,M,P,מִתְנַגְּשִׁים,drawing near oneself
+Hitpael,Active Participle,,F,P,מִתְנַגְּשׁוֹת,drawing near oneself
+Hiphil,Perfect,3,M,S,הִגִּישׁ,he caused to draw near
+Hiphil,Perfect,3,F,S,הִגִּ֫ישָׁה,she caused to draw near
+Hiphil,Perfect,2,M,S,הִגַּ֫שְׁתָּ,you caused to draw near
+Hiphil,Perfect,2,F,S,הִגַּשְׁתְּ,you caused to draw near
+Hiphil,Perfect,1,C,S,הִגַּ֫שְׁתִּי,I caused to draw near
+Hiphil,Perfect,3,C,P,הִגִּ֫ישׁוּ,they caused to draw near
+Hiphil,Perfect,2,M,P,הִגַּשְׁתֶּם,you all caused to draw near
+Hiphil,Perfect,2,F,P,הִגַּשְׁתֶּן,you all caused to draw near
+Hiphil,Perfect,1,C,P,הִגַּ֫שְׁנוּ,we caused to draw near
+Hiphil,Imperfect,3,M,S,יַגִּישׁ,he will cause to draw near
+Hiphil,Imperfect,3,F,S,תַּגִּישׁ,she will cause to draw near
+Hiphil,Imperfect,2,M,S,תַּגִּישׁ,you will cause to draw near
+Hiphil,Imperfect,2,F,S,תַּגִּ֫ישִׁי,you will cause to draw near
+Hiphil,Imperfect,1,C,S,אַגִּישׁ,I will cause to draw near
+Hiphil,Imperfect,3,M,P,יַגִּ֫ישׁוּ,they will cause to draw near
+Hiphil,Imperfect,3,F,P,תַּגֵּ֫שְׁנָה,they will cause to draw near
+Hiphil,Imperfect,2,M,P,תַּגִּ֫ישׁוּ,you all will cause to draw near
+Hiphil,Imperfect,2,F,P,תַּגֵּ֫שְׁנָה,you all will cause to draw near
+Hiphil,Imperfect,1,C,P,נַגִּישׁ,we will cause to draw near
+Hiphil,Jussive,3,M,S,יַגֵּשׁ,may he cause to draw near
+Hiphil,Jussive,3,F,S,תַּגֵּשׁ,may she cause to draw near
+Hiphil,Jussive,2,M,S,תַּגֵּשׁ,may you cause to draw near
+Hiphil,Jussive,2,F,S,תַּגִּ֫ישִׁי,may you cause to draw near
+Hiphil,Jussive,3,M,P,יַגִּ֫ישׁוּ,may they cause to draw near
+Hiphil,Jussive,3,F,P,תַּגֵּ֫שְׁנָה,may they cause to draw near
+Hiphil,Jussive,2,M,P,תַּגִּ֫ישׁוּ,may you all cause to draw near
+Hiphil,Jussive,2,F,P,תַּגֵּ֫שְׁנָה,may you all cause to draw near
+Hiphil,Cohortative,1,C,S,אַגִּ֫ישָׁה,may I cause to draw near
+Hiphil,Cohortative,1,C,P,נַגִּ֫ישָׁה,may we cause to draw near
+Hiphil,Imperative,2,M,S,הַגֵּשׁ,cause to draw near!
+Hiphil,Imperative,2,F,S,הַגִּ֫ישִׁי,cause to draw near!
+Hiphil,Imperative,2,M,P,הַגִּ֫ישׁוּ,cause to draw near!
+Hiphil,Imperative,2,F,P,הַגֵּ֫שְׁנָה,cause to draw near!
+Hiphil,Infinitive Absolute,,,,הַגֵּשׁ,to cause to draw near
+Hiphil,Infinitive Construct,,,,הַגִּישׁ,to cause to draw near
+Hiphil,Active Participle,,M,S,מַגִּישׁ,causing to draw near
+Hiphil,Active Participle,,F,S,מַגִּישָׁה,causing to draw near
+Hiphil,Active Participle,,M,P,מַגִּישִׁים,causing to draw near
+Hiphil,Active Participle,,F,P,מַגִּישׁוֹת,causing to draw near
+Hophal,Perfect,3,M,S,הֻגַּשׁ,he was caused to draw near
+Hophal,Perfect,3,F,S,הֻגְּשָׁה,she was caused to draw near
+Hophal,Perfect,2,M,S,הֻגַּ֫שְׁתָּ,you were caused to draw near
+Hophal,Perfect,2,F,S,הֻגַּשְׁתְּ,you were caused to draw near
+Hophal,Perfect,1,C,S,הֻגַּ֫שְׁתִּי,I was caused to draw near
+Hophal,Perfect,3,C,P,הֻגְּשׁוּ,they were caused to draw near
+Hophal,Perfect,2,M,P,הֻגַּשְׁתֶּם,you all were caused to draw near
+Hophal,Perfect,2,F,P,הֻגַּשְׁתֶּן,you all were caused to draw near
+Hophal,Perfect,1,C,P,הֻגַּ֫שְׁנוּ,we were caused to draw near
+Hophal,Imperfect,3,M,S,יֻגַּשׁ,he will be caused to draw near
+Hophal,Imperfect,3,F,S,תֻּגַּשׁ,she will be caused to draw near
+Hophal,Imperfect,2,M,S,תֻּגַּשׁ,you will be caused to draw near
+Hophal,Imperfect,2,F,S,תֻּגְּשִׁי,you will be caused to draw near
+Hophal,Imperfect,1,C,S,אֻגַּשׁ,I will be caused to draw near
+Hophal,Imperfect,3,M,P,יֻגְּשׁוּ,they will be caused to draw near
+Hophal,Imperfect,3,F,P,תֻּגַּ֫שְׁנָה,they will be caused to draw near
+Hophal,Imperfect,2,M,P,תֻּגְּשׁוּ,you all will be caused to draw near
+Hophal,Imperfect,2,F,P,תֻּגַּ֫שְׁנָה,you all will be caused to draw near
+Hophal,Imperfect,1,C,P,נֻגַּשׁ,we will be caused to draw near
+Hophal,Infinitive Absolute,,,,הֻגֵּשׁ,to be caused to draw near
+Hophal,Infinitive Construct,,,,הֻגַּשׁ,to be caused to draw near
+Hophal,Passive Participle,,M,S,מֻגָּשׁ,being caused to draw near
+Hophal,Passive Participle,,F,S,מֻגָּשָׁה,being caused to draw near
+Hophal,Passive Participle,,M,P,מֻגָּשִׁים,being caused to draw near
+Hophal,Passive Participle,,F,P,מֻגָּשׁוֹת,being caused to draw near

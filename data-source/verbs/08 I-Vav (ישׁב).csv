@@ -1,0 +1,251 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,יָשַׁב,he sat
+Qal,Perfect,3,F,S,יָֽשְׁבָה,she sat
+Qal,Perfect,2,M,S,יָשַׁ֫בְתָּ,you sat
+Qal,Perfect,2,F,S,יָשַׁבְתְּ,you sat
+Qal,Perfect,1,C,S,יָשַׁ֫בְתִּי,I sat
+Qal,Perfect,3,C,P,יָֽשְׁבוּ,they sat
+Qal,Perfect,2,M,P,יְשַׁבְתֶּם,you all sat
+Qal,Perfect,2,F,P,יְשַׁבְתֶּן,you all sat
+Qal,Perfect,1,C,P,יָשַׁ֫בְנוּ,we sat
+Qal,Imperfect,3,M,S,יֵשֵׁב,he will sit
+Qal,Imperfect,3,F,S,תֵּשֵׁב,she will sit
+Qal,Imperfect,2,M,S,תֵּשֵׁב,you will sit
+Qal,Imperfect,2,F,S,תֵּשְׁבֵי,you will sit
+Qal,Imperfect,1,C,S,אֵשֵׁב,I will sit
+Qal,Imperfect,3,M,P,יֵשְׁבוּ,they will sit
+Qal,Imperfect,3,F,P,תֵּשַׁ֫בְנָה,they will sit
+Qal,Imperfect,2,M,P,תֵּשְׁבוּ,you all will sit
+Qal,Imperfect,2,F,P,תֵּשַׁ֫בְנָה,you all will sit
+Qal,Imperfect,1,C,P,נֵשֵׁב,we will sit
+Qal,Jussive,3,M,S,יֵשֵׁב,may he sit
+Qal,Jussive,3,F,S,תֵּשֵׁב,may she sit
+Qal,Jussive,2,M,S,תֵּשֵׁב,may you sit
+Qal,Jussive,2,F,S,תֵּשְׁבֵי,may you sit
+Qal,Jussive,3,M,P,יֵשְׁבוּ,may they sit
+Qal,Jussive,3,F,P,תֵּשַׁ֫בְנָה,may they sit
+Qal,Jussive,2,M,P,תֵּשְׁבוּ,may you all sit
+Qal,Jussive,2,F,P,תֵּשַׁ֫בְנָה,may you all sit
+Qal,Cohortative,1,C,S,אֵשְׁבָה,may I sit
+Qal,Cohortative,1,C,P,נֵשְׁבָה,may we sit
+Qal,Imperative,2,M,S,שֵׁב,sit!
+Qal,Imperative,2,F,S,שְׁבִי,sit!
+Qal,Imperative,2,M,P,שְׁבוּ,sit!
+Qal,Imperative,2,F,P,שֵׁ֫בְנָה,sit!
+Qal,Infinitive Absolute,,,,יָשׁוֹב,to sit
+Qal,Infinitive Construct,,,,שֶׁ֫בֶת,to sit
+Qal,Active Participle,,M,S,יֹשֵׁב,sitting
+Qal,Active Participle,,F,S,יֹֽשְׁבָה,sitting
+Qal,Active Participle,,M,P,יֹֽשְׁבִים,sitting
+Qal,Active Participle,,F,P,יֹֽשְׁבוֹת,sitting
+Qal,Passive Participle,,M,S,יָשׁוּב,sat
+Qal,Passive Participle,,F,S,יְשׁוּבָה,sat
+Qal,Passive Participle,,M,P,יְשׁוּבִים,sat
+Qal,Passive Participle,,F,P,יְשׁוּבוֹת,sat
+Niphal,Perfect,3,M,S,נוֹשַׁב,he was seated
+Niphal,Perfect,3,F,S,נוֹשְׁבָה,she was seated
+Niphal,Perfect,2,M,S,נוֹשַׁ֫בְתָּ,you were seated
+Niphal,Perfect,2,F,S,נוֹשַׁבְתְּ,you were seated
+Niphal,Perfect,1,C,S,נוֹשַׁ֫בְתִּי,I was seated
+Niphal,Perfect,3,C,P,נוֹשְׁבוּ,they were seated
+Niphal,Perfect,2,M,P,נוֹשַׁבְתֶּם,you all were seated
+Niphal,Perfect,2,F,P,נוֹשַׁבְתֶּן,you all were seated
+Niphal,Perfect,1,C,P,נוֹשַׁ֫בְנוּ,we were seated
+Niphal,Imperfect,3,M,S,יִוָּשֵׁב,he will be seated
+Niphal,Imperfect,3,F,S,תִּוָּשֵׁב,she will be seated
+Niphal,Imperfect,2,M,S,תִּוָּשֵׁב,you will be seated
+Niphal,Imperfect,2,F,S,תִּוָּֽשְׁבִי,you will be seated
+Niphal,Imperfect,1,C,S,אִוָּשֵׁב,I will be seated
+Niphal,Imperfect,3,M,P,יִוָּֽשְׁבוּ,they will be seated
+Niphal,Imperfect,3,F,P,תִּוָּשַׁ֫בְנָה,they will be seated
+Niphal,Imperfect,2,M,P,תִּוָּֽשְׁבוּ,you all will be seated
+Niphal,Imperfect,2,F,P,תִּוָּשַׁ֫בְנָה,you all will be seated
+Niphal,Imperfect,1,C,P,נִוָּשֵׁב,we will be seated
+Niphal,Jussive,3,M,S,יִוָּשֵׁב,may he be seated
+Niphal,Jussive,3,F,S,תִּוָּשֵׁב,may she be seated
+Niphal,Jussive,2,M,S,תִּוָּשֵׁב,may you be seated
+Niphal,Jussive,2,F,S,תִּוָּֽשְׁבִי,may you be seated
+Niphal,Jussive,3,M,P,יִוָּֽשְׁבוּ,may they be seated
+Niphal,Jussive,3,F,P,תִּוָּשַׁ֫בְנָה,may they be seated
+Niphal,Jussive,2,M,P,תִּוָּֽשְׁבוּ,may you all be seated
+Niphal,Jussive,2,F,P,תִּוָּשַׁ֫בְנָה,may you all be seated
+Niphal,Cohortative,1,C,S,אִוָּֽשְׁבָה,may I be seated
+Niphal,Cohortative,1,C,P,נִוָּֽשְׁבָה,may we be seated
+Niphal,Imperative,2,M,S,הִוָּשֵׁב,be seated!
+Niphal,Imperative,2,F,S,הִוָּֽשְׁבִי,be seated!
+Niphal,Imperative,2,M,P,הִוָּֽשְׁבוּ,be seated!
+Niphal,Imperative,2,F,P,הִוָּשַׁ֫בְנָה,be seated!
+Niphal,Infinitive Absolute,,,,הִוָּשֵׁב,to be seated
+Niphal,Infinitive Construct,,,,הִוָּשֵׁב,to be seated
+Niphal,Passive Participle,,M,S,נוֹשָׁב,being seated
+Niphal,Passive Participle,,F,S,נוֹשָׁבָה,being seated
+Niphal,Passive Participle,,M,P,נוֹשָׁבִים,being seated
+Niphal,Passive Participle,,F,P,נוֹשָׁבוֹת,being seated
+Piel,Perfect,3,M,S,יִשֵּׁב,he sat
+Piel,Perfect,3,F,S,יִשְּׁבָה,she sat
+Piel,Perfect,2,M,S,יִשַּׁ֫בְתָּ,you sat
+Piel,Perfect,2,F,S,יִשַּׁבְתְּ,you sat
+Piel,Perfect,1,C,S,יִשַּׁ֫בְתִּי,I sat
+Piel,Perfect,3,C,P,יִשְּׁבוּ,they sat
+Piel,Perfect,2,M,P,יִשַּׁבְתֶּם,you all sat
+Piel,Perfect,2,F,P,יִשַּׁבְתֶּן,you all sat
+Piel,Perfect,1,C,P,יִשַּׁ֫בְנוּ,we sat
+Piel,Imperfect,3,M,S,יְיַשֵּׁב,he will sit
+Piel,Imperfect,3,F,S,תְּיַשֵּׁב,she will sit
+Piel,Imperfect,2,M,S,תְּיַשֵּׁב,you will sit
+Piel,Imperfect,2,F,S,תְּיַשְּׁבִי,you will sit
+Piel,Imperfect,1,C,S,אֲיַשֵּׁב,I will sit
+Piel,Imperfect,3,M,P,יְיַשְּׁבוּ,they will sit
+Piel,Imperfect,3,F,P,תְּיַשֵּׁ֫בְנָה,they will sit
+Piel,Imperfect,2,M,P,תְּיַשְּׁבוּ,you all will sit
+Piel,Imperfect,2,F,P,תְּיַשֵּׁ֫בְנָה,you all will sit
+Piel,Imperfect,1,C,P,נְיַשֵּׁב,we will sit
+Piel,Jussive,3,M,S,יְיַשֵּׁב,may he sit
+Piel,Jussive,3,F,S,תְּיַשֵּׁב,may she sit
+Piel,Jussive,2,M,S,תְּיַשֵּׁב,may you sit
+Piel,Jussive,2,F,S,תְּיַשְּׁבִי,may you sit
+Piel,Jussive,3,M,P,יְיַשְּׁבוּ,may they sit
+Piel,Jussive,3,F,P,תְּיַשֵּׁ֫בְנָה,may they sit
+Piel,Jussive,2,M,P,תְּיַשְּׁבוּ,may you all sit
+Piel,Jussive,2,F,P,תְּיַשֵּׁ֫בְנָה,may you all sit
+Piel,Cohortative,1,C,S,אֲיַשְּׁבָה,may I sit
+Piel,Cohortative,1,C,P,נְיַשְּׁבָה,may we sit
+Piel,Imperative,2,M,S,יַשֵּׁב,sit!
+Piel,Imperative,2,F,S,יַשְּׁבִי,sit!
+Piel,Imperative,2,M,P,יַשְּׁבוּ,sit!
+Piel,Imperative,2,F,P,יַשֵּׁ֫בְנָה,sit!
+Piel,Infinitive Absolute,,,,יַשֹּׁב,to sit
+Piel,Infinitive Absolute,,,,יַשֵּׁב,to sit
+Piel,Infinitive Construct,,,,יַשֵּׁב,to sit
+Piel,Active Participle,,M,S,מְיַשֵּׁב,sitting
+Piel,Active Participle,,F,S,מְיַשְּׁבָה,sitting
+Piel,Active Participle,,M,P,מְיַשְּׁבִים,sitting
+Piel,Active Participle,,F,P,מְיַשְּׁבוֹת,sitting
+Pual,Perfect,3,M,S,יֻשַּׁב,he was seated
+Pual,Perfect,3,F,S,יֻשְּׁבָה,she was seated
+Pual,Perfect,2,M,S,יֻשַּׁ֫בְתָּ,you were seated
+Pual,Perfect,2,F,S,יֻשַּׁבְתְּ,you were seated
+Pual,Perfect,1,C,S,יֻשַּׁ֫בְתִּי,I was seated
+Pual,Perfect,3,C,P,יֻשְּׁבוּ,they were seated
+Pual,Perfect,2,M,P,יֻשַּׁבְתֶּם,you all were seated
+Pual,Perfect,2,F,P,יֻשַּׁבְתֶּן,you all were seated
+Pual,Perfect,1,C,P,יֻשַּׁ֫בְנוּ,we were seated
+Pual,Imperfect,3,M,S,יְיֻשַּׁב,he will be seated
+Pual,Imperfect,3,F,S,תְּיֻשַּׁב,she will be seated
+Pual,Imperfect,2,M,S,תְּיֻשַּׁב,you will be seated
+Pual,Imperfect,2,F,S,תְּיֻשְּׁבִי,you will be seated
+Pual,Imperfect,1,C,S,אֲיֻשַּׁב,I will be seated
+Pual,Imperfect,3,M,P,יְיֻשְּׁבוּ,they will be seated
+Pual,Imperfect,3,F,P,תְּיֻשַּׁ֫בְנָה,they will be seated
+Pual,Imperfect,2,M,P,תְּיֻשְּׁבוּ,you all will be seated
+Pual,Imperfect,2,F,P,תְּיֻשַּׁ֫בְנָה,you all will be seated
+Pual,Imperfect,1,C,P,נְיֻשַּׁב,we will be seated
+Pual,Infinitive Absolute,,,,יֻשֹּׁב,to be seated
+Pual,Infinitive Construct,,,,יֻשַּׁב,to be seated
+Pual,Passive Participle,,M,S,מְיֻשָּׁב,being seated
+Pual,Passive Participle,,F,S,מְיֻשָּׁבָה,being seated
+Pual,Passive Participle,,M,P,מְיֻשָּׁבִים,being seated
+Pual,Passive Participle,,F,P,מְיֻשָּׁבוֹת,being seated
+Hitpael,Perfect,3,M,S,הִתְיַשֵּׁב,he sat himself
+Hitpael,Perfect,3,F,S,הִתְיַשְּׁבָה,she sat herself
+Hitpael,Perfect,2,M,S,הִתְיַשַּׁ֫בְתָּ,you sat yourself
+Hitpael,Perfect,2,F,S,הִתְיַשַּׁבְתְּ,you sat yourself
+Hitpael,Perfect,1,C,S,הִתְיַשַּׁ֫בְתִּי,I sat myself
+Hitpael,Perfect,3,C,P,הִתְיַשְּׁבוּ,they sat themselves
+Hitpael,Perfect,2,M,P,הִתְיַשַּׁבְתֶּם,you all sat yourselves
+Hitpael,Perfect,2,F,P,הִתְיַשַּׁבְתֶּן,you all sat yourselves
+Hitpael,Perfect,1,C,P,הִתְיַשַּׁ֫בְנוּ,we sat ourselves
+Hitpael,Imperfect,3,M,S,יִתְיַשֵּׁב,he will sit himself
+Hitpael,Imperfect,3,F,S,תִּתְיַשֵּׁב,she will sit herself
+Hitpael,Imperfect,2,M,S,תִּתְיַשֵּׁב,you will sit yourself
+Hitpael,Imperfect,2,F,S,תִּתְיַשְּׁבִי,you will sit yourself
+Hitpael,Imperfect,1,C,S,אֶתְיַשֵּׁב,I will sit myself
+Hitpael,Imperfect,3,M,P,יִתְיַשְּׁבוּ,they will sit themselves
+Hitpael,Imperfect,3,F,P,תִּתְיַשֵּׁ֫בְנָה,they will sit themselves
+Hitpael,Imperfect,2,M,P,תִּתְיַשְּׁבוּ,you all will sit yourselves
+Hitpael,Imperfect,2,F,P,תִּתְיַשֵּׁ֫בְנָה,you all will sit yourselves
+Hitpael,Imperfect,1,C,P,נִתְיַשֵּׁב,we will sit ourselves
+Hitpael,Jussive,3,M,S,יִתְיַשֵּׁב,may he sit himself
+Hitpael,Jussive,3,F,S,תִּתְיַשֵּׁב,may she sit herself
+Hitpael,Jussive,2,M,S,תִּתְיַשֵּׁב,may you sit yourself
+Hitpael,Jussive,2,F,S,תִּתְיַשְּׁבִי,may you sit yourself
+Hitpael,Jussive,3,M,P,יִתְיַשְּׁבוּ,may they sit themselves
+Hitpael,Jussive,3,F,P,תִּתְיַשֵּׁ֫בְנָה,may they sit themselves
+Hitpael,Jussive,2,M,P,תִּתְיַשְּׁבוּ,may you all sit yourselves
+Hitpael,Jussive,2,F,P,תִּתְיַשֵּׁ֫בְנָה,may you all sit yourselves
+Hitpael,Cohortative,1,C,S,אֶתְיַשְּׁבָה,may I sit myself
+Hitpael,Cohortative,1,C,P,נִתְיַשְּׁבָה,may we sit ourselves
+Hitpael,Imperative,2,M,S,הִתְיַשֵּׁב,sit yourself!
+Hitpael,Imperative,2,F,S,הִתְיַשְּׁבִי,sit yourself!
+Hitpael,Imperative,2,M,P,הִתְיַשְּׁבוּ,sit yourselves!
+Hitpael,Imperative,2,F,P,הִתְיַשֵּׁ֫בְנָה,sit yourselves!
+Hitpael,Infinitive Absolute,,,,הִתְיַשֵּׁב,to sit oneself
+Hitpael,Infinitive Construct,,,,הִתְיַשֵּׁב,to sit oneself
+Hitpael,Active Participle,,M,S,מִתְיַשֵּׁב,sitting oneself
+Hitpael,Active Participle,,F,S,מִתְיַשְּׁבָה,sitting oneself
+Hitpael,Active Participle,,M,P,מִתְיַשְּׁבִים,sitting oneself
+Hitpael,Active Participle,,F,P,מִתְיַשְּׁבוֹת,sitting oneself
+Hiphil,Perfect,3,M,S,הוֹשִׁיב,he caused to sit
+Hiphil,Perfect,3,F,S,הוֹשִׁ֫יבָה,she caused to sit
+Hiphil,Perfect,2,M,S,הוֹשַׁ֫בְתָּ,you caused to sit
+Hiphil,Perfect,2,F,S,הוֹשַׁבְתְּ,you caused to sit
+Hiphil,Perfect,1,C,S,הוֹשַׁ֫בְתִּי,I caused to sit
+Hiphil,Perfect,3,C,P,הוֹשִׁ֫יבוּ,they caused to sit
+Hiphil,Perfect,2,M,P,הוֹשַׁבְתֶּם,you all caused to sit
+Hiphil,Perfect,2,F,P,הוֹשַׁבְתֶּן,you all caused to sit
+Hiphil,Perfect,1,C,P,הוֹשַׁ֫בְנוּ,we caused to sit
+Hiphil,Imperfect,3,M,S,יוֹשִׁיב,he will cause to sit
+Hiphil,Imperfect,3,F,S,תּוֹשִׁיב,she will cause to sit
+Hiphil,Imperfect,2,M,S,תּוֹשִׁיב,you will cause to sit
+Hiphil,Imperfect,2,F,S,תּוֹשִׁ֫יבִי,you will cause to sit
+Hiphil,Imperfect,1,C,S,אוֹשִׁיב,I will cause to sit
+Hiphil,Imperfect,3,M,P,יוֹשִׁ֫יבוּ,they will cause to sit
+Hiphil,Imperfect,3,F,P,תּוֹשֵׁ֫בְנָה,they will cause to sit
+Hiphil,Imperfect,2,M,P,תּוֹשִׁ֫יבוּ,you all will cause to sit
+Hiphil,Imperfect,2,F,P,תּוֹשֵׁ֫בְנָה,you all will cause to sit
+Hiphil,Imperfect,1,C,P,נוֹשִׁיב,we will cause to sit
+Hiphil,Jussive,3,M,S,יוֹשֵׁב,may he cause to sit
+Hiphil,Jussive,3,F,S,תּוֹשֵׁב,may she cause to sit
+Hiphil,Jussive,2,M,S,תּוֹשֵׁב,may you cause to sit
+Hiphil,Jussive,2,F,S,תּוֹשִׁ֫יבִי,may you cause to sit
+Hiphil,Jussive,3,M,P,יוֹשִׁ֫יבוּ,may they cause to sit
+Hiphil,Jussive,3,F,P,תּוֹשֵׁ֫בְנָה,may they cause to sit
+Hiphil,Jussive,2,M,P,תּוֹשִׁ֫יבוּ,may you all cause to sit
+Hiphil,Jussive,2,F,P,תּוֹשֵׁ֫בְנָה,may you all cause to sit
+Hiphil,Cohortative,1,C,S,אוֹשִׁ֫יבָה,may I cause to sit
+Hiphil,Cohortative,1,C,P,נוֹשִׁ֫יבָה,may we cause to sit
+Hiphil,Imperative,2,M,S,הוֹשֵׁב,cause to sit!
+Hiphil,Imperative,2,F,S,הוֹשִׁ֫יבִי,cause to sit!
+Hiphil,Imperative,2,M,P,הוֹשִׁ֫יבוּ,cause to sit!
+Hiphil,Imperative,2,F,P,הוֹשֵׁ֫בְנָה,cause to sit!
+Hiphil,Infinitive Absolute,,,,הוֹשֵׁב,to cause to sit
+Hiphil,Infinitive Construct,,,,הוֹשִׁיב,to cause to sit
+Hiphil,Active Participle,,M,S,מוֹשִׁיב,causing to sit
+Hiphil,Active Participle,,F,S,מוֹשִׁיבָה,causing to sit
+Hiphil,Active Participle,,M,P,מוֹשִׁיבִים,causing to sit
+Hiphil,Active Participle,,F,P,מוֹשִׁיבוֹת,causing to sit
+Hophal,Perfect,3,M,S,הוּשַׁב,he was caused to sit
+Hophal,Perfect,3,F,S,הוּשְׁבָה,she was caused to sit
+Hophal,Perfect,2,M,S,הוּשַׁ֫בְתָּ,you were caused to sit
+Hophal,Perfect,2,F,S,הוּשַׁבְתְּ,you were caused to sit
+Hophal,Perfect,1,C,S,הוּשַׁ֫בְתִּי,I was caused to sit
+Hophal,Perfect,3,C,P,הוּשְׁבוּ,they were caused to sit
+Hophal,Perfect,2,M,P,הוּשַׁבְתֶּם,you all were caused to sit
+Hophal,Perfect,2,F,P,הוּשַׁבְתֶּן,you all were caused to sit
+Hophal,Perfect,1,C,P,הוּשַׁ֫בְנוּ,we were caused to sit
+Hophal,Imperfect,3,M,S,יָוּשַׁב,he will be caused to sit
+Hophal,Imperfect,3,F,S,תָּוּשַׁב,she will be caused to sit
+Hophal,Imperfect,2,M,S,תָּוּשַׁב,you will be caused to sit
+Hophal,Imperfect,2,F,S,תָּוּשְׁבִי,you will be caused to sit
+Hophal,Imperfect,1,C,S,אָוּשַׁב,I will be caused to sit
+Hophal,Imperfect,3,M,P,יָוּשְׁבוּ,they will be caused to sit
+Hophal,Imperfect,3,F,P,תָּוּשַׁ֫בְנָה,they will be caused to sit
+Hophal,Imperfect,2,M,P,תָּוּשְׁבוּ,you all will be caused to sit
+Hophal,Imperfect,2,F,P,תָּוּשַׁ֫בְנָה,you all will be caused to sit
+Hophal,Imperfect,1,C,P,נָוּשַׁב,we will be caused to sit
+Hophal,Infinitive Absolute,,,,הוּשֵׁב,to be caused to sit
+Hophal,Infinitive Construct,,,,הוּשַׁב,to be caused to sit
+Hophal,Passive Participle,,M,S,מוּשָׁב,being caused to sit
+Hophal,Passive Participle,,F,S,מוּשָׁבָה,being caused to sit
+Hophal,Passive Participle,,M,P,מוּשָׁבִים,being caused to sit
+Hophal,Passive Participle,,F,P,מוּשָׁבוֹת,being caused to sit

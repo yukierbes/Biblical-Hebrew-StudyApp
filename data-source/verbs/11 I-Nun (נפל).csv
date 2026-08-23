@@ -1,0 +1,44 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,נָפַל,he fell
+Qal,Perfect,3,F,S,נָֽפְלָה,she fell
+Qal,Perfect,2,M,S,נָפַ֫לְתָּ,you fell
+Qal,Perfect,2,F,S,נָפַלְתְּ,you fell
+Qal,Perfect,1,C,S,נָפַ֫לְתִּי,I fell
+Qal,Perfect,3,C,P,נָֽפְלוּ,they fell
+Qal,Perfect,2,M,P,נְפַלְתֶּם,you all fell
+Qal,Perfect,2,F,P,נְפַלְתֶּן,you all fell
+Qal,Perfect,1,C,P,נָפַ֫לְנוּ,we fell
+Qal,Imperfect,3,M,S,יִפֹּל,he will fall
+Qal,Imperfect,3,F,S,תִּפֹּל,she will fall
+Qal,Imperfect,2,M,S,תִּפֹּל,you will fall
+Qal,Imperfect,2,F,S,תִּפְּלִי,you will fall
+Qal,Imperfect,1,C,S,אֶפֹּל,I will fall
+Qal,Imperfect,3,M,P,יִפְּלוּ,they will fall
+Qal,Imperfect,3,F,P,תִּפֹּ֫לְנָה,they will fall
+Qal,Imperfect,2,M,P,תִּפְּלוּ,you all will fall
+Qal,Imperfect,2,F,P,תִּפֹּ֫לְנָה,you all will fall
+Qal,Imperfect,1,C,P,נִפֹּל,we will fall
+Qal,Jussive,3,M,S,יִפֹּל,may he fall
+Qal,Jussive,3,F,S,תִּפֹּל,may she fall
+Qal,Jussive,2,M,S,תִּפֹּל,may you fall
+Qal,Jussive,2,F,S,תִּפְּלִי,may you fall
+Qal,Jussive,3,M,P,יִפְּלוּ,may they fall
+Qal,Jussive,3,F,P,תִּפֹּ֫לְנָה,may they fall
+Qal,Jussive,2,M,P,תִּפְּלוּ,may you all fall
+Qal,Jussive,2,F,P,תִּפֹּ֫לְנָה,may you all fall
+Qal,Cohortative,1,C,S,אֶפְּלָה,may I fall
+Qal,Cohortative,1,C,P,נִפְּלָה,may we fall
+Qal,Imperative,2,M,S,נְפֹל,fall!
+Qal,Imperative,2,F,S,נִפְלִי,fall!
+Qal,Imperative,2,M,P,נִפְלוּ,fall!
+Qal,Imperative,2,F,P,נְפַ֫לְנָה,fall!
+Qal,Infinitive Absolute,,,,נָפוֹל,to fall
+Qal,Infinitive Construct,,,,נְפֹל,to fall
+Qal,Active Participle,,M,S,נֹפֵל,falling
+Qal,Active Participle,,F,S,נֹֽפְלָה,falling
+Qal,Active Participle,,M,P,נֹֽפְלִים,falling
+Qal,Active Participle,,F,P,נֹֽפְלוֹת,falling
+Qal,Passive Participle,,M,S,נָפוּל,fell
+Qal,Passive Participle,,F,S,נְפוּלָה,fell
+Qal,Passive Participle,,M,P,נְפוּלִים,fell
+Qal,Passive Participle,,F,P,נְפוּלוֹת,fell

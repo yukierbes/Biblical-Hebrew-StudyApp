@@ -1,0 +1,44 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,נָתַן,he gave
+Qal,Perfect,3,F,S,נָֽתְנָה,she gave
+Qal,Perfect,2,M,S,נָתַ֫תָּ,you gave
+Qal,Perfect,2,F,S,נָתַתְּ,you gave
+Qal,Perfect,1,C,S,נָתַ֫תִּי,I gave
+Qal,Perfect,3,C,P,נָֽתְנוּ,they gave
+Qal,Perfect,2,M,P,נְתַתֶּם,you all gave
+Qal,Perfect,2,F,P,נְתַתֶּן,you all gave
+Qal,Perfect,1,C,P,נָתַ֫נּוּ,we gave
+Qal,Imperfect,3,M,S,יִתֵּן,he will give
+Qal,Imperfect,3,F,S,תִּתֵּן,she will give
+Qal,Imperfect,2,M,S,תִּתֵּן,you will give
+Qal,Imperfect,2,F,S,תִּתְּנִי,you will give
+Qal,Imperfect,1,C,S,אֶתֵּן,I will give
+Qal,Imperfect,3,M,P,יִתְּנוּ,they will give
+Qal,Imperfect,3,F,P,תִּתֵּ֫נָּה,they will give
+Qal,Imperfect,2,M,P,תִּתְּנוּ,you all will give
+Qal,Imperfect,2,F,P,תִּתֵּ֫נָּה,you all will give
+Qal,Imperfect,1,C,P,נִתֵּן,we will give
+Qal,Jussive,3,M,S,יִתֵּן,may he give
+Qal,Jussive,3,F,S,תִּתֵּן,may she give
+Qal,Jussive,2,M,S,תִּתֵּן,may you give
+Qal,Jussive,2,F,S,תִּתְּנִי,may you give
+Qal,Jussive,3,M,P,יִתְּנוּ,may they give
+Qal,Jussive,3,F,P,תִּתֵּ֫נָּה,may they give
+Qal,Jussive,2,M,P,תִּתְּנוּ,may you all give
+Qal,Jussive,2,F,P,תִּתֵּ֫נָּה,may you all give
+Qal,Cohortative,1,C,S,אֶתְּנָה,may I give
+Qal,Cohortative,1,C,P,נִתְּנָה,may we give
+Qal,Imperative,2,M,S,תֵּן,give!
+Qal,Imperative,2,F,S,תְּנִי,give!
+Qal,Imperative,2,M,P,תְּנוּ,give!
+Qal,Imperative,2,F,P,תֵּ֫נָּה,give!
+Qal,Infinitive Absolute,,,,נָתוֹן,to give
+Qal,Infinitive Construct,,,,תֵּת,to give
+Qal,Active Participle,,M,S,נֹתֵן,giving
+Qal,Active Participle,,F,S,נֹֽתְנָה,giving
+Qal,Active Participle,,M,P,נֹֽתְנִים,giving
+Qal,Active Participle,,F,P,נֹֽתְנוֹת,giving
+Qal,Passive Participle,,M,S,נָתוּן,gave
+Qal,Passive Participle,,F,S,נְתוּנָה,gave
+Qal,Passive Participle,,M,P,נְתוּנִים,gave
+Qal,Passive Participle,,F,P,נְתוּנוֹת,gave

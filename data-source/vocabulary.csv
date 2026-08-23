@@ -1,0 +1,1992 @@
+Lesson,Frequency,Hebrew,English,POS,Category
+1A,5000,אֶל,"(prep) unto, into, to, towards",Preposition,
+1A,2706,אֱלֹהִים,"God, gods",Noun,Worship/Cultic
+1A,5000,אָמַר,to say,Verb,Personal Interactions
+1A,2498,אֶ֫רֶצ,"land, earth, country",Noun,Heavens and Earth
+1A,5000,אֲשֶׁר,"(rel pron) who, which, that",Pronoun,
+1A,5000,אֵת (I),(accusative particle; definite object marker; not translated),Particle,
+1A,5000,אֵת (II),"(prep) with, beside",Preposition,
+1A,5000,בְּ־,"(pref prep) in, with, by, among, through, as",Preposition,
+1A,2530,בּוֹא,"to come, enter, go in",Verb,Movement Verbs
+1A,4887,בֵּן,son,Noun,Family and Tribe
+1A,5000,הֲ־,(pref interr particle),Particle,
+1A,5000,הַ־ ּ,(pref def art) the (with dagesh in following cons),Particle,
+1A,3514,הָיָה,"to be, happen, become",Verb,Action and Stative Verbs
+1A,5000,וְ־,"(pref conj) and, even, also",Conjunction,
+1A,5766,יהוה,"(יָהּ , יָה) The Lord",Proper Noun,Worship/Cultic
+1A,2241,יוֹם,day,Noun,Time and Seasons
+1A,2513,יִשְׂרָאֵל,Israel,Proper Noun,
+1A,5000,כְּ־,"(pref prep) like, as, about, according to",Preposition,
+1A,4395,כִּי,"(conj) for, because, that, indeed, surely, when",Conjunction,
+1A,5000,"כֹּל , כּוֹל","all, every",Noun,Measurement and Numbers
+1A,5000,לְ־,"(pref prep) to, for, with regard to, with reference to, toward; (voc) Do! Yes!",Preposition,
+1A,4973,לֹא,"(neg) no, not",Particle,
+1A,2522,מֶ֫לֶךְ,king,Noun,"People, Law, and Covenant"
+1A,4898,עַל,"(prep) upon, on, over, concerning, beside, against",Preposition,
+1A,2573,עָשָׂה,"to do, make, perform; (Pi) press, squeeze",Verb,Action and Stative Verbs
+1B,1568,אָב,father,Noun,Family and Tribe
+1B,2149,אִישׁ ; אֲנָשִׁים,(s; pl) man,Noun,Humans and Anatomy
+1B,1046,אִם,"(conj) if, then",Conjunction,
+1B,1316,אֲנִי ; אָנֹכִי,(pers pr c) I,Pronoun,
+1B,2039,בַּ֫יִת,house,Noun,Building and Travel
+1B,1130,דָּבַר,(Pi) to speak,Verb,Personal Interactions
+1B,1426,דָּבָר,"word, thing, affair, matter",Noun,Personal Interactions
+1B,1031,דָּוִד,David,Proper Noun,
+1B,1533,הוּא,(pers pr) he,Pronoun,
+1B,1504,הָלַךְ,"to walk, go",Verb,Movement Verbs
+1B,1553,הֵ֫מָּה ; הֵ֫נָּה,(pers pr pl m; f) they,Pronoun,
+1B,1037,הִנֵּה,"(dem interj) behold! lo! (Cf. 3.G, הֵן)",Interjection,
+1B,1752,זֶה ; זֹאת,"(dem pr, s m; f) this",Pronoun,
+1B,1580,יָד,hand,Noun,Humans and Anatomy
+1B,1055,יָצָא,"to go (come) out, go (come) forth",Verb,Movement Verbs
+1B,1078,יָשַׁב,"to sit, dwell, inhabit",Verb,Building and Travel
+1B,1099,לִפְנֵי,(prep) before,Preposition,
+1B,1279,מִן,"(prep) from, away from, out of, some of, because of; (comp) than",Preposition,
+1B,1994,נָתַן,to give,Verb,Action and Stative Verbs
+1B,1246,עַד,"(prep) to, unto, as far as (spacial); until, while (temporal)",Preposition,Time and Seasons
+1B,1080,עִיר ; עָרִים,(f; irr pl) city,Noun,Building and Travel
+1B,1827,עַם,people,Noun,"People, Law, and Covenant"
+1B,1076,עִם,(prep) with,Preposition,
+1B,2120,פָּנִים,"face, presence",Noun,Humans and Anatomy
+1B,1294,רָאָה,to see,Verb,Action and Stative Verbs
+1B,1055,שׁוּב,"to turn, return",Verb,Movement Verbs
+1B,1136,שָׁמַע,"to hear, give ear to, obey",Verb,Action and Stative Verbs
+1C,770,אָדוֹן ; אֲדֹנָי,"lord, master, sir; the Lord",Noun,Worship/Cultic
+1C,959,אֶחָד ; אַחַת,(s m; f) one,Numeral,Measurement and Numbers
+1C,773,אַ֫יִנ ; אֵין,(abs; cstr) there is/are not (non-existence),Particle,
+1C,795,אָכַל,"to eat, consume, devour",Verb,Food
+1C,738,אַל,"no, not",Particle,
+1C,738,אֵ֫לֶּה,(dem pr; c pl) these,Pronoun,
+1C,779,אִשָּׁה ; נָשִׁים,(s; irr pl) woman,Noun,Humans and Anatomy
+1C,893,אַתָּה ; אַתְּ,(s m; f) you,Pronoun,
+1C,812,גַּם,"(adv, conj) also, even, moreover, yea, although",Adverb,
+1C,924,יָדַע,"to know, notice",Verb,Action and Stative Verbs
+1C,889,יְהוּדָה ; יְהוּדִי,"Judah; (gent adj, n) Judean, Judahite",Proper Noun,
+1C,749,כֹּהֵן,priest,Noun,Worship/Cultic
+1C,844,לֵב ; לֵבָב,"heart, mind",Noun,Humans and Anatomy
+1C,964,לָקַח,to take,Verb,Movement Verbs
+1C,760,"מָה , מֶה , מַה","(interr pr) what?, how?",Pronoun,
+1C,737,מוּת,to die,Verb,Action and Stative Verbs
+1C,763,מֹשֶׁה,Moses,Proper Noun,
+1C,753,נֶ֫פֶשׁ,"life, soul; throat",Noun,Humans and Anatomy
+1C,800,עֶ֫בֶד,"servant, slave",Noun,"People, Law, and Covenant"
+1C,867,עַ֫יִן,"eye; spring, fountain",Noun,Humans and Anatomy
+1C,879,עָלָה,"to go up, ascend",Verb,Movement Verbs
+1C,819,עָשָׂר ; עֶשְׂרִים,(s m; c pl) ten (plus num. = 11-19); twenty,Numeral,Measurement and Numbers
+1C,730,קָרָא,"to call, meet; give a name to; read (aloud)",Verb,Action and Stative Verbs
+1C,839,שָׁלַח,"to send, stretch out, let go",Verb,Movement Verbs
+1C,817,שָׁם,(adv) there,Adverb,Measurement and Numbers
+1C,862,שֵׁם,name,Noun,Family and Tribe
+1C,871,שָׁנָה,year,Noun,Time and Seasons
+1C,739,שְׁנַ֫יִם ; שְׁתַּ֫יִם,(du m; f) two,Numeral,Measurement and Numbers
+1D,553,אָדָם,"man, human, humanity, person, Adam",Noun,Humans and Anatomy
+1D,626,אָח,brother,Noun,Family and Tribe
+1D,713,אַחַר,"behind, after",Preposition,
+1D,582,בַּת,daughter,Noun,Family and Tribe
+1D,525,גָּדוֹל,"(adj) great, big, large",Adjective,
+1D,545,גּוֹי,"people, nation",Noun,Lands and Warfare
+1D,698,דֶּ֫רֶךְ,"way, road, journey; (ext) custom",Noun,Building and Travel
+1D,541,הִיא,(pers pr) she,Pronoun,
+1D,554,הַר,"mountain, range",Noun,Heavens and Earth
+1D,612,טוֹב,"to be good; (adj) good, beautiful; (n) goodness",Verb,Action and Stative Verbs
+1D,667,יְרוּשָׁלַ֫םִ,(Q) Jerusalem (26 times in Aramaic),Proper Noun,
+1D,504,כַּאֲשֶׁר,"(conj) as, even as, when, just as",Conjunction,
+1D,554,כֹּה,"(adv) thus, so",Adverb,
+1D,707,כֵּן,"(adv, adj, n) rightly, upright, right; (adv) thus, so",Adverb,
+1D,577,מֵאָה,hundred; (du) two hundred,Numeral,Measurement and Numbers
+1D,574,מַ֫יִם,water,Noun,Heavens and Earth
+1D,708,מִצְרַ֫יִם ; מִצְרִי,Egypt; (gent) Egyptian,Proper Noun,
+1D,504,נָכָה,(Ni) to be hit; (Hi) to smite,Verb,Action and Stative Verbs
+1D,651,נָשָׂא,"to lift up, bear, carry",Verb,Movement Verbs
+1D,539,עָבַר,"to pass over, transgress",Verb,Movement Verbs
+1D,519,עָמַד,"to stand, remain, persist",Verb,Movement Verbs
+1D,624,קוּם,"to rise, stand",Verb,Movement Verbs
+1D,593,רֹאשׁ,"head, top, chief",Noun,Humans and Anatomy
+1D,661,"רָע , רַע","(s m; f) bad, evil",Adjective,"People, Law, and Covenant"
+1D,661,רָעָה,"evil, harm",Noun,"People, Law, and Covenant"
+1D,584,שִׂים,"to set, place",Verb,Action and Stative Verbs
+1D,586,"שָׁלֹשׁ , שְׁלֹשָׁה","(s m, f) three",Numeral,Measurement and Numbers
+1D,586,שְׁלֹשִׁים,(pl of three) thirty,Numeral,Measurement and Numbers
+2A,494,אֶ֫לֶף,"thousand, tribe, clan",Numeral,Measurement and Numbers
+2A,444,"אַרְבַּע , אַרְבָּעָה","(s m, f) four",Numeral,Measurement and Numbers
+2A,444,אַרְבָּעִים,(pl of four) forty,Numeral,Measurement and Numbers
+2A,416,בְּתוֹךְ,"Same as תָּ֫וֶךְ (midst, middle; (prep) within, through)",Noun,
+2A,478,"חָמֵשׁ , חֲמִשָּׁה","(s m, f) five",Numeral,Measurement and Numbers
+2A,478,חֲמִשִּׁים,(pl five) fifty,Numeral,Measurement and Numbers
+2A,407,חֶ֫רֶב,sword,Noun,Lands and Warfare
+2A,488,יָלַד,"to bear, beget",Verb,Family and Tribe
+2A,401,מִזְבֵּ֫חַ,altar,Noun,Worship/Cultic
+2A,406,מִי,who?,Pronoun,
+2A,451,מָצָא,to find; (Hi) present,Verb,Action and Stative Verbs
+2A,425,מִשְׁפָּט,"judgement, justice, right, custom",Noun,"People, Law, and Covenant"
+2A,401,נָא,"(particle of entreaty) pray, now; please",Particle,
+2A,433,נָפַל,to fall,Verb,Movement Verbs
+2A,481,עוֹד,"still, yet, again, else",Adverb,
+2A,434,"עוֹלָם , עֹלָם",remote time; forever; eternity,Noun,Time and Seasons
+2A,432,עַתָּה,now,Adverb,Time and Seasons
+2A,492,"פֶּה ; כְּפִי , לְפִי",mouth; (conj) according to,Noun,Humans and Anatomy
+2A,485,צָבָא,"service in war; host, army",Noun,Lands and Warfare
+2A,494,צָוָה,(Pi) to command,Verb,"People, Law, and Covenant"
+2A,430,קֹ֫דֶשׁ,"(adj, n) holy (thing)",Adjective,Worship/Cultic
+2A,499,קוֹל,"voice, sound",Noun,Humans and Anatomy
+2A,475,רַב,"(adj) many, much, abundant, mighty; (ctxt) captain, chief",Adjective,Measurement and Numbers
+2A,406,שָׁאוּל,Saul,Proper Noun,
+2A,492,"שֶׁ֫בַע , שִׁבְעָה","(s m, f) seven",Numeral,Measurement and Numbers
+2A,492,שִׁבְעִים,(pl of seven) seventy,Numeral,Measurement and Numbers
+2A,416,שָׁמַ֫יִם,"heavens, sky",Noun,Heavens and Earth
+2A,465,שָׁמַר,"to keep, guard, watch",Verb,Action and Stative Verbs
+2A,412,שַׂר,"commander, ruler, prince",Noun,"People, Law, and Covenant"
+2A,416,תָּ֫וֶךְ,"midst, middle; (prep) within, through",Noun,
+2A,490,תַּ֫חַת,"(prep) under, beneath, instead of, in place of",Preposition,
+2B,342,אֹ֫הֶל,tent,Noun,Building and Travel
+2B,347,אַהֲרוֹן,Aaron,Proper Noun,
+2B,311,אוֹ,(conj) or,Conjunction,
+2B,375,אֵשׁ,fire,Noun,Heavens and Earth
+2B,330,אַתֶּם ; אַתֶּן,(pl m; f) you,Pronoun,
+2B,396,בֵּין ; בַּ֫יִן,(cstr prep) between; (n) interval,Preposition,
+2B,373,בָּנָה,to build,Verb,Building and Travel
+2B,328,בָּרַךְ,to bless,Verb,"People, Law, and Covenant"
+2B,356,דָּם,blood,Noun,Humans and Anatomy
+2B,383,זָהָב,gold,Noun,Metals and Stone
+2B,386,חַי ; חַיִּים,"(n) life, (adj) alive, living; (pl) lifetime",Noun,Humans and Anatomy
+2B,392,יָם,sea; (ext) west,Noun,Heavens and Earth
+2B,348,יַעֲקֹב,Jacob,Proper Noun,
+2B,377,יָרֵא,"(stat) to fear, be afraid",Verb,Action and Stative Verbs
+2B,380,יָרַד,"to go down, descend",Verb,Movement Verbs
+2B,324,כְּלִי,"vessel, instrument, weapon",Noun,Lands and Warfare
+2B,399,כֶּ֫סֶף,"silver, money",Noun,Metals and Stone
+2B,353,לֵוִי,Levi (4 times in Aramaic),Proper Noun,
+2B,319,מִלְחָמָה,"battle, war",Noun,Lands and Warfare
+2B,347,מָלַךְ,"to reign, rule",Verb,"People, Law, and Covenant"
+2B,399,מָקוֹם,place,Noun,Building and Travel
+2B,378,נְאֻם,"utterance, declaration",Noun,Worship/Cultic
+2B,313,נָבִיא,prophet,Noun,Worship/Cultic
+2B,369,נָגַד,"(Hi) to make known, report, tell",Verb,Action and Stative Verbs
+2B,314,עָנָה,to answer,Verb,Personal Interactions
+2B,330,עֵץ,"(also coll) tree, wood",Noun,Plants and Animals
+2B,376,ר֫וּחַ,"spirit, wind, breath",Noun,Worship/Cultic
+2B,332,שָׂדֶה ; שָׂדַי,"field, country",Noun,Heavens and Earth
+2B,368,שָׁ֫עַר,gate,Noun,Building and Travel
+2C,281,"אֹיֵב , אוֹיֵב",enemy,Noun,Occupation
+2C,279,אַף,"nose, nostril; (ext) anger",Noun,Humans and Anatomy
+2C,288,בָּבֶל ; בַּבְלָי,Babylon (Babel); (gent) Babylonians,Proper Noun,
+2C,287,בְּרִית,covenant,Noun,"People, Law, and Covenant"
+2C,270,בָּשָׂר,flesh,Noun,Humans and Anatomy
+2C,278,חֹ֫דֶשׁ,"new moon, month",Noun,Time and Seasons
+2C,288,חָזַק,"to be(come) strong, prevail; (Hi) seize, grasp",Verb,Action and Stative Verbs
+2C,296,חַטָּאת,"sin, sin offering, expiation",Noun,Worship/Cultic
+2C,281,חָיָה,"to live, be (stay) alive",Verb,Action and Stative Verbs
+2C,287,כָּרַת,"to cut off, fell, exterminate; make (a covenant)",Verb,"People, Law, and Covenant"
+2C,296,לֶ֫חֶם,"bread, food",Noun,Food
+2C,287,מְאֹד,"(n) force, might; (adv) very, exceedingly",Noun,Humans and Anatomy
+2C,271,מִדְבָּר,"desert, wilderness, wasteland",Noun,Heavens and Earth
+2C,300,מִשְׁפָּחָה,(extended) family; clan,Noun,Family and Tribe
+2C,309,סָבִיב,"(n) circuit; (adv) all around, round about, surrounding",Noun,
+2C,298,סוּר,"to turn aside; (Hi) take away, remove",Verb,Movement Verbs
+2C,289,עָבַד,"to serve, work, worship",Verb,Worship/Cultic
+2C,288,עֹלָה,burnt offering,Noun,Worship/Cultic
+2C,282,עֵת,time,Noun,Time and Seasons
+2C,294,פְּלִשְׁתִּי ; פְּלֶ֫שֶׁת,(gent n) Philistine(s); Philistia,Proper Noun,
+2C,301,פָּקַד,"to visit, number, appoint; miss; take care of; muster",Verb,Movement Verbs
+2C,273,פַּרְעֹה,Pharaoh,Proper Noun,
+2C,275,צֹאן ; צֹנֶה,flock,Noun,Plants and Animals
+2C,291,קָרַב,to draw near,Verb,Movement Verbs
+2C,293,שְׁלֹמֹה,Solomon,Proper Noun,
+2C,272,"שֵׁשׁ , שִׁשָּׁה","(s m, f) six",Numeral,Measurement and Numbers
+2C,272,שִׁשִׁים,(pl of six) sixty,Numeral,Measurement and Numbers
+2D,268,אֶ֫בֶן,(f) stone,Noun,Metals and Stone
+2D,235,אַבְרָהָם ; אַבְרָם,Abraham; Abram,Proper Noun,
+2D,225,אֲדָמָה,ground,Noun,Heavens and Earth
+2D,236,אֵל,"Mighty One, God",Proper Noun,Worship/Cultic
+2D,226,אַמָּה,"forearm, cubit",Noun,Measurement and Numbers
+2D,225,בָּקַשׁ,(Pi) to seek,Verb,Action and Stative Verbs
+2D,241,גְּבוּל,"boundary, territory",Noun,Lands and Warfare
+2D,230,זָכַר,to remember,Verb,Action and Stative Verbs
+2D,228,זֶ֫רַע,seed,Noun,Plants and Animals
+2D,237,חָטָא,"to miss (a mark), sin",Verb,Worship/Cultic
+2D,246,חַ֫יִל,strength; wealth; army,Noun,Lands and Warfare
+2D,250,חֶ֫סֶד,"devotion, loyalty, kindness, steadfast love",Noun,"People, Law, and Covenant"
+2D,247,יְהוֹשׁ֫וּעַ ; יֵשׁ֫וּעַ,Joshua,Proper Noun,
+2D,231,יָרַשׁ,"to subdue, possess, dispossess; tread",Verb,Action and Stative Verbs
+2D,260,יֹשֵׁב,(Qal part) inhabitant,Noun,Humans and Anatomy
+2D,222,כָּתַב,to write,Verb,Action and Stative Verbs
+2D,231,לַ֫יְלָה ; לַ֫יִל,(m) night,Noun,Time and Seasons
+2D,269,לְמַ֫עַן,"(prep) for the sake of, on account of; (conj) in order that",Preposition,
+2D,223,מוֹעֵד,appointed place or time; season,Noun,Time and Seasons
+2D,252,מַטֶּה,"rod, staff; (ext) tribe",Noun,Family and Tribe
+2D,250,מָלֵא,"(stat) to be full; (Pi) to fill, fulfill",Verb,Action and Stative Verbs
+2D,235,מַעֲשֶׂה,work,Noun,Humans and Anatomy
+2D,223,נַחֲלָה,inheritance,Noun,Family and Tribe
+2D,240,נַ֫עַר,"lad, youth",Noun,Humans and Anatomy
+2D,231,עָוֹן,"guilt, iniquity, transgression",Noun,Worship/Cultic
+2D,227,קֶ֫רֶב ; בְּקֶ֫רֶב,"inward part, midst; (prep) in (the midst of)",Noun,
+2D,226,רָבָה,"to be(come) numerous, be great; (Hi) multiply, make many",Verb,Action and Stative Verbs
+2D,252,רֶ֫גֶל,foot,Noun,Humans and Anatomy
+2D,264,רָשָׁע ; רְשָׁעָה,"(s m; f; adj) guilty; (n) wicked, criminal",Adjective,"People, Law, and Covenant"
+2D,242,שָׁלוֹם,"peace, health",Noun,"People, Law, and Covenant"
+2D,220,תּוֹרָה,"teaching, law",Noun,"People, Law, and Covenant"
+2E,205,אָהַב,"to love, like",Verb,Personal Interactions
+2E,219,אֵם,mother,Noun,Family and Tribe
+2E,203,אָסַף,"to gather, take in",Verb,Movement Verbs
+2E,202,אֲרוֹן,"ark, chest",Noun,"People, Law, and Covenant"
+2E,214,בֶּ֫גֶד,garment,Noun,Clothing
+2E,200,בֹּ֫קֶר,morning,Noun,Time and Seasons
+2E,214,יוֹסֵף,Joseph,Proper Noun,
+2E,212,יָסַף,to add,Verb,Measurement and Numbers
+2E,205,יָשַׁע,(Ni) to be saved; (Hi) save,Verb,"People, Law, and Covenant"
+2E,200,כָּבוֹד,"possessions, honor, glory",Noun,Worship/Cultic
+2E,219,כּוּן,"(Ni) to be firm, established; (Pol) establish; (Hi) prepare",Verb,Action and Stative Verbs
+2E,204,כָּלָה,"to cease, come to an end, finish, complete",Verb,Movement Verbs
+2E,219,מַחֲנֶה,"army, camp",Noun,Lands and Warfare
+2E,213,מַלְאָךְ,messenger,Noun,Humans and Anatomy
+2E,211,מִנְחָה,gift; offering,Noun,Worship/Cultic
+2E,215,נָטָה,"to stretch out, turn",Verb,Action and Stative Verbs
+2E,208,נָצַל,(Ni) to be delivered; (Hi) snatch away,Verb,Action and Stative Verbs
+2E,212,עָזַב,"to leave, abandon",Verb,Movement Verbs
+2E,206,צַדִּיק,"(adj) righteous, just",Adjective,"People, Law, and Covenant"
+2E,211,שָׁכַב,to lie down; have sexual intercourse,Verb,Action and Stative Verbs
+2E,203,שָׁפַט,"to judge, enter into controversy; (Ni) plead",Verb,"People, Law, and Covenant"
+2E,217,שָׁתָה,to drink,Verb,Food
+3A,183,אָבַד,to perish; (Pi) destroy; (Hi) exterminate,Verb,Action and Stative Verbs
+3A,187,אֹ֫זֶן,ear,Noun,Humans and Anatomy
+3A,182,אֶפְרַ֫יִם ; אֶפְרָתִי,Ephraim; (gent) Epraimite,Proper Noun,
+3A,192,בְּהֵמָה ; בְּהֵמוֹת,"cattle, animals; (pl of ext) crocodile?",Noun,Plants and Animals
+3A,180,בִּנְיָמִן ; בֶּן־יְמִינִי,Benjamin; (gent) Benjamites,Proper Noun,
+3A,198,בַּ֫עַל,"owner, husband; Ba'al",Noun,Family and Tribe
+3A,183,בָּקָר,"(coll) cows, herd(s), cattle",Noun,Plants and Animals
+3A,187,גָּלָה,"to uncover, go away, go into exile",Verb,Movement Verbs
+3A,178,זָקֵן,"old, elder",Noun,Humans and Anatomy
+3A,193,חָצֵר,"permanent settlement, court, enclosure",Noun,Building and Travel
+3A,194,יָכֹל,(stat) to be able,Verb,Action and Stative Verbs
+3A,181,יַרְדֵּן,Jordan,Proper Noun,
+3A,192,כַּף,"hand, palm",Noun,Humans and Anatomy
+3A,196,לָכֵן,(adv) therefore,Adverb,
+3A,199,מוֹאָב ; מוֹאָבִי,Moab; (gent) Moabite(s),Proper Noun,
+3A,181,מִצְוָה,commandment,Noun,"People, Law, and Covenant"
+3A,185,סֵ֫פֶר,scroll,Noun,
+3A,182,רִאשׁוֹן,(ord) first; former,Numeral,Measurement and Numbers
+3A,195,רוּם,"be(come) high, exalted",Verb,Action and Stative Verbs
+3A,195,רֵ֫עַ,"friend, fellow, companion",Noun,Personal Interactions
+3A,190,שֵׁ֫בֶט,"rod, staff; (ext) tribe",Noun,Family and Tribe
+3A,186,שָׁבַע,"(Ni, Hi) to swear",Verb,Personal Interactions
+3A,193,שֶׁ֫מֶן,oil,Noun,Food
+3A,178,שָׂפָה,lip; (ext) shore,Noun,Humans and Anatomy
+3B,166,אַחֵר,"(adj) another, other",Adjective,
+3B,161,אַ֫יִל,ram,Noun,Plants and Animals
+3B,160,אַךְ,"(adv) only; surely, however",Adverb,
+3B,173,בָּחַר,to choose,Verb,Action and Stative Verbs
+3B,171,בִּין,"to understand, perceive",Verb,Action and Stative Verbs
+3B,161,גִּבּוֹר,"hero, warrior, mighty man",Noun,Humans and Anatomy
+3B,169,דּוֹר,"generation, lifetime, life-span",Noun,Family and Tribe
+3B,163,דָּרַשׁ,to seek,Verb,Action and Stative Verbs
+3B,168,הָרַג,to kill,Verb,Action and Stative Verbs
+3B,162,זֶ֫בַח,(n) sacrifice,Noun,Worship/Cultic
+3B,174,חָוָה,(Hisht) to bow down,Verb,Worship/Cultic
+3B,165,חוּץ,"(n) place outside the house, street; (prep, adv) outside, without",Noun,Building and Travel
+3B,161,טָמֵא,(stat) to be unclean,Verb,Worship/Cultic
+3B,163,כְּנַ֫עַן ; כְּנַעֲנִי,Canaan; (gent) Canaanite,Proper Noun,
+3B,171,לָחַם,(Ni) to fight,Verb,Lands and Warfare
+3B,173,"לָ֫מָּה , לָמָה",(interr pr) why?,Pronoun,
+3B,167,מְלָאכָה,work,Noun,Humans and Anatomy
+3B,160,נוּס,to flee,Verb,Movement Verbs
+3B,162,סָבַב,to turn around,Verb,Movement Verbs
+3B,162,סָפַר,"to write, count, number; (Pi) recount, report, enumerate",Verb,Measurement and Numbers
+3B,173,עֶ֫שֶׂר ; עָשֲׂרָה,"(group of) ten, decade",Numeral,Measurement and Numbers
+3B,163,פֶּ֫תָח,"gate, opening, entrance",Noun,Building and Travel
+3B,172,קָדַשׁ,to be holy; (Pi) to consecrate,Verb,Worship/Cultic
+3B,171,רָעָה,"to feed, graze, tend (cattle)",Verb,Plants and Animals
+3B,173,שָׁאַל,"to ask (for), inquire, demand",Verb,Personal Interactions
+3B,174,שָׁחָה,to bow down,Verb,Worship/Cultic
+3B,161,שָׁחַת,"(Ni) to be corrupt, spoiled; (Pi) spoil, ruin; (Hi) destroy",Verb,Lands and Warfare
+3C,156,אֲנַ֫חְנוּ,(1cp) we,Pronoun,
+3C,155,אֲרָם ; אֲרַמִּי,"Aram, Syria; (gent) Aramean(s), Syrian(s)",Proper Noun,
+3C,152,אַשּׁוּר,"Assyria, (as gent) Assyrian",Proper Noun,
+3C,145,הָלַל,(Pi) to praise; (Hith) boast,Verb,Worship/Cultic
+3C,152,חָכְמָה,"wisdom, experience, shrewdness",Noun,"People, Law, and Covenant"
+3C,146,יוֹאָב,Joab,Proper Noun,
+3C,147,יִרְמְיָה ; יִרְמְיָהוּ,Jeremiah,Proper Noun,
+3C,157,כָּסָה,"(Pi) to cover, conceal",Verb,Action and Stative Verbs
+3C,155,לְבָד,(adv) alone; (prep) besides,Adverb,
+3C,159,מָ֫וֶת,death,Noun,Humans and Anatomy
+3C,150,מְנַשֶּׁה,Manasseh,Proper Noun,
+3C,151,נֶ֫גֶד,"(n, prep, adv) in front of, opposite, before",Noun,
+3C,150,נָגַע,"to touch, reach; come to",Verb,Movement Verbs
+3C,146,נָסַע,to depart,Verb,Movement Verbs
+3C,149,עֵדָה,congregation,Noun,"People, Law, and Covenant"
+3C,159,פַּר ; פָּרָה,(m; f) young bull; cow,Noun,Plants and Animals
+3C,144,פָּתַח,"to open; (Pi) loosen, free",Verb,Action and Stative Verbs
+3C,157,צְדָקָה,righteousness,Noun,"People, Law, and Covenant"
+3C,154,צִיּוֹן,Zion,Proper Noun,
+3C,153,צָפוֹן,north,Noun,Heavens and Earth
+3C,153,רֹב,"multitude, abundance",Noun,Measurement and Numbers
+3C,149,שָׁבַר,to break,Verb,Action and Stative Verbs
+3C,156,שָׂמַח,to rejoice; (Pi) gladden,Verb,Personal Interactions
+3C,147,שְׁמֹנֶה ; שְׁמֹנָה,"(s m, f) eight",Noun,Measurement and Numbers
+3C,147,שְׁמֹנִים,eighty,Noun,Measurement and Numbers
+3C,148,שָׂנֵא,"to hate; (Qal and Pi part) adversary, enemy",Verb,Personal Interactions
+3C,156,שֵׁנִי,(ord) second,Numeral,Measurement and Numbers
+3D,141,אָז ; מֵאָז,"(adv) then; formerly, since",Adverb,
+3D,136,זָבַח,"to slaughter, sacrifice; (Pi) sacrifice",Verb,Worship/Cultic
+3D,138,חָכָם,(adj) wise,Adjective,Humans and Anatomy
+3D,134,חָלַל,"(Ni) to be defiled; (Pi) pollute, profane; (Hi) begin",Verb,Action and Stative Verbs
+3D,143,חָנָה,to encamp,Verb,Lands and Warfare
+3D,142,יַ֫חַד ; יַחְדָּו,"(n) community; (adv) together, at the same time",Noun,Family and Tribe
+3D,141,יַ֫יִן,wine,Noun,Food
+3D,139,יָמִין,right hand/side; south,Noun,Humans and Anatomy
+3D,139,יֵשׁ,there is/are,Particle,
+3D,139,כְּמוֹ,(rel particle) just like,Particle,
+3D,136,כִּסֵּא,"throne, chair",Noun,Building and Travel
+3D,134,מִסְפָּר,(n) number,Noun,Measurement and Numbers
+3D,138,מַ֫עַל,(adj) upwards; (prep) above,Adjective,
+3D,139,מִשְׁכָּן,"dwelling, tabernacle",Noun,Building and Travel
+3D,143,נ֫וּחַ,"to rest, settle down, make quiet; (Hi) lay, deposit",Verb,Action and Stative Verbs
+3D,138,נַ֫חַל,"torrent valley, wadi",Noun,Heavens and Earth
+3D,139,נְח֫שֶׁת,"copper, bronze",Noun,Metals and Stone
+3D,139,סוּס ; סוּסָה,"(m; f) horse, mare",Noun,Plants and Animals
+3D,143,עֲבוֹדָה,"service, work",Noun,Humans and Anatomy
+3D,134,עֶ֫רֶב,evening,Noun,Time and Seasons
+3D,134,פָּנָה,"to face, turn",Verb,Movement Verbs
+3D,139,קָרָא,to happen; (inf cstr as prep) against,Verb,Action and Stative Verbs
+3D,143,רָדַפ,"to pursue, persecute",Verb,Movement Verbs
+3D,139,שַׁ־ ּ,"(pref rel particle) who, which; that (with dages in following cons)",Particle,
+3D,139,שְׁמוּאֵל,Samuel,Proper Noun,
+3D,134,שֶׁ֫מֶשׁ,sun,Noun,Heavens and Earth
+3E,125,אוֹר,light,Noun,Heavens and Earth
+3E,127,אֱמֶת,"trustworthiness, stability, truth",Noun,"People, Law, and Covenant"
+3E,130,אַף,"(conj) also, even, the more so",Conjunction,
+3E,126,בּוֹשׁ,to be ashamed,Verb,Action and Stative Verbs
+3E,122,"בְּכֹר , בְּכוֹר",firstborn,Noun,Family and Tribe
+3E,122,גָּדַל,"to be(come) strong, great; (Pi) bring up, let grow, nourish",Verb,Movement Verbs
+3E,133,חוֹמָה,(city) wall,Noun,Building and Travel
+3E,131,חִזְקִיָּה ; חִזְקִיָּ֫הוּ,Hezekiah,Proper Noun,
+3E,126,חֵמָה,"heat, rage, wrath; poison",Noun,Personal Interactions
+3E,123,חֲצִי,half,Noun,Measurement and Numbers
+3E,128,חֹק,"prescription, rule",Noun,"People, Law, and Covenant"
+3E,124,חָשַׁב,"to account, regard, value",Verb,Action and Stative Verbs
+3E,124,יְהוֹנָתָן,Jonathan,Proper Noun,
+3E,129,כֶּ֫בֶשׂ ; כִּבְשַׂה,"(m, f) young ram; ewe-lamb",Noun,Plants and Animals
+3E,125,כֹּ֫חַ,"strength, power",Noun,Humans and Anatomy
+3E,129,כֶּ֫שֶׂב ; כִּשְׂבָּה,"(m, f) young ram; ewe-lamb",Noun,Plants and Animals
+3E,121,לָכַד,"to seize, capture",Verb,Lands and Warfare
+3E,125,נָגַשׁ,"to draw near, approach",Verb,Movement Verbs
+3E,133,נָשִׂיא,prince,Noun,Humans and Anatomy
+3E,122,עַמּוֹן ; עַמּוֹנִי,Ammon; (gent) Ammonites,Proper Noun,
+3E,123,עֶ֫צֶם,"(s, coll) bone",Noun,Humans and Anatomy
+3E,133,פֶּן־,(conj) lest,Conjunction,
+3E,127,קָבַץ,"to assemble, gather together",Verb,Personal Interactions
+3E,132,קָבַר,to bury,Verb,Action and Stative Verbs
+3E,123,קָהָל,"assembly, congregation",Noun,"People, Law, and Covenant"
+3E,133,שָׁאַר,"to remain; (Ni, Hi) be left over",Verb,Action and Stative Verbs
+3E,130,שָׁכַן,"to tent, dwell, settle",Verb,Building and Travel
+3E,125,שָׁלַךְ,"(Hi) to throw, cast (out)",Verb,Movement Verbs
+3F,112,אֱדוֹם ; אֲדוֹמִי,Edom; (gent) Edomite(s),Proper Noun,
+3F,114,אָחוֹת,sister,Noun,Family and Tribe
+3F,119,בָּטַח,to trust; fall to the ground? be reckless,Verb,Movement Verbs
+3F,114,בָּכָה,to weep,Verb,Personal Interactions
+3F,115,יָדָה,"(Pi) to throw, cast; (Hi, Hith) thank, praise, confess",Verb,Worship/Cultic
+3F,120,יָטַב,"to be good (Cf. טוּב, 4.Β; (I) טוּב 1.D)",Verb,Action and Stative Verbs
+3F,112,יִצְחָק,Isaac,Proper Noun,
+3F,119,יָשָׁר,"(adj) straight, just, upright",Adjective,Humans and Anatomy
+3F,114,כָּבֵד,"(stat) to be heavy, honored",Verb,Action and Stative Verbs
+3F,113,לָבַשׁ,"to put on, clothe",Verb,Clothing
+3F,120,לִקְרַאת,"(inf cstr as prep) over against, opposite",Preposition,
+3F,117,לָשׁוֹן,tongue,Noun,Humans and Anatomy
+3F,115,מִגְרָשׁ,"pasture, untilled ground; produce",Noun,Heavens and Earth
+3F,117,מַמְלָכָה,kingdom,Noun,Building and Travel
+3F,115,נָבָא,"(Ni, Hith) to prophesy",Verb,Worship/Cultic
+3F,117,נָהָר,"river, stream",Noun,Heavens and Earth
+3F,119,פְּרִי,"fruit, offspring",Noun,Food
+3F,116,צֶ֫דֶק,"righteousness; what is right, just",Noun,Humans and Anatomy
+3F,115,קָדוֹשׁ,(adj) holy,Adjective,Worship/Cultic
+3F,116,קָטַר,(Pi) to send an offering up in smoke; (Hi) make smoke,Verb,Worship/Cultic
+3F,120,רֶ֫כֶב,"chariot, chariotry",Noun,Lands and Warfare
+3F,117,שָׁלֵם,"(stat) to be whole, complete; (Pi) repay; (Hi) make peace with",Verb,Action and Stative Verbs
+3F,112,שֹׁמְרוֹן,Samaria (2 times in Aramaic),Proper Noun,
+3F,116,שָׁפַךְ,to pour out,Verb,Action and Stative Verbs
+3F,113,שֶׁ֫קֶר,"lie, falsehood, deception",Noun,Personal Interactions
+3F,117,שָׂרַף,to burn,Verb,Action and Stative Verbs
+3F,118,תּוֹעֵבָה,abomination,Noun,Worship/Cultic
+3G,107,אַבְשָׁלוֹם,Absalom,Proper Noun,
+3G,100,אָמֵן,"(Ni) to be steady, firm, trustworthy, faithful; (Hi) believe",Verb,Action and Stative Verbs
+3G,111,בִּלְתִּי,(n) non-existence; (adv) not; (prep) except,Noun,
+3G,103,בָּמָה,"high place, funerary installation",Noun,Worship/Cultic
+3G,101,בַּ֫עַד ; בְּעַד,"(n) distance; (prep) behind, through, for (the benefit of)",Noun,Building and Travel
+3G,104,גָּאַל,to redeem,Verb,"People, Law, and Covenant"
+3G,108,גִּלְעָד ; גִּלְעָדִי,Gilead; (gent) Gileadites,Proper Noun,
+3G,100,הֵן,"(dem interg) behold!; (cong) if (Cf. הִנֶּה, 1.B)",Interjection,
+3G,104,הֻקָּה,"statute, prescription",Noun,"People, Law, and Covenant"
+3G,104,יָרָבְעָם,Jeroboam,Proper Noun,
+3G,106,יָתַר,"(Ni, Hi) to be left, remain",Verb,Action and Stative Verbs
+3G,110,כָּנָף,"wing, skirt",Noun,Plants and Animals
+3G,102,כָּפַר,to cover; (Pi ext) expiate,Verb,"People, Law, and Covenant"
+3G,103,מַרְאֶה,"sight, appearance",Noun,
+3G,110,נֶ֫גֶב,"the dry country; south, Negev",Noun,Heavens and Earth
+3G,108,נָחַם,"(Ni) to be sorry, repent; (Pi) comfort, console",Verb,Personal Interactions
+3G,111,עַמּוּד,"pillar, column",Noun,Building and Travel
+3G,110,עָפָר,"dry earth, dust",Noun,Heavens and Earth
+3G,111,פַּ֫עַם,"foot, step; time",Noun,Time and Seasons
+3G,103,רוּץ,to run,Verb,Movement Verbs
+3G,101,רֹ֫חַב,breadth,Noun,Measurement and Numbers
+3G,103,רָעָב,"famine, hunger",Noun,Food
+3G,108,רַק,(adv) only,Adverb,
+3G,106,שַׁבָּת,"sabbath, rest",Noun,"People, Law, and Covenant"
+3G,102,שָׁכַח,to forget,Verb,Action and Stative Verbs
+3G,107,שְׁלִישִׁי,"(ord) third, (fract) one-third",Numeral,Measurement and Numbers
+3G,104,תָּמִיד,"(n) continuance; (adv) continually, regularly",Noun,Time and Seasons
+4A,93,אַחְאָב,Ahab,Proper Noun,
+4A,95,אֹ֫רֶךְ,length,Noun,Measurement and Numbers
+4A,93,גֵּר,stranger,Noun,"People, Law, and Covenant"
+4A,95,הָפַךְ,"to turn, overturn",Verb,Movement Verbs
+4A,95,זָנָה,to commit fornication; play the harlot,Verb,Action and Stative Verbs
+4A,97,חַיָּה,(s or pl coll) animals,Noun,Plants and Animals
+4A,94,חָלָל,"(n, adj) slain, struck dead",Adjective,Worship/Cultic
+4A,97,חֲמוֹר,(male) ass,Noun,Plants and Animals
+4A,94,חָרָה,"to be(come) hot, burning, angry",Verb,Action and Stative Verbs
+4A,94,טָהוֹר,"(adj) clean, pure",Adjective,Worship/Cultic
+4A,94,טָהֵר,"to be clean, pure",Verb,Worship/Cultic
+4A,93,יַ֫עַן,(prep) on account of; (conj) because,Preposition,
+4A,96,יֶ֫תֶר,remainder,Noun,
+4A,93,כֶּ֫רֶם,vineyard,Noun,Plants and Animals
+4A,95,מָלַט,"(Ni) to escape; (Pi) save, deliver",Verb,Movement Verbs
+4A,96,מְעַט,(adj) few; (n) a little,Adjective,Measurement and Numbers
+4A,99,עוֹר,"skin, leather",Noun,Humans and Anatomy
+4A,94,"עֹז , עָז","strength, power, might",Noun,Humans and Anatomy
+4A,96,עֵשָׂו,Esau,Proper Noun,
+4A,93,פֶּ֫שַׁע,"rebellion, revolt, transgression",Noun,Lands and Warfare
+4A,99,רָעַע,"to be wicked, evil",Verb,Humans and Anatomy
+4A,96,שְׁבִיעִי,(ord) seventh,Numeral,Measurement and Numbers
+4A,97,שָׂבַע,"to satisfy, be satiated",Verb,Food
+4A,94,שִׂמְחָה,"joy, rejoicing",Noun,Humans and Anatomy
+4A,95,שָׁמֵם,(stat) to be astonished; be desolate,Verb,Action and Stative Verbs
+4A,98,שָׁרַת,"(Pi) to minister to, serve",Verb,Worship/Cultic
+4B,86,אֱמֹרִי,(gent) Amorite(s),Noun,
+4B,87,בָּעַר,"to consume, burn; graze",Verb,Action and Stative Verbs
+4B,87,דֶּ֫לֶת,door,Noun,Building and Travel
+4B,91,דַּ֫עַת,knowledge,Noun,"People, Law, and Covenant"
+4B,86,הָמוֹן,"tumult, turmoil, multitude",Noun,Lands and Warfare
+4B,91,זְר֫וֹעַ,"arm, forearm",Noun,Humans and Anatomy
+4B,92,חֵ֫לֶב,fat,Noun,Food
+4B,86,חָפֵץ,"to please, delight, take pleasure",Verb,Action and Stative Verbs
+4B,90,טוֹב*,"to be good, pleasant (Cf. יָטַב, 3.F; טוּב, 1.D)",Verb,Humans and Anatomy
+4B,88,טָמֵא ; טְמֵאָה,"(adj, m; f) unclean",Adjective,Worship/Cultic
+4B,86,יְהוֹשָׁפָט,Jehoshaphat,Proper Noun,
+4B,92,יֶ֫לֶד ; יַלְדָּה,"male child, boy; girl",Noun,Family and Tribe
+4B,92,כְּרוּב,cherub,Noun,Worship/Cultic
+4B,89,כַּשְׂדִּים,Chaldea; (gent) Chaldean (9 times in Aramaic),Proper Noun,
+4B,91,מַלְכּוּת,"kingship, reign",Noun,"People, Law, and Covenant"
+4B,91,נְבוּכַדְנֶאצַּר,Nebuchadnezzar,Proper Noun,
+4B,90,סָגַר,"to shut, close; (Hi) deliver up, give in one's power",Verb,Action and Stative Verbs
+4B,91,עֵ֫בֶר,"side, region; opposite side",Noun,Heavens and Earth
+4B,86,עָנָן,clouds,Noun,Heavens and Earth
+4B,89,עֵצָה,"advice, counsel",Noun,Personal Interactions
+4B,86,פֵּאָה,"side, rim, corner; piece?; luxury?",Noun,Building and Travel
+4B,87,קֶ֫דֶם ; קֵ֫דֶם,"in front, east; east(ward)",Noun,Heavens and Earth
+4B,90,קָצֶה,"end, border, extremity",Noun,Lands and Warfare
+4B,87,רְאוּבֵן ; רְאוּבֵנִי,Reuben; (gent) Reubenite,Proper Noun,
+4B,88,שִׁיר,to sing,Verb,Action and Stative Verbs
+4B,91,שִׁיר ; שִׁירָה,(m; f) song,Noun,Worship/Cultic
+4B,87,שִׁית,"to put, place",Verb,Action and Stative Verbs
+4B,87,שֶׁ֫לֶם,final (or peace) offering,Noun,Worship/Cultic
+4B,90,שָׁמַד,"(Ni) to be destroyed, exterminated; (Hi) exterminate",Verb,Action and Stative Verbs
+4B,88,שֶׁ֫קֶל,shekel (unit of weight),Noun,Measurement and Numbers
+4B,91,תָּמִים,"(adj) whole, entire; blameless",Adjective,"People, Law, and Covenant"
+4C,80,אָ֫וֶן,"wickedness, iniquity",Noun,Worship/Cultic
+4C,79,אוֹצָר,"supply, store-house, treasure",Noun,Building and Travel
+4C,79,אוֹת,"sign, mark",Noun,
+4C,83,אֲרִי ; אַרְיֵה,(m; m and f) lion,Noun,Plants and Animals
+4C,85,גָּד ; גָּדִי,Gad; (gent) Gadites,Proper Noun,
+4C,81,גּוּר,to sojourn,Verb,Action and Stative Verbs
+4C,81,דָּנִיֵּאל,Daniel,Proper Noun,
+4C,80,הֵיכָל,"palace, temple",Noun,Worship/Cultic
+4C,82,זָכָר,man; male (animal),Noun,Humans and Anatomy
+4C,82,חֶֹ֫שׁךְ,darkness,Noun,Heavens and Earth
+4C,82,יָעַץ,"to give counsel, advice",Verb,Action and Stative Verbs
+4C,85,לָמַד,to learn; (Pi) teach,Verb,Action and Stative Verbs
+4C,83,מָהַר,(Pi) to hasten,Verb,Action and Stative Verbs
+4C,81,מָכַר,to sell,Verb,Action and Stative Verbs
+4C,82,מָשַׁל,"to govern, rule",Verb,"People, Law, and Covenant"
+4C,83,סָתַר,"(Ni, intrans) to conceal, hide; (Hi, trans) hide (someone)",Verb,Action and Stative Verbs
+4C,83,עֵדוּת ; עֵדָה,"warning sign, reminder, precept, commandment",Noun,"People, Law, and Covenant"
+4C,82,עָזַר,"to help, assist",Verb,Action and Stative Verbs
+4C,79,עָנָה (2),"to bend down, be afflicted, humble; (Pi) oppress, humiliate",Verb,Worship/Cultic
+4C,80,פָּלַל,(Hith) to pray,Verb,Worship/Cultic
+4C,82,קָלַל,"to be slight, trifling, swift; (Pi) declare cursed; (Hi) make light",Verb,Action and Stative Verbs
+4C,80,קָרְבָּן,"offering, gift",Noun,Worship/Cultic
+4C,85,רָחוֹק,"(adj) far, distant; (n) distance",Adjective,Measurement and Numbers
+4C,84,רֹעֶה,(Qal part) shepherd,Verb,Humans and Anatomy
+4C,79,שׁוֹר,"bull(ock), steer",Noun,Plants and Animals
+4C,85,שָׁחַט,"to slaughter, kill",Verb,Action and Stative Verbs
+4C,79,שָׁקָה,(Hi) to give to drink,Verb,Food
+4D,76,בַּרְזֶל,iron,Noun,Metals and Stone
+4D,78,גּוֹרָל,lot; (ext) allotment,Noun,Measurement and Numbers
+4D,78,דָּן ; דָּנִי,Dan; (gent) Danites,Proper Noun,
+4D,77,חֶבְרוֹן,Hebron,Proper Noun,
+4D,77,חָלָה,"to be(come) weak, sick",Verb,Humans and Anatomy
+4D,77,חָנַן,"to be gracious to, favour; (Hith) implore favour or compassion",Verb,Action and Stative Verbs
+4D,78,יְשׁוּעָה,"deliverance, salvation",Noun,"People, Law, and Covenant"
+4D,75,מָאַס,to reject,Verb,Action and Stative Verbs
+4D,77,מָאתַ֫יִם,(du) two hundred,Noun,Measurement and Numbers
+4D,76,מִקְנֶה,"possession (of land, cattle)",Noun,Humans and Anatomy
+4D,78,מִשְׁמֶ֫רֶת,"(n) guard, obligation, service",Noun,Humans and Anatomy
+4D,78,נֶ֫גַע,"blow, assault; plague",Noun,Humans and Anatomy
+4D,75,נָצַב,"(Ni) to take one's stand, be stationed; wretched?",Verb,Movement Verbs
+4D,76,עוּר,"to arouse, awake",Verb,Humans and Anatomy
+4D,76,עָנִי,"(adj) afflicted, poor",Adjective,Humans and Anatomy
+4D,75,עָרַךְ,"to arrange, set in order",Verb,Action and Stative Verbs
+4D,75,צוּר,"boulder, (large) rock",Noun,Metals and Stone
+4D,76,צַר,"adversary, foe",Noun,Personal Interactions
+4D,78,קָנָה,"to acquire, buy",Verb,Action and Stative Verbs
+4D,78,קָרוֹב ; קְרוֹבָה,"(adj m; f) near, imminent",Adjective,Measurement and Numbers
+4D,76,קֶ֫רֶן,horn,Noun,Plants and Animals
+4D,76,קֶ֫שֶׁת,bow (weapon); (met) rainbow,Noun,Lands and Warfare
+4D,78,רָכַב,to ride,Verb,Lands and Warfare
+4D,75,שָׂכַל,to have success; (Hi) understand,Verb,Action and Stative Verbs
+4D,76,שָׁלָל,"plunder, booty",Noun,Lands and Warfare
+4D,78,תְּפִלָּה,prayer,Noun,Worship/Cultic
+4D,77,תְּרוּמָה,"tribute, contribution, heave-offering",Noun,Worship/Cultic
+4D,77,"תֵּ֫שַׁע , תִּשְׁעָה","(s m, f) nine",Noun,Measurement and Numbers
+4D,77,תִּשְׁעִים,ninety,Noun,Measurement and Numbers
+4E,71,"אֵלִיָּה , אֵלִיָּ֫הוּ",Elijah,Proper Noun,
+4E,72,אֶלְעָזָר,Eleazar,Proper Noun,
+4E,71,אָסַר,"to bind; (Ni, Pu) be fettered, imprisoned",Verb,Action and Stative Verbs
+4E,73,אֶ֫רֶז,(trad) cedar,Noun,Plants and Animals
+4E,72,בֶּ֫טֶן,"belly, womb",Noun,Humans and Anatomy
+4E,71,בְּרָכָה,blessing,Noun,Worship/Cultic
+4E,74,גָּבַהּ,(stat) to be high,Verb,Action and Stative Verbs
+4E,73,הֶ֫בֶל,"breath; vanity, idol(s)",Noun,Worship/Cultic
+4E,73,זָעַק,"to cry out; (Ni) called to arms (Cf. צָעַק, 4.I)",Verb,Humans and Anatomy
+4E,71,זָר,"(adj) strange, different, illicit",Adjective,
+4E,72,חָזָה,"to see, perceive",Verb,Action and Stative Verbs
+4E,73,חֶרְפָּה,"reproach, disgrace",Noun,Personal Interactions
+4E,71,לְבָנוֹן,Lebanon,Proper Noun,
+4E,71,לִין,"to spend the night, lodge",Verb,Action and Stative Verbs
+4E,72,מַדּוּעַ,"(interr adv) wherefore, why?",Adverb,
+4E,74,מִזְרָח,"sunrise, east",Noun,Heavens and Earth
+4E,74,מִקְדָּשׁ,sanctuary,Noun,Worship/Cultic
+4E,72,מֵת,(adj) dead,Adjective,Humans and Anatomy
+4E,74,סֶ֫לָה,selah (unexplained technical term of music or recitation),Noun,Worship/Cultic
+4E,72,עֵד ; עֵדָה,(m; f) witness,Noun,"People, Law, and Covenant"
+4E,71,עוֹף,"(coll) flying creatures; fowl, insects",Noun,Plants and Animals
+4E,74,עֵז,goat; goathair,Noun,Plants and Animals
+4E,71,פָּלָא,"(Ni) to be extraordinary, wonderful",Verb,Action and Stative Verbs
+4E,72,צָרָה,distress,Noun,
+4E,74,קִיר,wall,Noun,Building and Travel
+4E,72,רָחַץ,to wash (oneself),Verb,Action and Stative Verbs
+4E,71,שָׁבַת,"to cease, rest",Verb,Action and Stative Verbs
+4E,72,שׁוֹפָר,"ram's horn, trumpet",Noun,Plants and Animals
+4F,67,אֲבִימֶ֫לֶךְ,Abimelech,Proper Noun,
+4F,66,אֲחֻזָּה,landed property,Noun,Building and Travel
+4F,69,אַלּוּף,(adj) familiar; (n) confidant; tribal chief,Adjective,Personal Interactions
+4F,69,בּוֹר,cistern,Noun,Food
+4F,70,בֵּית־אֵל,Bethel,Proper Noun,
+4F,66,בַּל,(neg) not; surely?,Particle,
+4F,66,גֶּ֫בֶר,young man; strong man,Noun,Humans and Anatomy
+4F,66,חֲלוֹם,dream,Noun,
+4F,68,חֵן,"charm, favour; grace",Noun,
+4F,67,כִּכָּר,loaf of bread; talent; environs (all circular),Noun,Food
+4F,70,כְּסִיל,"(adj) insolent (spiritual); stupid, dull (practical things)",Adjective,Humans and Anatomy
+4F,67,כְּפִי ; לְפִי,"(conj) according to, as; so that",Conjunction,
+4F,67,כָּתֵף,shoulder(-blade),Noun,Humans and Anatomy
+4F,67,לְפִי,"(conj) according to, as; so that",Noun,Humans and Anatomy
+4F,67,מִדְיָן ; מִדְיָנִי,Midian; (gent) Midianite,Proper Noun,
+4F,67,מָלֵא (2),"(adj, n, pred adj) full",Adjective,
+4F,70,מָשַׁח,to anoint,Verb,Worship/Cultic
+4F,70,נָבַט,"(Pi, Hi) to look at, regard",Verb,Action and Stative Verbs
+4F,68,עֵ֫מֶק,valley,Noun,Heavens and Earth
+4F,68,פֹּה ; פּוֹ ; פֹּא,here,Noun,Measurement and Numbers
+4F,67,פָּרַשׂ,(trans) spread out; (met) flaunt,Verb,Action and Stative Verbs
+4F,67,קֶ֫בֶר,grave,Noun,
+4F,69,קָדִים,"east side, east",Noun,Heavens and Earth
+4F,67,קֵץ,"end; limit, boundary",Noun,Lands and Warfare
+4F,67,רָפָא,to heal (someone),Verb,Action and Stative Verbs
+4F,66,שְׁאֵרִית,remainder,Noun,
+4F,70,שֻׁלְחָן,table,Noun,Building and Travel
+4F,67,תָּקַע,"to drive, thrust; strike",Verb,Movement Verbs
+4G,63,אַבְנֵר,Abner,Proper Noun,
+4G,63,אָחַז,"to seize, hold fast",Verb,Action and Stative Verbs
+4G,65,אִשֶּׁה,offering by fire,Noun,Worship/Cultic
+4G,64,בִּלְעָם,Balaam,Proper Noun,
+4G,63,גִּבְעָה,hill; (cultic) high place,Noun,Heavens and Earth
+4G,65,חֵ֫לֶק,"part, portion",Noun,Measurement and Numbers
+4G,64,יְאֹר,"(great) river (Nile, Euphrates)",Noun,Heavens and Earth
+4G,64,יוֹאָשׁ,Joash,Proper Noun,
+4G,64,יָצַר,"to form, shape, fashion",Verb,Action and Stative Verbs
+4G,63,כָּשַׁל,"to stumble, totter",Verb,Action and Stative Verbs
+4G,63,"מִיכָה , מִיכָא ; מִיכָיְהוּ",Micah,Proper Noun,
+4G,63,נַעֲרָה,"young girl, maid",Noun,Humans and Anatomy
+4G,65,נָצַח,"(Pi) to lead, supervise",Verb,Action and Stative Verbs
+4G,63,נָצַר,"to watch, guard",Verb,Action and Stative Verbs
+4G,65,פּוּץ,"(intrans) to scatter, disperse",Verb,Movement Verbs
+4G,63,צִדְקִיָּה ; צִדְקִיָּ֫הוּ,Zedekiah,Proper Noun,
+4G,65,צָלַח,"to (be) strong, effective; succeed",Verb,Action and Stative Verbs
+4G,64,רִיב,"to contend, plead (a case)",Verb,Personal Interactions
+4G,65,שְׁאוֹל,"sheol, underworld",Noun,Worship/Cultic
+4G,65,שָׁכַם,(den; Hi) to rise early,Verb,Movement Verbs
+4G,64,שְׁכֶם,Shechem,Proper Noun,
+4G,63,שִׁפְחָה,female slave,Noun,"People, Law, and Covenant"
+4G,64,תָּמַם,"to be complete, perfect",Verb,Action and Stative Verbs
+4G,64,תָּפַשׂ,"to seize, take hold of",Verb,Action and Stative Verbs
+4H,61,אֶבְיוֹן,"(adj) poor, oppressed",Adjective,Humans and Anatomy
+4H,61,אַחֲרִית,"end, outcome",Noun,
+4H,58,אִיּוֹב,Job,Proper Noun,
+4H,60,אֵיךְ,"(interr) how? (Cf. אֵיחָה, 5.V)",Particle,
+4H,58,אֱלִישָׁע,Elisha,Proper Noun,
+4H,58,אָסָא,Asa,Proper Noun,
+4H,61,אֵ֫צֶל,(n) side; (prep) beside,Noun,
+4H,59,אָרַר,curse,Verb,Worship/Cultic
+4H,62,בָּרַח,"to run away, flee",Verb,Movement Verbs
+4H,60,בָּשָׁן,Bashan,Proper Noun,
+4H,62,גְּבוּרָה,"strength, might",Noun,
+4H,59,דּוֹד,"beloved, lover",Noun,Humans and Anatomy
+4H,61,דָּרַךְ,to tread; (Hi) stamp firm,Verb,Action and Stative Verbs
+4H,60,חָג ; חַג,"procession; feast, festival",Noun,Food
+4H,60,חָמָס,"violence, wrong",Noun,Lands and Warfare
+4H,62,חֵת ; חִתִּי,Heth; (gent) Hittite(s),Proper Noun,
+4H,58,יֵהוּא,Jehu,Proper Noun,
+4H,59,מָגֵן,shield,Noun,Lands and Warfare
+4H,60,מָרְדֳּכַי,Mordecai,Proper Noun,
+4H,60,"נֶ֫דֶר , נֵ֫דֶר",vow,Noun,"People, Law, and Covenant"
+4H,59,נָחַל,"to obtain, receive property",Verb,Action and Stative Verbs
+4H,60,"נֶ֫סֶךְ , נֵ֫סֶךְ",libation,Noun,Food
+4H,61,עֲרָבָה,"desert, plain",Noun,Heavens and Earth
+4H,61,צָרַר,"to wrap up; be hostile toward (Cf. צוּר, 5.J)",Verb,Action and Stative Verbs
+4H,61,קְטֹ֫רֶת,smoke (of sacrifice); incense,Noun,Worship/Cultic
+4H,62,קָנֶה,"(measuring) reed, tube",Noun,Plants and Animals
+4H,62,קָרַע,"to tear up, away",Verb,Action and Stative Verbs
+4H,62,רִיב ; רִיבָה,"(m; f pl) contention, suit; legal speech",Noun,Personal Interactions
+4H,59,רֵ֫יחַ,"odour, scent",Noun,
+4H,58,שֹׁפֵט,"(n, Qal part act) judge",Noun,"People, Law, and Covenant"
+4H,58,תְּהִלָּה,"glory, praise",Noun,Worship/Cultic
+4I,55,אֶ֫דֶן,"(pl) pedestal, socket",Noun,
+4I,55,אַלְמָנָה,widow,Noun,Family and Tribe
+4I,56,אָמָה,female slave,Noun,"People, Law, and Covenant"
+4I,55,אֶסְתֵּר,Esther,Proper Noun,
+4I,57,אֹ֫רַח,"way, path",Noun,Building and Travel
+4I,55,גֶּ֫פֶן,vine,Noun,Plants and Animals
+4I,56,זָרַע,to sow,Verb,Plants and Animals
+4I,56,חָזָק,"(adj) strong, powerful, hard",Adjective,
+4I,57,חִיל,to be in labour,Verb,Action and Stative Verbs
+4I,56,חָלַק,"to divide, apportion; (Pi) scatter",Verb,Movement Verbs
+4I,56,טֶ֫רֶם ; בְּטֶ֫רֶם,"(neg) not yet; (conj, prep) before",Particle,
+4I,55,יָבֵשׁ,(stat) to be dry; (intrans) dry up,Verb,Action and Stative Verbs
+4I,56,יְהוֹיָדָע,Jehoiada,Proper Noun,
+4I,56,יָכַח,(Ni) to dispute; (Hi) reprove,Verb,Personal Interactions
+4I,57,יַ֫עַר,thicket,Noun,Plants and Animals
+4I,57,יְרִחוֹ,Jericho,Proper Noun,
+4I,56,יִשְׁמָעֵאל ; יִשְׁמְעֵאלִי,Ishmael; (gent) Ishmaelite,Proper Noun,
+4I,57,מִזְמוֹר,psalm,Noun,Worship/Cultic
+4I,56,מַחֲשָׁבָה,thought,Noun,Humans and Anatomy
+4I,57,מְנַצֵּ֫חַ,conductor? (Pi part of נָצַח),Noun,
+4I,57,נָטַע,to plant,Verb,Plants and Animals
+4I,57,סֶ֫לַע,rock,Noun,Metals and Stone
+4I,55,סֹפֵר,"scribe, writer",Noun,Humans and Anatomy
+4I,55,עָמָל,"distress, trouble; effort",Noun,
+4I,56,פָּדָה,"to buy (off), ransom",Verb,Action and Stative Verbs
+4I,57,פָּעַל,"to make, do",Verb,Action and Stative Verbs
+4I,57,פָּרָשׁ,horsemen; horse,Noun,Plants and Animals
+4I,55,רְבִיעִי,(ord) fourth; (fract) one-fourth,Numeral,Measurement and Numbers
+4I,57,רָחַק,"to be(come) far (away), distant",Verb,Action and Stative Verbs
+4I,57,רָמָה,Ramah,Proper Noun,
+4I,56,רָצוֹן,pleasure; favour,Noun,
+4I,56,שָׁדַד,"devastate, lay waste",Noun,Lands and Warfare
+4I,56,שְׁמָמָה,"horror, desolation",Noun,
+4I,55,שָׂעִיר,(n) he-goat; (adj) hairy,Noun,Plants and Animals
+4J,54,אָבָה,"to accede, accept",Verb,Action and Stative Verbs
+4J,53,אֱמוּנָה,steadiness,Noun,
+4J,54,גָּמָל,camel,Noun,Plants and Animals
+4J,54,דָּבַק,"to stick, cling to",Verb,Action and Stative Verbs
+4J,54,דְּבַשׁ,honey,Noun,Food
+4J,54,הָמָן,Haman,Proper Noun,
+4J,53,חָדַל,"to cease, desist",Verb,Action and Stative Verbs
+4J,53,חָדָשׁ,"(adj) new, fresh",Adjective,Time and Seasons
+4J,54,חֵץ,arrow,Noun,Lands and Warfare
+4J,53,חַָתַת,to be shattered; (ext) filled with terror,Verb,Action and Stative Verbs
+4J,53,יָצַק,to dish up (food); pour out (liquid),Verb,Food
+4J,54,יָרָה,"(Hi) to teach, instruct, cast",Verb,Action and Stative Verbs
+4J,54,יְרִיעָה,"curtain, tent",Noun,Building and Travel
+4J,54,כּוּשׁ ; כּוּשִׁי,Cush; (gent) Cushite,Proper Noun,
+4J,54,כָּעַס,"to (be) irrated, angry",Verb,Action and Stative Verbs
+4J,54,לָבָן,Laban,Proper Noun,
+4J,53,מִדָּה,(n) measure,Noun,Measurement and Numbers
+4J,53,מַצָּה,unleavened bread,Noun,Food
+4J,54,מָרוֹם,height,Noun,Measurement and Numbers
+4J,53,סֹ֫לֶת,fine wheat flour,Noun,Food
+4J,53,עֶלְיוֹן,upper; Most High,Noun,Worship/Cultic
+4J,53,עֶרְוָה,nakedness,Noun,Humans and Anatomy
+4J,53,צָדוֹק,Zadok,Proper Noun,
+4J,53,צֵל,"shadow, shade",Noun,Humans and Anatomy
+4J,54,צָעַק,"to cry out (Cf. זָעַק, 4.E)",Verb,Action and Stative Verbs
+4J,54,קָטֹן,"(adj) small, insignificant",Adjective,
+4J,54,שְׂמֹאל,left (side); left hand,Noun,Humans and Anatomy
+4J,53,שֵׁן,tooth; (ext) crag,Noun,Humans and Anatomy
+4J,53,שָׂרָה ; שָׂרַי,"Sarah, Sarai",Proper Noun,
+4K,50,אַחֲרוֹן,(adj) behind; (adv) last,Adjective,
+4K,52,אַיֵּה,(interr) where?,Particle,
+4K,50,אֵילָם ; אוּלָם,vestibule,Noun,Building and Travel
+4K,51,בָּקַע,to split,Verb,Action and Stative Verbs
+4K,51,בְּתוּלָה,virgin,Noun,Humans and Anatomy
+4K,51,חָרַם,to devote to the ban,Verb,Action and Stative Verbs
+4K,51,יֹאשִׁיָּה ; יֹאשִׁיָּ֫הוּ,Josiah,Proper Noun,
+4K,51,יוֹמָם,"daily, in the daytime.",Noun,Time and Seasons
+4K,51,כָּבַס,to full (cloth); (Pi) to wash,Verb,Action and Stative Verbs
+4K,52,מָדַד,to measure,Verb,Measurement and Numbers
+4K,50,מוּסָר,"chastening, correction",Noun,
+4K,52,מָחָר,tomorrow,Noun,Time and Seasons
+4K,51,נָדַח,(Ni) to be scattered,Verb,Action and Stative Verbs
+4K,50,נָכַר,"(Ni) to pretend; (Hi) investigate, recognize",Verb,Action and Stative Verbs
+4K,50,נַפְתָּלִי,Naphtali,Proper Noun,
+4K,50,נָשַׂג,(Hi) overtake,Verb,Action and Stative Verbs
+4K,51,עֲמָלֵק ; עֲמָלֵקִי,Amalek; (gent) Amalekite,Proper Noun,
+4K,50,פָּרַץ,to make a breach; burst out,Verb,Action and Stative Verbs
+4K,50,פָּרַר,"(Hi) to break out, burst forth; shake, frustrate",Verb,Action and Stative Verbs
+4K,51,קֶ֫רֶשׁ,plank,Noun,Building and Travel
+4K,51,רֵאשִׁית,"beginning, first",Noun,Measurement and Numbers
+4K,50,רְחַבְעָם,Rehoboam,Proper Noun,
+4K,52,רָנַן,to shout (for joy),Verb,Action and Stative Verbs
+4K,50,רָצָה,to be pleased with; like,Verb,Action and Stative Verbs
+4K,52,שָׁוְא,"(adj, n) worthless(ness); (adv) in vain",Adjective,
+4K,50,תָּעָה,"to wander off, stagger",Verb,Movement Verbs
+4K,51,תִּפְאֶ֫רֶת,"(f) ornament, decoration",Noun,Clothing
+5A,49,אֵ֫מֶר,"saying, word",Noun,
+5A,49,אֵפֹד,ephod (priestly garment; cult object),Noun,Worship/Cultic
+5A,49,בָּגַד,to treat faithlessly,Verb,Action and Stative Verbs
+5A,49,בַּעֲבוּר,"on account of, for the sake of, because of, in order that",Preposition,
+5A,48,בָּרָא,to create,Verb,Action and Stative Verbs
+5A,49,גָּאוֹן,loftiness; pride,Noun,Humans and Anatomy
+5A,48,גִּ֫לּוּל,(pl) idols,Noun,Worship/Cultic
+5A,49,דֶּ֫בֶר,(bubonic) plague,Adjective,Humans and Anatomy
+5A,48,דַּל,"(adj) mean, scanty; (n) poor",Adjective,
+5A,48,הוֹי,(interg) alas! woe!,Particle,
+5A,49,הֵ֫נָּה,"(adv; spacial) hither, here; (temporal) until now",Adverb,Time and Seasons
+5A,49,הַרְבֵּה,"(adv) great number, many, much",Adverb,Measurement and Numbers
+5A,49,חֶ֫בֶל,"rope; (ext) measure, plot",Noun,Measurement and Numbers
+5A,49,טַבַּ֫עַת,"ring, signet-ring",Noun,Clothing
+5A,48,יָצַב,"(Hith) to take one's stand, position, stand (firm); appear, arrive",Verb,Movement Verbs
+5A,49,מִגְדָּל,tower,Noun,Building and Travel
+5A,48,מַכָּה,"blow, wound",Noun,Humans and Anatomy
+5A,49,מִשְׁקָל,weight,Noun,Measurement and Numbers
+5A,48,נְבֵלָה,corpse,Noun,Humans and Anatomy
+5A,49,נָגַפ,"to injure, strike",Verb,Action and Stative Verbs
+5A,48,סָמַךְ,support,Noun,
+5A,49,עֲבוּר,"on account of, for the sake of, because of, in order that (always with pref בַּ־)",Noun,
+5A,48,עַד,"eternity, always",Noun,Time and Seasons
+5A,49,פַּ֫חַד,"trembling, terror",Noun,
+5A,49,פֶּ֫סַח,"Passover (festival, sacrifice)",Proper Noun,"People, Law, and Covenant"
+5A,49,קָצִיר,"crop, harvest",Noun,Plants and Animals
+5A,48,שְׁבִי,(those who are/that which is) taken captive,Noun,Lands and Warfare
+5A,48,שַׁדַּי,(adj) Almighty,Adjective,
+5A,48,שַׂק,"goathair cloth, sackcloth; sack",Noun,Clothing
+5A,49,תְּכֵ֫לֶת,purple wool,Noun,Clothing
+5B,46,אָשָׁם,"guilt, wrong; guilt offering",Noun,Worship/Cultic
+5B,46,גֹּאֵל,redeemer,Noun,Humans and Anatomy
+5B,47,גַּיְא,valley,Noun,Heavens and Earth
+5B,47,גָּרַשׁ,"to banish, divorce, drive out; toss up",Verb,Movement Verbs
+5B,47,חֲנִית,spear,Noun,Lands and Warfare
+5B,47,חָרֵשׁ,(stat) to be deaf; (Hi) be silent,Verb,Action and Stative Verbs
+5B,47,לִשְׁכָּה,hall,Noun,Building and Travel
+5B,46,מָאַן,"(Pi) to refuse, refuse to",Verb,Action and Stative Verbs
+5B,47,מַעֲלָה,ascent,Noun,
+5B,46,מִשְׁכָּב,"couch, bed",Noun,Building and Travel
+5B,46,מִשְׁתֶּה,(drinking-) feast,Noun,Food
+5B,47,מָתְנַ֫יִם,(du) loins,Noun,Humans and Anatomy
+5B,46,נָכְרִי,"(adj) foreign, strange; (n) foreigner",Adjective,Humans and Anatomy
+5B,47,נְעוּרִים,youth,Noun,Humans and Anatomy
+5B,46,סָלַח,to forgive,Verb,Personal Interactions
+5B,47,עֵ֫זֶר ; עֶזְרָה,"(s m; f) support, help, (ext or coll) helper(s)",Noun,Personal Interactions
+5B,46,עָצַר,"to restrain, detain",Verb,Action and Stative Verbs
+5B,46,פָּגַע,"to encounter, meet; entreat",Verb,Personal Interactions
+5B,46,צָפָה,to arrange; (Pi) overlay,Verb,Action and Stative Verbs
+5B,47,קָוָה,"to wait, await",Verb,Action and Stative Verbs
+5B,46,קוֹמָה,"height, stature",Noun,Humans and Anatomy
+5B,47,קָטָן,"(adj) small, young (-er, -est)",Adjective,Humans and Anatomy
+5B,46,קָשַׁב,"to be sharp, attentive",Verb,Action and Stative Verbs
+5B,47,רָחַם,(Pi) to show love for,Verb,Personal Interactions
+5B,47,רָצַח,to kill,Verb,Action and Stative Verbs
+5B,47,שָׁבָה,to take captive,Verb,Lands and Warfare
+5C,45,אוּלַי,(adv) perhaps,Adverb,
+5C,45,"אֹ֫כֶל , אָכְלָה",food,Noun,Food
+5C,45,אֶ֫שֶׁר,(pl) fortune; happiness,Noun,
+5C,45,בָּחוּר,young man,Noun,Humans and Anatomy
+5C,45,גִּיל,"shriek ecstatically, shout with joy",Noun,
+5C,44,חָגַר,"to gird, put on a belt",Verb,Clothing
+5C,44,חָלָב,milk,Noun,Food
+5C,44,חָלַץ,to take off; (Qal part pass) ready for battle,Verb,Lands and Warfare
+5C,45,יָרֵא,"(adj) fearing, afraid of",Adjective,
+5C,45,יִרְאָה,"(n) fear, reverence",Noun,
+5C,45,מְדִינָה,"province, district",Noun,Lands and Warfare
+5C,44,מוֹשָׁב,dwelling place,Noun,Building and Travel
+5C,45,מָרָה,"to be rebellious, obstinate",Verb,Action and Stative Verbs
+5C,44,מֶרְכָּבָה,chariot,Noun,Lands and Warfare
+5C,45,מַשָּׂא,"carrying, burden",Noun,
+5C,44,נָגִיד,"chief, leader",Noun,Humans and Anatomy
+5C,44,נוֹרָא,awe-inspiring,Noun,
+5C,45,נֵר,lamp,Noun,Building and Travel
+5C,45,סָרִיס,"eunuch, court official",Noun,"People, Law, and Covenant"
+5C,45,עוּד,(Pi) to surround,Verb,Action and Stative Verbs
+5C,45,עִמָּד,"(alw with suffix; prep) with (Cf. עִמ, 1.B)",Preposition,
+5C,44,קָשַׁר,"to tie up, bind",Verb,Action and Stative Verbs
+5C,45,ר֫וּעַ,(Hi) to shout,Verb,Action and Stative Verbs
+5C,45,רָפָה,"to become slack, sink down",Verb,Action and Stative Verbs
+5C,45,רֶ֫שַׁע ; רִשְׁעָה,"(s m; f) wrong, injustice, guilt",Noun,Worship/Cultic
+5C,44,"שֶׁ֫בֶר , שֵׁ֫בֶר","breaking, fracture; interpretation",Noun,
+5C,44,שֶׂה,"lamb, kid",Noun,Plants and Animals
+5D,43,אוֹר (2),"(Hi) to shine, give light, illuminate",Verb,Action and Stative Verbs
+5D,42,אֱנוֹשׁ,"man, mankind, men",Noun,Humans and Anatomy
+5D,42,אֶפֶס,"end, nothing",Noun,
+5D,42,בַּד,"poles, shoots",Noun,Building and Travel
+5D,42,בָּדַל,"(Ni) to separate oneself, withdraw; (Hi) to divide, separate, set apart",Verb,Movement Verbs
+5D,43,בָּזָה,"(Q) to despise, regard with contempt",Verb,Personal Interactions
+5D,42,בָּזַז,"(Q) to plunder, spoil",Verb,Lands and Warfare
+5D,43,בֶּטַח,"security, safety",Noun,
+5D,43,בָּלַל,"(Q) to mix up, confuse, mingle",Verb,Action and Stative Verbs
+5D,42,גּוֹלָה,"captivity, exiles",Noun,Lands and Warfare
+5D,43,הָרָה,"(Q) to conceive, be/become pregnant",Verb,Action and Stative Verbs
+5D,43,הָרַס,"(Q) to tear down, demolish, destroy; (Ni) be ruined",Verb,Action and Stative Verbs
+5D,42,זוּב,"(Q) to flow away, suffer a discharge",Verb,Action and Stative Verbs
+5D,43,זָמַר,"(Pi) to sing, praise, make music, play an instrument",Verb,Action and Stative Verbs
+5D,42,זָרָה,"(Q, Pi) to scatter, fan, winnow",Verb,Movement Verbs
+5D,42,חָרְבָּה,"desolation, ruin, waste",Noun,
+5D,42,טַף,children,Noun,Family and Tribe
+5D,42,יָחַל,"(Pi, Hi) to wait, hope",Verb,Action and Stative Verbs
+5D,43,יָסַד,"(Q) to fix, establish, appoint, found",Verb,Action and Stative Verbs
+5D,42,יָסַר,"(Q) to admonish, instruct, discipline, correct, chasten",Verb,Action and Stative Verbs
+5D,42,יָתוֹם,orphan,Noun,Family and Tribe
+5D,42,כִּנּוֹר,"lyre, harp",Noun,
+5D,43,לוּהַ,"tablet, board, plank",Noun,Building and Travel
+5D,42,מַחֲלֹקֶת,"division, portion",Noun,Measurement and Numbers
+5D,42,מְנוֹרָה,lampstand,Noun,Building and Travel
+5D,42,מַעֲלָל,"deed, practice, act (usu. bad)",Noun,
+5D,42,מְעָרָה,cave,Noun,Building and Travel
+5D,43,מָתַי,when?,Adverb,
+5D,42,נָוֶה,"pasturage, abode of shepherd or flocks",Noun,Plants and Animals
+5D,43,נִיחֹחַ,"soothing, pleasing, tranquilizing",Noun,
+5D,43,נֵצַח,"eminence, everlastingness, glory",Noun,Worship/Cultic
+5D,43,נָקִי,"blameless, innocent, exempt, free from",Noun,"People, Law, and Covenant"
+5D,42,נָתַץ,(Q) to pull down (Pi) to tear down,Verb,Action and Stative Verbs
+5D,43,פָּשַׁט,"(Q) to take off, strip off, rush/dash out",Verb,Action and Stative Verbs
+5D,42,צַוָּאר,"neck, back of neck",Noun,Humans and Anatomy
+5D,43,קִנְאָה,"passion, jealousy, zeal, ardour",Noun,
+5D,43,רְחוֹב,"public square, street",Noun,Building and Travel
+5D,42,שָׁנִי,"scarlet, crimson",Noun,
+5D,43,תְּבוּאָה,"produce, harvest",Noun,Plants and Animals
+5D,42,תְּבוּנָה,"intelligence, skill, understanding",Noun,Humans and Anatomy
+5E,40,אַהֲבָה,love,Noun,Personal Interactions
+5E,41,אָזַן,"(Hi) to listen, hear",Verb,Action and Stative Verbs
+5E,41,אָחוֹר,"back part, backwards, behind, background",Noun,
+5E,41,אָמַץ,"(Q) to be strong, bold; (Pi) to make firm, strengthen, assure, secure, harden, make obstinate; (Hithp) to strengthen oneself, confirm oneself; (Hi) to exhibit strength, be strong",Verb,Action and Stative Verbs
+5E,41,אָרַב,"(Q) to lie in ambush, lie in wait",Verb,Action and Stative Verbs
+5E,40,אֲשֵׁרָה,Asherah (goddess or cult-pole),Proper Noun,
+5E,40,בָּלַע,"(Q, Pi) to swallow, engulf",Verb,Action and Stative Verbs
+5E,41,בְּרִיחַ,"bar (of wood, of iron, of a city gate, of a door)",Noun,Building and Travel
+5E,40,גָּבֹהַ,"high, exalted, lofty, tall",Noun,
+5E,41,גַּן,"garden, enclosure",Noun,Building and Travel
+5E,40,דָּגָן,"corn, grain",Noun,Plants and Animals
+5E,40,דַּי,"sufficiency, enough",Noun,
+5E,41,חָמַל,"(Q) to spare, have compassion",Verb,Action and Stative Verbs
+5E,41,חָרוֹן,(burning of) anger,Noun,
+5E,40,חָרַף,"(Q) to taunt, reproach",Verb,Personal Interactions
+5E,41,יָפֶה,"beautiful, handsome",Adjective,Humans and Anatomy
+5E,40,כָּבֵד,"heavy, weighty, abundant, rich, oppressive,",Noun,
+5E,41,מוֹט,"(Q) to totter, waver, slip",Verb,Action and Stative Verbs
+5E,41,נוּעַ,"(Q) to shake, totter, waver, stagger",Verb,Action and Stative Verbs
+5E,40,נָחָה,"(Q) to lead, bring; (Hi) to lead, guide",Verb,Movement Verbs
+5E,40,נָטַשׁ,"(Q) to leave, forsake, permit",Verb,Movement Verbs
+5E,41,נָקָה,"(Ni) to be free of, be without guilt, be exempt from; (Pi) leave unpunished, hold innocent",Verb,"People, Law, and Covenant"
+5E,40,עֹל,yoke,Noun,Plants and Animals
+5E,41,פָּשַׁע,"(Q) to rebel, revolt, transgress",Verb,Action and Stative Verbs
+5E,41,צָדֵק,"(Q) to be in the right, to be justified, just",Verb,Action and Stative Verbs
+5E,40,צִפּוֹר,"bird, fowl",Noun,Plants and Animals
+5E,41,רָגַז,"(Q) to quake, quiver, be agitated",Verb,Action and Stative Verbs
+5E,41,שֹׂנֵא,enemy (participle),Noun,Personal Interactions
+5E,41,שָׁקַט,"(Q) to be quiet, at peace",Verb,Action and Stative Verbs
+5E,41,תּוֹלֵעָה,worm,Noun,Plants and Animals
+5F,39,אָבַל,"to mourn, lament",Verb,Personal Interactions
+5F,38,אֵיפָה,ephah (measure of grain),Noun,Measurement and Numbers
+5F,38,"אָנָה , אָן",where? to where? (whither?),Adverb,
+5F,39,אַרְגָּמָן,purple thread or cloth,Noun,Clothing
+5F,39,בָּהַל,"(Ni) to be disturbed, terrified, be in haste; (Pi, Hi) to terrify, hasten",Verb,Action and Stative Verbs
+5F,39,גָּנַב,to steal,Verb,Action and Stative Verbs
+5F,38,זַיִת,"olive, olive tree",Noun,Plants and Animals
+5F,38,חֶדֶר,"room, chamber",Noun,Building and Travel
+5F,38,חֵיק,"bosom, breast of a garment, chest, lap",Noun,Humans and Anatomy
+5F,39,חֵפֶץ,"delight, pleasure",Noun,
+5F,39,חָרַד,"to tremble, quake, shudder, be terrified",Verb,Action and Stative Verbs
+5F,38,חָרָשׁ,"craftsman, engraver,",Noun,Humans and Anatomy
+5F,38,כָּלַם,"(N, Hoph) to be humiliated, shamed, disgraced; (Hiph) to humiliate",Verb,Action and Stative Verbs
+5F,38,מָטָר,rain,Noun,Heavens and Earth
+5F,38,מְלֹא,"fulness, that which fills",Noun,
+5F,38,מִלָּה,"word, speech, utterance",Noun,
+5F,39,מַר,"(adj) bitter, (subst) bitterness",Adjective,
+5F,39,מִרְמָה,"deceit, treachery, fraud",Noun,
+5F,39,מָשִׁיחַ,"Messiah, anointed one",Proper Noun,Worship/Cultic
+5F,39,מָשָׁל,"saying, proverb, parable",Noun,Worship/Cultic
+5F,38,פֹּעַל,"deed, work",Noun,Humans and Anatomy
+5F,39,צֵלָע,"rib, side",Noun,Humans and Anatomy
+5F,39,קָהַל,(Ni) to assemble,Verb,Movement Verbs
+5F,39,רַחֲמִים,compassion(s),Noun,Personal Interactions
+5F,39,שַׁמָּה,"astonishment, horror",Noun,
+5F,38,שֵׁשׁ,byssus (Egyptian linen),Noun,Clothing
+5F,39,תְּאֵנָה,"fig, fig tree",Noun,Plants and Animals
+5F,39,תּוֹלֵדוֹת,"generations, the account of a man and his descendents",Noun,Family and Tribe
+5F,38,תִּירוֹשׁ,"grape juice, new wine",Noun,Food
+5G,36,אִי,"coast, region",Noun,Heavens and Earth
+5G,37,אָלָה,"a curse, an oath",Noun,Worship/Cultic
+5G,37,אִמְרָה,"word, utterance, speech",Noun,Personal Interactions
+5G,36,אָשַׁם,"to trespass, wrong, injure, to be guilty, to be held guilty, to bear punishment; (Ni) to suffer punishment; (Hi) to declare guilty.",Verb,Action and Stative Verbs
+5G,37,בְּאֵר,"well, pit",Noun,Building and Travel
+5G,37,בִּינָה,"insight, understanding",Noun,
+5G,37,גָּמַל,"to deal out to, do to, wean a child, ripen, (Ni) to be weaned",Verb,Action and Stative Verbs
+5G,37,חָסָה,to seek refuge,Verb,Action and Stative Verbs
+5G,36,חָרֵב,"(stat) to be dry, dried up",Verb,Action and Stative Verbs
+5G,37,טֻמְאָה,uncleaness (ritual),Noun,Worship/Cultic
+5G,36,יָקָר,"rare, costly, precious, splendid",Noun,
+5G,36,יֵשַׁע,"salvation, liberation, deliverance, rescue",Noun,
+5G,37,כּוֹכָב,star,Noun,Heavens and Earth
+5G,37,כּוּל,"to seize (Pilpel) to sustain, contain; (Hi) to contain, hold in, endure",Verb,Action and Stative Verbs
+5G,36,כָּנַע,"(Ni) to be humbled, subdued, to humble oneself; (Hi) to humble, subdue",Verb,Action and Stative Verbs
+5G,36,כָּרַע,"to bow, bow down, kneel (for various purposes)",Verb,Movement Verbs
+5G,37,לָקַט,"to gather, glean, pick up",Verb,Movement Verbs
+5G,37,מִבְצָר,"fortress, fortified city, fortification, stronghold",Noun,Building and Travel
+5G,36,מוּל,"(prep) in front of, opposite; (noun) the front",Preposition,
+5G,36,מוֹפֵת,"sign, omen, wonder",Noun,Worship/Cultic
+5G,36,מָעוֹז,"place or means of safety, protection, fortress, refuge",Noun,Building and Travel
+5G,36,מַצֵּבָה,"sacred pillar or monument, stump of a tree",Noun,Building and Travel
+5G,36,מָשַׁךְ,"to draw, pull, drag",Verb,Movement Verbs
+5G,37,גוּף,(Hi) move back and forth,Verb,Action and Stative Verbs
+5G,36,נֵכָר,foreign land,Noun,Lands and Warfare
+5G,36,נָסָה,(Pi) (put someone to the) test,Verb,Action and Stative Verbs
+5G,37,עֵדֶר,"flock, herd",Noun,Plants and Animals
+5G,36,עֳנִי,"misery, affliction, poverty",Noun,
+5G,37,עָשַׁק,"to oppress, wrong, extort",Verb,Action and Stative Verbs
+5G,37,עֹשֶׁר,riches,Noun,
+5G,37,פִּלֶגֶשׁ; פִּילֶגֶשׁ,concubine,Noun,Family and Tribe
+5G,37,צָפָה,"to look out, spy, keep watch",Verb,Action and Stative Verbs
+5G,36,קָשֶׁה,"difficult, hard, severe",Noun,
+5G,37,שׁוֹעֵר,"gatekeeper, porter",Noun,Humans and Anatomy
+5G,36,שָׂחַק,play (act) clumsy; laugh,Verb,Personal Interactions
+5G,36,תֵּבֵל,world; continent(s),Noun,Heavens and Earth
+5G,36,תְּהוֹם,"(n) deep, abyss, ocean depth",Noun,Heavens and Earth
+5G,36,תְּרוּעָה,shout of alarm or joy,Noun,
+5H,35,אוֹפַן,wheel,Noun,Building and Travel
+5H,34,אָרַךְ,"to be long; (Hi) to prolong, make long, grow long",Verb,Action and Stative Verbs
+5H,34,אָתוֹן,female donkey,Noun,Plants and Animals
+5H,34,גֹּרֶן,threshing floor,Noun,Building and Travel
+5H,35,גֶּשֶׁם,"rain, shower",Noun,Heavens and Earth
+5H,34,"דָּג,דָּגָה",fish,Noun,Plants and Animals
+5H,34,הָמָה,"(Q) to growl, groan, murmur, roar, make noise or sound",Verb,Action and Stative Verbs
+5H,35,זֹנָה,a prostitute (fs participle of זָנָה to fornicate),Noun,Humans and Anatomy
+5H,34,זָרַק,"(Q) to scatter, toss, throw",Verb,Movement Verbs
+5H,34,חָבָא,"(Ni) to hide oneself, to be hidden",Verb,Action and Stative Verbs
+5H,35,חָזוֹן,vision,Noun,
+5H,35,חֵטְא,"fault, sin",Noun,Worship/Cultic
+5H,35,חָסִיד,"faithful, devout, kind, pious, godly",Adjective,Worship/Cultic
+5H,34,יָהַב,"(Q) to give, set, provide",Verb,Action and Stative Verbs
+5H,34,יָנַק,"(Q) to suck; (subst) nursing baby; (Hi) to give suck to, to nurse",Verb,Action and Stative Verbs
+5H,34,יָרֵךְ,"thigh, loin, side",Noun,Humans and Anatomy
+5H,35,כָּכָה,"thus, so",Adverb,
+5H,34,כַּלָּה,"daughter-in-law, bride",Noun,Family and Tribe
+5H,35,לְאֹם,people,Noun,Family and Tribe
+5H,34,מָחָה,"(Q) to wipe, wipe out, blot out",Verb,Action and Stative Verbs
+5H,35,מַלְכָּה,queen,Noun,Humans and Anatomy
+5H,35,מָעַל,"(Q) to act unfaithfully or treacherously, be unfaithful",Verb,Action and Stative Verbs
+5H,35,מִשְׁנֶה,"a double, copy, second thing",Noun,Measurement and Numbers
+5H,35,נָקַם,"(Q) to avenge, take vengence; (Ni, Hith) to avenge oneself; (Ho) to be avenged.",Verb,Movement Verbs
+5H,35,סֵתֶר,"hiding place, garment, covering",Noun,Clothing
+5H,34,עֶבְרָה,"overflow, arrogance, outburst of fury",Noun,
+5H,35,עֵגֶל,calf,Noun,Plants and Animals
+5H,34,עַם,"kinsman, relative, people",Noun,Family and Tribe
+5H,35,עָרֵל,"uncircumcised, having the foreskin",Noun,Humans and Anatomy
+5H,34,צָפַן,"(Q) to hide, treasure up",Verb,Action and Stative Verbs
+5H,35,צָרַעַת,skin disease (not leprosy),Noun,
+5H,34,צָרַף,"(Q) to smelt, refine",Verb,Action and Stative Verbs
+5H,34,קָנָא,"(Pi) to be jealous, zealous",Verb,Personal Interactions
+5H,35,קָצָה,"end, border",Noun,Lands and Warfare
+5H,35,קָצַר,"(Q) to reap, harvest",Verb,Plants and Animals
+5H,35,רָשַׁע,"(Q) to be guilty, wicked; (Hi) to condemn as guilty, act wickedly",Verb,Action and Stative Verbs
+5H,34,שְׂעֹרָה,barley,Noun,Plants and Animals
+5H,34,תִּקְוָה,hope,Noun,Worship/Cultic
+5H,34,תִּשְׁוּעָה,"salvation, deliverance",Noun,Worship/Cultic
+5I,33,אַרְמוֹן,palace,Noun,Building and Travel
+5I,33,גְּדוּד,"raiding party, band",Noun,Lands and Warfare
+5I,33,חָבַשׁ,"(Q) to bind, bind on, saddle (an animal for riding)",Verb,Action and Stative Verbs
+5I,32,חִנָּם,(adv) without compensation; in vain,Adverb,
+5I,33,חָתַן,(Q) to become related by marriage; (Qal part) father- (mother-) in-law,Verb,Family and Tribe
+5I,32,טַבָּח,"butcher, cook, guardsman",Noun,Humans and Anatomy
+5I,32,טוּב,"(n) goodness, the best",Noun,
+5I,33,יוֹנָה,dove,Noun,Plants and Animals
+5I,33,יְמָנִי,right (hand); southern,Noun,Humans and Anatomy
+5I,32,יָרָה,"(Q) to throw, shoot (I); (Hi) to instruct, teach (II)",Verb,Movement Verbs
+5I,32,כָּחַד,"(Pi, Hi) to hide, efface; (Ni) to be hidden",Verb,Action and Stative Verbs
+5I,32,כֶּלֶב,dog,Noun,Plants and Animals
+5I,32,לְבוּשׁ,garment; (collec) clothes,Noun,Clothing
+5I,32,מְאוּמָה,anything (at all),Noun,
+5I,32,מוּל,(Q) to circumcise,Verb,Action and Stative Verbs
+5I,32,מִזְרָק,sprinkling basin,Noun,Worship/Cultic
+5I,32,מָחֳרָת,(n) the following day; (adv) on the next day,Noun,Time and Seasons
+5I,32,מֵעֶה,"(du cstr) bowels, abdomen",Noun,Humans and Anatomy
+5I,32,מַעֲשֵׂר,tithe; (tenth part),Noun,Measurement and Numbers
+5I,32,נָשַׁק,(Q) to kiss,Verb,Action and Stative Verbs
+5I,32,עַוְלָה,wickedness,Noun,Worship/Cultic
+5I,32,עֻמָּה,"(Prep לְ; adv) just like; (prep) close to, at",Preposition,
+5I,33,עֵרֶךְ,"layer, row, accessories",Noun,
+5I,33,עֹרֶף,"neck, nape",Noun,Humans and Anatomy
+5I,33,עֵ֫שֶׁב,"green plants, herbs",Noun,Plants and Animals
+5I,33,פְּנִימִי,inner,Noun,
+5I,33,פְּקֻדָּה,"appointment, service",Noun,
+5I,32,פָּרַח,to sprout; break out,Verb,Action and Stative Verbs
+5I,33,צַד,side,Noun,
+5I,33,צָמַח,"(Q) to sprout, spring up",Verb,Action and Stative Verbs
+5I,33,קְלָלָה,(n) curse,Noun,Worship/Cultic
+5I,32,"רֶחֶם, רַחַם",womb,Noun,Humans and Anatomy
+5I,32,רִמּוֹן,pomegranate,Noun,Plants and Animals
+5I,33,רִנָּה,a shout of joy,Noun,
+5I,32,"שְׁבוּת, שְׁבִית","captivity, imprisonment",Noun,Lands and Warfare
+5I,33,שֹׁרֶשׁ,root,Noun,Plants and Animals
+5I,32,תּוֹדָה,"(song, sacrifice of) thanksgiving",Noun,Worship/Cultic
+5I,32,תַּחְתִּי; תַּחְתּוֹן,"(adj) lower, lowest; (n) the lowest",Adjective,
+5J,31,"אַי, אֵי",(interr) where?,Particle,
+5J,31,אֳנִיָּה,"ship, boat",Noun,
+5J,31,אֶצְבַּע,finger,Noun,Humans and Anatomy
+5J,31,בְּכִי,weeping,Noun,
+5J,31,גָּג,"roof, top",Noun,Building and Travel
+5J,31,דָּמָה,"(Q) to be (a)like, resemble",Verb,Action and Stative Verbs
+5J,31,חַלּוֹן,window (-opening),Noun,Building and Travel
+5J,31,טַל,"dew, light rain",Noun,Heavens and Earth
+5J,31,טָמַן,(Q) to hide; set up secretly,Verb,Action and Stative Verbs
+5J,31,יָלַל,"(Hi) to howl, wail",Verb,Action and Stative Verbs
+5J,31,כּוֹס,(drinking-) cup,Noun,Food
+5J,31,כָּזָב,"(n) lie, falsehood",Noun,
+5J,31,כִּלְיָה,(pl) kidney(s),Noun,Humans and Anatomy
+5J,31,כְּפִיר,young lion,Noun,Plants and Animals
+5J,31,מִין,"kind, species",Noun,Plants and Animals
+5J,31,נָאַף,(Q) to commit adultery,Verb,Action and Stative Verbs
+5J,31,נָדַר,to make a vow,Verb,Personal Interactions
+5J,31,נָחָשׁ,serpent,Noun,Plants and Animals
+5J,31,סֻכָּה,thicket; hut,Noun,Plants and Animals
+5J,31,עָב,cloud(s),Noun,Heavens and Earth
+5J,31,עָצוּם,"(adj) mighty, vast",Adjective,
+5J,31,פֶּסֶל,"idol, image",Noun,Worship/Cultic
+5J,31,צוּר,"to tie up, gather",Verb,Movement Verbs
+5J,31,שְׁבוּעָה,(n) oath,Noun,"People, Law, and Covenant"
+5J,31,שָׁטַף,"to wash away, wash off",Verb,Action and Stative Verbs
+5J,31,שִׂמְלָה,"mantle, wrapper",Noun,
+5K,30,בָּחַן,to test,Verb,Action and Stative Verbs
+5K,29,בַּמָה; בַּמֶּה,(interr pro) how?,Pronoun,
+5K,29,בָּרָד,hail (precipitation),Noun,Heavens and Earth
+5K,30,בֹּשֶׂם; בֶּשֶׂם,"balsam, shrub",Noun,Plants and Animals
+5K,30,בֹּשֶׁת,shame,Noun,Personal Interactions
+5K,30,גָּזַל,"to tear off, pull off, seize",Verb,Movement Verbs
+5K,30,הָדָר,ornament,Noun,Clothing
+5K,29,זִמָּה,plan; infamy,Noun,
+5K,30,חִטָּה,wheat,Noun,Plants and Animals
+5K,29,חָמַם,"(Q) to be(come) warm, hot",Verb,Action and Stative Verbs
+5K,29,חֲצֹצְרָה,trumpet,Noun,Lands and Warfare
+5K,29,חֵרֶם,"ban, (what is) banned",Noun,
+5K,29,חָשַׂךְ,"(Q) to restrain, withhold",Verb,Action and Stative Verbs
+5K,29,יָעַד,"(Q) to designate, appoint",Verb,Action and Stative Verbs
+5K,30,כְּלִמָּה,"(n) disgrace, insult",Noun,Personal Interactions
+5K,29,כֻּתֹּנֶת,tunic,Noun,Clothing
+5K,29,לָבָן,(adj) white,Adjective,
+5K,30,מַאֲכָל,food; fodder,Noun,Food
+5K,29,מִטָּה,"couch, bed",Noun,
+5K,29,מָנָה,(v) to count,Verb,Measurement and Numbers
+5K,29,מָנַע,"(Q) to retain, withhold",Verb,Action and Stative Verbs
+5K,29,מַעַל,unfaithfulness,Noun,
+5K,30,נִדָּה; נִידָה,menstrual flow; excretion,Noun,
+5K,30,נָהַג,"(Q) to drive, lead",Verb,Movement Verbs
+5K,30,סִיר,(cooking-) pot,Noun,
+5K,30,סָפַד,"to mourn, sound a lament",Verb,Action and Stative Verbs
+5K,29,עָלַם,(Qal part) secret (faults); (Ni) be hidden,Verb,Action and Stative Verbs
+5K,29,עִשָּׂרוֹן,tenth part,Noun,Measurement and Numbers
+5K,29,עַתּוּד,"(pl) ram, he-goat; (met) leader",Noun,Plants and Animals
+5K,30,פִּנָּה,corner,Noun,Building and Travel
+5K,29,פָּרָה,(Q) to bear fruit,Verb,Plants and Animals
+5K,29,קֶצֶף,"anger, rage, wrath",Noun,
+5K,30,קִרְיָה,"city, town",Noun,Building and Travel
+5K,30,רָבַץ,"(Q) to lie down, crouch",Verb,Action and Stative Verbs
+5K,30,רָעַשׁ,"(Q) to quake, shake",Verb,Action and Stative Verbs
+5K,30,שְׁמִינִי,(ord) eighth,Numeral,Measurement and Numbers
+5K,29,שֵׂעָר,hair (collective),Noun,Humans and Anatomy
+5K,29,שָׁפֵל,"(stat) be low, sink",Verb,Movement Verbs
+5K,29,שִׁקּוּץ,abominable idol; abomination,Noun,Worship/Cultic
+5K,29,שָׂרִיד,survivor,Noun,
+5K,30,תְּנוּפָה,"waving, shaking; (ext) wave-offering",Noun,Worship/Cultic
+5L,27,אַדִּיר,"(adj) mighty, (n, pl) nobles",Adjective,
+5L,27,אָוָה,"(Ni) to be beautiful, lovely; (Pi) to want, crave",Verb,Action and Stative Verbs
+5L,27,אֱוִיל,"(adj) foolish; (n) fool, simpleton",Adjective,
+5L,27,בַּז,(n) plunder (act and objects of),Noun,Lands and Warfare
+5L,27,בְּלִיַּעַל,wickedness,Noun,Worship/Cultic
+5L,28,בָּשַׁל,"to ripen, cook; (Pi) cook, boil",Verb,Food
+5L,27,זָקִן,(stat) to be old,Verb,Humans and Anatomy
+5L,28,חָבַר,"(Qal) to become allies, unite",Verb,Action and Stative Verbs
+5L,27,חָכַם,to be(come) wise,Verb,Action and Stative Verbs
+5L,28,חָלַם,"to be(come) strong; (Qal, Hi) to dream",Verb,Action and Stative Verbs
+5L,27,חָלַף,"to pass by, to follow each other",Verb,Movement Verbs
+5L,27,חֲמִישִׁי,(ord) fifth; (fract) one-fifth,Numeral,Measurement and Numbers
+5L,27,חָקַר,"to spy out, investigate",Verb,Action and Stative Verbs
+5L,28,חָתַם,"to seal up, confirm",Verb,Action and Stative Verbs
+5L,27,יוֹבֵל,ram; year of jubilee,Noun,Time and Seasons
+5L,27,יָצַת,"to kindle, burn up",Verb,Action and Stative Verbs
+5L,27,יָרֵחַ,moon,Noun,Heavens and Earth
+5L,28,יְרֵכָה,"rear, back side",Noun,Building and Travel
+5L,27,יָשַׁר,to be (go) straight,Verb,Action and Stative Verbs
+5L,27,כַּפֹּרֶת,"(performance of) reconciliation; (trad) cover, lid",Noun,
+5L,28,לִיץ,"to boast; (Hi) mock, be a spokesman (interpreter)",Verb,Personal Interactions
+5L,27,מָבוֹא; מוֹבָא,entrance,Noun,Building and Travel
+5L,27,מוֹצָא,"outlet, what comes out",Noun,
+5L,27,מוֹקֵשׁ,trap,Noun,
+5L,27,מוֹשִׁיעַ,"helper, deliverer",Noun,
+5L,28,מֶלַח,salt,Noun,Food
+5L,27,מְסִלָּה,"road, highway",Noun,Building and Travel
+5L,28,מְעִיל,robe,Noun,Clothing
+5L,27,נֵבֶל,harp,Noun,
+5L,27,נְדָבָה,free will; voluntary gift,Noun,"People, Law, and Covenant"
+5L,27,נָדַד,"to flee, wander",Verb,Movement Verbs
+5L,27,נָדִיב,willing; (one who is) noble,Adjective,
+5L,27,נוּד,to wander,Verb,Movement Verbs
+5L,27,נְקָמָה,"vengeance, revenge",Noun,
+5L,27,נָתַק,to tear away; draw (one) away,Verb,Movement Verbs
+5L,27,עוּף,fly; (Po'l) soar; (Hithpo'l) fly off,Noun,
+5L,28,עֲשִׂירִי,(ord) tenth; (fract) one-tenth,Numeral,Measurement and Numbers
+5L,28,פֶּחָה,governor,Noun,Humans and Anatomy
+5L,27,פָּלַט,to escape,Verb,Movement Verbs
+5L,28,פְּלֵיטָה,(n) escape,Noun,
+5L,28,פָּתָה,"to be inexperienced, naïve",Verb,Action and Stative Verbs
+5L,27,קָרָה,"to happen, come about",Verb,Movement Verbs
+5L,28,קָשָׁה,"to be hard, heavy",Verb,Action and Stative Verbs
+5L,28,רְכוּשׁ,"property, goods",Noun,
+5L,27,שׂוּשׂ,to rejoice,Verb,Action and Stative Verbs
+5L,28,שִׁטָּה,"acacia (tree, wood)",Noun,Plants and Animals
+5L,27,שָׂטָן,"accuser, adversary; the Satan",Noun,Personal Interactions
+5L,28,שָׂכָר,"wages, reward",Noun,
+5L,28,שָׁלֵם,"(adj) uninjured, safe; complete",Adjective,
+5L,27,שְׁמוּעָה,"news, report",Noun,Personal Interactions
+5L,27,שִׁשִּׁי,(ord) sixth; (fract) one-sixth,Numeral,Measurement and Numbers
+5L,28,תֵּבָה,"ark, chest",Noun,Worship/Cultic
+5L,27,תָּלָה,to hang,Verb,Action and Stative Verbs
+5L,28,תֹּם,"integrity, completeness",Noun,
+5M,25,אִוֶּלֶת,foolishness,Noun,
+5M,25,אֵיפֹה,(interr) where?,Particle,
+5M,25,אָמֵן,(interj) amen! surely!,Interjection,
+5M,25,אָפָה,to bake,Verb,Food
+5M,25,אֵפוֹא,"(adv) then, so",Adverb,
+5M,25,בָּצוּר,(Qal p.participle) impregnable,Verb,Action and Stative Verbs
+5M,25,בֶּרֶךְ,knee,Noun,Humans and Anatomy
+5M,25,גָּבַר,to excel; (Hi) be strong,Verb,Action and Stative Verbs
+5M,25,דְּמוּת,likeness,Noun,Humans and Anatomy
+5M,25,הָגָה,"to mutter, growl",Verb,Action and Stative Verbs
+5M,26,הוֹן,wealth,Noun,
+5M,25,חִיצוֹן,(adj) outer,Adjective,
+5M,25,חָצֵב,"to quarry, hew (out)",Verb,Action and Stative Verbs
+5M,25,חָרַשׁ,"to plow, engrave",Verb,Action and Stative Verbs
+5M,25,חֹשֶׁן,breast-plate (of the high priest),Noun,Clothing
+5M,26,טוּר,"row, course (of building stone)",Noun,
+5M,25,טָרַף,to tear in pieces,Verb,Action and Stative Verbs
+5M,26,יָגַע,to grow weary,Verb,Action and Stative Verbs
+5M,26,עִוֵּר,(adj) blind,Adjective,Humans and Anatomy
+5M,25,יָשַׁן,to sleep,Verb,Action and Stative Verbs
+5M,25,כַּעַס; כַּעַשׂ,"irritation, anger",Noun,
+5M,26,מַגֵּפָה,"plague, torment",Noun,Humans and Anatomy
+5M,25,מְכוֹנָה,"place, abode; stand",Noun,
+5M,25,מָסָךְ,"covering, curtain",Noun,Worship/Cultic
+5M,26,מַסֵּכָה,"a cast image, a drink offering",Noun,Worship/Cultic
+5M,25,מָצוֹר,affliction(I); fortification (II),Noun,
+5M,25,מָרַד,to rebel,Verb,Action and Stative Verbs
+5M,25,נֵזֶר,consecration (of the Nazirite),Noun,Worship/Cultic
+5M,25,נֹכַח,"(prep) in front of, opposite; (n) what lies opposite",Preposition,
+5M,26,נֶשֶׁר,"eagle, vulture",Noun,Plants and Animals
+5M,26,נָתִיב; נְתִיבָה,(s m; f) path,Noun,Building and Travel
+5M,25,סוּג,"to deviate, be disloyal",Verb,Action and Stative Verbs
+5M,25,סַף,threshold,Noun,Building and Travel
+5M,25,עֲגָלָה,"wagon, cart",Noun,Building and Travel
+5M,25,עֲלִילָה,"deed, action",Noun,
+5M,25,עָשָׁן,smoke,Noun,Heavens and Earth
+5M,25,פַּח,bird trap,Noun,Plants and Animals
+5M,25,פָּחַד,to tremble,Verb,Action and Stative Verbs
+5M,26,פָּרַד,"(Qal Pass. Ptc.) outspread; (Ni) to divide, (intrans) separate",Verb,Action and Stative Verbs
+5M,25,פָרֹכֶת,curtain,Noun,Worship/Cultic
+5M,25,פִּתְאֹם,(adv) suddenly,Adverb,
+5M,25,צוֹם,"(act, time of) fasting",Noun,Food
+5M,26,קָדַם,"(Pi) to be in front, walk at the head",Verb,Movement Verbs
+5M,26,רָגַל,to slander; (Pi) spy out; (Tifel) teach (someone) to walk,Verb,Movement Verbs
+5M,25,רָדָה,to tread (winepress); rule,Verb,Action and Stative Verbs
+5M,25,רָחַב,"to open wide, to broaden",Verb,Action and Stative Verbs
+5M,26,שְׁאָר,"remainder, remnant",Noun,
+5M,25,שֹׁד,"violence, destruction",Noun,
+5M,25,שֹׁטֵר,"officer, recordkeeper",Noun,Humans and Anatomy
+5M,25,שָׁלַף,to draw (sword); to take off,Verb,Movement Verbs
+5M,25,שִׁלְשׁוֹם,"(idiom) three (days ago, day before yesterday)",Idiom/Phrase,Measurement and Numbers
+5M,25,תּוּר,"to go about, to explore: (ext) spy out",Verb,Movement Verbs
+5M,25,תְּחִנָה,"supplication (for mercy); pardon, mercy",Noun,Personal Interactions
+5N,24,אֵבֶל,(rites of) mourning,Noun,
+5N,24,אוֹי,(interj) woe!; (n) woe,Interjection,
+5N,24,אֵיד,"disaster, calamity",Noun,
+5N,24,אַרְבֶּה,locust,Noun,Plants and Animals
+5N,24,בָּשַׂר,(Pi) bring news,Verb,Movement Verbs
+5N,24,גָּוַע,"expire, die, perish",Noun,
+5N,24,דִּין,(v) judge; bring justice,Verb,"People, Law, and Covenant"
+5N,24,הוֹד,"height, majesty",Noun,
+5N,24,זִכָּרוֹן,reminder,Noun,
+5N,24,חוּס,"pity, be troubled about",Noun,
+5N,24,חֳלִי,"illness, suffering",Noun,
+5N,24,חֶלְקָה,"piece of land, plot of ground",Noun,Lands and Warfare
+5N,24,יָתֵד,"peg, tent-peg",Noun,Building and Travel
+5N,24,כָּבָה,be extinguished,Verb,Action and Stative Verbs
+5N,24,כֹּתֶרֶת,(column-) capital,Noun,Building and Travel
+5N,24,מְלוּכָה,kingship,Noun,
+5N,24,נָאַץ,"reject, disdain",Noun,
+5N,24,נָזָה,be sprinkled; (intrans) spatter,Verb,Action and Stative Verbs
+5N,24,נָסַךְ,pour out,Verb,Action and Stative Verbs
+5N,24,נְשָׁמָה,blowing; breath,Noun,Humans and Anatomy
+5N,24,סַעַר; סְעָרָה,"(s m; f) gale, windstorm",Noun,Heavens and Earth
+5N,24,פָּלִיט; פּלֵיט,fugitive(s),Noun,Humans and Anatomy
+5N,24,פִּקּוּדִים,"directions, orders",Noun,
+5N,24,רָבַב,"be(come) great, much, numerous",Verb,Action and Stative Verbs
+5N,24,רוּשׁ,to be poor,Verb,Action and Stative Verbs
+5N,24,שַׁחַר,dawn,Noun,Time and Seasons
+5N,24,שָׁכֹל,(stat) be bereaved (of children),Verb,Action and Stative Verbs
+5N,24,שָׁנָה,(v) change; repeat,Verb,Action and Stative Verbs
+5N,24,תּוֹכַחַת,reprimand,Noun,
+5N,24,תֵּימָן,south; southern area,Noun,Heavens and Earth
+5O,23,"אָבִיר, אַבִּיר","strong, powerful",Noun,
+5O,23,בַּד,linen,Noun,Clothing
+5O,23,בֶּצַע,a piece cut off,Noun,
+5O,23,גָּלַח,(Pi) shave,Verb,Action and Stative Verbs
+5O,23,דִּמְעָה,(s collec) tears,Noun,Humans and Anatomy
+5O,23,זֵכֶר,"mention, remembrance",Noun,
+5O,23,חוֹל,"sand, mud",Noun,Heavens and Earth
+5O,23,חָסֵר,"(stat) lack, be lacking; diminish",Verb,Action and Stative Verbs
+5O,23,חָפַר,to dig,Verb,Action and Stative Verbs
+5O,23,חָפַשׂ,"to search out, check",Verb,Action and Stative Verbs
+5O,23,יָעַל,"(Hi) help, be of use",Verb,Action and Stative Verbs
+5O,23,יִצְהָר,olive oil,Noun,Food
+5O,23,כָּהַן,(Pi) perform the duties of the priest,Verb,Worship/Cultic
+5O,23,כּיּוֹר,"(wash-) basin, pot",Noun,Food
+5O,23,"מָדוֹן, מִדְיָם","quarrel, dispute",Noun,Personal Interactions
+5O,23,מִישׁוֹר,"level ground, plain",Noun,Heavens and Earth
+5O,23,מַס,"compulsory labor, corvée",Noun,
+5O,23,מַעְיָן,spring,Noun,Heavens and Earth
+5O,23,מִקְרָא,convocation,Noun,
+5O,23,מְרִי,obstinacy,Noun,
+5O,23,נָגַשׂ,"to beat, drive",Verb,Action and Stative Verbs
+5O,23,נָקַב,pierce; designate,Verb,Action and Stative Verbs
+5O,23,סָכַךְ,"to isolate, cover",Verb,Action and Stative Verbs
+5O,23,עַז,"(adj) defiant, shameless",Adjective,
+5O,23,עֲטָרָה,"wreath, crown",Noun,Clothing
+5O,23,עָשִׁיר,"(adj) wealthy, rich",Adjective,
+5O,23,פָּסִיל,(pl) idols,Noun,Worship/Cultic
+5O,23,צָהֳרַיִם,"(du) midday, noon",Noun,Time and Seasons
+5O,23,שֹׁחַד,gift; bribe,Noun,
+5O,23,שַׁחַת,"pit(-fall), grave",Noun,
+5O,23,שֵׁכָר,"intoxicating drink, (beer?)",Noun,Food
+5O,23,שֵׁנָה,sleep,Noun,
+5O,23,תּוֹצָאוֹת,(pl) exits; starting point,Noun,
+5O,23,תְּחִלָּה,beginning,Noun,Time and Seasons
+5O,23,תְּמוֹל,yesterday,Noun,Time and Seasons
+5P,22,אַיִל,gatepost (?),Noun,Building and Travel
+5P,22,"אַיָּל, אַיָּלָה",fallow deer (buck; doe),Noun,Plants and Animals
+5P,22,אֵפֶר,"ashes, dust",Noun,Heavens and Earth
+5P,22,גָּדַע,to cut off,Verb,Action and Stative Verbs
+5P,22,דָּמַם,to stand (keep) still,Verb,Movement Verbs
+5P,22,דָּת,"regulation, law",Noun,"People, Law, and Covenant"
+5P,22,הִין,hin (liquid measure),Noun,Measurement and Numbers
+5P,22,זָהַר,(Ni) be warned; (Hi) warn,Verb,Action and Stative Verbs
+5P,22,זַעַם,(n) curse,Noun,Worship/Cultic
+5P,22,טֶרֶף,prey; food,Noun,Food
+5P,22,יוֹעֵץ,counselor,Noun,
+5P,22,כָּחַשׁ,"to become lean; (Pi) deny, deceive",Verb,Action and Stative Verbs
+5P,22,כָּלָה,"destruction, annihilation",Noun,
+5P,22,"לוּ, לוּא",(imprec) if only; O that... might,Interjection,
+5P,22,מוֹלֶדֶת,"descendants, kindred",Noun,Family and Tribe
+5P,22,מַחְתָּה,fire-pan,Noun,Heavens and Earth
+5P,22,מָעַט,to be(come) few,Verb,Action and Stative Verbs
+5P,22,נַעַל,sandal,Noun,Clothing
+5P,22,נָפַץ,smash; scatter (II?); (Ni) break up,Noun,Movement Verbs
+5P,22,נְקֵבָה,"(n, adj) female",Adjective,Humans and Anatomy
+5P,22,סָקַל,(v) to stone,Verb,Action and Stative Verbs
+5P,22,עֲבֹת,rope,Noun,
+5P,22,פֶּגֶר,corpse,Noun,Humans and Anatomy
+5P,22,פָּשָׂה,(v) to spread,Verb,Action and Stative Verbs
+5P,22,צָעִיר,"small (-er, -est); young (-er, -est)",Noun,
+5P,22,קִיץ,to spend the summer,Verb,Action and Stative Verbs
+5P,22,רֶגַע,tranquility; moment,Noun,Time and Seasons
+5P,22,רֶשֶׁת,(bird) net,Noun,
+5P,22,שָׂשׂוֹן,joy,Noun,
+5P,22,שָׁוַע,(Pi) cry for help,Verb,Action and Stative Verbs
+5P,22,שָׁזַר,(Ho part) twisted,Verb,Action and Stative Verbs
+5P,22,שְׁכֶם,shoulder(s),Noun,Humans and Anatomy
+5P,22,שָׁעַן,(Ni) lean (against); (meta) depend (on),Verb,Action and Stative Verbs
+5P,22,שָׁקַל,to weight (out),Verb,Measurement and Numbers
+5P,22,שָׁקַף,"(Ni, Hi) look down",Verb,Action and Stative Verbs
+5P,22,תַּזְנוּת,obscene manner,Noun,
+5P,22,תָּעַב,"(Ni) be loathed, abhorrent",Verb,Action and Stative Verbs
+5Q,21,אָתָה,to come,Verb,Movement Verbs
+5Q,21,בְּעוֹד,"while yet, as long as (עוֹד)",Conjunction,Time and Seasons
+5Q,21,בָּרָק,lightning,Noun,Heavens and Earth
+5Q,21,גָּרַע,to shave; diminish,Verb,Action and Stative Verbs
+5Q,21,זָנַח,to reject,Verb,Action and Stative Verbs
+5Q,21,חוּשׁ,to hurry,Verb,Action and Stative Verbs
+5Q,21,חָמַד,"to desire, crave",Verb,Action and Stative Verbs
+5Q,21,חֹתֵן,father-in-law,Noun,Family and Tribe
+5Q,21,"לָבֹנָה, לְבוֹנָה",frankincense,Noun,
+5Q,21,לְחִי,"chine, jawbone",Noun,Plants and Animals
+5Q,21,מְגִלָּה,scroll,Noun,
+5Q,21,"מוּם, מְאוּם",(n) blemish,Noun,
+5Q,21,מְנוּחָה,"rest, resting place",Noun,
+5Q,21,מָסַס,to lose courage; (Ni) dissolve,Verb,Action and Stative Verbs
+5Q,21,מַשָּׂא,utterance,Noun,
+5Q,21,מִשְׁחָה,anointing,Noun,
+5Q,21,מַשְׁקֶה,cup-bearer; well-irrigated land,Noun,Food
+5Q,21,מֹת,(pl) men,Noun,Humans and Anatomy
+5Q,21,נֵס,signal pole; banner,Noun,Lands and Warfare
+5Q,21,נָתַךְ,to gush forth; be poured out,Verb,Action and Stative Verbs
+5Q,21,נָתַשׁ,"to uproot, tear out",Verb,Action and Stative Verbs
+5Q,21,סוֹד,confidential conversation,Noun,Personal Interactions
+5Q,21,סָחַר,"to pass through, wander around",Verb,Movement Verbs
+5Q,21,סָפָה,to take away,Verb,Movement Verbs
+5Q,21,סֶרֶן,(pl) prince,Noun,Humans and Anatomy
+5Q,21,עָוֶל,"wrong, injustice",Noun,
+5Q,21,עָנָו,(Ketib; adj) humble,Adjective,
+5Q,21,פָּקַח,(v) to open,Verb,Action and Stative Verbs
+5Q,21,פַּרְסָה,(divided) hoof,Adjective,
+5Q,21,צוּם,(v) to fast,Verb,Food
+5Q,21,צְעָקָה,"(n) cry, call for help",Noun,Personal Interactions
+5Q,21,רָחָב,"(adj) wide, broad",Adjective,Measurement and Numbers
+5Q,21,שָׂמֵחַ,"(adj) joyful, glad",Adjective,
+5Q,21,שָׁאַג,(v) to roar,Verb,Action and Stative Verbs
+5Q,21,שָׁבַר,to buy (food),Verb,Action and Stative Verbs
+5Q,21,שָׁגָה,"to stray, go astray",Verb,Movement Verbs
+5Q,21,שַׁד,(du) breast,Noun,Humans and Anatomy
+5Q,21,שַׁחַק,(collec) dust; clouds of dust (?),Noun,Heavens and Earth
+5Q,21,תַּאֲוָה,"longing, desire",Noun,
+5Q,21,תָּמַךְ,to grasp,Verb,Action and Stative Verbs
+5R,20,אֱלִיל,worthless; (ext) pagan gods,Noun,Worship/Cultic
+5R,20,בִּקְעָה,"plain, broad valley",Noun,Heavens and Earth
+5R,20,בְּרוֹשׁ,(Phoenician) juniper,Noun,Plants and Animals
+5R,20,גַּל,heap,Noun,
+5R,20,חָבַל,to take (something) in pledge,Verb,Movement Verbs
+5R,20,חָלִיל,(neg interj) be it far from,Interjection,
+5R,20,חָתָן,son-in-law; bridegroom,Noun,Family and Tribe
+5R,20,יָחַשׂ,(Hith) be enrolled (in genealogical registry),Verb,Action and Stative Verbs
+5R,20,יָנָה,"to be violent, oppress; (Hi) oppress",Verb,Action and Stative Verbs
+5R,20,יְסוֹד,"foundation (-wall), base",Noun,Building and Travel
+5R,20,מְהֵרָה,"(n) speed, haste; (adv) quickly",Noun,
+5R,20,מוּשׁ,to withdraw; (Hi) remove,Verb,Movement Verbs
+5R,20,מְזוּזָה,doorpost,Noun,Building and Travel
+5R,20,מַחְסֶה,refuge,Noun,
+5R,20,מִקְלָט,"refuge, asylum",Noun,
+5R,20,מִשְׁמָר,guard,Noun,
+5R,20,עֲלִיָּה,"upper room, roof chamber",Noun,Building and Travel
+5R,20,עָמַל,"to labor, exert oneself",Verb,Action and Stative Verbs
+5R,20,עָרִיץ,"(adj) violent, mighty; (n) master",Adjective,
+5R,20,עָתַר,to pray; (Ni) be moved by entreaties,Verb,Worship/Cultic
+5R,20,צִנָּה,shield,Noun,Lands and Warfare
+5R,20,צַר,(adj) narrow; (n) distress,Adjective,
+5R,20,צָרַע,"(Qal, Pu Part) suffering from a skin disease",Verb,Action and Stative Verbs
+5R,20,קַיִץ,summer; summer fruit,Noun,Food
+5R,20,קָסַם,to practice divination,Verb,Worship/Cultic
+5R,20,שָׂגַב,to be (too) high; be fortified,Verb,Action and Stative Verbs
+5R,20,"שֵׂיב, שֵׂיבָה",old age,Noun,Humans and Anatomy
+5R,20,שִׂיחַ,"to be(come) concerned, consider",Verb,Action and Stative Verbs
+5R,20,שָׁבוּעַ,week,Noun,Time and Seasons
+5R,20,שָׁכֵן,"inhabitant, neighbor",Noun,Personal Interactions
+5R,20,שְׁפֵלָה,the lowland(s),Noun,Lands and Warfare
+5R,20,תַּבְנִית,"shape, form; pattern",Noun,
+5R,20,תֹּהוּ,"wasteland, formlessness; nothingness",Noun,Heavens and Earth
+5S,19,אוּלָם,"(advers) on the other hand, however",Conjunction,
+5S,19,אָפִיץ,stream-channel,Noun,Heavens and Earth
+5S,19,אַשְׁמָה,guilt,Noun,Worship/Cultic
+5S,19,בָּרַר,"to purge out, sort; sharpen (II?)",Verb,Action and Stative Verbs
+5S,19,גַּאֲוָה,loftiness; haughtiness,Noun,
+5S,19,גְּמוּל,doings; recompense,Noun,
+5S,19,דִּין,(n) lawsuit,Noun,
+5S,19,זָקָן,beard,Noun,Humans and Anatomy
+5S,19,חַטָּא,sinner; sinful,Noun,
+5S,19,חָקַק,to hew out; engrave,Verb,Action and Stative Verbs
+5S,19,יָאַל,(Hi) to make a beginning,Verb,Action and Stative Verbs
+5S,19,יֳפִי,beauty,Noun,Humans and Anatomy
+5S,19,לָאָה,to be(come) weary,Verb,Action and Stative Verbs
+5S,19,לֶהָבָה,flame,Noun,Heavens and Earth
+5S,19,לָחַץ,"to crowd, press; oppress",Verb,Action and Stative Verbs
+5S,19,מָאוֹר,luminary,Noun,
+5S,19,מְזִמָּה,"(n) plan, plot",Noun,Personal Interactions
+5S,19,מֵישָׁרִים,"straightness, fairness",Noun,
+5S,19,מַעֲלֶה,"ascent, steep path",Noun,Building and Travel
+5S,19,מַעֲרָכָה,row; battle line,Noun,Lands and Warfare
+5S,19,נָבֵל,to wither,Verb,Action and Stative Verbs
+5S,19,נֹגַהּ,"brightness, shining",Noun,
+5S,19,עָלֶה,"leaves, leaf",Noun,Plants and Animals
+5S,19,עֵנָב,grape (cluster),Noun,Food
+5S,19,עַשְׁתֵי,(f) eleven(th),Noun,Measurement and Numbers
+5S,19,פֶּרֶץ,"breach, gap",Noun,
+5S,19,פֶּתִי,"(adj) young, naîve",Adjective,
+5S,19,רִיק,"(v) to empty out, draw (sword); muster",Verb,Movement Verbs
+5S,19,רָמַס,"to trample, tread",Verb,Action and Stative Verbs
+5S,19,רֹעַ,bad quality,Noun,
+5S,19,רָעֵב,(adj) hungry,Adjective,Food
+5S,19,רַעֲנָן,(adj) luxuriant,Adjective,
+5S,19,רָצַץ,to smash up; abuse,Verb,Action and Stative Verbs
+5S,19,שָׂכַר,to hire,Verb,Action and Stative Verbs
+5S,19,שָׁאַב,to draw (water),Verb,Movement Verbs
+5S,19,שְׁגָגָה,"error, inadvertance",Noun,
+5S,19,שׁוֹק,thigh; (ext) leg,Noun,Humans and Anatomy
+5S,19,שָׁכַר,to be(come) drunk(en),Verb,Action and Stative Verbs
+5S,19,שֶׁלֶג,snow,Noun,Heavens and Earth
+5S,19,שָׁפָל,"(adj) deep, low; humble",Adjective,
+5S,19,תִּמֹרָה,ornament of palm tree,Noun,
+5T,18,אוֹן,"power, strength, wealth",Noun,
+5T,18,אָחַר,"to delay, keep back",Verb,Action and Stative Verbs
+5T,18,אָכְלָה,food,Noun,Food
+5T,18,אָכֵן,(interj) truly! indeed!,Interjection,
+5T,18,אֹרֵב,ambush,Noun,
+5T,18,בִּירָה,citadel,Noun,Building and Travel
+5T,18,גַּחֶלֶת,live coals,Noun,
+5T,18,דָּכָא,(Ni part) oppressed; (Pi) crush,Verb,Action and Stative Verbs
+5T,18,זְעָקָה,"cry, call for help",Noun,Personal Interactions
+5T,18,זָרַח,"to go forth, shine",Verb,Movement Verbs
+5T,18,חֵךְ,palate,Noun,
+5T,18,חָסֵר,(one who) lacks,Noun,
+5T,18,חָצִיר,grass,Noun,Plants and Animals
+5T,18,חָשַׁךְ,be (grow) dark,Verb,Action and Stative Verbs
+5T,18,יָבַל,(Hi) bring,Verb,Movement Verbs
+5T,18,כַּד,jar,Noun,Food
+5T,18,כָּלָא,to restrain,Verb,Action and Stative Verbs
+5T,18,כַּפְתּוֹר,knob,Noun,
+5T,18,לוּן,"(Ni) murmur, grumble",Verb,Action and Stative Verbs
+5T,18,לָעַג,to ridicule,Verb,Action and Stative Verbs
+5T,18,מַטָּה,"(adv) below, beneath",Adverb,
+5T,18,מָעוֹן,lair; dwelling,Noun,Building and Travel
+5T,18,מְצוּדָה,"mountain, stronghold",Noun,Heavens and Earth
+5T,18,מָקוֹר,"spring, source",Noun,Heavens and Earth
+5T,18,מַקֵּל,"shoot, twig",Noun,
+5T,18,מֶרְחָק,distance,Noun,
+5T,18,נָבָל,(adj) foolish,Adjective,
+5T,18,נָזַל,"to trickle, flow; (Qal part act) brooke, watercourse",Verb,Action and Stative Verbs
+5T,18,נָטַף,to drip,Verb,Action and Stative Verbs
+5T,18,סוּת,"(Hi) lead astray, seduce",Verb,Action and Stative Verbs
+5T,18,סָרַר,to be stubborn,Verb,Action and Stative Verbs
+5T,18,עָטָה,"to wrap, cover",Verb,Action and Stative Verbs
+5T,18,עָלַל,"(Po) treat, deal with",Verb,Action and Stative Verbs
+5T,18,עָצַם,be mighty; numerous,Verb,Action and Stative Verbs
+5T,18,צְבִי,ornament; glory,Noun,Worship/Cultic
+5T,18,צַלְמָוֶת,darkness,Noun,Heavens and Earth
+5T,18,קִינָה,"dirge, lament",Noun,
+5T,18,רָכַל,"(Qal part) trader, merchant",Verb,Action and Stative Verbs
+5T,18,שָׂכִיר,"(adj) rented, hired; (n) hired laborer, mercenary",Adjective,
+5T,18,שָׁחַח,"to stoop, crouch",Verb,Action and Stative Verbs
+5T,18,שָׁקַד,"be awake, watch",Verb,Action and Stative Verbs
+5T,18,תַּחֲנוּן,supplication,Noun,
+5T,18,תָּכַן,to examine,Verb,Action and Stative Verbs
+5U,17,אֶזְרָח,"native, citizen",Noun,"People, Law, and Covenant"
+5U,17,אֵימָה,"terror, dread",Noun,
+5U,17,"אָסִיר , אסִּיר",prisoner,Noun,
+5U,17,בָּאַשׁ,to stink,Verb,Action and Stative Verbs
+5U,17,בִּכּוּרִים,first fruits,Noun,Measurement and Numbers
+5U,17,בְּרֵכָה,"pond, pool",Noun,Heavens and Earth
+5U,17,גֹּבָהּ,height,Noun,Measurement and Numbers
+5U,17,"גְּבִיר , גְּבִירָה","(s m) lord, master; (f) lady, mistress",Noun,Worship/Cultic
+5U,17,גַּּנָב,thief,Noun,
+5U,17,דָּמָה,"come to rest, end; (Ni ext?) be silent, destroyed",Verb,Movement Verbs
+5U,17,דָּרוֹם,south; south wind,Noun,Heavens and Earth
+5U,17,חֹזֶה,vision,Noun,
+5U,17,חִידָה,riddle,Noun,
+5U,17,חֹמֶר,"mortar, cement; clay",Noun,Heavens and Earth
+5U,17,חָפֵר,(stat) be ashamed,Verb,Action and Stative Verbs
+5U,17,חָפְשִׁי,"(adj) freed, free",Adjective,"People, Law, and Covenant"
+5U,17,חֶרֶשׂ,"clay, pottery",Noun,Heavens and Earth
+5U,17,יוֹצֵר,"potter, founder",Noun,
+5U,17,יְקָר,"preciousness; honoring, esteeming",Noun,
+5U,17,כֵּן,"stand, base; place (IV?); (ext) position (V?)",Noun,
+5U,17,כְּתָב,(n) document; register,Noun,
+5U,17,כָּתַת,"to beat fine, pound up",Verb,Action and Stative Verbs
+5U,17,מוּג,"reel, melt",Noun,
+5U,17,מָטַר,(Ni) be rained on; (Hi) have (make) rain fall,Verb,Action and Stative Verbs
+5U,17,מָכוֹן,"place, support",Noun,
+5U,17,מֶמְשָׁלָה,dominion,Noun,
+5U,17,מִסְגֶּרֶת,dungeon,Noun,Building and Travel
+5U,17,מִשְׂגָּב,"high spot, refuge",Noun,
+5U,17,מָשׂוֹשׂ,joy,Noun,
+5U,17,מָשַׁל,to make up (say) a (mocking-) verse,Verb,Action and Stative Verbs
+5U,17,"מִשְׁעָן , מַשְׁעֵן , מַשְׁעֵנָה , מִשְׁעֶנֶת",(m; f) support,Noun,
+5U,17,מַתָּנָה,"gift, present",Noun,
+5U,17,נָדַב,"urge on, prompt; (Hithp) volunteer",Noun,
+5U,17,נֶזֶם,ring,Noun,Clothing
+5U,17,נָקָם,(human) revenge; (divine) recompense,Adjective,
+5U,17,נָקַף,to make a (yearly) round,Verb,Action and Stative Verbs
+5U,17,נָתִין,(pl) temple slave; bondsman,Noun,Occupation
+5U,17,"סֶגֶן , סָגָן","(pl) governor, prefect",Noun,Occupation
+5U,17,עָוָה,to do wrong,Verb,Action and Stative Verbs
+5U,17,עָיֵף,"(adj) weary, faint",Adjective,
+5U,17,עָלַז,to exult,Verb,Action and Stative Verbs
+5U,17,עָמֹק,(adj) deep; (ext) impenetrable,Adjective,Heavens and Earth
+5U,17,עָצָב,"(pl) images, idols",Noun,Worship/Cultic
+5U,17,עָרַב,to stand (as) surety (for),Verb,Movement Verbs
+5U,17,עָשַׁר,be(come) rich; (Hi) make someone rich,Verb,Action and Stative Verbs
+5U,17,פֶּרַח,"bud, flower",Noun,Plants and Animals
+5U,17,צָמָא,(n) thirst,Noun,Food
+5U,17,קָדַר,"to grow dark, turbid",Verb,Action and Stative Verbs
+5U,17,קָלוֹן,shame,Noun,Personal Interactions
+5U,17,קְעָרָה,dish,Noun,Food
+5U,17,רָמַשׂ,"to swarm, teem",Verb,Action and Stative Verbs
+5U,17,רֶמֶשׂ,"(coll) small animals, reptiles",Noun,Plants and Animals
+5U,17,רַעַשׁ,"quaking, commotion",Noun,
+5U,17,רָקִיעַ,plate; (met) firmament,Noun,Heavens and Earth
+5U,17,שְׂבָכָה,"net; lattice, grille",Noun,
+5U,17,שִׂנְאָה,"hate, hatred",Noun,Personal Interactions
+5U,17,שָׁאוֹן,"din, uproar",Noun,
+5U,17,שְׁאֵר,"flesh, food; blood relation",Noun,Humans and Anatomy
+5U,17,שׁוּשַׁן,"lily, lotus",Noun,Plants and Animals
+5U,17,שָׁלִישׁ,third man in chariot; (ext) adjutant,Noun,Lands and Warfare
+5U,17,שֵׁמַע,"hearsay, report",Noun,Personal Interactions
+5U,17,תֶּבֶן,"straw, chaff",Noun,Plants and Animals
+5U,17,תֹּף,"timbrel, tambourine",Noun,
+5U,17,תְּשִׁיעִי,(ord) ninth,Numeral,Measurement and Numbers
+5V,16,אוֹב,spirit (of the dead),Noun,Worship/Cultic
+5V,16,אָזַר,"to put on, gird",Verb,Action and Stative Verbs
+5V,16,אֵיכָה,(interr) how? in what way? (cf אֵיךְ),Particle,
+5V,16,אֵלָה,mighty tree,Noun,Plants and Animals
+5V,16,אָמַל,(Pul) to dry up,Verb,Action and Stative Verbs
+5V,16,"אָמְנָה , אָמְנָם , אֻמְנָם","(adv) truly, surely; (with interr) really?",Adverb,
+5V,16,בֹּהֶן,thumb; big toe,Noun,Humans and Anatomy
+5V,16,בָּלָה,to become old and worn out,Verb,Action and Stative Verbs
+5V,16,בַּלְעֲדֵי,"(prep) apart from, except for",Preposition,
+5V,16,בָּעַל,"to rule, own; marry",Verb,Action and Stative Verbs
+5V,16,בָּעַת,(Ni) to be terrified,Verb,Action and Stative Verbs
+5V,16,בָּצַע,to cut off,Verb,Action and Stative Verbs
+5V,16,גְּדִי,kid (goat),Noun,Plants and Animals
+5V,16,גַּל,(pl) wave,Noun,Heavens and Earth
+5V,16,גַּנָּה,garden,Noun,Heavens and Earth
+5V,16,דְּבִיר,holy of holies,Noun,Worship/Cultic
+5V,16,דּוּשׁ,to trample; thresh,Verb,Action and Stative Verbs
+5V,16,הָרֶה,(adj) pregnant,Adjective,Humans and Anatomy
+5V,16,זוּלָה,"(prep) except, besides; (conj) except that",Preposition,
+5V,16,חָגַג,to celebrate,Verb,Action and Stative Verbs
+5V,16,חֶמְדָּה,"something desirable, excellent",Noun,
+5V,16,חֹרֶב,"dryness, drought; desolation",Noun,
+5V,16,חָשָׁה,to be quiet,Verb,Action and Stative Verbs
+5V,16,טָבַל,to dip,Verb,Action and Stative Verbs
+5V,16,יְגִיעַ,"labor, work; gain",Noun,
+5V,16,יָצַג,"(Hi) set (down), place",Verb,Action and Stative Verbs
+5V,16,יֶקֶב,wine-vat; winepress,Noun,Food
+5V,16,כָּזַב,to lie; (Ni) prove to be a liar,Verb,Action and Stative Verbs
+5V,16,לָבוּשׁ,"(adj) clothed, dressed",Adjective,Clothing
+5V,16,לֵץ,"babbler, scoffer",Noun,Occupation
+5V,16,מַחֲצִית,half,Noun,Measurement and Numbers
+5V,16,מַטָּרָה,target; (men on) guard,Noun,
+5V,16,מַכְאֹב,pain,Noun,
+5V,16,מִכְסֶה,cover(ing),Noun,Clothing
+5V,16,מִסְפֵּד,mourning (rites),Noun,
+5V,16,מָרַר,to be bitter,Verb,Action and Stative Verbs
+5V,16,"מַשָּׂאָה , מַשְׂאֵת",lifting up,Noun,
+5V,16,נָזִיר,(adj) dedicated; (n) Nazirite,Adjective,
+5V,16,"נָשָׁא , נָשָׁה","to lend, make a loan",Verb,Action and Stative Verbs
+5V,16,נָשָׁא,(Ni) to be deceived,Verb,Action and Stative Verbs
+5V,16,סוּפָה,(storm-) wind,Noun,Heavens and Earth
+5V,16,סֹחֵר,"trader, merchant",Noun,
+5V,16,סַם,(pl coll) perfume,Noun,
+5V,16,עָנָה,to sing,Verb,Action and Stative Verbs
+5V,16,עָרוֹם,(adj) naked,Adjective,Humans and Anatomy
+5V,16,עָרְלָה,foreskin,Noun,Humans and Anatomy
+5V,16,פָּרַע,to let (hang) loose,Verb,Action and Stative Verbs
+5V,16,פֵּשֶׁת,"flax, linen",Noun,Clothing
+5V,16,צוּד,to hunt,Verb,Action and Stative Verbs
+5V,16,צִיָּה,"dry country, desert",Noun,Heavens and Earth
+5V,16,צֶמֶר,wool,Noun,Clothing
+5V,16,קֶלָע,(pl) curtain,Noun,Worship/Cultic
+5V,16,קַשׁ,stubble,Noun,
+5V,16,רְבָבָה,very great multitude; ten thousand,Noun,Measurement and Numbers
+5V,16,רַב־שָׁקֵה,(Assyrian office?) cupbearer; great drinker,Noun,Occupation
+5V,16,רָגַם,(v) to stone (someone),Verb,Action and Stative Verbs
+5V,16,רֵיקָם,(adv) emptily,Adverb,
+5V,16,רַךְ,"(adj) tender, frail",Adjective,
+5V,16,שְׂחוֹק,laughter,Noun,
+5V,16,"שֶׂכֶל , שֵׂכֶל","insight, understanding",Noun,
+5V,16,"שַׂלְמָה ,שִׂמְלָה","mantle, wrapper",Noun,Clothing
+5V,16,שָׁוָה,"to be(come) like, equal",Verb,Action and Stative Verbs
+5V,16,שֵׁפֶט,(pl) judgment; (ext) punishment,Noun,"People, Law, and Covenant"
+5W,15,אַמְתַּחַת,sack; load(?),Noun,
+5W,15,"אָרֵךְ , אֶרֶךְ","(abs; cstr) slow, long",Noun,
+5W,15,גָּזַז,"to shear (sheep), cut (hair)",Verb,Action and Stative Verbs
+5W,15,גֻּלָה,basin,Noun,
+5W,15,גָּלוּת,"exile, deportation; exiles",Noun,
+5W,15,גָּלַל,to roll,Verb,Action and Stative Verbs
+5W,15,גְּעָרָה,(n) rebuke; threat,Noun,Personal Interactions
+5W,15,גָּרָה,(Pi) to go to law,Verb,"People, Law, and Covenant"
+5W,15,דֶּשֶׁן,fat; fatty ashes,Noun,Food
+5W,15,הָלַל,to be deluded,Verb,Action and Stative Verbs
+5W,15,חָצָה,to divide (in half),Verb,Action and Stative Verbs
+5W,15,ישֶׁר,"straightness, uprightness",Noun,
+5W,15,כָּבַשׁ,"to subdue, subject",Verb,Action and Stative Verbs
+5W,15,כָּלִיל,"(adj) entire, whole; (n) entirety",Adjective,Measurement and Numbers
+5W,15,מֹאזְנַיִם,"(du) scales, balance",Noun,
+5W,15,מִבְטָה,"trust, confidence",Noun,Personal Interactions
+5W,15,מוּר,"(Ni, intrans) change; (Hi) exchange",Verb,Action and Stative Verbs
+5W,15,מְחִיר,"equivalent value, market price",Noun,
+5W,15,מִלֻּאִים,"consecration, ordination",Noun,Worship/Cultic
+5W,15,מִקְנָה,acquisition,Noun,
+5W,15,נָגַן,"(Qal part) musician, string-player; (Pi) play a stringed instrument",Verb,Action and Stative Verbs
+5W,15,סַל,basket,Noun,
+5W,15,עָצַב,"to find fault with, hurt",Verb,Action and Stative Verbs
+5W,15,עֵקֶב,(to the) end; reward; (conj) because (of),Noun,
+5W,15,עֲרַפֶל,"darkness, gloom",Noun,Heavens and Earth
+5W,15,עָרַץ,"to be afraid, alarmed",Verb,Action and Stative Verbs
+5W,15,עָשׂוֹר,(group of) ten,Numeral,Measurement and Numbers
+5W,15,עֹ֫שֶׁק,oppression,Noun,
+5W,15,פּוּחַ,"(v) to blow, blast",Verb,Action and Stative Verbs
+5W,15,פָּצָה,to open up,Verb,Action and Stative Verbs
+5W,15,"צִיץ , צִיצָה",(s m; f) blossom (I); (artificial) flower (II),Noun,Plants and Animals
+5W,15,צֶלֶם,image,Noun,Humans and Anatomy
+5W,15,צֶמֶד,"yoke, team; (ext) acre",Noun,
+5W,15,צָמַת,(v) silence; (Ni) be silenced,Verb,Action and Stative Verbs
+5W,15,קָדַד,"to bow down, kneel down",Verb,Worship/Cultic
+5W,15,קָצַר,to be (too) short,Verb,Action and Stative Verbs
+5W,15,רָוָה,to drink one's fill,Verb,Food
+5W,15,רְמִיָּה,slackness (I?); deceit (II?),Noun,
+5W,15,שִׁבֹּלֶת,"ear (of grain), bunch of twigs",Noun,Plants and Animals
+5W,15,שׁוּר,"to gaze on, regard",Verb,Action and Stative Verbs
+5W,15,שָׁעָה,"to look, gaze",Verb,Action and Stative Verbs
+5W,15,שֶׁרֶץ,"(coll) swarming things, swarm",Noun,Plants and Animals
+5W,15,תֹּאַר,"form, shape",Noun,
+5W,15,תָּם,"(adj) complete, right, peaceful",Adjective,
+5W,15,תַּנּוּר,"oven, furnace",Noun,Building and Travel
+5W,15,"תַּנִּין , תַּנִּים",sea monster,Noun,Heavens and Earth
+5W,15,תְּרָפִים,"idols, household gods",Noun,Worship/Cultic
+5X,14,אֵזוֹר,"waistcloth, loincloth",Noun,Clothing
+5X,14,אֵיתָן,"(adj, n) perennial; (met) constant",Adjective,Time and Seasons
+5X,14,אָנַף,to be angry,Verb,Action and Stative Verbs
+5X,14,בּוּז,"to show contempt for, despise",Verb,Action and Stative Verbs
+5X,14,בַּר,grain,Noun,Plants and Animals
+5X,14,בָּרִיא,fat,Noun,Food
+5X,14,גְּאֻלָּה,right (duty) of redemption,Noun,
+5X,14,גָּבִיעַ,"(drinking) bowl, cup",Noun,Food
+5X,14,גָּעַר,(v) to reproach,Verb,Action and Stative Verbs
+5X,14,דֶּגֶל,banner,Noun,Lands and Warfare
+5X,14,דַּק,"(adj) scanty, fine",Adjective,
+5X,14,דֶּשֶׁא,grass,Noun,Plants and Animals
+5X,14,הָמַם,"to confuse, disturb",Verb,Action and Stative Verbs
+5X,14,זוּ,(dem and rel pr; common) this,Pronoun,
+5X,14,חוֹתָם,(n) seal,Noun,
+5X,14,חָכָה,to await,Verb,Action and Stative Verbs
+5X,14,חַלָּה,(ring-shaped) bread,Adjective,Food
+5X,14,טוּל,(Hi) to throw,Verb,Movement Verbs
+5X,14,יַבָּשָׁה,dry land,Noun,Heavens and Earth
+5X,14,יָגוֹן,"tormet, grief",Noun,
+5X,14,יְרֻשָּׁה,property,Noun,Building and Travel
+5X,14,כָּבֵד,liver; (liver-) divination (extispicy),Noun,Worship/Cultic
+5X,14,כְּהֻנָּה,priesthood,Noun,Worship/Cultic
+5X,14,כָּרָה,"to excavate, dig",Verb,Action and Stative Verbs
+5X,14,כַּרְמֶל,orchard,Noun,Food
+5X,14,לָוָה,to borrow; (Hi) lend to,Verb,Action and Stative Verbs
+5X,14,לַפִּיד,torch; (ext) lightning,Noun,Heavens and Earth
+5X,14,מָחַץ,"to dash, beat to pieces",Verb,Action and Stative Verbs
+5X,14,מִכְשׁוֹל,"offense, obstacle",Noun,
+5X,14,מָן,manna,Noun,Food
+5X,14,מַעֲרָב,"sunset, west",Noun,Heavens and Earth
+5X,14,"מְצִלָּה , מְצִלְתַּיִם",(pl) bell; (du) cymbals,Noun,
+5X,14,מָרַט,to pluck (hair),Verb,Action and Stative Verbs
+5X,14,מַשְׂכִּיל,(type of) psalm,Noun,
+5X,14,נְגִינָה,string music,Noun,
+5X,14,נֶתֶק,a skin disease,Noun,Humans and Anatomy
+5X,14,סָתַם,"to plug up, stop up",Verb,Action and Stative Verbs
+5X,14,עֶגְלָה,heifer,Noun,Plants and Animals
+5X,14,עֲדִי,(s and coll) ornament(s),Noun,Clothing
+5X,14,עָכַר,to (make) trouble; make (someone) taboo?,Verb,Action and Stative Verbs
+5X,14,עָצֵל,"(adj) slow, sluggish",Adjective,
+5X,14,עָקֵב,heel,Noun,Humans and Anatomy
+5X,14,עָרָה,(Ni) to be poured out; (Pi) empty out,Verb,Action and Stative Verbs
+5X,14,פָּגַשׁ,to meet,Verb,Action and Stative Verbs
+5X,14,פִּסֵּחַ,(adj) lame,Adjective,
+5X,14,פְּעֻלָּה,"work, deeds; reward, wages",Noun,
+5X,14,פֶּרֶד,mule,Noun,Plants and Animals
+5X,14,פָּרַס,to break; (Ar - divide),Verb,Action and Stative Verbs
+5X,14,פַּת,"bit, morsel; (Pita)",Noun,
+5X,14,צָבָא,"to go to war, serve",Verb,Lands and Warfare
+5X,14,צְבִי,gazelle (species),Noun,
+5X,14,צַיִד,game; hunting,Noun,
+5X,14,צַעַד,walking; (pl) steps,Noun,
+5X,14,קְבוּרָה,"burial, grave",Noun,
+5X,14,קֶמַח,flour,Noun,Food
+5X,14,קָצָץ,"to cut off, trim",Verb,Action and Stative Verbs
+5X,14,קֶשֶׁר,conspiracy,Noun,
+5X,14,רָוַח,"to feel relieved; (Hi) smell, enjoy the smell of",Verb,Action and Stative Verbs
+5X,14,"רֵיק , רֵק",(adj) empty,Adjective,
+5X,14,רָעֵב,(stat) be hungry,Verb,Food
+5X,14,שִׂיחַ,"(object of) concern, interest",Noun,
+5X,14,שְׁאֵלָה,request,Noun,
+5X,14,שָׁאַף,"to gasp, pant (for)",Verb,Action and Stative Verbs
+5X,14,שָׁרַץ,"to swarm, teem",Verb,Action and Stative Verbs
+5X,14,תּוֹר,turtledove,Noun,Plants and Animals
+5X,14,תּוֹשָׁב,"sojourner, alien",Noun,Occupation
+5X,14,תַּחַשׁ,porpoise? dolphin?,Noun,Plants and Animals
+5X,14,תַּן,(pl) jackal,Noun,Plants and Animals
+5Y,13,אָנָּא,(imprec) please! I pray!,Interjection,Worship/Cultic
+5Y,13,אָרַג,to weave; (Qal part) weaver,Verb,Action and Stative Verbs
+5Y,13,בָּחִיר,"(adj) chosen, elect",Adjective,
+5Y,13,בַּת,bath (liquid measure),Noun,Measurement and Numbers
+5Y,13,גֹּדֶל,greatness,Noun,
+5Y,13,גַּדֵר,(stone) wall,Noun,Building and Travel
+5Y,13,גְּוִיָּה,body,Noun,Humans and Anatomy
+5Y,13,דָּקַק,to crush,Verb,Action and Stative Verbs
+5Y,13,הַוָּה,(n) ruin,Noun,
+5Y,13,הָלְאָה,"(adv) out there, onward",Adverb,
+5Y,13,וָו,(pl) nail,Noun,Building and Travel
+5Y,13,זֵד,(adj) arrogant,Adjective,
+5Y,13,זוֹב,(mucous or blood) discharge,Noun,Humans and Anatomy
+5Y,13,זָמַם,"to think, plan",Verb,Action and Stative Verbs
+5Y,13,זְנוּנִים,prostitution,Noun,
+5Y,13,חָבַק,to embrace,Verb,Action and Stative Verbs
+5Y,13,חָזֶה,chest (of animal),Noun,Plants and Animals
+5Y,13,חַנּוּן,"(adj) gracious, friendly",Adjective,
+5Y,13,חָנֵף,(adj) godless,Adjective,
+5Y,13,חֹר,(pl) noble,Noun,
+5Y,13,טָהֲרָה,(cultic) property,Noun,Worship/Cultic
+5Y,13,טִיט,"wet clay, mud",Noun,Heavens and Earth
+5Y,13,טַעַם,(n) taste,Noun,Humans and Anatomy
+5Y,13,יְבוּל,(n) produce,Noun,Food
+5Y,13,יָלִיד,son; one born a slave,Noun,Family and Tribe
+5Y,13,יְשִׁימוֹן,"desert, wilderness",Noun,Heavens and Earth
+5Y,13,כֹּפֶר,bribe,Noun,
+5Y,13,"לוּלֵא , לוּלֵי",(conj) if not; if; if only,Conjunction,
+5Y,13,לֻלָאֹת,loops,Noun,
+5Y,13,מַבּוּל,flood,Noun,Heavens and Earth
+5Y,13,מוֹסָד,"foundation (-wall), base",Noun,Building and Travel
+5Y,13,מַחְמָד,(something) desirable,Noun,
+5Y,13,מַחְסוֹר,"(n) want, need",Noun,
+5Y,13,מָנָה,"portion, part, share",Noun,Measurement and Numbers
+5Y,13,מַעְגָּל,"track, rut",Noun,Building and Travel
+5Y,13,מֵצַח,forehead,Noun,Humans and Anatomy
+5Y,13,מִרְעֶה,pasture,Noun,Plants and Animals
+5Y,13,מַרְפֵּא,healing,Noun,Humans and Anatomy
+5Y,13,נְבָלָה,stupidity,Noun,
+5Y,13,נָעִים,"(adj) pleasant, lovely",Adjective,
+5Y,13,עָטַף,"to grow weak, faint",Verb,Action and Stative Verbs
+5Y,13,פָּאַר,(Pi) glorify,Verb,Action and Stative Verbs
+5Y,13,פֶּלֶא,(n) marvel,Noun,
+5Y,13,פְּנִימָה,"(adv) into, inside",Adverb,
+5Y,13,פָּקִיד,officer,Noun,Occupation
+5Y,13,צָחַק,"to laugh; (Pi) joke, play",Verb,Personal Interactions
+5Y,13,צְפַרְדֵּעַ,(coll) frogs,Noun,Plants and Animals
+5Y,13,קָבַב,to curse,Verb,Worship/Cultic
+5Y,13,קָבַל,"(Pi) accept, receive",Verb,Action and Stative Verbs
+5Y,13,"קָו , קַו",(measuring-) cord,Noun,Measurement and Numbers
+5Y,13,קַל,"(adj) light, quick",Adjective,
+5Y,13,קֵן,nest; (pl) compartments,Noun,
+5Y,13,רָגַע,"(intrans) crust over, come to rest",Verb,Movement Verbs
+5Y,13,רַחוּם,(adj) compassionate,Adjective,
+5Y,13,שְׂרֵפָה,"(place of) burning, conflagration",Noun,
+5Y,13,שׁוֹאָה,"(trad) ruin, storm; (better translation) pit",Noun,Heavens and Earth
+5Y,13,שׁוּט,"to roam about, rove",Verb,Movement Verbs
+5Y,13,שְׁחִין,"boil, ulcer",Noun,Food
+5Y,13,שָׁחַר,to be intent on; (Pi) seek,Verb,Action and Stative Verbs
+5Y,13,שִׁכּוֹר,(adj) drunk(en),Adjective,
+5Y,13,שָׁלַל,"(v) to plunder, spoil",Verb,Lands and Warfare
+5Y,13,תָּא,guardroom,Noun,
+5Y,13,תַּעַר,"razor, knife",Noun,
+5Z,12,אַדֶּרֶת,splendor; robe,Noun,Clothing
+5Z,12,אַיִן,(interr) (from) where?,Particle,
+5Z,12,אָנַח,"(Ni) sigh, groan",Verb,Action and Stative Verbs
+5Z,12,אֹפֶה,baker,Noun,Occupation
+5Z,12,בַּהֶרֶת,white patch of skin,Noun,Humans and Anatomy
+5Z,12,בּוּז,contempt,Noun,
+5Z,12,בּוּס,to trample down,Verb,Action and Stative Verbs
+5Z,12,בִּי,"(formula to open conversation with superiors) lit. ""on me""",Interjection,
+5Z,12,גַּב,"something arched; torus, boss",Noun,Building and Travel
+5Z,12,גְּדוּלָה,greatness,Noun,
+5Z,12,גּוּר,to be afraid (of),Verb,Action and Stative Verbs
+5Z,12,גָּזַר,to cut; decide,Verb,Action and Stative Verbs
+5Z,12,גֻּלְגֹּלֶת,skull,Noun,Humans and Anatomy
+5Z,12,דֹּב,(n; c) bear,Noun,Plants and Animals
+5Z,12,זָעַם,"(v) curse, scold",Verb,Action and Stative Verbs
+5Z,12,חָבֵר,(m) companion,Noun,Personal Interactions
+5Z,12,חַיָּה,"life; greed, appetite",Noun,Humans and Anatomy
+5Z,12,חֲלִיפָה,"change, relief",Noun,
+5Z,12,חָלָק,(adj) smooth,Adjective,
+5Z,12,חֹמֶר,homer (dry measure),Noun,Measurement and Numbers
+5Z,12,חָפָה,"(v) cover, veil",Verb,Clothing
+5Z,12,חָפֵץ,having pleasure in; willing,Noun,
+5Z,12,חֵקֶר,searching,Noun,
+5Z,12,חשֵׁב,"weaver, technician",Noun,Occupation
+5Z,12,טֶבַח,slaughtering,Noun,
+5Z,12,טוּחַ,"(v) plaster, overlay",Verb,Action and Stative Verbs
+5Z,12,יוֹנֵק,suckling; infant,Noun,Humans and Anatomy
+5Z,12,יָחִיד,(adj) only,Adjective,
+5Z,12,יֶרַח,(lunar) month,Noun,Time and Seasons
+5Z,12,"כַּמָּה , כַּמֶּה",(interr pr) how much? how many?,Pronoun,
+5Z,12,כַּר,ram; battering-ram,Noun,Plants and Animals
+5Z,12,לְבֵנָה,brick; paving-stone,Noun,Building and Travel
+5Z,12,לַהַב,flame,Noun,Heavens and Earth
+5Z,12,לָוָה,"accompany; (Ni) be joined, join",Noun,
+5Z,12,לַחַץ,"oppression, affliction",Noun,
+5Z,12,מִבְחָר,"(the) choicest, best",Noun,
+5Z,12,מֶגֶד,yield of fruit; (f pl) precious gifts,Noun,Food
+5Z,12,מַד,"clothing, garment",Noun,Clothing
+5Z,12,מְהוּמָה,"confusion, panic",Noun,
+5Z,12,מוֹטָה,"yoke, collar; carrying poles (?)",Noun,
+5Z,12,מוֹסֵר,"fetter(s), chain(s)",Noun,
+5Z,12,מוֹרָא,"fear, terror",Noun,
+5Z,12,מַסַּע,"breaking (camp), departure",Noun,
+5Z,12,מְצוֹלָה,"deep, depths",Noun,Heavens and Earth
+5Z,12,מִצְנֶפֶת,"headband, turban",Noun,Clothing
+5Z,12,מִקְצוֹצַ,corner,Noun,
+5Z,12,מֹר,myrrh,Noun,
+5Z,12,מַרְאָה,vision,Noun,
+5Z,12,מְשׁוּבָה,defection,Noun,
+5Z,12,מָתוֹק,sweet,Adjective,
+5Z,12,נָזַר,to dedicate oneself (to a deity),Verb,Action and Stative Verbs
+5Z,12,נָפַח,(v) to blow,Verb,Action and Stative Verbs
+5Z,12,נְצִיב,pillar; garrison,Noun,Building and Travel
+5Z,12,נָשַׁךְ,to bite,Verb,Action and Stative Verbs
+5Z,12,נֶשֶׁךְ,interest (on debt),Noun,
+5Z,12,נֶשֶׁף,"twilight, darkness",Noun,Time and Seasons
+5Z,12,נֵתַח,piece (of meat),Noun,Food
+5Z,12,סָעַד,"to support, sustain",Verb,Action and Stative Verbs
+5Z,12,עָוַת,"to pervert; (Pi) make crooked, falsify (עות?)",Verb,Action and Stative Verbs
+5Z,12,עָמִית,"fellow, comrade",Noun,Occupation
+5Z,12,עָקָר,(adj) barren,Adjective,
+5Z,12,עֹרֵב,raven,Noun,Plants and Animals
+5Z,12,"פֶּטֶר , פִּטְרָה",firstborn,Noun,Family and Tribe
+5Z,12,צֶמַח,"(coll) growth, what sprouts",Noun,
+5Z,12,קָדְקֹד,crown of head,Noun,Humans and Anatomy
+5Z,12,קוֹץ,thorn bush,Noun,Plants and Animals
+5Z,12,קָצִין,leader,Noun,Occupation
+5Z,12,רֹאֶה,seer; (seeing) visions,Noun,Occupation
+5Z,12,רֹאשׁ,poisonous plant; (ext) poison,Noun,Plants and Animals
+5Z,12,רָבַע,(denominative; Qal part pass) squared,Verb,Action and Stative Verbs
+5Z,12,רַגְלִי,foot soldier,Noun,Lands and Warfare
+5Z,12,רִיק,"(n) emptiness; (adj) empty, worthless",Noun,
+5Z,12,רִקְמָה,fabric (of varied colors),Noun,Clothing
+5Z,12,שָׁסָה,(v) to plunder; (Qal part) plunderer,Verb,Lands and Warfare
+5Z,12,שָׁרַק,(v) to whistle,Verb,Action and Stative Verbs
+5Z,12,תּוּשִׁיָּה,success,Noun,
+5Z,12,תִּיכוֹן,(adj) the middle,Adjective,
+5Z,12,תָּמָר,date palm,Noun,Plants and Animals
+5AA,11,אֲבָל,"(interj) truly; (advs conj) but, however",Interjection,
+5AA,11,אֲנָחָה,"(n) sigh, groan",Noun,Humans and Anatomy
+5AA,11,אִסָּר,vow of abstinence,Noun,"People, Law, and Covenant"
+5AA,11,אָרַשׂ,"(Pi, Pu) become engaged",Verb,Action and Stative Verbs
+5AA,11,אֶתְנַן,gift,Noun,
+5AA,11,בָּדָד,solitude; (adv) alone,Noun,
+5AA,11,גָּאַל,(Ni) become polluted,Verb,Action and Stative Verbs
+5AA,11,גָּזִית,"hewn stone, ashlar",Noun,Metals and Stone
+5AA,11,גֵּרָה,cud,Noun,
+5AA,11,דָּקַר,to pierce,Verb,Action and Stative Verbs
+5AA,11,דָּשֵׁן,(stat) become fat,Verb,Action and Stative Verbs
+5AA,11,הָדַף,to shove,Verb,Action and Stative Verbs
+5AA,11,הֲלֹם,(adv) (to) here,Adverb,
+5AA,11,זָדוֹן,arrogance,Noun,
+5AA,11,זַךְ,(adj) pure,Adjective,
+5AA,11,זָנָב,tail; (met) end,Noun,Humans and Anatomy
+5AA,11,חוֹחַ,"thorn bush, thorn",Noun,Plants and Animals
+5AA,11,חָמוֹת,mother-in-law,Noun,Family and Tribe
+5AA,11,חָמֵץ,something leavened,Noun,
+5AA,11,חָנַף,"to be godless, defiled",Verb,Action and Stative Verbs
+5AA,11,חַרְטֹם,soothsayer-priest,Noun,Worship/Cultic
+5AA,11,חָשַׁק,(v) to love,Verb,Action and Stative Verbs
+5AA,11,טָבַח,(v) to slaughter,Verb,Action and Stative Verbs
+5AA,11,טָעַם,"to taste, eat",Verb,Food
+5AA,11,יִדְּעֹנִי,spirit of the dead; soothsayer,Noun,Worship/Cultic
+5AA,11,יָקַץ,"(intrans) awake, wake up",Verb,Action and Stative Verbs
+5AA,11,יָקַר,"to be difficult; be valued; be precious, rare",Verb,Action and Stative Verbs
+5AA,11,יֹתֶרֶת,(extra) lobes of (animal) liver; (met) what is redundant,Adjective,Humans and Anatomy
+5AA,11,כָּנַס,"to gather, collect",Verb,Movement Verbs
+5AA,11,לָבִיא,(poetry) lioness,Noun,Plants and Animals
+5AA,11,לָהַט,"to consume, burn (I?); (Pi) devour",Verb,Action and Stative Verbs
+5AA,11,מָגוֹר,(pl) sojourning; alien citizenship,Noun,"People, Law, and Covenant"
+5AA,11,מְחִתָּה,terror,Noun,
+5AA,11,מְצָד,stronghold,Noun,Building and Travel
+5AA,11,נֵבֶל,(storage-) jar,Noun,
+5AA,11,נָבַע,(v) to bubble (brook),Verb,Action and Stative Verbs
+5AA,11,נָעַר,to shake,Verb,Action and Stative Verbs
+5AA,11,סֹלֲלָה,"siege mound, rampart",Noun,Lands and Warfare
+5AA,11,סַפִּיר,lapis lazuli (intensely colored stone),Noun,Metals and Stone
+5AA,11,עוֹלֵל,child,Noun,Family and Tribe
+5AA,11,עָזַז,"to be strong, prevail",Verb,Action and Stative Verbs
+5AA,11,עָמַל,"to labor, exert oneself",Verb,Action and Stative Verbs
+5AA,11,עָנַן,"(Pi) to cause to appear, conjure up",Verb,Action and Stative Verbs
+5AA,11,"עֲצָרָה , עֲצֶרֶת",festive assembly,Noun,"People, Law, and Covenant"
+5AA,11,עִקֵּשׁ,(adj) perverted,Adjective,
+5AA,11,עָרוּם,"(adj) subtle, crafty",Adjective,
+5AA,11,פִּתּוּחַ,engraving,Noun,
+5AA,11,פָּתִיל,"thread, cord",Noun,Clothing
+5AA,11,צֶאֱצָא,(pl) offspring,Noun,
+5AA,11,צוּק,"(Hi) to press hard, oppress",Verb,Action and Stative Verbs
+5AA,11,קָדֵשׁ,(adj) consecrated; (n) cult prostitute,Adjective,
+5AA,11,קֶסֶם,divination,Noun,Worship/Cultic
+5AA,11,קָרֵב,(adj) approaching,Adjective,
+5AA,11,קָרְחָה,baldness,Noun,
+5AA,11,"רִבּוֹ , רִבּוֹא",countless; ten thousand,Noun,Measurement and Numbers
+5AA,11,רָעַם,"(v) to storm, thunder",Verb,Action and Stative Verbs
+5AA,11,רָקַע,to stamp; (Pi) hammer out,Verb,Action and Stative Verbs
+5AA,11,שַׁאֲנָן,"(adj) at ease, tranquil",Adjective,
+5AA,11,שַׁבָּתוֹן,sabbath feast,Noun,Worship/Cultic
+5AA,11,שֹׁהַם,onyx? carnelian? lapis lazuli?,Noun,Metals and Stone
+5AA,11,שׁוּל,(pl) flowing skirt; hem of skirt,Noun,
+5AA,11,שַׁוְעָה,cry for help,Noun,Personal Interactions
+5AA,11,שֶׁקֶץ,(cultic) abomination,Noun,Worship/Cultic
+5AA,11,שָׁתַל,"to plant, transplant",Verb,Plants and Animals
+5BB,10,אִגֶּרֶת,"(official, commercial) letter",Noun,
+5BB,10,אֹדוֹת,(prep) on account of; (conj) because,Preposition,
+5BB,10,אָדַם,to be red; (Pu part) dyed red,Verb,Action and Stative Verbs
+5BB,10,אוּץ,to urge; be in a hurry; (Hi) urge,Verb,Action and Stative Verbs
+5BB,10,אֵזוֹב,hyssop?,Noun,Plants and Animals
+5BB,10,אֵל,(dem pr) these,Pronoun,
+5BB,10,אֵלוֹן,"terebinth, tall tree",Noun,Plants and Animals
+5BB,10,אֲפֵלָה,darkness,Noun,Heavens and Earth
+5BB,10,בֶּדֶק,chink; leak (in ship),Noun,
+5BB,10,בִּזָּה,plunder (act and objects of),Noun,Lands and Warfare
+5BB,10,בְּכֹרָה,right of firstborn,Noun,Family and Tribe
+5BB,10,בַּּלָהָה,sudden terror,Noun,
+5BB,10,בְּמוֹ,"(prep) in, by",Preposition,
+5BB,10,בְּתוּלִים,virginity; evidence of virginity,Noun,
+5BB,10,גְּבוּלָה,"boundary, territory",Noun,Lands and Warfare
+5BB,10,גָּדַר,to erect a wall,Verb,Action and Stative Verbs
+5BB,10,"גָּלָל ,בִּגְלַל","on account of, for the sake of",Preposition,
+5BB,10,גָּעַל,to abhor,Verb,Action and Stative Verbs
+5BB,10,גָּעַשׁ,to shake,Verb,Action and Stative Verbs
+5BB,10,"הַלָּז , הַלָּזֶה","(dem pr, m and f; m) this",Pronoun,
+5BB,10,"הֶרֶג , הֲרֵגָה","(s m; f) killing, murder; slaughter",Noun,
+5BB,10,זִיד,to treat insolently,Verb,Action and Stative Verbs
+5BB,10,זֵר,molding,Noun,
+5BB,10,חָבַל,to treat badly,Verb,Action and Stative Verbs
+5BB,10,חָדַשׁ,"(Pi) to make new, restore",Verb,Action and Stative Verbs
+5BB,10,חֲלָצַיִם,(du) loins,Noun,Humans and Anatomy
+5BB,10,חֶמְאָה,curdled milk,Noun,Food
+5BB,10,חָרֵב,"(adj) dry, waste",Adjective,
+5BB,10,חָרַץ,(idiom) to threaten; settle determine,Verb,Action and Stative Verbs
+5BB,10,טָבַע,to sink in,Verb,Movement Verbs
+5BB,10,יִתְרוֹן,"outcome, profit",Noun,
+5BB,10,כַּבִּיר,"strong, powerful",Noun,
+5BB,10,כֶּלֶא,confinement; prison,Noun,
+5BB,10,מִלּוֹא,terrace(?); (construction) fill(?),Noun,Building and Travel
+5BB,10,מִמְכָּר,"selling, sale",Noun,
+5BB,10,מִסְתָּר,hiding place,Noun,
+5BB,10,מַצָּב,post (of duty),Noun,
+5BB,10,מָקַק,(Ni) to rot,Verb,Action and Stative Verbs
+5BB,10,מִקְרֶה,"happening, occurence",Noun,
+5BB,10,מְרַאֲשׁוֹת,head place,Noun,
+5BB,10,מַרְעִית,pasturage,Noun,
+5BB,10,נָגַח,(v) to gore,Verb,Action and Stative Verbs
+5BB,10,נָגַר,"(Ni) to flow, gush forth",Verb,Action and Stative Verbs
+5BB,10,נָהַל,"(Pi) to lead, guide",Verb,Movement Verbs
+5BB,10,נְחוּשָׁה,"copper, bronze",Noun,Metals and Stone
+5BB,10,"נֵשֶׁק , נֶשֶׁק","armor, weaponry",Noun,Lands and Warfare
+5BB,10,עֵירֹם,(adj) naked; (n) nakedness,Adjective,Humans and Anatomy
+5BB,10,עָנַג,"(Pu part) pampered, spoiled; (Hith) pamper oneself",Verb,Action and Stative Verbs
+5BB,10,עַפְעַפַּיִם,(du) eyelids (?); rays; flashing glance of the eye,Noun,Humans and Anatomy
+5BB,10,עֲרֵמָה,heap,Noun,
+5BB,10,עֶרֶשׂ,"bedstead, couch",Noun,Building and Travel
+5BB,10,פָּזַר,"(Qal pass part) dispersed; (Pi) disperse, scatter",Verb,Movement Verbs
+5BB,10,פַּחַת,pit,Noun,Heavens and Earth
+5BB,10,פֶּלֶג,canal,Noun,Heavens and Earth
+5BB,10,פֶּרֶא,"wild ass, onager (?), zebra (?)",Noun,Plants and Animals
+5BB,10,פָּרַק,to tear away,Verb,Action and Stative Verbs
+5BB,10,צָמֵא,(stat) be thirsty,Verb,Action and Stative Verbs
+5BB,10,קַדְמֹנִי,(adj) eastern,Adjective,
+5BB,10,קָמָה,standing grain,Noun,Plants and Animals
+5BB,10,קֶרֶס,(pl) hook,Noun,
+5BB,10,שָׂבֵעַ,"(adj) full, satisfied",Adjective,
+5BB,10,שָׁמֵן,(adj) fat,Adjective,
+5BB,10,שְׁפִי,"barrenness, baldness",Noun,
+5BB,10,שְׁרִרוּת,"hardness, stubbornness",Noun,
+5BB,10,תַּהְפּוּכָה,(pl) perversity,Noun,
+5BB,10,תְּמוּנָה,"form, image",Noun,Humans and Anatomy

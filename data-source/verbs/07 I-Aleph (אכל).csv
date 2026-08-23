@@ -1,0 +1,45 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,אָכַל,he ate
+Qal,Perfect,3,F,S,אָֽכְלָה,she ate
+Qal,Perfect,2,M,S,אָכַ֫לְתָּ,you ate
+Qal,Perfect,2,F,S,אָכַלְתְּ,you ate
+Qal,Perfect,1,C,S,אָכַ֫לְתִּי,I ate
+Qal,Perfect,3,C,P,אָֽכְלוּ,they ate
+Qal,Perfect,2,M,P,אֲכַלְתֶּם,you all ate
+Qal,Perfect,2,F,P,אֲכַלְתֶּן,you all ate
+Qal,Perfect,1,C,P,אָכַ֫לְנוּ,we ate
+Qal,Imperfect,3,M,S,יֹאכַל,he will eat
+Qal,Imperfect,3,F,S,תֹּאכַל,she will eat
+Qal,Imperfect,2,M,S,תֹּאכַל,you will eat
+Qal,Imperfect,2,F,S,תֹּאכְלִי,you will eat
+Qal,Imperfect,1,C,S,אֹכַל,I will eat
+Qal,Imperfect,3,M,P,יֹאכְלוּ,they will eat
+Qal,Imperfect,3,F,P,תֹּאכַ֫לְנָה,they will eat
+Qal,Imperfect,2,M,P,תֹּאכְלוּ,you all will eat
+Qal,Imperfect,2,F,P,תֹּאכַ֫לְנָה,you all will eat
+Qal,Imperfect,1,C,P,נֹאכַל,we will eat
+Qal,Jussive,3,M,S,יֹאכַל,may he eat
+Qal,Jussive,3,F,S,תֹּאכַל,may she eat
+Qal,Jussive,2,M,S,תֹּאכַל,may you eat
+Qal,Jussive,2,F,S,תֹּאכְלִי,may you eat
+Qal,Jussive,3,M,P,יֹאכְלוּ,may they eat
+Qal,Jussive,3,F,P,תֹּאכַ֫לְנָה,may they eat
+Qal,Jussive,2,M,P,תֹּאכְלוּ,may you all eat
+Qal,Jussive,2,F,P,תֹּאכַ֫לְנָה,may you all eat
+Qal,Cohortative,1,C,S,אֹכְלָה,may I eat
+Qal,Cohortative,1,C,P,נֹאכְלָה,may we eat
+Qal,Imperative,2,M,S,אֱכֹל,eat!
+Qal,Imperative,2,F,S,אִכְלִי,eat!
+Qal,Imperative,2,M,P,אִכְלוּ,eat!
+Qal,Imperative,2,F,P,אֲכֹ֫לְנָה,eat!
+Qal,Infinitive Absolute,,,,אָכוֹל,to eat
+Qal,Infinitive Construct,,,,אֱכֹל,to eat
+Qal,Active Participle,,M,S,אֹכֵל,eating
+Qal,Active Participle,,F,S,אֹכְלָה,eating
+Qal,Active Participle,,F,S,אֹכֶ֫לֶת,eating
+Qal,Active Participle,,M,P,אֹכְלִים,eating
+Qal,Active Participle,,F,P,אֹכְלוֹת,eating
+Qal,Passive Participle,,M,S,אָכוּל,ate
+Qal,Passive Participle,,F,S,אֲכוּלָה,ate
+Qal,Passive Participle,,M,P,אֲכוּלִים,ate
+Qal,Passive Participle,,F,P,אֲכוּלוֹת,ate

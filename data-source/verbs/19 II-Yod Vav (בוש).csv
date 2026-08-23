@@ -1,0 +1,40 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,בָּשׁ,he was ashamed
+Qal,Perfect,3,F,S,בֹּ֫שָׁה,she was ashamed
+Qal,Perfect,2,M,S,בֹּ֫שְׁתָּ,you were ashamed
+Qal,Perfect,2,F,S,בֹּ֫שְׁתְּ,you were ashamed
+Qal,Perfect,1,C,S,בֹּ֫שְׁתִּי,I was ashamed
+Qal,Perfect,3,C,P,בֹּ֫שׁוּ,they were ashamed
+Qal,Perfect,2,M,P,בָּשְׁתֶּם,you all were ashamed
+Qal,Perfect,2,F,P,בָּשְׁתֶּן,you all were ashamed
+Qal,Perfect,1,C,P,בָּ֫שְׁנוּ,we were ashamed
+Qal,Imperfect,3,M,S,יֵבוֹשׁ,he will be ashamed
+Qal,Imperfect,3,F,S,תֵּבוֹשׁ,she will be ashamed
+Qal,Imperfect,2,M,S,תֵּבוֹשׁ,you will be ashamed
+Qal,Imperfect,2,F,S,תֵּב֫וֹשִׁי,you will be ashamed
+Qal,Imperfect,1,C,S,אֵבוֹשׁ,I will be ashamed
+Qal,Imperfect,3,M,P,יֵב֫וֹשׁוּ,they will be ashamed
+Qal,Imperfect,3,F,P,תֵּב֫וֹשְׁנָה,they will be ashamed
+Qal,Imperfect,2,M,P,תֵּב֫וֹשׁוּ,you all will be ashamed
+Qal,Imperfect,2,F,P,תֵּב֫וֹשְׁנָה,you all will be ashamed
+Qal,Imperfect,1,C,P,נֵבוֹשׁ,we will be ashamed
+Qal,Jussive,3,M,S,יֵבֹשׁ,may he be ashamed
+Qal,Jussive,3,F,S,תֵּבֹשׁ,may she be ashamed
+Qal,Jussive,2,M,S,תֵּבֹשׁ,may you be ashamed
+Qal,Jussive,2,F,S,תֵּב֫וֹשִׁי,may you be ashamed
+Qal,Jussive,3,M,P,יֵב֫וֹשׁוּ,may they be ashamed
+Qal,Jussive,3,F,P,תֵּב֫וֹשְׁנָה,may they be ashamed
+Qal,Jussive,2,M,P,תֵּב֫וֹשׁוּ,may you all be ashamed
+Qal,Jussive,2,F,P,תֵּב֫וֹשְׁנָה,may you all be ashamed
+Qal,Cohortative,1,C,S,אֵב֫וֹשָׁה,may I be ashamed
+Qal,Cohortative,1,C,P,נֵב֫וֹשָׁה,may we be ashamed
+Qal,Imperative,2,M,S,בּוֹשׁ,be ashamed!
+Qal,Imperative,2,F,S,בּ֫וֹשִׁי,be ashamed!
+Qal,Imperative,2,M,P,בּ֫וֹשׁוּ,be ashamed!
+Qal,Imperative,2,F,P,בֹּשְׁנָה,be ashamed!
+Qal,Infinitive Absolute,,,,בּוֹשׁ,to be ashamed
+Qal,Infinitive Construct,,,,בּוֹשׁ,to be ashamed
+Qal,Active Participle,,M,S,בּוֺשׁ,being ashamed
+Qal,Active Participle,,F,S,בּוֺשָׁה,being ashamed
+Qal,Active Participle,,M,P,בּוֺשִׁים,being ashamed
+Qal,Active Participle,,F,P,בּוֺשׁוֹת,being ashamed

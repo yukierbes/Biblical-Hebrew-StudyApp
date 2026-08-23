@@ -1,0 +1,40 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,קָטֹן,he was small
+Qal,Perfect,3,F,S,קָֽטְנָה,she was small
+Qal,Perfect,2,M,S,קָטֹ֫נְתָּ,you were small
+Qal,Perfect,2,F,S,קָטֹנְתְּ,you were small
+Qal,Perfect,1,C,S,קָטֹ֫נְתִּי,I was small
+Qal,Perfect,3,C,P,קָֽטְנוּ,they were small
+Qal,Perfect,2,M,P,קְטָנְתֶּם,you all were small
+Qal,Perfect,2,F,P,קְטָנְתֶּן,you all were small
+Qal,Perfect,1,C,P,קָטֹ֫נּוּ,we were small
+Qal,Imperfect,3,M,S,יִקְטַן,he will be small
+Qal,Imperfect,3,F,S,תִּקְטַן,she will be small
+Qal,Imperfect,2,M,S,תִּקְטַן,you will be small
+Qal,Imperfect,2,F,S,תִּקְטְנִי,you will be small
+Qal,Imperfect,1,C,S,אֶקְטַן,I will be small
+Qal,Imperfect,3,M,P,יִקְטְנוּ,they will be small
+Qal,Imperfect,3,F,P,תִּקְטַ֫נָּה,they will be small
+Qal,Imperfect,2,M,P,תִּקְטְנוּ,you all will be small
+Qal,Imperfect,2,F,P,תִּקְטַ֫נָּה,you all will be small
+Qal,Imperfect,1,C,P,נִקְטַן,we will be small
+Qal,Jussive,3,M,S,יִקְטַן,may he be small
+Qal,Jussive,3,F,S,תִּקְטַן,may she be small
+Qal,Jussive,2,M,S,תִּקְטַן,may you be small
+Qal,Jussive,2,F,S,תִּקְטְנִי,may you be small
+Qal,Jussive,3,M,P,יִקְטְנוּ,may they be small
+Qal,Jussive,3,F,P,תִּקְטַ֫נָּה,may they be small
+Qal,Jussive,2,M,P,תִּקְטְנוּ,may you all be small
+Qal,Jussive,2,F,P,תִּקְטַ֫נָּה,may you all be small
+Qal,Cohortative,1,C,S,אֶקְטְנָה,may I be small
+Qal,Cohortative,1,C,P,נִקְטְנָה,may we be small
+Qal,Imperative,2,M,S,קְטַן,be small!
+Qal,Imperative,2,F,S,קִטְנִי,be small!
+Qal,Imperative,2,M,P,קִטְנוּ,be small!
+Qal,Imperative,2,F,P,קְטַ֫נָּה,be small!
+Qal,Infinitive Absolute,,,,קָטוֹן,to be small
+Qal,Infinitive Construct,,,,קְטַן,to be small
+Qal,Active Participle,,M,S,קָטֹן,being small
+Qal,Active Participle,,F,S,קְטֹנָה,being small
+Qal,Active Participle,,M,P,קְטֹנִים,being small
+Qal,Active Participle,,F,P,קְטֹנוֹת,being small

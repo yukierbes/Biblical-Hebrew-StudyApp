@@ -1,0 +1,251 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,יָנַק,he nursed
+Qal,Perfect,3,F,S,יָֽנְקָה,she nursed
+Qal,Perfect,2,M,S,יָנַ֫קְתָּ,you nursed
+Qal,Perfect,2,F,S,יָנַקְתְּ,you nursed
+Qal,Perfect,1,C,S,יָנַ֫קְתִּי,I nursed
+Qal,Perfect,3,C,P,יָֽנְקוּ,they nursed
+Qal,Perfect,2,M,P,יְנַקְתֶּם,you all nursed
+Qal,Perfect,2,F,P,יְנַקְתֶּן,you all nursed
+Qal,Perfect,1,C,P,יָנַ֫קְנוּ,we nursed
+Qal,Imperfect,3,M,S,יִינַק,he will nurse
+Qal,Imperfect,3,F,S,תִּינַק,she will nurse
+Qal,Imperfect,2,M,S,תִּינַק,you will nurse
+Qal,Imperfect,2,F,S,תִּינְקִי,you will nurse
+Qal,Imperfect,1,C,S,אִינַק,I will nurse
+Qal,Imperfect,3,M,P,יִינְקוּ,they will nurse
+Qal,Imperfect,3,F,P,תִּינַ֫קְנָה,they will nurse
+Qal,Imperfect,2,M,P,תִּינְקוּ,you all will nurse
+Qal,Imperfect,2,F,P,תִּינַ֫קְנָה,you all will nurse
+Qal,Imperfect,1,C,P,נִינַק,we will nurse
+Qal,Jussive,3,M,S,יִינַק,may he nurse
+Qal,Jussive,3,F,S,תִּינַק,may she nurse
+Qal,Jussive,2,M,S,תִּינַק,may you nurse
+Qal,Jussive,2,F,S,תִּינְקִי,may you nurse
+Qal,Jussive,3,M,P,יִינְקוּ,may they nurse
+Qal,Jussive,3,F,P,תִּינַ֫קְנָה,may they nurse
+Qal,Jussive,2,M,P,תִּינְקוּ,may you all nurse
+Qal,Jussive,2,F,P,תִּינַ֫קְנָה,may you all nurse
+Qal,Cohortative,1,C,S,אִינְקָה,may I nurse
+Qal,Cohortative,1,C,P,נִינְקָה,may we nurse
+Qal,Imperative,2,M,S,יְנַק,nurse!
+Qal,Imperative,2,F,S,יִנְקִי,nurse!
+Qal,Imperative,2,M,P,יִנְקוּ,nurse!
+Qal,Imperative,2,F,P,יְנַ֫קְנָה,nurse!
+Qal,Infinitive Absolute,,,,יָנוֹק,to nurse
+Qal,Infinitive Construct,,,,יְנַק,to nurse
+Qal,Active Participle,,M,S,יֹנֵק,nursing
+Qal,Active Participle,,F,S,יֹֽנְקָה,nursing
+Qal,Active Participle,,M,P,יֹֽנְקִים,nursing
+Qal,Active Participle,,F,P,יֹֽנְקוֹת,nursing
+Qal,Passive Participle,,M,S,יָנוּק,nursed
+Qal,Passive Participle,,F,S,יְנוּקָה,nursed
+Qal,Passive Participle,,M,P,יְנוּקִים,nursed
+Qal,Passive Participle,,F,P,יְנוּקוֹת,nursed
+Niphal,Perfect,3,M,S,נוֹנַק,he was nursed
+Niphal,Perfect,3,F,S,נוֹנְקָה,she was nursed
+Niphal,Perfect,2,M,S,נוֹנַ֫קְתָּ,you were nursed
+Niphal,Perfect,2,F,S,נוֹנַקְתְּ,you were nursed
+Niphal,Perfect,1,C,S,נוֹנַ֫קְתִּי,I was nursed
+Niphal,Perfect,3,C,P,נוֹנְקוּ,they were nursed
+Niphal,Perfect,2,M,P,נוֹנַקְתֶּם,you all were nursed
+Niphal,Perfect,2,F,P,נוֹנַקְתֶּן,you all were nursed
+Niphal,Perfect,1,C,P,נוֹנַ֫קְנוּ,we were nursed
+Niphal,Imperfect,3,M,S,יִוָּנֵק,he will be nursed
+Niphal,Imperfect,3,F,S,תִּוָּנֵק,she will be nursed
+Niphal,Imperfect,2,M,S,תִּוָּנֵק,you will be nursed
+Niphal,Imperfect,2,F,S,תִּוָּֽנְקִי,you will be nursed
+Niphal,Imperfect,1,C,S,אִוָּנֵק,I will be nursed
+Niphal,Imperfect,3,M,P,יִוָּֽנְקוּ,they will be nursed
+Niphal,Imperfect,3,F,P,תִּוָּנַ֫קְנָה,they will be nursed
+Niphal,Imperfect,2,M,P,תִּוָּֽנְקוּ,you all will be nursed
+Niphal,Imperfect,2,F,P,תִּוָּנַ֫קְנָה,you all will be nursed
+Niphal,Imperfect,1,C,P,נִוָּנֵק,we will be nursed
+Niphal,Jussive,3,M,S,יִוָּנֵק,may he be nursed
+Niphal,Jussive,3,F,S,תִּוָּנֵק,may she be nursed
+Niphal,Jussive,2,M,S,תִּוָּנֵק,may you be nursed
+Niphal,Jussive,2,F,S,תִּוָּֽנְקִי,may you be nursed
+Niphal,Jussive,3,M,P,יִוָּֽנְקוּ,may they be nursed
+Niphal,Jussive,3,F,P,תִּוָּנַ֫קְנָה,may they be nursed
+Niphal,Jussive,2,M,P,תִּוָּֽנְקוּ,may you all be nursed
+Niphal,Jussive,2,F,P,תִּוָּנַ֫קְנָה,may you all be nursed
+Niphal,Cohortative,1,C,S,אִוָּֽנְקָה,may I be nursed
+Niphal,Cohortative,1,C,P,נִוָּֽנְקָה,may we be nursed
+Niphal,Imperative,2,M,S,הִוָּנֵק,be nursed!
+Niphal,Imperative,2,F,S,הִוָּֽנְקִי,be nursed!
+Niphal,Imperative,2,M,P,הִוָּֽנְקוּ,be nursed!
+Niphal,Imperative,2,F,P,הִוָּנַ֫קְנָה,be nursed!
+Niphal,Infinitive Absolute,,,,הִוָּנֵק,to be nursed
+Niphal,Infinitive Construct,,,,הִוָּנֵק,to be nursed
+Niphal,Passive Participle,,M,S,נוֹנָק,being nursed
+Niphal,Passive Participle,,F,S,נוֹנָקָה,being nursed
+Niphal,Passive Participle,,M,P,נוֹנָקִים,being nursed
+Niphal,Passive Participle,,F,P,נוֹנָקוֹת,being nursed
+Piel,Perfect,3,M,S,יִנֵּק,he nursed
+Piel,Perfect,3,F,S,יִנְּקָה,she nursed
+Piel,Perfect,2,M,S,יִנַּ֫קְתָּ,you nursed
+Piel,Perfect,2,F,S,יִנַּקְתְּ,you nursed
+Piel,Perfect,1,C,S,יִנַּ֫קְתִּי,I nursed
+Piel,Perfect,3,C,P,יִנְּקוּ,they nursed
+Piel,Perfect,2,M,P,יִנַּקְתֶּם,you all nursed
+Piel,Perfect,2,F,P,יִנַּקְתֶּן,you all nursed
+Piel,Perfect,1,C,P,יִנַּ֫קְנוּ,we nursed
+Piel,Imperfect,3,M,S,יְיַנֵּק,he will nurse
+Piel,Imperfect,3,F,S,תְּיַנֵּק,she will nurse
+Piel,Imperfect,2,M,S,תְּיַנֵּק,you will nurse
+Piel,Imperfect,2,F,S,תְּיַנְּקִי,you will nurse
+Piel,Imperfect,1,C,S,אֲיַנֵּק,I will nurse
+Piel,Imperfect,3,M,P,יְיַנְּקוּ,they will nurse
+Piel,Imperfect,3,F,P,תְּיַנֵּ֫קְנָה,they will nurse
+Piel,Imperfect,2,M,P,תְּיַנְּקוּ,you all will nurse
+Piel,Imperfect,2,F,P,תְּיַנֵּ֫קְנָה,you all will nurse
+Piel,Imperfect,1,C,P,נְיַנֵּק,we will nurse
+Piel,Jussive,3,M,S,יְיַנֵּק,may he nurse
+Piel,Jussive,3,F,S,תְּיַנֵּק,may she nurse
+Piel,Jussive,2,M,S,תְּיַנֵּק,may you nurse
+Piel,Jussive,2,F,S,תְּיַנְּקִי,may you nurse
+Piel,Jussive,3,M,P,יְיַנְּקוּ,may they nurse
+Piel,Jussive,3,F,P,תְּיַנֵּ֫קְנָה,may they nurse
+Piel,Jussive,2,M,P,תְּיַנְּקוּ,may you all nurse
+Piel,Jussive,2,F,P,תְּיַנֵּ֫קְנָה,may you all nurse
+Piel,Cohortative,1,C,S,אֲיַנְּקָה,may I nurse
+Piel,Cohortative,1,C,P,נְיַנְּקָה,may we nurse
+Piel,Imperative,2,M,S,יַנֵּק,nurse!
+Piel,Imperative,2,F,S,יַנְּקִי,nurse!
+Piel,Imperative,2,M,P,יַנְּקוּ,nurse!
+Piel,Imperative,2,F,P,יַנֵּ֫קְנָה,nurse!
+Piel,Infinitive Absolute,,,,יַנֹּק,to nurse
+Piel,Infinitive Absolute,,,,יַנֵּק,to nurse
+Piel,Infinitive Construct,,,,יַנֵּק,to nurse
+Piel,Active Participle,,M,S,מְיַנֵּק,nursing
+Piel,Active Participle,,F,S,מְיַנְּקָה,nursing
+Piel,Active Participle,,M,P,מְיַנְּקִים,nursing
+Piel,Active Participle,,F,P,מְיַנְּקוֹת,nursing
+Pual,Perfect,3,M,S,יֻנַּק,he was nursed
+Pual,Perfect,3,F,S,יֻנְּקָה,she was nursed
+Pual,Perfect,2,M,S,יֻנַּ֫קְתָּ,you were nursed
+Pual,Perfect,2,F,S,יֻנַּקְתְּ,you were nursed
+Pual,Perfect,1,C,S,יֻנַּ֫קְתִּי,I was nursed
+Pual,Perfect,3,C,P,יֻנְּקוּ,they were nursed
+Pual,Perfect,2,M,P,יֻנַּקְתֶּם,you all were nursed
+Pual,Perfect,2,F,P,יֻנַּקְתֶּן,you all were nursed
+Pual,Perfect,1,C,P,יֻנַּ֫קְנוּ,we were nursed
+Pual,Imperfect,3,M,S,יְיֻנַּק,he will be nursed
+Pual,Imperfect,3,F,S,תְּיֻנַּק,she will be nursed
+Pual,Imperfect,2,M,S,תְּיֻנַּק,you will be nursed
+Pual,Imperfect,2,F,S,תְּיֻנְּקִי,you will be nursed
+Pual,Imperfect,1,C,S,אֲיֻנַּק,I will be nursed
+Pual,Imperfect,3,M,P,יְיֻנְּקוּ,they will be nursed
+Pual,Imperfect,3,F,P,תְּיֻנַּ֫קְנָה,they will be nursed
+Pual,Imperfect,2,M,P,תְּיֻנְּקוּ,you all will be nursed
+Pual,Imperfect,2,F,P,תְּיֻנַּ֫קְנָה,you all will be nursed
+Pual,Imperfect,1,C,P,נְיֻנַּק,we will be nursed
+Pual,Infinitive Absolute,,,,יֻנֹּק,to be nursed
+Pual,Infinitive Construct,,,,יֻנַּק,to be nursed
+Pual,Passive Participle,,M,S,מְיֻנָּק,being nursed
+Pual,Passive Participle,,F,S,מְיֻנָּקָה,being nursed
+Pual,Passive Participle,,M,P,מְיֻנָּקִים,being nursed
+Pual,Passive Participle,,F,P,מְיֻנָּקוֹת,being nursed
+Hitpael,Perfect,3,M,S,הִתְיַנֵּק,he nursed himself
+Hitpael,Perfect,3,F,S,הִתְיַנְּקָה,she nursed herself
+Hitpael,Perfect,2,M,S,הִתְיַנַּ֫קְתָּ,you nursed yourself
+Hitpael,Perfect,2,F,S,הִתְיַנַּקְתְּ,you nursed yourself
+Hitpael,Perfect,1,C,S,הִתְיַנַּ֫קְתִּי,I nursed myself
+Hitpael,Perfect,3,C,P,הִתְיַנְּקוּ,they nursed themselves
+Hitpael,Perfect,2,M,P,הִתְיַנַּקְתֶּם,you all nursed yourselves
+Hitpael,Perfect,2,F,P,הִתְיַנַּקְתֶּן,you all nursed yourselves
+Hitpael,Perfect,1,C,P,הִתְיַנַּ֫קְנוּ,we nursed ourselves
+Hitpael,Imperfect,3,M,S,יִתְיַנֵּק,he will nurse himself
+Hitpael,Imperfect,3,F,S,תִּתְיַנֵּק,she will nurse herself
+Hitpael,Imperfect,2,M,S,תִּתְיַנֵּק,you will nurse yourself
+Hitpael,Imperfect,2,F,S,תִּתְיַנְּקִי,you will nurse yourself
+Hitpael,Imperfect,1,C,S,אֶתְיַנֵּק,I will nurse myself
+Hitpael,Imperfect,3,M,P,יִתְיַנְּקוּ,they will nurse themselves
+Hitpael,Imperfect,3,F,P,תִּתְיַנֵּ֫קְנָה,they will nurse themselves
+Hitpael,Imperfect,2,M,P,תִּתְיַנְּקוּ,you all will nurse yourselves
+Hitpael,Imperfect,2,F,P,תִּתְיַנֵּ֫קְנָה,you all will nurse yourselves
+Hitpael,Imperfect,1,C,P,נִתְיַנֵּק,we will nurse ourselves
+Hitpael,Jussive,3,M,S,יִתְיַנֵּק,may he nurse himself
+Hitpael,Jussive,3,F,S,תִּתְיַנֵּק,may she nurse herself
+Hitpael,Jussive,2,M,S,תִּתְיַנֵּק,may you nurse yourself
+Hitpael,Jussive,2,F,S,תִּתְיַנְּקִי,may you nurse yourself
+Hitpael,Jussive,3,M,P,יִתְיַנְּקוּ,may they nurse themselves
+Hitpael,Jussive,3,F,P,תִּתְיַנֵּ֫קְנָה,may they nurse themselves
+Hitpael,Jussive,2,M,P,תִּתְיַנְּקוּ,may you all nurse yourselves
+Hitpael,Jussive,2,F,P,תִּתְיַנֵּ֫קְנָה,may you all nurse yourselves
+Hitpael,Cohortative,1,C,S,אֶתְיַנְּקָה,may I nurse myself
+Hitpael,Cohortative,1,C,P,נִתְיַנְּקָה,may we nurse ourselves
+Hitpael,Imperative,2,M,S,הִתְיַנֵּק,nurse yourself!
+Hitpael,Imperative,2,F,S,הִתְיַנְּקִי,nurse yourself!
+Hitpael,Imperative,2,M,P,הִתְיַנְּקוּ,nurse yourselves!
+Hitpael,Imperative,2,F,P,הִתְיַנֵּ֫קְנָה,nurse yourselves!
+Hitpael,Infinitive Absolute,,,,הִתְיַנֵּק,to nurse oneself
+Hitpael,Infinitive Construct,,,,הִתְיַנֵּק,to nurse oneself
+Hitpael,Active Participle,,M,S,מִתְיַנֵּק,nursing oneself
+Hitpael,Active Participle,,F,S,מִתְיַנְּקָה,nursing oneself
+Hitpael,Active Participle,,M,P,מִתְיַנְּקִים,nursing oneself
+Hitpael,Active Participle,,F,P,מִתְיַנְּקוֹת,nursing oneself
+Hiphil,Perfect,3,M,S,הֵינִיק,he caused to nurse
+Hiphil,Perfect,3,F,S,הֵינִ֫יקָה,she caused to nurse
+Hiphil,Perfect,2,M,S,הֵינַ֫קְתָּ,you caused to nurse
+Hiphil,Perfect,2,F,S,הֵינַקְתְּ,you caused to nurse
+Hiphil,Perfect,1,C,S,הֵינַ֫קְתִּי,I caused to nurse
+Hiphil,Perfect,3,C,P,הֵינִ֫יקוּ,they caused to nurse
+Hiphil,Perfect,2,M,P,הֵינַקְתֶּם,you all caused to nurse
+Hiphil,Perfect,2,F,P,הֵינַקְתֶּן,you all caused to nurse
+Hiphil,Perfect,1,C,P,הֵינַ֫קְנוּ,we caused to nurse
+Hiphil,Imperfect,3,M,S,יֵינִיק,he will cause to nurse
+Hiphil,Imperfect,3,F,S,תֵּינִיק,she will cause to nurse
+Hiphil,Imperfect,2,M,S,תֵּינִיק,you will cause to nurse
+Hiphil,Imperfect,2,F,S,תֵּינִ֫יקִי,you will cause to nurse
+Hiphil,Imperfect,1,C,S,אֵינִיק,I will cause to nurse
+Hiphil,Imperfect,3,M,P,יֵינִ֫יקוּ,they will cause to nurse
+Hiphil,Imperfect,3,F,P,תֵּינֵ֫קְנָה,they will cause to nurse
+Hiphil,Imperfect,2,M,P,תֵּינִ֫יקוּ,you all will cause to nurse
+Hiphil,Imperfect,2,F,P,תֵּינֵ֫קְנָה,you all will cause to nurse
+Hiphil,Imperfect,1,C,P,נֵינִיק,we will cause to nurse
+Hiphil,Jussive,3,M,S,יֵינֵק,may he cause to nurse
+Hiphil,Jussive,3,F,S,תֵּינֵק,may she cause to nurse
+Hiphil,Jussive,2,M,S,תֵּינֵק,may you cause to nurse
+Hiphil,Jussive,2,F,S,תֵּינִ֫יקִי,may you cause to nurse
+Hiphil,Jussive,3,M,P,יֵינִ֫יקוּ,may they cause to nurse
+Hiphil,Jussive,3,F,P,תֵּינֵ֫קְנָה,may they cause to nurse
+Hiphil,Jussive,2,M,P,תֵּינִ֫יקוּ,may you all cause to nurse
+Hiphil,Jussive,2,F,P,תֵּינֵ֫קְנָה,may you all cause to nurse
+Hiphil,Cohortative,1,C,S,אֵינִ֫יקָה,may I cause to nurse
+Hiphil,Cohortative,1,C,P,נֵינִ֫יקָה,may we cause to nurse
+Hiphil,Imperative,2,M,S,הֵינֵק,cause to nurse!
+Hiphil,Imperative,2,F,S,הֵינִ֫יקִי,cause to nurse!
+Hiphil,Imperative,2,M,P,הֵינִ֫יקוּ,cause to nurse!
+Hiphil,Imperative,2,F,P,הֵינֵ֫קְנָה,cause to nurse!
+Hiphil,Infinitive Absolute,,,,הֵינֵק,to cause to nurse
+Hiphil,Infinitive Construct,,,,הֵינִיק,to cause to nurse
+Hiphil,Active Participle,,M,S,מֵינִיק,causing to nurse
+Hiphil,Active Participle,,F,S,מֵינִיקָה,causing to nurse
+Hiphil,Active Participle,,M,P,מֵינִיקִים,causing to nurse
+Hiphil,Active Participle,,F,P,מֵינִיקוֹת,causing to nurse
+Hophal,Perfect,3,M,S,הוּנַק,he was caused to nurse
+Hophal,Perfect,3,F,S,הוּנְקָה,she was caused to nurse
+Hophal,Perfect,2,M,S,הוּנַ֫קְתָּ,you were caused to nurse
+Hophal,Perfect,2,F,S,הוּנַקְתְּ,you were caused to nurse
+Hophal,Perfect,1,C,S,הוּנַ֫קְתִּי,I was caused to nurse
+Hophal,Perfect,3,C,P,הוּנְקוּ,they were caused to nurse
+Hophal,Perfect,2,M,P,הוּנַקְתֶּם,you all were caused to nurse
+Hophal,Perfect,2,F,P,הוּנַקְתֶּן,you all were caused to nurse
+Hophal,Perfect,1,C,P,הוּנַ֫קְנוּ,we were caused to nurse
+Hophal,Imperfect,3,M,S,יָוּנַק,he will be caused to nurse
+Hophal,Imperfect,3,F,S,תָּוּנַק,she will be caused to nurse
+Hophal,Imperfect,2,M,S,תָּוּנַק,you will be caused to nurse
+Hophal,Imperfect,2,F,S,תָּוּנְקִי,you will be caused to nurse
+Hophal,Imperfect,1,C,S,אָוּנַק,I will be caused to nurse
+Hophal,Imperfect,3,M,P,יָוּנְקוּ,they will be caused to nurse
+Hophal,Imperfect,3,F,P,תָּוּנַ֫קְנָה,they will be caused to nurse
+Hophal,Imperfect,2,M,P,תָּוּנְקוּ,you all will be caused to nurse
+Hophal,Imperfect,2,F,P,תָּוּנַ֫קְנָה,you all will be caused to nurse
+Hophal,Imperfect,1,C,P,נָוּנַק,we will be caused to nurse
+Hophal,Infinitive Absolute,,,,הוּנֵק,to be caused to nurse
+Hophal,Infinitive Construct,,,,הוּנַק,to be caused to nurse
+Hophal,Passive Participle,,M,S,מוּנָק,being caused to nurse
+Hophal,Passive Participle,,F,S,מוּנָקָה,being caused to nurse
+Hophal,Passive Participle,,M,P,מוּנָקִים,being caused to nurse
+Hophal,Passive Participle,,F,P,מוּנָקוֹת,being caused to nurse

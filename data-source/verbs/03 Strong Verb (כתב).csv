@@ -1,0 +1,257 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,כָּתַב,he wrote
+Qal,Perfect,3,F,S,כָּֽתְבָה,she wrote
+Qal,Perfect,2,M,S,כָּתַ֫בְתָּ,you wrote
+Qal,Perfect,2,F,S,כָּתַבְתְּ,you wrote
+Qal,Perfect,1,C,S,כָּתַ֫בְתִּי,I wrote
+Qal,Perfect,3,C,P,כָּֽתְבוּ,they wrote
+Qal,Perfect,2,M,P,כְּתַבְתֶּם,you all wrote
+Qal,Perfect,2,F,P,כְּתַבְתֶּן,you all wrote
+Qal,Perfect,1,C,P,כָּתַ֫בְנוּ,we wrote
+Qal,Imperfect,3,M,S,יִכְתֹּב,he will write
+Qal,Imperfect,3,F,S,תִּכְתֹּב,she will write
+Qal,Imperfect,2,M,S,תִּכְתֹּב,you will write
+Qal,Imperfect,2,F,S,תִּכְתְּבִי,you will write
+Qal,Imperfect,2,F,S,תִּכְתְּבִין,you will write
+Qal,Imperfect,1,C,S,אֶכְתֹּב,I will write
+Qal,Imperfect,3,M,P,יִכְתְּבוּ,they will write
+Qal,Imperfect,3,M,P,יִכְתְּבוּן,they will write
+Qal,Imperfect,3,F,P,תִּכְתֹּ֫בְנָה,they will write
+Qal,Imperfect,2,M,P,תִּכְתְּבוּ,you all will write
+Qal,Imperfect,2,M,P,תִּכְתְּבוּן,you all will write
+Qal,Imperfect,2,F,P,תִּכְתֹּ֫בְנָה,you all will write
+Qal,Imperfect,1,C,P,נִכְתֹּב,we will write
+Qal,Jussive,3,M,S,יִכְתֹּב,may he write
+Qal,Jussive,3,F,S,תִּכְתֹּב,may she write
+Qal,Jussive,2,M,S,תִּכְתֹּב,may you write
+Qal,Jussive,2,F,S,תִּכְתְּבִי,may you write
+Qal,Jussive,3,M,P,יִכְתְּבוּ,may they write
+Qal,Jussive,3,F,P,תִּכְתֹּ֫בְנָה,may they write
+Qal,Jussive,2,M,P,תִּכְתְּבוּ,may you all write
+Qal,Jussive,2,F,P,תִּכְתֹּ֫בְנָה,may you all write
+Qal,Cohortative,1,C,S,אֶכְתְּבָה,may I write
+Qal,Cohortative,1,C,P,נִכְתְּבָה,may we write
+Qal,Imperative,2,M,S,כְּתֹב,write!
+Qal,Imperative,2,M,S,כָּתְבָה,write!
+Qal,Imperative,2,F,S,כִּתְבִי,write!
+Qal,Imperative,2,M,P,כִּתְבוּ,write!
+Qal,Imperative,2,F,P,כְּתֹ֫בְנָה,write!
+Qal,Infinitive Absolute,,,,כָּתוֹב,to write
+Qal,Infinitive Construct,,,,כְּתֹב,to write
+Qal,Active Participle,,M,S,כֹתֵב,writing
+Qal,Active Participle,,F,S,כֹֽתְבָה,writing
+Qal,Active Participle,,F,S,כֹתֶ֫בֶת,writing
+Qal,Active Participle,,M,P,כֹֽתְבִים,writing
+Qal,Active Participle,,F,P,כֹֽתְבוֹת,writing
+Qal,Passive Participle,,M,S,כָתוּב,wrote
+Qal,Passive Participle,,F,S,כְתוּבָה,wrote
+Qal,Passive Participle,,M,P,כְתוּבִים,wrote
+Qal,Passive Participle,,F,P,כְתוּבוֹת,wrote
+Niphal,Perfect,3,M,S,נִכְתַּב,he was written
+Niphal,Perfect,3,F,S,נִכְתְּבָה,she was written
+Niphal,Perfect,2,M,S,נִכְתַּ֫בְתָּ,you were written
+Niphal,Perfect,2,F,S,נִכְתַּבְתְּ,you were written
+Niphal,Perfect,1,C,S,נִכְתַּ֫בְתִּי,I was written
+Niphal,Perfect,3,C,P,נִכְתְּבוּ,they were written
+Niphal,Perfect,2,M,P,נִכְתַּבְתֶּם,you all were written
+Niphal,Perfect,2,F,P,נִכְתַּבְתֶּן,you all were written
+Niphal,Perfect,1,C,P,נִכְתַּ֫בְנוּ,we were written
+Niphal,Imperfect,3,M,S,יִכָּתֵב,he will be written
+Niphal,Imperfect,3,F,S,תִּכָּתֵב,she will be written
+Niphal,Imperfect,2,M,S,תִּכָּתֵב,you will be written
+Niphal,Imperfect,2,F,S,תִּכָּֽתְבִי,you will be written
+Niphal,Imperfect,1,C,S,אֶכָּתֵב,I will be written
+Niphal,Imperfect,3,M,P,יִכָּֽתְבוּ,they will be written
+Niphal,Imperfect,3,F,P,תִּכָּתַ֫בְנָה,they will be written
+Niphal,Imperfect,2,M,P,תִּכָּֽתְבוּ,you all will be written
+Niphal,Imperfect,2,F,P,תִּכָּתַ֫בְנָה,you all will be written
+Niphal,Imperfect,1,C,P,נִכָּתֵב,we will be written
+Niphal,Jussive,3,M,S,יִכָּתֵב,may he be written
+Niphal,Jussive,3,F,S,תִּכָּתֵב,may she be written
+Niphal,Jussive,2,M,S,תִּכָּתֵב,may you be written
+Niphal,Jussive,2,F,S,תִּכָּֽתְבִי,may you be written
+Niphal,Jussive,3,M,P,יִכָּֽתְבוּ,may they be written
+Niphal,Jussive,3,F,P,תִּכָּתַ֫בְנָה,may they be written
+Niphal,Jussive,2,M,P,תִּכָּֽתְבוּ,may you all be written
+Niphal,Jussive,2,F,P,תִּכָּתַ֫בְנָה,may you all be written
+Niphal,Cohortative,1,C,S,אִכָּֽתְבָה,may I be written
+Niphal,Cohortative,1,C,P,נִכָּֽתְבָה,may we be written
+Niphal,Imperative,2,M,S,הִכָּתֵב,be written!
+Niphal,Imperative,2,F,S,הִכָּֽתְבִי,be written!
+Niphal,Imperative,2,M,P,הִכָּֽתְבוּ,be written!
+Niphal,Imperative,2,F,P,הִכָּתַ֫בְנָה,be written!
+Niphal,Infinitive Absolute,,,,הִכָּתֹב,to be written
+Niphal,Infinitive Absolute,,,,נִכְתֹּב,to be written
+Niphal,Infinitive Construct,,,,הִכָּתֵב,to be written
+Niphal,Passive Participle,,M,S,נִכְתָּב,being written
+Niphal,Passive Participle,,F,S,נִכְתָּבָה,being written
+Niphal,Passive Participle,,M,P,נִכְתָּבִים,being written
+Niphal,Passive Participle,,F,P,נִכְתָּבוֹתּ,being written
+Piel,Perfect,3,M,S,כִּתֵּב,he wrote
+Piel,Perfect,3,F,S,כִּתְּבָה,she wrote
+Piel,Perfect,2,M,S,כִּתַּ֫בְתָּ,you wrote
+Piel,Perfect,2,F,S,כִּתַּבְתְּ,you wrote
+Piel,Perfect,1,C,S,כִּתַּ֫בְתִּי,I wrote
+Piel,Perfect,3,C,P,כִּתְּבוּ,they wrote
+Piel,Perfect,2,M,P,כִּתַּבְתֶּם,you all wrote
+Piel,Perfect,2,F,P,כִּתַּבְתֶּן,you all wrote
+Piel,Perfect,1,C,P,כִּתַּ֫בְנוּ,we wrote
+Piel,Imperfect,3,M,S,יְכַתֵּב,he will write
+Piel,Imperfect,3,F,S,תְּכַתֵּב,she will write
+Piel,Imperfect,2,M,S,תְּכַתֵּב,you will write
+Piel,Imperfect,2,F,S,תְּכַתְּבִי,you will write
+Piel,Imperfect,1,C,S,אֲכַתֵּב,I will write
+Piel,Imperfect,3,M,P,יְכַתְּבוּ,they will write
+Piel,Imperfect,3,F,P,תְּכַתֵּ֫בְנָה,they will write
+Piel,Imperfect,2,M,P,תְּכַתְּבוּ,you all will write
+Piel,Imperfect,2,F,P,תְּכַתֵּ֫בְנָה,you all will write
+Piel,Imperfect,1,C,P,נְכַתֵּב,we will write
+Piel,Jussive,3,M,S,יְכַתֵּב,may he write
+Piel,Jussive,3,F,S,תְּכַתֵּב,may she write
+Piel,Jussive,2,M,S,תְּכַתֵּב,may you write
+Piel,Jussive,2,F,S,תְּכַתְּבִי,may you write
+Piel,Jussive,3,M,P,יְכַתְּבוּ,may they write
+Piel,Jussive,3,F,P,תְּכַתֵּ֫בְנָה,may they write
+Piel,Jussive,2,M,P,תְּכַתְּבוּ,may you all write
+Piel,Jussive,2,F,P,תְּכַתֵּ֫בְנָה,may you all write
+Piel,Cohortative,1,C,S,אֲכַתְּבָה,may I write
+Piel,Cohortative,1,C,P,נְכַתְּבָה,may we write
+Piel,Imperative,2,M,S,כַּתֵּב,write!
+Piel,Imperative,2,F,S,כַּתְּבִי,write!
+Piel,Imperative,2,M,P,כַּתְּבוּ,write!
+Piel,Imperative,2,F,P,כַּתֵּ֫בְנָה,write!
+Piel,Infinitive Absolute,,,,כַּתֹּב,to write
+Piel,Infinitive Absolute,,,,כַּתֵּב,to write
+Piel,Infinitive Construct,,,,כַּתֵּב,to write
+Piel,Active Participle,,M,S,מְכַתֵּב,writing
+Piel,Active Participle,,F,S,מְכַתְּבָה,writing
+Piel,Active Participle,,M,P,מְכַתְּבִים,writing
+Piel,Active Participle,,F,P,מְכַתְּבוֹת,writing
+Pual,Perfect,3,M,S,כֻּתַּב,he was written
+Pual,Perfect,3,F,S,כֻּתְּבָה,she was written
+Pual,Perfect,2,M,S,כֻּתַּ֫בְתָּ,you were written
+Pual,Perfect,2,F,S,כֻּתַּבְתְּ,you were written
+Pual,Perfect,1,C,S,כֻּתַּ֫בְתִּי,I was written
+Pual,Perfect,3,C,P,כֻּתְּבוּ,they were written
+Pual,Perfect,2,M,P,כֻּתַּבְתֶּם,you all were written
+Pual,Perfect,2,F,P,כֻּתַּבְתֶּן,you all were written
+Pual,Perfect,1,C,P,כֻּתַּ֫בְנוּ,we were written
+Pual,Imperfect,3,M,S,יְכֻתַּב,he will be written
+Pual,Imperfect,3,F,S,תְּכֻתַּב,she will be written
+Pual,Imperfect,2,M,S,תְּכֻתַּב,you will be written
+Pual,Imperfect,2,F,S,תְּכֻתְּבִי,you will be written
+Pual,Imperfect,1,C,S,אֲכֻתַּב,I will be written
+Pual,Imperfect,3,M,P,יְכֻתְּבוּ,they will be written
+Pual,Imperfect,3,F,P,תְּכֻתַּ֫בְנָה,they will be written
+Pual,Imperfect,2,M,P,תְּכֻתְּבוּ,you all will be written
+Pual,Imperfect,2,F,P,תְּכֻתַּ֫בְנָה,you all will be written
+Pual,Imperfect,1,C,P,נְכֻתַּב,we will be written
+Pual,Infinitive Absolute,,,,כֻּתֹּב,to be written
+Pual,Infinitive Construct,,,,כֻּתַּב,to be written
+Pual,Passive Participle,,M,S,מְכֻתָּב,being written
+Pual,Passive Participle,,F,S,מְכֻתָּבָה,being written
+Pual,Passive Participle,,M,P,מְכֻתָּבִים,being written
+Pual,Passive Participle,,F,P,מְכֻתָּבוֹת,being written
+Hitpael,Perfect,3,M,S,הִתְכַּתֵּב,he wrote himself
+Hitpael,Perfect,3,F,S,הִתְכַּתְּבָה,she wrote herself
+Hitpael,Perfect,2,M,S,הִתְכַּתַּ֫בְתָּ,you wrote yourself
+Hitpael,Perfect,2,F,S,הִתְכַּתַּבְתְּ,you wrote yourself
+Hitpael,Perfect,1,C,S,הִתְכַּתַּ֫בְתִּי,I wrote myself
+Hitpael,Perfect,3,C,P,הִתְכַּתְּבוּ,they wrote themselves
+Hitpael,Perfect,2,M,P,הִתְכַּתַּבְתֶּם,you all wrote yourselves
+Hitpael,Perfect,2,F,P,הִתְכַּתַּבְתֶּן,you all wrote yourselves
+Hitpael,Perfect,1,C,P,הִתְכַּתַּ֫בְנוּ,we wrote ourselves
+Hitpael,Imperfect,3,M,S,יִתְכַּתֵּב,he will write himself
+Hitpael,Imperfect,3,F,S,תִּתְכַּתֵּב,she will write herself
+Hitpael,Imperfect,2,M,S,תִּתְכַּתֵּב,you will write yourself
+Hitpael,Imperfect,2,F,S,תִּתְכַּתְּבִי,you will write yourself
+Hitpael,Imperfect,1,C,S,אֶתְכַּתֵּב,I will write myself
+Hitpael,Imperfect,3,M,P,יִתְכַּתְּבוּ,they will write themselves
+Hitpael,Imperfect,3,F,P,תִּתְכַּתֵּ֫בְנָה,they will write themselves
+Hitpael,Imperfect,2,M,P,תִּתְכַּתְּבוּ,you all will write yourselves
+Hitpael,Imperfect,2,F,P,תִּתְכַּתֵּ֫בְנָה,you all will write yourselves
+Hitpael,Imperfect,1,C,P,נִתְכַּתֵּב,we will write ourselves
+Hitpael,Jussive,3,M,S,יִתְכַּתֵּב,may he write himself
+Hitpael,Jussive,3,F,S,תִּתְכַּתֵּב,may she write herself
+Hitpael,Jussive,2,M,S,תִּתְכַּתֵּב,may you write yourself
+Hitpael,Jussive,2,F,S,תִּתְכַּתְּבִי,may you write yourself
+Hitpael,Jussive,3,M,P,יִתְכַּתְּבוּ,may they write themselves
+Hitpael,Jussive,3,F,P,תִּתְכַּתֵּ֫בְנָה,may they write themselves
+Hitpael,Jussive,2,M,P,תִּתְכַּתְּבוּ,may you all write yourselves
+Hitpael,Jussive,2,F,P,תִּתְכַּתֵּ֫בְנָה,may you all write yourselves
+Hitpael,Cohortative,1,C,S,אֶתְכַּתְּבָה,may I write myself
+Hitpael,Cohortative,1,C,P,נִתְכַּתְּבָה,may we write ourselves
+Hitpael,Imperative,2,M,S,הִתְכַּתֵּב,write yourself!
+Hitpael,Imperative,2,F,S,הִתְכַּתְּבִי,write yourself!
+Hitpael,Imperative,2,M,P,הִתְכַּתְּבוּ,write yourselves!
+Hitpael,Imperative,2,F,P,הִתְכַּתֵּ֫בְנָה,write yourselves!
+Hitpael,Infinitive Absolute,,,,הִתְכַּתֵּב,to write oneself
+Hitpael,Infinitive Construct,,,,הִתְכַּתֵּב,to write oneself
+Hitpael,Active Participle,,M,S,מִתְכַּתֵּב,writing oneself
+Hitpael,Active Participle,,F,S,מִתְכַּתְּבָה,writing oneself
+Hitpael,Active Participle,,M,P,מִתְכַּתְּבִים,writing oneself
+Hitpael,Active Participle,,F,P,מִתְכַּתְּבוֹת,writing oneself
+Hiphil,Perfect,3,M,S,הִכְתִּיב,he caused to write
+Hiphil,Perfect,3,F,S,הִכְתִּ֫יבָה,she caused to write
+Hiphil,Perfect,2,M,S,הִכְתַּ֫בְתָּ,you caused to write
+Hiphil,Perfect,2,F,S,הִכְתַּבְתְּ,you caused to write
+Hiphil,Perfect,1,C,S,הִכְתַּ֫בְתִּי,I caused to write
+Hiphil,Perfect,3,C,P,הִכְתִּ֫יבוּ,they caused to write
+Hiphil,Perfect,2,M,P,הִכְתַּבְתֶּם,you all caused to write
+Hiphil,Perfect,2,F,P,הִכְתַּבְתֶּן,you all caused to write
+Hiphil,Perfect,1,C,P,הִכְתַּ֫בְנוּ,we caused to write
+Hiphil,Imperfect,3,M,S,יַכְתִּיב,he will cause to write
+Hiphil,Imperfect,3,F,S,תַּכְתִּיב,she will cause to write
+Hiphil,Imperfect,2,M,S,תַּכְתִּיב,you will cause to write
+Hiphil,Imperfect,2,F,S,תַּכְתִּ֫יבִי,you will cause to write
+Hiphil,Imperfect,1,C,S,אַכְתִּיב,I will cause to write
+Hiphil,Imperfect,3,M,P,יַכְתִּ֫יבוּ,they will cause to write
+Hiphil,Imperfect,3,F,P,תַּכְתֵּ֫בְנָה,they will cause to write
+Hiphil,Imperfect,2,M,P,תַּכְתִּ֫יבוּ,you all will cause to write
+Hiphil,Imperfect,2,F,P,תַּכְתֵּ֫בְנָה,you all will cause to write
+Hiphil,Imperfect,1,C,P,נַכְתִּיב,we will cause to write
+Hiphil,Jussive,3,M,S,יַכְתֵּב,may he cause to write
+Hiphil,Jussive,3,F,S,תַּכְתֵּב,may she cause to write
+Hiphil,Jussive,2,M,S,תַּכְתֵּב,may you cause to write
+Hiphil,Jussive,2,F,S,תַּכְתִּ֫יבִי,may you cause to write
+Hiphil,Jussive,3,M,P,יַכְתִּ֫יבוּ,may they cause to write
+Hiphil,Jussive,3,F,P,תַּכְתֵּ֫בְנָה,may they cause to write
+Hiphil,Jussive,2,M,P,תַּכְתִּ֫יבוּ,may you all cause to write
+Hiphil,Jussive,2,F,P,תַּכְתֵּ֫בְנָה,may you all cause to write
+Hiphil,Cohortative,1,C,S,אַכְתִּ֫יבָה,may I cause to write
+Hiphil,Cohortative,1,C,P,נַכְתִּ֫יבָה,may we cause to write
+Hiphil,Imperative,2,M,S,הַכְתֵּב,cause to write!
+Hiphil,Imperative,2,F,S,הַכְתִּ֫יבִי,cause to write!
+Hiphil,Imperative,2,M,P,הַכְתִּ֫יבוּ,cause to write!
+Hiphil,Imperative,2,F,P,הַכְתֵּ֫בְנָה,cause to write!
+Hiphil,Infinitive Absolute,,,,הַכְתֵּב,to cause to write
+Hiphil,Infinitive Construct,,,,הַכְתִּיב,to cause to write
+Hiphil,Active Participle,,M,S,מַכְתִּיב,causing to write
+Hiphil,Active Participle,,F,S,מַכְתִּיבָה,causing to write
+Hiphil,Active Participle,,M,P,מַכְתִּיבִים,causing to write
+Hiphil,Active Participle,,F,P,מַכְתִּיבוֹת,causing to write
+Hophal,Perfect,3,M,S,הָכְתַּב,he was caused to write
+Hophal,Perfect,3,F,S,הָכְתְּבָה,she was caused to write
+Hophal,Perfect,2,M,S,הָכְתַּ֫בְתָּ,you were caused to write
+Hophal,Perfect,2,F,S,הָכְתַּבְתְּ,you were caused to write
+Hophal,Perfect,1,C,S,הָכְתַּ֫בְתִּי,I was caused to write
+Hophal,Perfect,3,C,P,הָכְתְּבוּ,they were caused to write
+Hophal,Perfect,2,M,P,הָכְתַּבְתֶּם,you all were caused to write
+Hophal,Perfect,2,F,P,הָכְתַּבְתֶּן,you all were caused to write
+Hophal,Perfect,1,C,P,הָכְתַּ֫בְנוּ,we were caused to write
+Hophal,Imperfect,3,M,S,יָכְתַּב,he will be caused to write
+Hophal,Imperfect,3,F,S,תָּכְתַּב,she will be caused to write
+Hophal,Imperfect,2,M,S,תָּכְתַּב,you will be caused to write
+Hophal,Imperfect,2,F,S,תָּכְתְּבִי,you will be caused to write
+Hophal,Imperfect,1,C,S,אָכְתַּב,I will be caused to write
+Hophal,Imperfect,3,M,P,יָכְתְּבוּ,they will be caused to write
+Hophal,Imperfect,3,F,P,תָּכְתַּ֫בְנָה,they will be caused to write
+Hophal,Imperfect,2,M,P,תָּכְתְּבוּ,you all will be caused to write
+Hophal,Imperfect,2,F,P,תָּכְתַּ֫בְנָה,you all will be caused to write
+Hophal,Imperfect,1,C,P,נָכְתַּב,we will be caused to write
+Hophal,Infinitive Absolute,,,,הָכְתֵּב,to be caused to write
+Hophal,Infinitive Construct,,,,הָכְתַּב,to be caused to write
+Hophal,Passive Participle,,M,S,מָכְתָּב,being caused to write
+Hophal,Passive Participle,,F,S,מָכְתָּבָה,being caused to write
+Hophal,Passive Participle,,M,P,מָכְתָּבִים,being caused to write
+Hophal,Passive Participle,,F,P,מָכְתָּבוֹת,being caused to write

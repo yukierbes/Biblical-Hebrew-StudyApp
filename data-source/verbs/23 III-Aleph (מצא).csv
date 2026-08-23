@@ -1,0 +1,255 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,מָצָא,he found
+Qal,Perfect,3,F,S,מָֽצְאָה,she found
+Qal,Perfect,2,M,S,מָצָ֫אתָ,you found
+Qal,Perfect,2,F,S,מָצָאתְ,you found
+Qal,Perfect,1,C,S,מָצָ֫אתִי,I found
+Qal,Perfect,3,C,P,מָֽצְאוּ,they found
+Qal,Perfect,2,M,P,מְצָאתֶם,you all found
+Qal,Perfect,2,F,P,מְצָאתֶן,you all found
+Qal,Perfect,1,C,P,מָצָ֫אנוּ,we found
+Qal,Imperfect,3,M,S,יִמְצָא,he will find
+Qal,Imperfect,3,F,S,תִּמְצָא,she will find
+Qal,Imperfect,2,M,S,תִּמְצָא,you will find
+Qal,Imperfect,2,F,S,תִּמְצְאִי,you will find
+Qal,Imperfect,1,C,S,אֶמְצָא,I will find
+Qal,Imperfect,3,M,P,יִמְצְאוּ,they will find
+Qal,Imperfect,3,F,P,תִּמְצֶ֫אנָה,they will find
+Qal,Imperfect,2,M,P,תִּמְצְאוּ,you all will find
+Qal,Imperfect,2,F,P,תִּמְצֶ֫אנָה,you all will find
+Qal,Imperfect,1,C,P,נִמְצָא,we will find
+Qal,Jussive,3,M,S,יִמְצָא,may he find
+Qal,Jussive,3,F,S,תִּמְצָא,may she find
+Qal,Jussive,2,M,S,תִּמְצָא,may you find
+Qal,Jussive,2,F,S,תִּמְצְאִי,may you find
+Qal,Jussive,3,M,P,יִמְצְאוּ,may they find
+Qal,Jussive,3,F,P,תִּמְצֶ֫אנָה,may they find
+Qal,Jussive,2,M,P,תִּמְצְאוּ,may you all find
+Qal,Jussive,2,F,P,תִּמְצֶ֫אנָה,may you all find
+Qal,Cohortative,1,C,S,אֶמְצְאָה,may I find
+Qal,Cohortative,1,C,P,נִמְצְאָה,may we find
+Qal,Imperative,2,M,S,מְצָא,find!
+Qal,Imperative,2,F,S,מִצְאִי,find!
+Qal,Imperative,2,M,P,מִצְאוּ,find!
+Qal,Imperative,2,F,P,מְצֶ֫אנָה,find!
+Qal,Infinitive Absolute,,,,מָצוֹא,to find
+Qal,Infinitive Construct,,,,מְצֹא,to find
+Qal,Active Participle,,M,S,מֹצֵא,finding
+Qal,Active Participle,,F,S,מֹצְאָה,finding
+Qal,Active Participle,,F,S,מֹצֵאת,finding
+Qal,Active Participle,,M,P,מֹצְאִים,finding
+Qal,Active Participle,,F,P,מֹצְאוֹת,finding
+Qal,Passive Participle,,M,S,מָצוּא,found
+Qal,Passive Participle,,F,S,מְצוּאָה,found
+Qal,Passive Participle,,M,P,מְצוּאִים,found
+Qal,Passive Participle,,F,P,מְצוּאוֹת,found
+Niphal,Perfect,3,M,S,נִמְצָא,he was found
+Niphal,Perfect,3,F,S,נִמְצְאָה,she was found
+Niphal,Perfect,2,M,S,נִמְצֵ֫אתָ,you were found
+Niphal,Perfect,2,F,S,נִמְצֵאתְ,you were found
+Niphal,Perfect,1,C,S,נִמְצֵ֫אתִי,I was found
+Niphal,Perfect,3,C,P,נִמְצְאוּ,they were found
+Niphal,Perfect,2,M,P,נִמְצֵאתֶם,you all were found
+Niphal,Perfect,2,F,P,נִמְצֵאתֶן,you all were found
+Niphal,Perfect,1,C,P,נִמְצֵ֫אנוּ,we were found
+Niphal,Imperfect,3,M,S,יִמָּצֵא,he will be found
+Niphal,Imperfect,3,F,S,תִּמָּצֵא,she will be found
+Niphal,Imperfect,2,M,S,תִּמָּצֵא,you will be found
+Niphal,Imperfect,2,F,S,תִּמָּֽצְאִי,you will be found
+Niphal,Imperfect,1,C,S,אֶמָּצֵא,I will be found
+Niphal,Imperfect,3,M,P,יִמָּֽצְאוּ,they will be found
+Niphal,Imperfect,3,F,P,תִּמָּצֶ֫אנָה,they will be found
+Niphal,Imperfect,2,M,P,תִּמָּֽצְאוּ,you all will be found
+Niphal,Imperfect,2,F,P,תִּמָּצֶ֫אנָה,you all will be found
+Niphal,Imperfect,1,C,P,נִמָּצֵא,we will be found
+Niphal,Jussive,3,M,S,יִמָּצֵא,may he be found
+Niphal,Jussive,3,F,S,תִּמָּצֵא,may she be found
+Niphal,Jussive,2,M,S,תִּמָּצֵא,may you be found
+Niphal,Jussive,2,F,S,תִּמָּֽצְאִי,may you be found
+Niphal,Jussive,3,M,P,יִמָּֽצְאוּ,may they be found
+Niphal,Jussive,3,F,P,תִּמָּצֶ֫אנָה,may they be found
+Niphal,Jussive,2,M,P,תִּמָּֽצְאוּ,may you all be found
+Niphal,Jussive,2,F,P,תִּמָּצֶ֫אנָה,may you all be found
+Niphal,Cohortative,1,C,S,אִמָּֽצְאָה,may I be found
+Niphal,Cohortative,1,C,P,נִמָּֽצְאָה,may we be found
+Niphal,Imperative,2,M,S,הִמָּצֵא,be found!
+Niphal,Imperative,2,F,S,הִמָּֽצְאִי,be found!
+Niphal,Imperative,2,M,P,הִמָּֽצְאוּ,be found!
+Niphal,Imperative,2,F,P,הִמָּצֶ֫אנָה,be found!
+Niphal,Infinitive Absolute,,,,נִמְצֹא,to be found
+Niphal,Infinitive Absolute,,,,הִמָּצֹא,to be found
+Niphal,Infinitive Construct,,,,הִמָּצֵא,to be found
+Niphal,Passive Participle,,M,S,נִמְצָא,being found
+Niphal,Passive Participle,,F,S,נִמְצֵאת,being found
+Niphal,Passive Participle,,F,S,נִמְצָאָה,being found
+Niphal,Passive Participle,,M,P,נִמְצָאִים,being found
+Niphal,Passive Participle,,F,P,נִמְצָאוֹת,being found
+Piel,Perfect,3,M,S,מִצֵּא,he found
+Piel,Perfect,3,F,S,מִצְּאָה,she found
+Piel,Perfect,2,M,S,מִצֵּ֫אתָ,you found
+Piel,Perfect,2,F,S,מִצֵּאתְ,you found
+Piel,Perfect,1,C,S,מִצֵּ֫אתִי,I found
+Piel,Perfect,3,C,P,מִצְּאוּ,they found
+Piel,Perfect,2,M,P,מִצֵּאתֶם,you all found
+Piel,Perfect,2,F,P,מִצֵּאתֶן,you all found
+Piel,Perfect,1,C,P,מִצֵּ֫אנוּ,we found
+Piel,Imperfect,3,M,S,יְמַצֵּא,he will find
+Piel,Imperfect,3,F,S,תְּמַצֵּא,she will find
+Piel,Imperfect,2,M,S,תְּמַצֵּא,you will find
+Piel,Imperfect,2,F,S,תְּמַצְּאִי,you will find
+Piel,Imperfect,1,C,S,אֲמַצֵּא,I will find
+Piel,Imperfect,3,M,P,יְמַצְּאוּ,they will find
+Piel,Imperfect,3,F,P,תְּמַצֶּ֫אנָה,they will find
+Piel,Imperfect,2,M,P,תְּמַצְּאוּ,you all will find
+Piel,Imperfect,2,F,P,תְּמַצֶּ֫אנָה,you all will find
+Piel,Imperfect,1,C,P,נְמַצֵּא,we will find
+Piel,Jussive,3,M,S,יְמַצֵּא,may he find
+Piel,Jussive,3,F,S,תְּמַצֵּא,may she find
+Piel,Jussive,2,M,S,תְּמַצֵּא,may you find
+Piel,Jussive,2,F,S,תְּמַצְּאִי,may you find
+Piel,Jussive,3,M,P,יְמַצְּאוּ,may they find
+Piel,Jussive,3,F,P,תְּמַצֶּ֫אנָה,may they find
+Piel,Jussive,2,M,P,תְּמַצְּאוּ,may you all find
+Piel,Jussive,2,F,P,תְּמַצֶּ֫אנָה,may you all find
+Piel,Cohortative,1,C,S,אֲמַצְּאָה,may I find
+Piel,Cohortative,1,C,P,נְמַצְּאָה,may we find
+Piel,Imperative,2,M,S,מַצֵּא,find!
+Piel,Imperative,2,F,S,מַצְּאִי,find!
+Piel,Imperative,2,M,P,מַצְּאוּ,find!
+Piel,Imperative,2,F,P,מַצֶּ֫אנָה,find!
+Piel,Infinitive Absolute,,,,מַצֹּא,to find
+Piel,Infinitive Construct,,,,מַצֵּא,to find
+Piel,Active Participle,,M,S,מְמַצֵּא,finding
+Piel,Active Participle,,F,S,מְמַצֵּאת,finding
+Piel,Active Participle,,F,S,מְמַצְּאָה,finding
+Piel,Active Participle,,M,P,מְמַצְּאִים,finding
+Piel,Active Participle,,F,P,מְמַצְּאוֹת,finding
+Pual,Perfect,3,M,S,מֻצָּא,he was found
+Pual,Perfect,3,F,S,מֻצְּאָה,she was found
+Pual,Perfect,2,M,S,מֻצֵּ֫אתָ,you were found
+Pual,Perfect,2,F,S,מֻצֵּאתְ,you were found
+Pual,Perfect,1,C,S,מֻצֵּ֫אתִי,I was found
+Pual,Perfect,3,C,P,מֻצְּאוּ,they were found
+Pual,Perfect,2,M,P,מֻצֵּאתֶם,you all were found
+Pual,Perfect,2,F,P,מֻצֵּאתֶן,you all were found
+Pual,Perfect,1,C,P,מֻצֵּ֫אנוּ,we were found
+Pual,Imperfect,3,M,S,יְמֻצָּא,he will be found
+Pual,Imperfect,3,F,S,תְּמֻצָּא,she will be found
+Pual,Imperfect,2,M,S,תְּמֻצָּא,you will be found
+Pual,Imperfect,2,F,S,תְּמֻצְּאִי,you will be found
+Pual,Imperfect,1,C,S,אֲמֻצָּא,I will be found
+Pual,Imperfect,3,M,P,יְמֻצְּאוּ,they will be found
+Pual,Imperfect,3,F,P,תְּמֻצֶּ֫אנָה,they will be found
+Pual,Imperfect,2,M,P,תְּמֻצְּאוּ,you all will be found
+Pual,Imperfect,2,F,P,תְּמֻצֶּ֫אנָה,you all will be found
+Pual,Imperfect,1,C,P,נְמֻצָּא,we will be found
+Pual,Infinitive Absolute,,,,מֻצָּא,to be found
+Pual,Infinitive Construct,,,,מֻצֹּא,to be found
+Pual,Passive Participle,,M,S,מְמֻצָּא,being found
+Pual,Passive Participle,,F,S,מְמֻצָּאָה,being found
+Pual,Passive Participle,,M,P,מְמֻצָּאִים,being found
+Pual,Passive Participle,,F,P,מְמֻצָּאוֹת,being found
+Hitpael,Perfect,3,M,S,הִתְמַצֵּא,he found himself
+Hitpael,Perfect,3,F,S,הִתְמַצְּאָה,she found herself
+Hitpael,Perfect,2,M,S,הִתְמַצֵּ֫אתָ,you found yourself
+Hitpael,Perfect,2,F,S,הִתְמַצֵּאתְ,you found yourself
+Hitpael,Perfect,1,C,S,הִתְמַצֵּ֫אתִי,I found myself
+Hitpael,Perfect,3,C,P,הִתְמַצְּאוּ,they found themselves
+Hitpael,Perfect,2,M,P,הִתְמַצֵּאתֶם,you all found yourselves
+Hitpael,Perfect,2,F,P,הִתְמַצֵּאתֶן,you all found yourselves
+Hitpael,Perfect,1,C,P,הִתְמַצֵּ֫אנוּ,we found ourselves
+Hitpael,Imperfect,3,M,S,יִתְמַצֵּא,he will find himself
+Hitpael,Imperfect,3,F,S,תִּתְמַצֵּא,she will find herself
+Hitpael,Imperfect,2,M,S,תִּתְמַצֵּא,you will find yourself
+Hitpael,Imperfect,2,F,S,תִּתְמַצְּאִי,you will find yourself
+Hitpael,Imperfect,1,C,S,אֶתְמַצֵּא,I will find myself
+Hitpael,Imperfect,3,M,P,יִתְמַצְּאוּ,they will find themselves
+Hitpael,Imperfect,3,F,P,תִּתְמַצֶּ֫אנָה,they will find themselves
+Hitpael,Imperfect,2,M,P,תִּתְמַצְּאוּ,you all will find yourselves
+Hitpael,Imperfect,2,F,P,תִּתְמַצֶּ֫אנָה,you all will find yourselves
+Hitpael,Imperfect,1,C,P,נִתְמַצֵּא,we will find ourselves
+Hitpael,Jussive,3,M,S,יִתְמַצֵּא,may he find himself
+Hitpael,Jussive,3,F,S,תִּתְמַצֵּא,may she find herself
+Hitpael,Jussive,2,M,S,תִּתְמַצֵּא,may you find yourself
+Hitpael,Jussive,2,F,S,תִּתְמַצְּאִי,may you find yourself
+Hitpael,Jussive,3,M,P,יִתְמַצְּאוּ,may they find themselves
+Hitpael,Jussive,3,F,P,תִּתְמַצֶּ֫אנָה,may they find themselves
+Hitpael,Jussive,2,M,P,תִּתְמַצְּאוּ,may you all find yourselves
+Hitpael,Jussive,2,F,P,תִּתְמַצֶּ֫אנָה,may you all find yourselves
+Hitpael,Cohortative,1,C,S,אֶתְמַצְּאָה,may I find myself
+Hitpael,Cohortative,1,C,P,נִתְמַצְּאָה,may we find ourselves
+Hitpael,Imperative,2,M,S,הִתְמַצֵּא,find yourself!
+Hitpael,Imperative,2,F,S,הִתְמַצְּאִי,find yourself!
+Hitpael,Imperative,2,M,P,הִתְמַצְּאוּ,find yourselves!
+Hitpael,Imperative,2,F,P,הִתְמַצֶּ֫אנָה,find yourselves!
+Hitpael,Infinitive Absolute,,,,הִתְמַצֵּא,to find oneself
+Hitpael,Infinitive Construct,,,,הִתְמַצֵּא,to find oneself
+Hitpael,Active Participle,,M,S,מִתְמַצֵּא,finding oneself
+Hitpael,Active Participle,,F,S,מִתְמַצֵּאת,finding oneself
+Hitpael,Active Participle,,F,S,מִתְמַצְּאָה,finding oneself
+Hitpael,Active Participle,,M,P,מִתְמַצְּאִים,finding oneself
+Hitpael,Active Participle,,F,P,מִתְמַצְּאוֹת,finding oneself
+Hiphil,Perfect,3,M,S,הִמְצִיא,he caused to find
+Hiphil,Perfect,3,F,S,הִמְצִ֫יאָה,she caused to find
+Hiphil,Perfect,2,M,S,הִמְצֵ֫אתָ,you caused to find
+Hiphil,Perfect,2,F,S,הִמְצֵאתְ,you caused to find
+Hiphil,Perfect,1,C,S,הִמְצֵ֫אתִי,I caused to find
+Hiphil,Perfect,3,C,P,הִמְצִ֫יאוּ,they caused to find
+Hiphil,Perfect,2,M,P,הִמְצֵאתֶם,you all caused to find
+Hiphil,Perfect,2,F,P,הִמְצֵאתֶן,you all caused to find
+Hiphil,Perfect,1,C,P,הִמְצֵ֫אנוּ,we caused to find
+Hiphil,Imperfect,3,M,S,יַמְצִיא,he will cause to find
+Hiphil,Imperfect,3,F,S,תַּמְצִיא,she will cause to find
+Hiphil,Imperfect,2,M,S,תַּמְצִיא,you will cause to find
+Hiphil,Imperfect,2,F,S,תַּמְצִ֫יאִי,you will cause to find
+Hiphil,Imperfect,1,C,S,אַמְצִיא,I will cause to find
+Hiphil,Imperfect,3,M,P,יַמְצִ֫יאוּ,they will cause to find
+Hiphil,Imperfect,3,F,P,תַּמְצֶ֫אנָה,they will cause to find
+Hiphil,Imperfect,2,M,P,תַּמְצִ֫יאוּ,you all will cause to find
+Hiphil,Imperfect,2,F,P,תַּמְצֶ֫אנָה,you all will cause to find
+Hiphil,Imperfect,1,C,P,נַמְצִיא,we will cause to find
+Hiphil,Jussive,3,M,S,יַמְצֵא,may he cause to find
+Hiphil,Jussive,3,F,S,תַּמְצֵא,may she cause to find
+Hiphil,Jussive,2,M,S,תַּמְצֵא,may you cause to find
+Hiphil,Jussive,2,F,S,תַּמְצִ֫יאִי,may you cause to find
+Hiphil,Jussive,3,M,P,יַמְצִ֫יאוּ,may they cause to find
+Hiphil,Jussive,3,F,P,תַּמְצֶ֫אנָה,may they cause to find
+Hiphil,Jussive,2,M,P,תַּמְצִ֫יאוּ,may you all cause to find
+Hiphil,Jussive,2,F,P,תַּמְצֶ֫אנָה,may you all cause to find
+Hiphil,Cohortative,1,C,S,אַמְצִ֫יאָה,may I cause to find
+Hiphil,Cohortative,1,C,P,נַמְצִ֫יאָה,may we cause to find
+Hiphil,Imperative,2,M,S,הַמְצֵא,cause to find!
+Hiphil,Imperative,2,F,S,הַמְצִ֫יאִי,cause to find!
+Hiphil,Imperative,2,M,P,הַמְצִ֫יאוּ,cause to find!
+Hiphil,Imperative,2,F,P,הַמְצֶ֫אנָה,cause to find!
+Hiphil,Infinitive Absolute,,,,הַמְצֵא,to cause to find
+Hiphil,Infinitive Construct,,,,הַמְצִיא,to cause to find
+Hiphil,Active Participle,,M,S,מַמְצִיא,causing to find
+Hiphil,Active Participle,,F,S,מַמְצִיאָה,causing to find
+Hiphil,Active Participle,,M,P,מַמְצִיאִים,causing to find
+Hiphil,Active Participle,,F,P,מַמְצִיאוֹת,causing to find
+Hophal,Perfect,3,M,S,הֻמְצָא,he was caused to find
+Hophal,Perfect,3,F,S,הֻמְצְאָה,she was caused to find
+Hophal,Perfect,2,M,S,הֻמְצֵ֫אתָ,you were caused to find
+Hophal,Perfect,2,F,S,הֻמְצֵאתְ,you were caused to find
+Hophal,Perfect,1,C,S,הֻמְצֵ֫אתִי,I was caused to find
+Hophal,Perfect,3,C,P,הֻמְצְאוּ,they were caused to find
+Hophal,Perfect,2,M,P,הֻמְצֵאתֶם,you all were caused to find
+Hophal,Perfect,2,F,P,הֻמְצֵאתֶן,you all were caused to find
+Hophal,Perfect,1,C,P,הֻמְצֵ֫אנוּ,we were caused to find
+Hophal,Imperfect,3,M,S,יֻמְצָא,he will be caused to find
+Hophal,Imperfect,3,F,S,תֻּמְצָא,she will be caused to find
+Hophal,Imperfect,2,M,S,תֻּמְצָא,you will be caused to find
+Hophal,Imperfect,2,F,S,תֻּמְצְאִי,you will be caused to find
+Hophal,Imperfect,1,C,S,אֻמְצָא,I will be caused to find
+Hophal,Imperfect,3,M,P,יֻמְצְאוּ,they will be caused to find
+Hophal,Imperfect,3,F,P,תֻּמְצָ֫אְנָה,they will be caused to find
+Hophal,Imperfect,2,M,P,תֻּמְצְאוּ,you all will be caused to find
+Hophal,Imperfect,2,F,P,תֻּמְצָ֫אְנָה,you all will be caused to find
+Hophal,Imperfect,1,C,P,נֻמְצָא,we will be caused to find
+Hophal,Infinitive Absolute,,,,הֻמְצֵא,to be caused to find
+Hophal,Infinitive Construct,,,,הֻמְצָא,to be caused to find
+Hophal,Passive Participle,,M,S,מֻמְצָא,being caused to find
+Hophal,Passive Participle,,F,S,מֻמְצָאָה,being caused to find
+Hophal,Passive Participle,,M,P,מֻמְצָאִים,being caused to find
+Hophal,Passive Participle,,F,P,מֻמְצָאוֹת,being caused to find

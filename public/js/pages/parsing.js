@@ -78,7 +78,18 @@ function orderedOptions(col, df) {
 }
 
 function render(content, sidebarExtra, navigate) {
+  // Preserve the sidebar's scroll position across a filter change — every
+  // checkbox toggle calls this same render() to rebuild the whole panel
+  // (so derived bits like "Select all"/"Clear all" and dependent option
+  // lists stay in sync), which would otherwise reset scroll to the top
+  // each time and make picking several boxes in a row from a scrolled-down
+  // section (e.g. several lessons) annoying. rAF runs after this
+  // function finishes rebuilding the DOM below, so the restore sticks.
+  const __sidebarScrollTop = sidebarExtra.scrollTop;
   sidebarExtra.innerHTML = "";
+  requestAnimationFrame(() => {
+    sidebarExtra.scrollTop = __sidebarScrollTop;
+  });
   content.innerHTML = "";
 
   const available = getAvailableDatasets();

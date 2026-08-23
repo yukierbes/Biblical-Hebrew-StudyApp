@@ -1,0 +1,40 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,כָּבֵד,he was heavy
+Qal,Perfect,3,F,S,כָּֽבְדָה,she was heavy
+Qal,Perfect,2,M,S,כָּבַ֫דְתָּ,you were heavy
+Qal,Perfect,2,F,S,כָּבַדְתְּ,you were heavy
+Qal,Perfect,1,C,S,כָּבַ֫דְתִּי,I was heavy
+Qal,Perfect,3,C,P,כָּֽבְדוּ,they were heavy
+Qal,Perfect,2,M,P,כְּבַדְתֶּם,you all were heavy
+Qal,Perfect,2,F,P,כְּבַדְתֶּן,you all were heavy
+Qal,Perfect,1,C,P,כָּבַ֫דְנוּ,we were heavy
+Qal,Imperfect,3,M,S,יִכְבַּד,he will be heavy
+Qal,Imperfect,3,F,S,תִּכְבַּד,she will be heavy
+Qal,Imperfect,2,M,S,תִּכְבַּד,you will be heavy
+Qal,Imperfect,2,F,S,תִּכְבְּדִי,you will be heavy
+Qal,Imperfect,1,C,S,אֶכְבַּד,I will be heavy
+Qal,Imperfect,3,M,P,יִכְבְּדוּ,they will be heavy
+Qal,Imperfect,3,F,P,תִּכְבַּ֫דְנָה,they will be heavy
+Qal,Imperfect,2,M,P,תִּכְבְּדוּ,you all will be heavy
+Qal,Imperfect,2,F,P,תִּכְבַּ֫דְנָה,you all will be heavy
+Qal,Imperfect,1,C,P,נִכְבַּד,we will be heavy
+Qal,Jussive,3,M,S,יִכְבַּד,may he be heavy
+Qal,Jussive,3,F,S,תִּכְבַּד,may she be heavy
+Qal,Jussive,2,M,S,תִּכְבַּד,may you be heavy
+Qal,Jussive,2,F,S,תִּכְבְּדִי,may you be heavy
+Qal,Jussive,3,M,P,יִכְבְּדוּ,may they be heavy
+Qal,Jussive,3,F,P,תִּכְבַּ֫דְנָה,may they be heavy
+Qal,Jussive,2,M,P,תִּכְבְּדוּ,may you all be heavy
+Qal,Jussive,2,F,P,תִּכְבַּ֫דְנָה,may you all be heavy
+Qal,Cohortative,1,C,S,אֶכְבְּדָה,may I be heavy
+Qal,Cohortative,1,C,P,נִכְבְּדָה,may we be heavy
+Qal,Imperative,2,M,S,כְּבַד,be heavy!
+Qal,Imperative,2,F,S,כִּבְדִי,be heavy!
+Qal,Imperative,2,M,P,כִּבְדוּ,be heavy!
+Qal,Imperative,2,F,P,כְּבַ֫דְנָה,be heavy!
+Qal,Infinitive Absolute,,,,כָּבוֹד,to be heavy
+Qal,Infinitive Construct,,,,כְּבַד,to be heavy
+Qal,Active Participle,,M,S,כָּבֵד,being heavy
+Qal,Active Participle,,F,S,כְּבֵדָה,being heavy
+Qal,Active Participle,,M,P,כְּבֵדִים,being heavy
+Qal,Active Participle,,F,P,כְּבֵדוֹת,being heavy

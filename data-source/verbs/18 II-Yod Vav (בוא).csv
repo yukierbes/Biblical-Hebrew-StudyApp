@@ -1,0 +1,40 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,בָּא,he came
+Qal,Perfect,3,F,S,בָּ֫אָה,she came
+Qal,Perfect,2,M,S,בָּ֫אתָ,you came
+Qal,Perfect,2,F,S,בָּ֫את,you came
+Qal,Perfect,1,C,S,בָּ֫אתִי,I came
+Qal,Perfect,3,C,P,בָּ֫אוּ,they came
+Qal,Perfect,2,M,P,בָּאתֶם,you all came
+Qal,Perfect,2,F,P,בָּאתֶן,you all came
+Qal,Perfect,1,C,P,בָּ֫אנוּ,we came
+Qal,Imperfect,3,M,S,יָבוֹא,he will come
+Qal,Imperfect,3,F,S,תָּבוֹא,she will come
+Qal,Imperfect,2,M,S,תָּבוֹא,you will come
+Qal,Imperfect,2,F,S,תָּב֫וֹאִי,you will come
+Qal,Imperfect,1,C,S,אָבוֹא,I will come
+Qal,Imperfect,3,M,P,יָב֫וֹאוּ,they will come
+Qal,Imperfect,3,F,P,תְּב֫וֹאנָה,they will come
+Qal,Imperfect,2,M,P,תָּב֫וֹאוּ,you all will come
+Qal,Imperfect,2,F,P,תְּב֫וֹאנָה,you all will come
+Qal,Imperfect,1,C,P,נָבוֹא,we will come
+Qal,Jussive,3,M,S,יָבֹא,may he come
+Qal,Jussive,3,F,S,תָּבֹא,may she come
+Qal,Jussive,2,M,S,תָּבֹא,may you come
+Qal,Jussive,2,F,S,תָּב֫וֹאִי,may you come
+Qal,Jussive,3,M,P,יָב֫וֹאוּ,may they come
+Qal,Jussive,3,F,P,תְּב֫וֹאנָה,may they come
+Qal,Jussive,2,M,P,תָּב֫וֹאוּ,may you all come
+Qal,Jussive,2,F,P,תְּב֫וֹאנָה,may you all come
+Qal,Cohortative,1,C,S,אָב֫וֹאָה,may I come
+Qal,Cohortative,1,C,P,נָב֫וֹאָה,may we come
+Qal,Imperative,2,M,S,בּוֹא,come!
+Qal,Imperative,2,F,S,בּ֫וֹאִי,come!
+Qal,Imperative,2,M,P,בּ֫וֹאוּ,come!
+Qal,Imperative,2,F,P,בֹּאנָה,come!
+Qal,Infinitive Absolute,,,,בּוֹא,to come
+Qal,Infinitive Construct,,,,בּוֹא,to come
+Qal,Active Participle,,M,S,בָּא,coming
+Qal,Active Participle,,F,S,בָּאָ֫ה,coming
+Qal,Active Participle,,M,P,בָּאִים,coming
+Qal,Active Participle,,F,P,בָּאוֹת,coming

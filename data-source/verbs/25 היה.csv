@@ -1,0 +1,49 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,הָיָה,he is
+Qal,Perfect,3,F,S,הָֽיְתָה,she is
+Qal,Perfect,2,M,S,הָיִ֫יתָ,you are
+Qal,Perfect,2,F,S,הָיִ֫ית,you are
+Qal,Perfect,1,C,S,הָיִ֫יתִי,I am
+Qal,Perfect,3,C,P,הָיוּ,they are
+Qal,Perfect,2,M,P,הֱיִיתֶם,you all are
+Qal,Perfect,2,F,P,הֱיִיתֶן,you all are
+Qal,Perfect,1,C,P,הָיִ֫ינוּ,we are
+Qal,Imperfect,3,M,S,יִהְיֶה,he will be
+Qal,Imperfect,3,F,S,תִּהְיֶה,she will be
+Qal,Imperfect,2,M,S,תִּהְיֶה,you will be
+Qal,Imperfect,2,F,S,תִּהְיִי,you will be
+Qal,Imperfect,1,C,S,אֶהְיֶה,I will be
+Qal,Imperfect,3,M,P,יִהְיוּ,they will be
+Qal,Imperfect,3,F,P,תִּהְיֶ֫ינָה,they will be
+Qal,Imperfect,2,M,P,תִּהְיוּ,you all will be
+Qal,Imperfect,2,F,P,תִּהְיֶ֫ינָה,you all will be
+Qal,Imperfect,1,C,P,נִהְיֶה,we will be
+Qal,Jussive,3,M,S,יְהִי,may he be
+Qal,Jussive,3,F,S,תִּהִי,may she be
+Qal,Jussive,2,M,S,תִּהִי,may you be
+Qal,Jussive,2,F,S,תִּהְיִי,may you be
+Qal,Jussive,3,M,P,יִהְיוּ,may they be
+Qal,Jussive,3,F,P,תִּהְיֶ֫ינָה,may they be
+Qal,Jussive,2,M,P,תִּהְיוּ,may you all be
+Qal,Jussive,2,F,P,תִּהְיֶ֫ינָה,may you all be
+Qal,Cohortative,1,C,S,אֱהִי,may I be
+Qal,Cohortative,1,C,P,נְהִי,may we be
+Qal,Imperative,2,M,S,הֱיֵה,be!
+Qal,Imperative,2,F,S,הֲיִי,be!
+Qal,Imperative,2,M,P,הֱיוּ,be!
+Qal,Imperative,2,F,P,הֱיֶ֫ינָה,be!
+Qal,Infinitive Absolute,,,,הָיֹה,to be
+Qal,Infinitive Absolute,,,,הָיוֹ,to be
+Qal,Infinitive Construct,,,,הֱיוֹת,to be
+Qal,Active Participle,,M,S,הֹוֶה,being
+Qal,Active Participle,,F,S,הוֹיָה,being
+Qal,Active Participle,,M,P,הוֹיִים,being
+Qal,Active Participle,,F,P,הוֹיוֹת,being
+Qal,Passive Participle,,M,S,הָיוּי,was being
+Qal,Passive Participle,,F,S,הֱיוּיָה,was being
+Qal,Passive Participle,,M,P,הֱיוּיִם,was being
+Qal,Passive Participle,,F,P,הֱיוּיוֹת,was being
+Niphal,Perfect,3,M,S,נִהְיָה,he was
+Niphal,Perfect,3,F,S,נִהְיְתָה,she was
+Niphal,Perfect,2,M,S,נִהְיֵ֫יתָ,you were
+Niphal,Perfect,1,C,S,נִהְיֵ֫יתִי,you were

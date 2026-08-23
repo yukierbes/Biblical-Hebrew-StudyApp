@@ -1,0 +1,257 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,פָּקַד,he appointed
+Qal,Perfect,3,F,S,פָּֽקְדָה,she appointed
+Qal,Perfect,2,M,S,פָּקַ֫דְתָּ,you appointed
+Qal,Perfect,2,F,S,פָּקַדְתְּ,you appointed
+Qal,Perfect,1,C,S,פָּקַ֫דְתִּי,I appointed
+Qal,Perfect,3,C,P,פָּֽקְדוּ,they appointed
+Qal,Perfect,2,M,P,פְּקַדְתֶּם,you all appointed
+Qal,Perfect,2,F,P,פְּקַדְתֶּן,you all appointed
+Qal,Perfect,1,C,P,פָּקַ֫דְנוּ,we appointed
+Qal,Imperfect,3,M,S,יִפְקֹד,he will appoint
+Qal,Imperfect,3,F,S,תִּפְקֹד,she will appoint
+Qal,Imperfect,2,M,S,תִּפְקֹד,you will appoint
+Qal,Imperfect,2,F,S,תִּפְקְדִי,you will appoint
+Qal,Imperfect,2,F,S,תִּפְקְדִין,you will appoint
+Qal,Imperfect,1,C,S,אֶפְקֹד,I will appoint
+Qal,Imperfect,3,M,P,יִפְקְדוּ,they will appoint
+Qal,Imperfect,3,M,P,יִפְקְדוּן,they will appoint
+Qal,Imperfect,3,F,P,תִּפְקֹ֫דְנָה,they will appoint
+Qal,Imperfect,2,M,P,תִּפְקְדוּ,you all will appoint
+Qal,Imperfect,2,M,P,תִּפְקְדוּן,you all will appoint
+Qal,Imperfect,2,F,P,תִּפְקֹ֫דְנָה,you all will appoint
+Qal,Imperfect,1,C,P,נִפְקֹד,we will appoint
+Qal,Jussive,3,M,S,יִפְקֹד,may he appoint
+Qal,Jussive,3,F,S,תִּפְקֹד,may she appoint
+Qal,Jussive,2,M,S,תִּפְקֹד,may you appoint
+Qal,Jussive,2,F,S,תִּפְקְדִי,may you appoint
+Qal,Jussive,3,M,P,יִפְקְדוּ,may they appoint
+Qal,Jussive,3,F,P,תִּפְקֹ֫דְנָה,may they appoint
+Qal,Jussive,2,M,P,תִּפְקְדוּ,may you all appoint
+Qal,Jussive,2,F,P,תִּפְקֹ֫דְנָה,may you all appoint
+Qal,Cohortative,1,C,S,אֶפְקְדָה,may I appoint
+Qal,Cohortative,1,C,P,נִפְקְדָה,may we appoint
+Qal,Imperative,2,M,S,פְּקֹד,appoint!
+Qal,Imperative,2,M,S,פָּקְדָה,appoint!
+Qal,Imperative,2,F,S,פִּקְדִי,appoint!
+Qal,Imperative,2,M,P,פִּקְדוּ,appoint!
+Qal,Imperative,2,F,P,פְּקֹ֫דְנָה,appoint!
+Qal,Infinitive Absolute,,,,פָּקוֹד,to appoint
+Qal,Infinitive Construct,,,,פְּקֹד,to appoint
+Qal,Active Participle,,M,S,פֹקֵד,appointing
+Qal,Active Participle,,F,S,פֹֽקְדָה,appointing
+Qal,Active Participle,,F,S,פֹקֶ֫דֶת,appointing
+Qal,Active Participle,,M,P,פֹֽקְדִים,appointing
+Qal,Active Participle,,F,P,פֹֽקְדוֹת,appointing
+Qal,Passive Participle,,M,S,פָקוּד,appointed
+Qal,Passive Participle,,F,S,פְקוּדָה,appointed
+Qal,Passive Participle,,M,P,פְקוּדִים,appointed
+Qal,Passive Participle,,F,P,פְקוּדוֹת,appointed
+Niphal,Perfect,3,M,S,נִפְקַד,he was appointed
+Niphal,Perfect,3,F,S,נִפְקְדָה,she was appointed
+Niphal,Perfect,2,M,S,נִפְקַ֫דְתָּ,you were appointed
+Niphal,Perfect,2,F,S,נִפְקַדְתְּ,you were appointed
+Niphal,Perfect,1,C,S,נִפְקַ֫דְתִּי,I was appointed
+Niphal,Perfect,3,C,P,נִפְקְדוּ,they were appointed
+Niphal,Perfect,2,M,P,נִפְקַדְתֶּם,you all were appointed
+Niphal,Perfect,2,F,P,נִפְקַדְתֶּן,you all were appointed
+Niphal,Perfect,1,C,P,נִפְקַ֫דְנוּ,we were appointed
+Niphal,Imperfect,3,M,S,יִפָּקֵד,he will be appointed
+Niphal,Imperfect,3,F,S,תִּפָּקֵד,she will be appointed
+Niphal,Imperfect,2,M,S,תִּפָּקֵד,you will be appointed
+Niphal,Imperfect,2,F,S,תִּפָּֽקְדִי,you will be appointed
+Niphal,Imperfect,1,C,S,אֶפָּקֵד,I will be appointed
+Niphal,Imperfect,3,M,P,יִפָּֽקְדוּ,they will be appointed
+Niphal,Imperfect,3,F,P,תִּפָּקַ֫דְנָה,they will be appointed
+Niphal,Imperfect,2,M,P,תִּפָּֽקְדוּ,you all will be appointed
+Niphal,Imperfect,2,F,P,תִּפָּקַ֫דְנָה,you all will be appointed
+Niphal,Imperfect,1,C,P,נִפָּקֵד,we will be appointed
+Niphal,Jussive,3,M,S,יִפָּקֵד,may he be appointed
+Niphal,Jussive,3,F,S,תִּפָּקֵד,may she be appointed
+Niphal,Jussive,2,M,S,תִּפָּקֵד,may you be appointed
+Niphal,Jussive,2,F,S,תִּפָּֽקְדִי,may you be appointed
+Niphal,Jussive,3,M,P,יִפָּֽקְדוּ,may they be appointed
+Niphal,Jussive,3,F,P,תִּפָּקַ֫דְנָה,may they be appointed
+Niphal,Jussive,2,M,P,תִּפָּֽקְדוּ,may you all be appointed
+Niphal,Jussive,2,F,P,תִּפָּקַ֫דְנָה,may you all be appointed
+Niphal,Cohortative,1,C,S,אִפָּֽקְדָה,may I be appointed
+Niphal,Cohortative,1,C,P,נִפָּֽקְדָה,may we be appointed
+Niphal,Imperative,2,M,S,הִפָּקֵד,be appointed!
+Niphal,Imperative,2,F,S,הִפָּֽקְדִי,be appointed!
+Niphal,Imperative,2,M,P,הִפָּֽקְדוּ,be appointed!
+Niphal,Imperative,2,F,P,הִפָּקַ֫דְנָה,be appointed!
+Niphal,Infinitive Absolute,,,,הִפָּקֹד,to be appointed
+Niphal,Infinitive Absolute,,,,נִפְקֹד,to be appointed
+Niphal,Infinitive Construct,,,,הִפָּקֵד,to be appointed
+Niphal,Passive Participle,,M,S,נִפְקָד,being appointed
+Niphal,Passive Participle,,F,S,נִפְקָדָה,being appointed
+Niphal,Passive Participle,,M,P,נִפְקָדִים,being appointed
+Niphal,Passive Participle,,F,P,נִפְקָדוֹת,being appointed
+Piel,Perfect,3,M,S,פִּקֵּד,he appointed
+Piel,Perfect,3,F,S,פִּקְּדָה,she appointed
+Piel,Perfect,2,M,S,פִּקַּ֫דְתָּ,you appointed
+Piel,Perfect,2,F,S,פִּקַּדְתְּ,you appointed
+Piel,Perfect,1,C,S,פִּקַּ֫דְתִּי,I appointed
+Piel,Perfect,3,C,P,פִּקְּדוּ,they appointed
+Piel,Perfect,2,M,P,פִּקַּדְתֶּם,you all appointed
+Piel,Perfect,2,F,P,פִּקַּדְתֶּן,you all appointed
+Piel,Perfect,1,C,P,פִּקַּ֫דְנוּ,we appointed
+Piel,Imperfect,3,M,S,יְפַקֵּד,he will appoint
+Piel,Imperfect,3,F,S,תְּפַקֵּד,she will appoint
+Piel,Imperfect,2,M,S,תְּפַקֵּד,you will appoint
+Piel,Imperfect,2,F,S,תְּפַקְּדִי,you will appoint
+Piel,Imperfect,1,C,S,אֲפַקֵּד,I will appoint
+Piel,Imperfect,3,M,P,יְפַקְּדוּ,they will appoint
+Piel,Imperfect,3,F,P,תְּפַקֵּ֫דְנָה,they will appoint
+Piel,Imperfect,2,M,P,תְּפַקְּדוּ,you all will appoint
+Piel,Imperfect,2,F,P,תְּפַקֵּ֫דְנָה,you all will appoint
+Piel,Imperfect,1,C,P,נְפַקֵּד,we will appoint
+Piel,Jussive,3,M,S,יְפַקֵּד,may he appoint
+Piel,Jussive,3,F,S,תְּפַקֵּד,may she appoint
+Piel,Jussive,2,M,S,תְּפַקֵּד,may you appoint
+Piel,Jussive,2,F,S,תְּפַקְּדִי,may you appoint
+Piel,Jussive,3,M,P,יְפַקְּדוּ,may they appoint
+Piel,Jussive,3,F,P,תְּפַקֵּ֫דְנָה,may they appoint
+Piel,Jussive,2,M,P,תְּפַקְּדוּ,may you all appoint
+Piel,Jussive,2,F,P,תְּפַקֵּ֫דְנָה,may you all appoint
+Piel,Cohortative,1,C,S,אֲפַקְּדָה,may I appoint
+Piel,Cohortative,1,C,P,נְפַקְּדָה,may we appoint
+Piel,Imperative,2,M,S,פַּקֵּד,appoint!
+Piel,Imperative,2,F,S,פַּקְּדִי,appoint!
+Piel,Imperative,2,M,P,פַּקְּדוּ,appoint!
+Piel,Imperative,2,F,P,פַּקֵּ֫דְנָה,appoint!
+Piel,Infinitive Absolute,,,,פַּקֹּד,to appoint
+Piel,Infinitive Absolute,,,,פַּקֵּד,to appoint
+Piel,Infinitive Construct,,,,פַּקֵּד,to appoint
+Piel,Active Participle,,M,S,מְפַקֵּד,appointing
+Piel,Active Participle,,F,S,מְפַקְּדָה,appointing
+Piel,Active Participle,,M,P,מְפַקְּדִים,appointing
+Piel,Active Participle,,F,P,מְפַקְּדוֹת,appointing
+Pual,Perfect,3,M,S,פֻּקַּד,he was appointed
+Pual,Perfect,3,F,S,פֻּקְּדָה,she was appointed
+Pual,Perfect,2,M,S,פֻּקַּ֫דְתָּ,you were appointed
+Pual,Perfect,2,F,S,פֻּקַּדְתְּ,you were appointed
+Pual,Perfect,1,C,S,פֻּקַּ֫דְתִּי,I was appointed
+Pual,Perfect,3,C,P,פֻּקְּדוּ,they were appointed
+Pual,Perfect,2,M,P,פֻּקַּדְתֶּם,you all were appointed
+Pual,Perfect,2,F,P,פֻּקַּדְתֶּן,you all were appointed
+Pual,Perfect,1,C,P,פֻּקַּ֫דְנוּ,we were appointed
+Pual,Imperfect,3,M,S,יְפֻקַּד,he will be appointed
+Pual,Imperfect,3,F,S,תְּפֻקַּד,she will be appointed
+Pual,Imperfect,2,M,S,תְּפֻקַּד,you will be appointed
+Pual,Imperfect,2,F,S,תְּפֻקְּדִי,you will be appointed
+Pual,Imperfect,1,C,S,אֲפֻקַּד,I will be appointed
+Pual,Imperfect,3,M,P,יְפֻקְּדוּ,they will be appointed
+Pual,Imperfect,3,F,P,תְּפֻקַּ֫דְנָה,they will be appointed
+Pual,Imperfect,2,M,P,תְּפֻקְּדוּ,you all will be appointed
+Pual,Imperfect,2,F,P,תְּפֻקַּ֫דְנָה,you all will be appointed
+Pual,Imperfect,1,C,P,נְפֻקַּד,we will be appointed
+Pual,Infinitive Absolute,,,,פֻּקֹּד,to be appointed
+Pual,Infinitive Construct,,,,פֻּקַּד,to be appointed
+Pual,Passive Participle,,M,S,מְפֻקָּד,being appointed
+Pual,Passive Participle,,F,S,מְפֻקָּדָה,being appointed
+Pual,Passive Participle,,M,P,מְפֻקָּדִים,being appointed
+Pual,Passive Participle,,F,P,מְפֻקָּדוֹת,being appointed
+Hitpael,Perfect,3,M,S,הִתְפַּקֵּד,he appointed himself
+Hitpael,Perfect,3,F,S,הִתְפַּקְּדָה,she appointed herself
+Hitpael,Perfect,2,M,S,הִתְפַּקַּ֫דְתָּ,you appointed yourself
+Hitpael,Perfect,2,F,S,הִתְפַּקַּדְתְּ,you appointed yourself
+Hitpael,Perfect,1,C,S,הִתְפַּקַּ֫דְתִּי,I appointed myself
+Hitpael,Perfect,3,C,P,הִתְפַּקְּדוּ,they appointed themselves
+Hitpael,Perfect,2,M,P,הִתְפַּקַּדְתֶּם,you all appointed yourselves
+Hitpael,Perfect,2,F,P,הִתְפַּקַּדְתֶּן,you all appointed yourselves
+Hitpael,Perfect,1,C,P,הִתְפַּקַּ֫דְנוּ,we appointed ourselves
+Hitpael,Imperfect,3,M,S,יִתְפַּקֵּד,he will appoint himself
+Hitpael,Imperfect,3,F,S,תִּתְפַּקֵּד,she will appoint herself
+Hitpael,Imperfect,2,M,S,תִּתְפַּקֵּד,you will appoint yourself
+Hitpael,Imperfect,2,F,S,תִּתְפַּקְּדִי,you will appoint yourself
+Hitpael,Imperfect,1,C,S,אֶתְפַּקֵּד,I will appoint myself
+Hitpael,Imperfect,3,M,P,יִתְפַּקְּדוּ,they will appoint themselves
+Hitpael,Imperfect,3,F,P,תִּתְפַּקֵּ֫דְנָה,they will appoint themselves
+Hitpael,Imperfect,2,M,P,תִּתְפַּקְּדוּ,you all will appoint yourselves
+Hitpael,Imperfect,2,F,P,תִּתְפַּקֵּ֫דְנָה,you all will appoint yourselves
+Hitpael,Imperfect,1,C,P,נִתְפַּקֵּד,we will appoint ourselves
+Hitpael,Jussive,3,M,S,יִתְפַּקֵּד,may he appoint himself
+Hitpael,Jussive,3,F,S,תִּתְפַּקֵּד,may she appoint herself
+Hitpael,Jussive,2,M,S,תִּתְפַּקֵּד,may you appoint yourself
+Hitpael,Jussive,2,F,S,תִּתְפַּקְּדִי,may you appoint yourself
+Hitpael,Jussive,3,M,P,יִתְפַּקְּדוּ,may they appoint themselves
+Hitpael,Jussive,3,F,P,תִּתְפַּקֵּ֫דְנָה,may they appoint themselves
+Hitpael,Jussive,2,M,P,תִּתְפַּקְּדוּ,may you all appoint yourselves
+Hitpael,Jussive,2,F,P,תִּתְפַּקֵּ֫דְנָה,may you all appoint yourselves
+Hitpael,Cohortative,1,C,S,אֶתְפַּקְּדָה,may I appoint myself
+Hitpael,Cohortative,1,C,P,נִתְפַּקְּדָה,may we appoint ourselves
+Hitpael,Imperative,2,M,S,הִתְפַּקֵּד,appoint yourself!
+Hitpael,Imperative,2,F,S,הִתְפַּקְּדִי,appoint yourself!
+Hitpael,Imperative,2,M,P,הִתְפַּקְּדוּ,appoint yourselves!
+Hitpael,Imperative,2,F,P,הִתְפַּקֵּ֫דְנָה,appoint yourselves!
+Hitpael,Infinitive Absolute,,,,הִתְפַּקֵּד,to appoint oneself
+Hitpael,Infinitive Construct,,,,הִתְפַּקֵּד,to appoint oneself
+Hitpael,Active Participle,,M,S,מִתְפַּקֵּד,appointing oneself
+Hitpael,Active Participle,,F,S,מִתְפַּקְּדָה,appointing oneself
+Hitpael,Active Participle,,M,P,מִתְפַּקְּדִים,appointing oneself
+Hitpael,Active Participle,,F,P,מִתְפַּקְּדוֹת,appointing oneself
+Hiphil,Perfect,3,M,S,הִפְקִיד,he caused to appoint
+Hiphil,Perfect,3,F,S,הִפְקִ֫ידָה,she caused to appoint
+Hiphil,Perfect,2,M,S,הִפְקַ֫דְתָּ,you caused to appoint
+Hiphil,Perfect,2,F,S,הִפְקַדְתְּ,you caused to appoint
+Hiphil,Perfect,1,C,S,הִפְקַ֫דְתִּי,I caused to appoint
+Hiphil,Perfect,3,C,P,הִפְקִ֫ידוּ,they caused to appoint
+Hiphil,Perfect,2,M,P,הִפְקַדְתֶּם,you all caused to appoint
+Hiphil,Perfect,2,F,P,הִפְקַדְתֶּן,you all caused to appoint
+Hiphil,Perfect,1,C,P,הִפְקַ֫דְנוּ,we caused to appoint
+Hiphil,Imperfect,3,M,S,יַפְקִיד,he will cause to appoint
+Hiphil,Imperfect,3,F,S,תַּפְקִיד,she will cause to appoint
+Hiphil,Imperfect,2,M,S,תַּפְקִיד,you will cause to appoint
+Hiphil,Imperfect,2,F,S,תַּפְקִ֫ידִי,you will cause to appoint
+Hiphil,Imperfect,1,C,S,אַפְקִיד,I will cause to appoint
+Hiphil,Imperfect,3,M,P,יַפְקִ֫ידוּ,they will cause to appoint
+Hiphil,Imperfect,3,F,P,תַּפְקֵ֫דְנָה,they will cause to appoint
+Hiphil,Imperfect,2,M,P,תַּפְקִ֫ידוּ,you all will cause to appoint
+Hiphil,Imperfect,2,F,P,תַּפְקֵ֫דְנָה,you all will cause to appoint
+Hiphil,Imperfect,1,C,P,נַפְקִיד,we will cause to appoint
+Hiphil,Jussive,3,M,S,יַפְקֵד,may he cause to appoint
+Hiphil,Jussive,3,F,S,תַּפְקֵד,may she cause to appoint
+Hiphil,Jussive,2,M,S,תַּפְקֵד,may you cause to appoint
+Hiphil,Jussive,2,F,S,תַּפְקִ֫ידִי,may you cause to appoint
+Hiphil,Jussive,3,M,P,יַפְקִ֫ידוּ,may they cause to appoint
+Hiphil,Jussive,3,F,P,תַּפְקֵ֫דְנָה,may they cause to appoint
+Hiphil,Jussive,2,M,P,תַּפְקִ֫ידוּ,may you all cause to appoint
+Hiphil,Jussive,2,F,P,תַּפְקֵ֫דְנָה,may you all cause to appoint
+Hiphil,Cohortative,1,C,S,אַפְקִ֫ידָה,may I cause to appoint
+Hiphil,Cohortative,1,C,P,נַפְקִ֫ידָה,may we cause to appoint
+Hiphil,Imperative,2,M,S,הַפְקֵד,cause to appoint!
+Hiphil,Imperative,2,F,S,הַפְקִ֫ידִי,cause to appoint!
+Hiphil,Imperative,2,M,P,הַפְקִ֫ידוּ,cause to appoint!
+Hiphil,Imperative,2,F,P,הַפְקֵ֫דְנָה,cause to appoint!
+Hiphil,Infinitive Absolute,,,,הַפְקֵד,to cause to appoint
+Hiphil,Infinitive Construct,,,,הַפְקִיד,to cause to appoint
+Hiphil,Active Participle,,M,S,מַפְקִיד,causing to appoint
+Hiphil,Active Participle,,F,S,מַפְקִידָה,causing to appoint
+Hiphil,Active Participle,,M,P,מַפְקִידִים,causing to appoint
+Hiphil,Active Participle,,F,P,מַפְקִידוֹת,causing to appoint
+Hophal,Perfect,3,M,S,הָפְקַד,he was caused to appoint
+Hophal,Perfect,3,F,S,הָפְקְדָה,she was caused to appoint
+Hophal,Perfect,2,M,S,הָפְקַ֫דְתָּ,you were caused to appoint
+Hophal,Perfect,2,F,S,הָפְקַדְתְּ,you were caused to appoint
+Hophal,Perfect,1,C,S,הָפְקַ֫דְתִּי,I was caused to appoint
+Hophal,Perfect,3,C,P,הָפְקְדוּ,they were caused to appoint
+Hophal,Perfect,2,M,P,הָפְקַדְתֶּם,you all were caused to appoint
+Hophal,Perfect,2,F,P,הָפְקַדְתֶּן,you all were caused to appoint
+Hophal,Perfect,1,C,P,הָפְקַ֫דְנוּ,we were caused to appoint
+Hophal,Imperfect,3,M,S,יָפְקַד,he will be caused to appoint
+Hophal,Imperfect,3,F,S,תָּפְקַד,she will be caused to appoint
+Hophal,Imperfect,2,M,S,תָּפְקַד,you will be caused to appoint
+Hophal,Imperfect,2,F,S,תָּפְקְדִי,you will be caused to appoint
+Hophal,Imperfect,1,C,S,אָפְקַד,I will be caused to appoint
+Hophal,Imperfect,3,M,P,יָפְקְדוּ,they will be caused to appoint
+Hophal,Imperfect,3,F,P,תָּפְקַ֫דְנָה,they will be caused to appoint
+Hophal,Imperfect,2,M,P,תָּפְקְדוּ,you all will be caused to appoint
+Hophal,Imperfect,2,F,P,תָּפְקַ֫דְנָה,you all will be caused to appoint
+Hophal,Imperfect,1,C,P,נָפְקַד,we will be caused to appoint
+Hophal,Infinitive Absolute,,,,הָפְקֵד,to be caused to appoint
+Hophal,Infinitive Construct,,,,הָפְקַד,to be caused to appoint
+Hophal,Passive Participle,,M,S,מָפְקָד,being caused to appoint
+Hophal,Passive Participle,,F,S,מָפְקָדָה,being caused to appoint
+Hophal,Passive Participle,,M,P,מָפְקָדִים,being caused to appoint
+Hophal,Passive Participle,,F,P,מָפְקָדוֹת,being caused to appoint

@@ -1,0 +1,252 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,שָׁלַח,he sent
+Qal,Perfect,3,F,S,שָֽׁלְחָה,she sent
+Qal,Perfect,2,M,S,שָׁלַ֫חְתָּ,you sent
+Qal,Perfect,2,F,S,שָׁלַ֫חַתְּ,you sent
+Qal,Perfect,1,C,S,שָׁלַ֫חְתִּי,I sent
+Qal,Perfect,3,C,P,שָֽׁלְחוּ,they sent
+Qal,Perfect,2,M,P,שְׁלַחְתֶּם,you all sent
+Qal,Perfect,2,F,P,שְׁלַחְתֶּן,you all sent
+Qal,Perfect,1,C,P,שָׁלַ֫חְנוּ,we sent
+Qal,Imperfect,3,M,S,יִשְׁלַח,he will send
+Qal,Imperfect,3,F,S,תִּשְׁלַח,she will send
+Qal,Imperfect,2,M,S,תִּשְׁלַח,you will send
+Qal,Imperfect,2,F,S,תִּשְׁלְחִי,you will send
+Qal,Imperfect,1,C,S,אֶשְׁלַח,I will send
+Qal,Imperfect,3,M,P,יִשְׁלְחוּ,they will send
+Qal,Imperfect,3,F,P,תִּשְׁלַ֫חְנָה,they will send
+Qal,Imperfect,2,M,P,תִּשְׁלְחוּ,you all will send
+Qal,Imperfect,2,F,P,תִּשְׁלַ֫חְנָה,you all will send
+Qal,Imperfect,1,C,P,נִשְׁלַח,we will send
+Qal,Jussive,3,M,S,יִשְׁלַח,may he send
+Qal,Jussive,3,F,S,תִּשְׁלַח,may she send
+Qal,Jussive,2,M,S,תִּשְׁלַח,may you send
+Qal,Jussive,2,F,S,תִּשְׁלְחִי,may you send
+Qal,Jussive,3,M,P,יִשְׁלְחוּ,may they send
+Qal,Jussive,3,F,P,תִּשְׁלַ֫חְנָה,may they send
+Qal,Jussive,2,M,P,תִּשְׁלְחוּ,may you all send
+Qal,Jussive,2,F,P,תִּשְׁלַ֫חְנָה,may you all send
+Qal,Cohortative,1,C,S,אֶשְׁלְחָה,may I send
+Qal,Cohortative,1,C,P,נִשְׁלְחָה,may we send
+Qal,Imperative,2,M,S,שְׁלַח,send!
+Qal,Imperative,2,F,S,שִׁלְחִי,send!
+Qal,Imperative,2,M,P,שִׁלְחוּ,send!
+Qal,Imperative,2,F,P,שְׁלַ֫חְנָה,send!
+Qal,Infinitive Absolute,,,,שָׁלוֹחַ,to send
+Qal,Infinitive Construct,,,,שְׁלַח,to send
+Qal,Active Participle,,M,S,שֹׁלֵחַ,sending
+Qal,Active Participle,,F,S,שֹֽׁלְחָה,sending
+Qal,Active Participle,,F,S,שֹׁלֶ֫חֶת,sending
+Qal,Active Participle,,M,P,שֹֽׁלְחִים,sending
+Qal,Active Participle,,F,P,שֹֽׁלְחוֹת,sending
+Qal,Passive Participle,,M,S,שָׁלוּחַ,sent
+Qal,Passive Participle,,F,S,שְׁלוּחָה,sent
+Qal,Passive Participle,,M,P,שְׁלוּחִים,sent
+Qal,Passive Participle,,F,P,שְׁלוּחוֹת,sent
+Niphal,Perfect,3,M,S,נִשְׁלַח,he was sent
+Niphal,Perfect,3,F,S,נִשְׁלְחָה,she was sent
+Niphal,Perfect,2,M,S,נִשְׁלַ֫חְתָּ,you were sent
+Niphal,Perfect,2,F,S,נִשְׁלַ֫חַתְּ,you were sent
+Niphal,Perfect,1,C,S,נִשְׁלַ֫חְתִּי,I was sent
+Niphal,Perfect,3,C,P,נִשְׁלְחוּ,they were sent
+Niphal,Perfect,2,M,P,נִשְׁלַחְתֶּם,you all were sent
+Niphal,Perfect,2,F,P,נִשְׁלַחְתֶּן,you all were sent
+Niphal,Perfect,1,C,P,נִשְׁלַ֫חְנוּ,we were sent
+Niphal,Imperfect,3,M,S,יִשָּׁלַח,he will be sent
+Niphal,Imperfect,3,F,S,תִּשָּׁלַח,she will be sent
+Niphal,Imperfect,2,M,S,תִּשָּׁלַח,you will be sent
+Niphal,Imperfect,2,F,S,תִּשָּֽׁלְחִי,you will be sent
+Niphal,Imperfect,1,C,S,אֶשָּׁלַח,I will be sent
+Niphal,Imperfect,3,M,P,יִשָּֽׁלְחוּ,they will be sent
+Niphal,Imperfect,3,F,P,תִּשָּׁלַ֫חְנָה,they will be sent
+Niphal,Imperfect,2,M,P,תִּשָּֽׁלְחוּ,you all will be sent
+Niphal,Imperfect,2,F,P,תִּשָּׁלַ֫חְנָה,you all will be sent
+Niphal,Imperfect,1,C,P,נִשָּׁלַח,we will be sent
+Niphal,Jussive,3,M,S,יִשָּׁלַח,may he be sent
+Niphal,Jussive,3,F,S,תִּשָּׁלַח,may she be sent
+Niphal,Jussive,2,M,S,תִּשָּׁלַח,may you be sent
+Niphal,Jussive,2,F,S,תִּשָּֽׁלְחִי,may you be sent
+Niphal,Jussive,3,M,P,יִשָּֽׁלְחוּ,may they be sent
+Niphal,Jussive,3,F,P,תִּשָּׁלַ֫חְנָה,may they be sent
+Niphal,Jussive,2,M,P,תִּשָּֽׁלְחוּ,may you all be sent
+Niphal,Jussive,2,F,P,תִּשָּׁלַ֫חְנָה,may you all be sent
+Niphal,Cohortative,1,C,S,אֶשָּֽׁלְחָה,may I be sent
+Niphal,Cohortative,1,C,P,נִשָּֽׁלְחָה,may we be sent
+Niphal,Imperative,2,M,S,הִשָּׁלַח,be sent!
+Niphal,Imperative,2,F,S,הִשָּֽׁלְחִי,be sent!
+Niphal,Imperative,2,M,P,הִשָּֽׁלְחוּ,be sent!
+Niphal,Imperative,2,F,P,הִשָּׁלַ֫חְנָה,be sent!
+Niphal,Infinitive Absolute,,,,הִשָּׁלֹחַ,to be sent
+Niphal,Infinitive Absolute,,,,נִשְׁלֹחַ,to be sent
+Niphal,Infinitive Construct,,,,הִשָּׁלַח,to be sent
+Niphal,Passive Participle,,M,S,נִשְׁלָח,being sent
+Niphal,Passive Participle,,F,S,נִשְׁלָחָה,being sent
+Niphal,Passive Participle,,M,P,נִשְׁלָחִים,being sent
+Niphal,Passive Participle,,F,P,נִשְׁלָחוֹת,being sent
+Piel,Perfect,3,M,S,שִׁלַּח,he sent
+Piel,Perfect,3,F,S,שִׁלְּחָה,she sent
+Piel,Perfect,2,M,S,שִׁלַּ֫חְתָּ,you sent
+Piel,Perfect,2,F,S,שִׁלַּ֫חַתְּ,you sent
+Piel,Perfect,1,C,S,שִׁלַּ֫חְתִּי,I sent
+Piel,Perfect,3,C,P,שִׁלְּחוּ,they sent
+Piel,Perfect,2,M,P,שִׁלַּחְתֶּם,you all sent
+Piel,Perfect,2,F,P,שִׁלַּחְתֶּן,you all sent
+Piel,Perfect,1,C,P,שִׁלַּ֫חְנוּ,we sent
+Piel,Imperfect,3,M,S,יְשַׁלַּח,he will send
+Piel,Imperfect,3,F,S,תְּשַׁלַּח,she will send
+Piel,Imperfect,2,M,S,תְּשַׁלַּח,you will send
+Piel,Imperfect,2,F,S,תְּשַׁלְּחִי,you will send
+Piel,Imperfect,1,C,S,אֲשַׁלַּח,I will send
+Piel,Imperfect,3,M,P,יְשַׁלְּחוּ,they will send
+Piel,Imperfect,3,F,P,תְּשַׁלַּ֫חְנָה,they will send
+Piel,Imperfect,2,M,P,תְּשַׁלְּחוּ,you all will send
+Piel,Imperfect,2,F,P,תְּשַׁלַּ֫חְנָה,you all will send
+Piel,Imperfect,1,C,P,נְשַׁלַּח,we will send
+Piel,Jussive,3,M,S,יְשַׁלַּח,may he send
+Piel,Jussive,3,F,S,תְּשַׁלַּח,may she send
+Piel,Jussive,2,M,S,תְּשַׁלַּח,may you send
+Piel,Jussive,2,F,S,תְּשַׁלְּחִי,may you send
+Piel,Jussive,3,M,P,יְשַׁלְּחוּ,may they send
+Piel,Jussive,3,F,P,תְּשַׁלַּ֫חְנָה,may they send
+Piel,Jussive,2,M,P,תְּשַׁלְּחוּ,may you all send
+Piel,Jussive,2,F,P,תְּשַׁלַּ֫חְנָה,may you all send
+Piel,Cohortative,1,C,S,אֲשַׁלְּחָה,may I send
+Piel,Cohortative,1,C,P,נְשַׁלְּחָה,may we send
+Piel,Imperative,2,M,S,שַׁלַּח,send!
+Piel,Imperative,2,F,S,שַׁלְּחִי,send!
+Piel,Imperative,2,M,P,שַׁלְּחוּ,send!
+Piel,Imperative,2,F,P,שַׁלַּ֫חְנָה,send!
+Piel,Infinitive Absolute,,,,שַׁלֵּחַ,to send
+Piel,Infinitive Construct,,,,שַׁלַּח,to send
+Piel,Active Participle,,M,S,מְשַׁלֵּחַ,sending
+Piel,Active Participle,,F,S,מְשַׁלְּחָה,sending
+Piel,Active Participle,,M,P,מְשַׁלְּחִים,sending
+Piel,Active Participle,,F,P,מְשַׁלְּחוֹת,sending
+Pual,Perfect,3,M,S,שֻׁלַּח,he was sent
+Pual,Perfect,3,F,S,שֻׁלְּחָה,she was sent
+Pual,Perfect,2,M,S,שֻׁלַּ֫חְתָּ,you were sent
+Pual,Perfect,2,F,S,שֻׁלַּ֫חַתְּ,you were sent
+Pual,Perfect,1,C,S,שֻׁלַּ֫חְתִּי,I was sent
+Pual,Perfect,3,C,P,שֻׁלְּחוּ,they were sent
+Pual,Perfect,2,M,P,שֻׁלַּחְתֶּם,you all were sent
+Pual,Perfect,2,F,P,שֻׁלַּחְתֶּן,you all were sent
+Pual,Perfect,1,C,P,שֻׁלַּ֫חְנוּ,we were sent
+Pual,Imperfect,3,M,S,יְשֻׁלַּח,he will be sent
+Pual,Imperfect,3,F,S,תְּשֻׁלַּח,she will be sent
+Pual,Imperfect,2,M,S,תְּשֻׁלַּח,you will be sent
+Pual,Imperfect,2,F,S,תְּשֻׁלְּחִי,you will be sent
+Pual,Imperfect,1,C,S,אֲשֻׁלַּח,I will be sent
+Pual,Imperfect,3,M,P,יְשֻׁלְּחוּ,they will be sent
+Pual,Imperfect,3,F,P,תְּשֻׁלַּ֫חְנָה,they will be sent
+Pual,Imperfect,2,M,P,תְּשֻׁלְּחוּ,you all will be sent
+Pual,Imperfect,2,F,P,תְּשֻׁלַּ֫חְנָה,you all will be sent
+Pual,Imperfect,1,C,P,נְשֻׁלַּח,we will be sent
+Pual,Infinitive Absolute,,,,שֻׁלַּח,to be sent
+Pual,Infinitive Construct,,,,שֻׁלַּח,to be sent
+Pual,Passive Participle,,M,S,מְשֻׁלָּח,being sent
+Pual,Passive Participle,,F,S,מְשֻׁלָּחָה,being sent
+Pual,Passive Participle,,M,P,מְשֻׁלָּחִים,being sent
+Pual,Passive Participle,,F,P,מְשֻׁלָּחוֹת,being sent
+Hitpael,Perfect,3,M,S,הִשְׁתַּלַּח,he sent himself
+Hitpael,Perfect,3,F,S,הִשְׁתַּלְּחָה,she sent herself
+Hitpael,Perfect,2,M,S,הִשְׁתַּלַּ֫חְתָּ,you sent yourself
+Hitpael,Perfect,2,F,S,הִשְׁתַּלַּ֫חַתְּ,you sent yourself
+Hitpael,Perfect,1,C,S,הִשְׁתַּלַּ֫חְתִּי,I sent myself
+Hitpael,Perfect,3,C,P,הִשְׁתַּלְּחוּ,they sent themselves
+Hitpael,Perfect,2,M,P,הִשְׁתַּלַּחְתֶּם,you all sent yourselves
+Hitpael,Perfect,2,F,P,הִשְׁתַּלַּחְתֶּן,you all sent yourselves
+Hitpael,Perfect,1,C,P,הִשְׁתַּלַּ֫חְנוּ,we sent ourselves
+Hitpael,Imperfect,3,M,S,יִשְׁתַּלַּח,he will send himself
+Hitpael,Imperfect,3,F,S,תִּשְׁתַּלַּח,she will send herself
+Hitpael,Imperfect,2,M,S,תִּשְׁתַּלַּח,you will send yourself
+Hitpael,Imperfect,2,F,S,תִּשְׁתַּלְּחִי,you will send yourself
+Hitpael,Imperfect,1,C,S,אֶשְׁתַּלַּח,I will send myself
+Hitpael,Imperfect,3,M,P,יִשְׁתַּלְּחוּ,they will send themselves
+Hitpael,Imperfect,3,F,P,תִּשְׁתַּלַּ֫חְנָה,they will send themselves
+Hitpael,Imperfect,2,M,P,תִּשְׁתַּלְּחוּ,you all will send yourselves
+Hitpael,Imperfect,2,F,P,תִּשְׁתַּלַּ֫חְנָה,you all will send yourselves
+Hitpael,Imperfect,1,C,P,נִשְׁתַּלַּח,we will send ourselves
+Hitpael,Jussive,3,M,S,יִשְׁתַּלַּח,may he send himself
+Hitpael,Jussive,3,F,S,תִּשְׁתַּלַּח,may she send herself
+Hitpael,Jussive,2,M,S,תִּשְׁתַּלַּח,may you send yourself
+Hitpael,Jussive,2,F,S,תִּשְׁתַּלְּחִי,may you send yourself
+Hitpael,Jussive,3,M,P,יִשְׁתַּלְּחוּ,may they send themselves
+Hitpael,Jussive,3,F,P,תִּשְׁתַּלַּ֫חְנָה,may they send themselves
+Hitpael,Jussive,2,M,P,תִּשְׁתַּלְּחוּ,may you all send yourselves
+Hitpael,Jussive,2,F,P,תִּשְׁתַּלַּ֫חְנָה,may you all send yourselves
+Hitpael,Cohortative,1,C,S,אֶשְׁתַּלְּחָה,may I send myself
+Hitpael,Cohortative,1,C,P,נִשְׁתַּלְּחָה,may we send ourselves
+Hitpael,Imperative,2,M,S,הִשְׁתַּלַּח,send yourself!
+Hitpael,Imperative,2,F,S,הִשְׁתַּלְּחִי,send yourself!
+Hitpael,Imperative,2,M,P,הִשְׁתַּלְּחוּ,send yourselves!
+Hitpael,Imperative,2,F,P,הִשְׁתַּלַּ֫חְנָה,send yourselves!
+Hitpael,Infinitive Absolute,,,,הִשְׁתַּלַּח,to send oneself
+Hitpael,Infinitive Construct,,,,הִשְׁתַּלַּח,to send oneself
+Hitpael,Active Participle,,M,S,מִשְׁתַּלֵּחַ,sending oneself
+Hitpael,Active Participle,,F,S,מִשְׁתַּלְּחָה,sending oneself
+Hitpael,Active Participle,,M,P,מִשְׁתַּלְּחִים,sending oneself
+Hitpael,Active Participle,,F,P,מִשְׁתַּלְּחוֹת,sending oneself
+Hiphil,Perfect,3,M,S,הִשְׁלִיחַ,he caused to send
+Hiphil,Perfect,3,F,S,הִשְׁלִ֫יחָה,she caused to send
+Hiphil,Perfect,2,M,S,הִשְׁלַ֫חְתָּ,you caused to send
+Hiphil,Perfect,2,F,S,הִשְׁלַ֫חַתְּ,you caused to send
+Hiphil,Perfect,1,C,S,הִשְׁלַ֫חְתִּי,I caused to send
+Hiphil,Perfect,3,C,P,הִשְׁלִ֫יחוּ,they caused to send
+Hiphil,Perfect,2,M,P,הִשְׁלַחְתֶּם,you all caused to send
+Hiphil,Perfect,2,F,P,הִשְׁלַחְתֶּן,you all caused to send
+Hiphil,Perfect,1,C,P,הִשְׁלַ֫חְנוּ,we caused to send
+Hiphil,Imperfect,3,M,S,יַשְׁלִיחַ,he will cause to send
+Hiphil,Imperfect,3,F,S,תַּשְׁלִיחַ,she will cause to send
+Hiphil,Imperfect,2,M,S,תַּשְׁלִיחַ,you will cause to send
+Hiphil,Imperfect,2,F,S,תַּשְׁלִ֫יחִי,you will cause to send
+Hiphil,Imperfect,1,C,S,אַשְׁלִיחַ,I will cause to send
+Hiphil,Imperfect,3,M,P,יַשְׁלִ֫יחוּ,they will cause to send
+Hiphil,Imperfect,3,F,P,תַּשְׁלַ֫חְנָה,they will cause to send
+Hiphil,Imperfect,2,M,P,תַּשְׁלִ֫יחוּ,you all will cause to send
+Hiphil,Imperfect,2,F,P,תַּשְׁלַ֫חְנָה,you all will cause to send
+Hiphil,Imperfect,1,C,P,נַשְׁלִיחַ,we will cause to send
+Hiphil,Jussive,3,M,S,יַשְׁלַח,may he cause to send
+Hiphil,Jussive,3,F,S,תַּשְׁלַח,may she cause to send
+Hiphil,Jussive,2,M,S,תַּשְׁלַח,may you cause to send
+Hiphil,Jussive,2,F,S,תַּשְׁלִ֫יחִי,may you cause to send
+Hiphil,Jussive,3,M,P,יַשְׁלִ֫יחוּ,may they cause to send
+Hiphil,Jussive,3,F,P,תַּשְׁלַ֫חְנָה,may they cause to send
+Hiphil,Jussive,2,M,P,תַּשְׁלִ֫יחוּ,may you all cause to send
+Hiphil,Jussive,2,F,P,תַּשְׁלַ֫חְנָה,may you all cause to send
+Hiphil,Cohortative,1,C,S,אַשְׁלִ֫יחָה,may I cause to send
+Hiphil,Cohortative,1,C,P,נַשְׁלִ֫יחָה,may we cause to send
+Hiphil,Imperative,2,M,S,הַשְׁלַח,cause to send!
+Hiphil,Imperative,2,F,S,הַשְׁלִ֫יחִי,cause to send!
+Hiphil,Imperative,2,M,P,הַשְׁלִ֫יחוּ,cause to send!
+Hiphil,Imperative,2,F,P,הַשְׁלַ֫חְנָה,cause to send!
+Hiphil,Infinitive Absolute,,,,הַשְׁלֵחַ,to cause to send
+Hiphil,Infinitive Construct,,,,הַשְׁלִיחַ,to cause to send
+Hiphil,Active Participle,,M,S,מַשְׁלִיחַ,causing to send
+Hiphil,Active Participle,,F,S,מַשְׁלִיחָה,causing to send
+Hiphil,Active Participle,,M,P,מַשְׁלִיחִים,causing to send
+Hiphil,Active Participle,,F,P,מַשְׁלִיחוֹת,causing to send
+Hophal,Perfect,3,M,S,הָשְׁלַח,he was caused to send
+Hophal,Perfect,3,F,S,הָשְׁלְחָה,she was caused to send
+Hophal,Perfect,2,M,S,הָשְׁלַ֫חְתָּ,you were caused to send
+Hophal,Perfect,2,F,S,הָשְׁלַ֫חַתְּ,you were caused to send
+Hophal,Perfect,1,C,S,הָשְׁלַ֫חְתִּי,I was caused to send
+Hophal,Perfect,3,C,P,הָשְׁלְחוּ,they were caused to send
+Hophal,Perfect,2,M,P,הָשְׁלַחְתֶּם,you all were caused to send
+Hophal,Perfect,2,F,P,הָשְׁלַחְתֶּן,you all were caused to send
+Hophal,Perfect,1,C,P,הָשְׁלַ֫חְנוּ,we were caused to send
+Hophal,Imperfect,3,M,S,יָשְׁלַח,he will be caused to send
+Hophal,Imperfect,3,F,S,תָּשְׁלַח,she will be caused to send
+Hophal,Imperfect,2,M,S,תָּשְׁלַח,you will be caused to send
+Hophal,Imperfect,2,F,S,תָּשְׁלְחִי,you will be caused to send
+Hophal,Imperfect,1,C,S,אָשְׁלַח,I will be caused to send
+Hophal,Imperfect,3,M,P,יָשְׁלְחוּ,they will be caused to send
+Hophal,Imperfect,3,F,P,תָּשְׁלַ֫חְנָה,they will be caused to send
+Hophal,Imperfect,2,M,P,תָּשְׁלְחוּ,you all will be caused to send
+Hophal,Imperfect,2,F,P,תָּשְׁלַ֫חְנָה,you all will be caused to send
+Hophal,Imperfect,1,C,P,נָשְׁלַח,we will be caused to send
+Hophal,Infinitive Absolute,,,,הָשְׁלֵחַ,to be caused to send
+Hophal,Infinitive Construct,,,,הָשְׁלַח,to be caused to send
+Hophal,Passive Participle,,M,S,מָשְׁלָח,being caused to send
+Hophal,Passive Participle,,F,S,מָשְׁלָחָה,being caused to send
+Hophal,Passive Participle,,M,P,מָשְׁלָחִים,being caused to send
+Hophal,Passive Participle,,F,P,מָשְׁלָחוֹת,being caused to send

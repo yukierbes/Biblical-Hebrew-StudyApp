@@ -1,0 +1,250 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,קָם,he arose
+Qal,Perfect,3,F,S,קָ֫מָה,she arose
+Qal,Perfect,2,M,S,קַ֫מְתָּ,you arose
+Qal,Perfect,2,F,S,קַ֫מְתְּ,you arose
+Qal,Perfect,1,C,S,קַ֫מְתִּי,I arose
+Qal,Perfect,3,C,P,קָ֫מוּ,they arose
+Qal,Perfect,2,M,P,קַמְתֶּם,you all arose
+Qal,Perfect,2,F,P,קַמְתֶּן,you all arose
+Qal,Perfect,1,C,P,קַ֫מְנוּ,we arose
+Qal,Imperfect,3,M,S,יָקוּם,he will arise
+Qal,Imperfect,3,F,S,תָּקוּם,she will arise
+Qal,Imperfect,2,M,S,תָּקוּם,you will arise
+Qal,Imperfect,2,F,S,תָּק֫וּמִי,you will arise
+Qal,Imperfect,1,C,S,אָקוּם,I will arise
+Qal,Imperfect,3,M,P,יָק֫וּמוּ,they will arise
+Qal,Imperfect,3,F,P,תְּקוּמֶ֫ינָה,they will arise
+Qal,Imperfect,2,M,P,תָּק֫וּמוּ,you all will arise
+Qal,Imperfect,2,F,P,תְּקוּמֶ֫ינָה,you all will arise
+Qal,Imperfect,1,C,P,נָקוּם,we will arise
+Qal,Jussive,3,M,S,יָקֹם,may he arise
+Qal,Jussive,3,F,S,תָּקֹם,may she arise
+Qal,Jussive,2,M,S,תָּקֹם,may you arise
+Qal,Jussive,2,F,S,תָּק֫וּמִי,may you arise
+Qal,Jussive,3,M,P,יָק֫וּמוּ,may they arise
+Qal,Jussive,3,F,P,תְּקוּמֶ֫ינָה,may they arise
+Qal,Jussive,2,M,P,תָּק֫וּמוּ,may you all arise
+Qal,Jussive,2,F,P,תְּקוּמֶ֫ינָה,may you all arise
+Qal,Cohortative,1,C,S,אָק֫וּמָה,may I arise
+Qal,Cohortative,1,C,P,נָק֫וּמָה,may we arise
+Qal,Imperative,2,M,S,קוּם,arise!
+Qal,Imperative,2,F,S,ק֫וּמִי,arise!
+Qal,Imperative,2,M,P,ק֫וּמוּ,arise!
+Qal,Imperative,2,F,P,קֹ֫מְנָה,arise!
+Qal,Infinitive Absolute,,,,קוֹם,to arise
+Qal,Infinitive Construct,,,,קוּם,to arise
+Qal,Active Participle,,M,S,קָם,arising
+Qal,Active Participle,,F,S,קָמָ֫ה,arising
+Qal,Active Participle,,M,P,קָמִים,arising
+Qal,Active Participle,,F,P,קָמוֹת,arising
+Qal,Passive Participle,,M,S,קוּם,arose
+Qal,Passive Participle,,F,S,קוּמָה,arose
+Qal,Passive Participle,,M,P,קוּמִים,arose
+Qal,Passive Participle,,F,P,קוּמוֹת,arose
+Niphal,Perfect,3,M,S,נָקוֹם,he was arisen
+Niphal,Perfect,3,F,S,נָק֫וֹמָה,she was arisen
+Niphal,Perfect,2,M,S,נְקוּמ֫וֹתָ,you were arisen
+Niphal,Perfect,2,F,S,נְקוּמ֫וֹת,you were arisen
+Niphal,Perfect,1,C,S,נְקוּמ֫וֹתִי,I was arisen
+Niphal,Perfect,3,C,P,נָק֫וֹמוּ,they were arisen
+Niphal,Perfect,2,M,P,נְקוּמוֹתֶם,you all were arisen
+Niphal,Perfect,2,F,P,נְקוּמוֹתֶן,you all were arisen
+Niphal,Perfect,1,C,P,נְקוּמ֫וֹנוּ,we were arisen
+Niphal,Imperfect,3,M,S,יִקּוֹם,he will be arisen
+Niphal,Imperfect,3,F,S,תִּקּוֹם,she will be arisen
+Niphal,Imperfect,2,M,S,תִּקּוֹם,you will be arisen
+Niphal,Imperfect,2,F,S,תִּקּ֫וֹמִי,you will be arisen
+Niphal,Imperfect,1,C,S,אֶקּוֹם,I will be arisen
+Niphal,Imperfect,3,M,P,יִקּ֫וֹמוּ,they will be arisen
+Niphal,Imperfect,3,F,P,תִּקּ֫וֹמְנָה,they will be arisen
+Niphal,Imperfect,2,M,P,תִּקּ֫וֹמוּ,you all will be arisen
+Niphal,Imperfect,2,F,P,תִּקּ֫וֹמְנָה,you all will be arisen
+Niphal,Imperfect,1,C,P,נִקּוֹם,we will be arisen
+Niphal,Jussive,3,M,S,יִקּוֹם,may he be arisen
+Niphal,Jussive,3,F,S,תִּקּוֹם,may she be arisen
+Niphal,Jussive,2,M,S,תִּקּוֹם,may you be arisen
+Niphal,Jussive,2,F,S,תִּקּ֫וֹמִי,may you be arisen
+Niphal,Jussive,3,M,P,יִקּ֫וֹמוּ,may they be arisen
+Niphal,Jussive,3,F,P,תִּקּ֫וֹמְנָה,may they be arisen
+Niphal,Jussive,2,M,P,תִּקּ֫וֹמוּ,may you all be arisen
+Niphal,Jussive,2,F,P,תִּקּ֫וֹמְנָה,may you all be arisen
+Niphal,Cohortative,1,C,S,אֶקּ֫וֹמָה,may I be arisen
+Niphal,Cohortative,1,C,P,נִקּ֫וֹמָה,may we be arisen
+Niphal,Imperative,2,M,S,הִקּוֹם,be arisen!
+Niphal,Imperative,2,F,S,הִקּ֫וֹמִי,be arisen!
+Niphal,Imperative,2,M,P,הִקּ֫וֹמוּ,be arisen!
+Niphal,Imperative,2,F,P,הִקּ֫וֹמְנָה,be arisen!
+Niphal,Infinitive Absolute,,,,הִקּוֹם,to be arisen
+Niphal,Infinitive Construct,,,,הִקּוֹם,to be arisen
+Niphal,Passive Participle,,M,S,נָקוֹם,being arisen
+Niphal,Passive Participle,,F,S,נְקוֹמָ֫ה,being arisen
+Niphal,Passive Participle,,M,P,נְקוֹמִים,being arisen
+Niphal,Passive Participle,,F,P,נְקוֹמוֹת,being arisen
+Polel,Perfect,3,M,S,קוֹמֵם,he arose
+Polel,Perfect,3,F,S,ק֫וֹמְמָה,she arose
+Polel,Perfect,2,M,S,קוֹמַ֫מְתָּ,you arose
+Polel,Perfect,2,F,S,קוֹמַמְתְּ,you arose
+Polel,Perfect,1,C,S,קוֹמַ֫מְתִּי,I arose
+Polel,Perfect,3,C,P,ק֫וֹמְמוּ,they arose
+Polel,Perfect,2,M,P,קוֹמַמְתֶּם,you all arose
+Polel,Perfect,2,F,P,קוֹמַמְתֶּן,you all arose
+Polel,Perfect,1,C,P,קוֹמַ֫מְנוּ,we arose
+Polel,Imperfect,3,M,S,יְקוֹמֵם,he will arise
+Polel,Imperfect,3,F,S,תְּקוֹמֵם,she will arise
+Polel,Imperfect,2,M,S,תְּקוֹמֵם,you will arise
+Polel,Imperfect,2,F,S,תְּקוֹמְמִי,you will arise
+Polel,Imperfect,1,C,S,אֲקוֹמֵם,I will arise
+Polel,Imperfect,3,M,P,יְקוֹמְמוּ,they will arise
+Polel,Imperfect,3,F,P,תְּקוֹמֵ֫מְנָה,they will arise
+Polel,Imperfect,2,M,P,תְּקוֹמְמוּ,you all will arise
+Polel,Imperfect,2,F,P,תְּקוֹמֵ֫מְנָה,you all will arise
+Polel,Imperfect,1,C,P,נְקוֹמֵם,we will arise
+Polel,Jussive,3,M,S,יְקוֹמֵם,may he arise
+Polel,Jussive,3,F,S,תְּקוֹמֵם,may she arise
+Polel,Jussive,2,M,S,תְּקוֹמֵם,may you arise
+Polel,Jussive,2,F,S,תְּקוֹמְמִי,may you arise
+Polel,Jussive,3,M,P,יְקוֹמְמוּ,may they arise
+Polel,Jussive,3,F,P,תְּקוֹמֵ֫מְנָה,may they arise
+Polel,Jussive,2,M,P,תְּקוֹמְמוּ,may you all arise
+Polel,Jussive,2,F,P,תְּקוֹמֵ֫מְנָה,may you all arise
+Polel,Cohortative,1,C,S,אֲקוֹמֲמָה,may I arise
+Polel,Cohortative,1,C,P,נְקוֹמֲמָה,may we arise
+Polel,Imperative,2,M,S,קוֹמֵם,arise!
+Polel,Imperative,2,F,S,קוֹמְמִי,arise!
+Polel,Imperative,2,M,P,קוֹמְמוּ,arise!
+Polel,Imperative,2,F,P,קוֹמֵ֫מְנָה,arise!
+Polel,Infinitive Absolute,,,,קוֹמֵם,to arise
+Polel,Infinitive Construct,,,,קוֹמֵם,to arise
+Polel,Active Participle,,M,S,מְקוֹמֵם,arising
+Polel,Active Participle,,F,S,מְקוֹמְמָה,arising
+Polel,Active Participle,,M,P,מְקוֹמְמִים,arising
+Polel,Active Participle,,F,P,מְקוֹמְמוֹת,arising
+Polal,Perfect,3,M,S,קוֹמַם,he was arisen
+Polal,Perfect,3,F,S,קוֹמְמָה,she was arisen
+Polal,Perfect,2,M,S,קוֹמַ֫מְתָּ,you were arisen
+Polal,Perfect,2,F,S,קוֹמַמְתְּ,you were arisen
+Polal,Perfect,1,C,S,קוֹמַ֫מְתִּי,I was arisen
+Polal,Perfect,3,C,P,קוֹמְמוּ,they were arisen
+Polal,Perfect,2,M,P,קוֹמַמְתֶּם,you all were arisen
+Polal,Perfect,2,F,P,קוֹמַמְתֶּן,you all were arisen
+Polal,Perfect,1,C,P,קוֹמַ֫מְנוּ,we were arisen
+Polal,Imperfect,3,M,S,יְקוֹמַם,he will be arisen
+Polal,Imperfect,3,F,S,תְּקוֹמַם,she will be arisen
+Polal,Imperfect,2,M,S,תְּקוֹמַם,you will be arisen
+Polal,Imperfect,2,F,S,תְּקוֹמְמִי,you will be arisen
+Polal,Imperfect,1,C,S,אֲקוֹמַם,I will be arisen
+Polal,Imperfect,3,M,P,יְקוֹמְמוּ,they will be arisen
+Polal,Imperfect,3,F,P,תְּקוֹמַ֫מְנָה,they will be arisen
+Polal,Imperfect,2,M,P,תְּקוֹמְמוּ,you all will be arisen
+Polal,Imperfect,2,F,P,תְּקוֹמַ֫מְנָה,you all will be arisen
+Polal,Imperfect,1,C,P,נְקוֹמַם,we will be arisen
+Polal,Infinitive Absolute,,,,קוֹמַם,to be arisen
+Polal,Infinitive Construct,,,,קוֹמַם,to be arisen
+Polal,Passive Participle,,M,S,מְקוֹמָם,being arisen
+Polal,Passive Participle,,F,S,מְקוֹמָמָה,being arisen
+Polal,Passive Participle,,M,P,מְקוֹמָמִים,being arisen
+Polal,Passive Participle,,F,P,מְקוֹמָמוֹת,being arisen
+Hitpolel,Perfect,3,M,S,הִתְקוֹמֵם,he arouse himself
+Hitpolel,Perfect,3,F,S,הִתְקוֹמְמָה,she arouse herself
+Hitpolel,Perfect,2,M,S,הִתְקוֹמַ֫מְתָּ,you arouse yourself
+Hitpolel,Perfect,2,F,S,הִתְקוֹמַמְתְּ,you arouse yourself
+Hitpolel,Perfect,1,C,S,הִתְקוֹמַ֫מְתִּי,I arouse myself
+Hitpolel,Perfect,3,C,P,הִתְקוֹמְמוּ,they arouse themselves
+Hitpolel,Perfect,2,M,P,הִתְקוֹמַמְתֶּם,you all arouse yourselves
+Hitpolel,Perfect,2,F,P,הִתְקוֹמַמְתֶּן,you all arouse yourselves
+Hitpolel,Perfect,1,C,P,הִתְקוֹמַ֫מְנוּ,we arouse ourselves
+Hitpolel,Imperfect,3,M,S,יִתְקוֹמֵם,he will arouse himself
+Hitpolel,Imperfect,3,F,S,תִּתְקוֹמֵם,she will arouse herself
+Hitpolel,Imperfect,2,M,S,תִּתְקוֹמֵם,you will arouse yourself
+Hitpolel,Imperfect,2,F,S,תִּתְקוֹמְמִי,you will arouse yourself
+Hitpolel,Imperfect,1,C,S,אֶתְקוֹמֵם,I will arouse myself
+Hitpolel,Imperfect,3,M,P,יִתְקוֹמְמוּ,they will arouse themselves
+Hitpolel,Imperfect,3,F,P,תִּתְקוֹמֵ֫מְנָה,they will arouse themselves
+Hitpolel,Imperfect,2,M,P,תִּתְקוֹמְמוּ,you all will arouse yourselves
+Hitpolel,Imperfect,2,F,P,תִּתְקוֹמֵ֫מְנָה,you all will arouse yourselves
+Hitpolel,Imperfect,1,C,P,נִתְקוֹמֵם,we will arouse ourselves
+Hitpolel,Jussive,3,M,S,יִתְקוֹמֵם,may he arouse himself
+Hitpolel,Jussive,3,F,S,תִּתְקוֹמֵם,may she arouse herself
+Hitpolel,Jussive,2,M,S,תִּתְקוֹמֵם,may you arouse yourself
+Hitpolel,Jussive,2,F,S,תִּתְקוֹמְמִי,may you arouse yourself
+Hitpolel,Jussive,3,M,P,יִתְקוֹמְמוּ,may they arouse themselves
+Hitpolel,Jussive,3,F,P,תִּתְקוֹמֵ֫מְנָה,may they arouse themselves
+Hitpolel,Jussive,2,M,P,תִּתְקוֹמְמוּ,may you all arouse yourselves
+Hitpolel,Jussive,2,F,P,תִּתְקוֹמֵ֫מְנָה,may you all arouse yourselves
+Hitpolel,Cohortative,1,C,S,אֶתְקוֹמְמָה,may I arouse myself
+Hitpolel,Cohortative,1,C,P,נִתְקוֹמְמָה,may we arouse ourselves
+Hitpolel,Imperative,2,M,S,הִתְקוֹמֵם,arouse yourself!
+Hitpolel,Imperative,2,F,S,הִתְקוֹמְמִי,arouse yourself!
+Hitpolel,Imperative,2,M,P,הִתְקוֹמְמוּ,arouse yourselves!
+Hitpolel,Imperative,2,F,P,הִתְקוֹמֵ֫מְנָה,arouse yourselves!
+Hitpolel,Infinitive Absolute,,,,הִתְקוֹמֵם,to arouse oneself
+Hitpolel,Infinitive Construct,,,,הִתְקוֹמֵם,to arouse oneself
+Hitpolel,Active Participle,,M,S,מִתְקוֹמֵם,arousing oneself
+Hitpolel,Active Participle,,F,S,מִתְקוֹמְמָה,arousing oneself
+Hitpolel,Active Participle,,M,P,מִתְקוֹמְמִים,arousing oneself
+Hitpolel,Active Participle,,F,P,מִתְקוֹמְמוֹת,arousing oneself
+Hiphil,Perfect,3,M,S,הֵקִים,he caused to arise
+Hiphil,Perfect,3,F,S,הֵקִ֫ימָה,she caused to arise
+Hiphil,Perfect,2,M,S,הֲקִימ֫וֹתָ,you caused to arise
+Hiphil,Perfect,2,F,S,הֲקִימ֫וֹתְ,you caused to arise
+Hiphil,Perfect,1,C,S,הֲקִמ֫וֹתִי,I caused to arise
+Hiphil,Perfect,3,C,P,הֵקִ֫ימוּ,they caused to arise
+Hiphil,Perfect,2,M,P,הֲקִמוֹתֶם,you all caused to arise
+Hiphil,Perfect,2,F,P,הֲקִמוֹתֶן,you all caused to arise
+Hiphil,Perfect,1,C,P,הֲקִימ֫וֹנוּ,we caused to arise
+Hiphil,Imperfect,3,M,S,יָקִים,he will cause to arise
+Hiphil,Imperfect,3,F,S,תָּקִים,she will cause to arise
+Hiphil,Imperfect,2,M,S,תָּקִים,you will cause to arise
+Hiphil,Imperfect,2,F,S,תָּקִ֫ימִי,you will cause to arise
+Hiphil,Imperfect,1,C,S,אָקִים,I will cause to arise
+Hiphil,Imperfect,3,M,P,יָקִ֫ימוּ,they will cause to arise
+Hiphil,Imperfect,3,F,P,תְּקֵ֫מְנָה,they will cause to arise
+Hiphil,Imperfect,2,M,P,תָּקִ֫ימוּ,you all will cause to arise
+Hiphil,Imperfect,2,F,P,תְּקֵ֫מְנָה,you all will cause to arise
+Hiphil,Imperfect,1,C,P,נָקִים,we will cause to arise
+Hiphil,Jussive,3,M,S,יָקֵם,may he cause to arise
+Hiphil,Jussive,3,F,S,תָּקֵם,may she cause to arise
+Hiphil,Jussive,2,M,S,תָּקֵם,may you cause to arise
+Hiphil,Jussive,2,F,S,תָּקִ֫ימִי,may you cause to arise
+Hiphil,Jussive,3,M,P,יָקִ֫ימוּ,may they cause to arise
+Hiphil,Jussive,3,F,P,תְּקֵ֫מְנָה,may they cause to arise
+Hiphil,Jussive,2,M,P,תָּקִ֫ימוּ,may you all cause to arise
+Hiphil,Jussive,2,F,P,תְּקֵ֫מְנָה,may you all cause to arise
+Hiphil,Cohortative,1,C,S,אָקִ֫ימָה,may I cause to arise
+Hiphil,Cohortative,1,C,P,נָקִ֫ימָה,may we cause to arise
+Hiphil,Imperative,2,M,S,הָקֵם,cause to arise!
+Hiphil,Imperative,2,F,S,הָקִ֫ימִי,cause to arise!
+Hiphil,Imperative,2,M,P,הָקִ֫ימוּ,cause to arise!
+Hiphil,Imperative,2,F,P,הָקֵ֫מְנָה,cause to arise!
+Hiphil,Infinitive Absolute,,,,הָקֵם,to cause to arise
+Hiphil,Infinitive Construct,,,,הָקִים,to cause to arise
+Hiphil,Active Participle,,M,S,מֵקִים,causing to arise
+Hiphil,Active Participle,,F,S,מְקִימָה,causing to arise
+Hiphil,Active Participle,,M,P,מְקִימִים,causing to arise
+Hiphil,Active Participle,,F,P,מְקִימוֹת,causing to arise
+Hophal,Perfect,3,M,S,הוּקַם,he was caused to arise
+Hophal,Perfect,3,F,S,הוּקְמָה,she was caused to arise
+Hophal,Perfect,2,M,S,הוּקַ֫מְתָּ,you were caused to arise
+Hophal,Perfect,2,F,S,הוּקַ֫מְתְּ,you were caused to arise
+Hophal,Perfect,1,C,S,הוּקַ֫מְתִּי,I was caused to arise
+Hophal,Perfect,3,C,P,הוּקְמוּ,they were caused to arise
+Hophal,Perfect,2,M,P,הוּקַמְתֶּם,you all were caused to arise
+Hophal,Perfect,2,F,P,הוּקַמְתֶּן,you all were caused to arise
+Hophal,Perfect,1,C,P,הוּקַ֫מְנוּ,we were caused to arise
+Hophal,Imperfect,3,M,S,יוּקַם,he will be caused to arise
+Hophal,Imperfect,3,F,S,תּוּקַם,she will be caused to arise
+Hophal,Imperfect,2,M,S,תּוּקַם,you will be caused to arise
+Hophal,Imperfect,2,F,S,תּוּקְמִי,you will be caused to arise
+Hophal,Imperfect,1,C,S,אוּקַם,I will be caused to arise
+Hophal,Imperfect,3,M,P,יוּקְמוּ,they will be caused to arise
+Hophal,Imperfect,3,F,P,תּוּקַ֫מְנָה,they will be caused to arise
+Hophal,Imperfect,2,M,P,תּוּקְמוּ,you all will be caused to arise
+Hophal,Imperfect,2,F,P,תּוּקַ֫מְנָה,you all will be caused to arise
+Hophal,Imperfect,1,C,P,נוּקַם,we will be caused to arise
+Hophal,Infinitive Absolute,,,,הוּקֵם,to be caused to arise
+Hophal,Infinitive Construct,,,,הוּקַם,to be caused to arise
+Hophal,Passive Participle,,M,S,מוּקָם,being caused to arise
+Hophal,Passive Participle,,F,S,מוּקָמָה,being caused to arise
+Hophal,Passive Participle,,M,P,מוּקָמִים,being caused to arise
+Hophal,Passive Participle,,F,P,מוּקָמוֹת,being caused to arise

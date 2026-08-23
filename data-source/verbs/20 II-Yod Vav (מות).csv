@@ -1,0 +1,40 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,מֵת,he died
+Qal,Perfect,3,F,S,מֵ֫תָה,she died
+Qal,Perfect,2,M,S,מַ֫תָּה,you died
+Qal,Perfect,2,F,S,מַ֫תְּ,you died
+Qal,Perfect,1,C,S,מַ֫תִּי,I died
+Qal,Perfect,3,C,P,מָ֫תוּ,they died
+Qal,Perfect,2,M,P,מַתֶּם,you all died
+Qal,Perfect,2,F,P,מַתֶּן,you all died
+Qal,Perfect,1,C,P,מַ֫תְנוּ,we died
+Qal,Imperfect,3,M,S,יָמוּת,he will die
+Qal,Imperfect,3,F,S,תָּמוּת,she will die
+Qal,Imperfect,2,M,S,תָּמוּת,you will die
+Qal,Imperfect,2,F,S,תָּמ֫וּתִי,you will die
+Qal,Imperfect,1,C,S,אָמוּת,I will die
+Qal,Imperfect,3,M,P,יָמ֫וּתוּ,they will die
+Qal,Imperfect,3,F,P,תְּמוּתֶ֫ינָה,they will die
+Qal,Imperfect,2,M,P,תָּמ֫וּתוּ,you all will die
+Qal,Imperfect,2,F,P,תְּמוּתֶ֫ינָה,you all will die
+Qal,Imperfect,1,C,P,נָמוּת,we will die
+Qal,Jussive,3,M,S,יָמֹת,may he die
+Qal,Jussive,3,F,S,תָּמֹת,may she die
+Qal,Jussive,2,M,S,תָּמֹת,may you die
+Qal,Jussive,2,F,S,תָּמ֫וּתִי,may you die
+Qal,Jussive,3,M,P,יָמ֫וּתוּ,may they die
+Qal,Jussive,3,F,P,תְּמוּתֶ֫ינָה,may they die
+Qal,Jussive,2,M,P,תָּמ֫וּתוּ,may you all die
+Qal,Jussive,2,F,P,תְּמוּתֶ֫ינָה,may you all die
+Qal,Cohortative,1,C,S,אָמ֫וּתָה,may I die
+Qal,Cohortative,1,C,P,נָמ֫וּתָה,may we die
+Qal,Imperative,2,M,S,מוּת,die!
+Qal,Imperative,2,F,S,מ֫וּתִי,die!
+Qal,Imperative,2,M,P,מ֫וּתוּ,die!
+Qal,Imperative,2,F,P,מֹ֫תְנָה,die!
+Qal,Infinitive Absolute,,,,מוֹת,to die
+Qal,Infinitive Construct,,,,מוּת,to die
+Qal,Active Participle,,M,S,מֵת,dying
+Qal,Active Participle,,F,S,מֵתָ֫ה,dying
+Qal,Active Participle,,M,P,מֵתִית,dying
+Qal,Active Participle,,F,P,מֵתוֹת,dying

@@ -1,0 +1,44 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,לָקַח,he took
+Qal,Perfect,3,F,S,לָֽקְחָה,she took
+Qal,Perfect,2,M,S,לָקַ֫חְתָּ,you took
+Qal,Perfect,2,F,S,לָקַחְתְּ,you took
+Qal,Perfect,1,C,S,לָקַ֫חְתִּי,I took
+Qal,Perfect,3,C,P,לָֽקְחוּ,they took
+Qal,Perfect,2,M,P,לְקַחְתֶּם,you all took
+Qal,Perfect,2,F,P,לְקַחְתֶּן,you all took
+Qal,Perfect,1,C,P,לָקַ֫חְנוּ,we took
+Qal,Imperfect,3,M,S,יִקַּח,he will take
+Qal,Imperfect,3,F,S,תִּקַּח,she will take
+Qal,Imperfect,2,M,S,תִּקַּח,you will take
+Qal,Imperfect,2,F,S,תִּקְּחִי,you will take
+Qal,Imperfect,1,C,S,אֶקַּח,I will take
+Qal,Imperfect,3,M,P,יִקְּחוּ,they will take
+Qal,Imperfect,3,F,P,תִּקַּ֫חְנָה,they will take
+Qal,Imperfect,2,M,P,תִּקְּחוּ,you all will take
+Qal,Imperfect,2,F,P,תִּקַּ֫חְנָה,you all will take
+Qal,Imperfect,1,C,P,נִקַּח,we will take
+Qal,Jussive,3,M,S,יִקַּח,may he take
+Qal,Jussive,3,F,S,תִּקַּח,may she take
+Qal,Jussive,2,M,S,תִּקַּח,may you take
+Qal,Jussive,2,F,S,תִּקְּחִי,may you take
+Qal,Jussive,3,M,P,יִקְּחוּ,may they take
+Qal,Jussive,3,F,P,תִּקַּ֫חְנָה,may they take
+Qal,Jussive,2,M,P,תִּקְּחוּ,may you all take
+Qal,Jussive,2,F,P,תִּקַּ֫חְנָה,may you all take
+Qal,Cohortative,1,C,S,אֶקְּחָה,may I take
+Qal,Cohortative,1,C,P,נִקְּחָה,may we take
+Qal,Imperative,2,M,S,קַח,take!
+Qal,Imperative,2,F,S,קְחִי,take!
+Qal,Imperative,2,M,P,קְחוּ,take!
+Qal,Imperative,2,F,P,קַ֫חְנָה,take!
+Qal,Infinitive Absolute,,,,לָקוֹחַ,to take
+Qal,Infinitive Construct,,,,קַ֫חַת,to take
+Qal,Active Participle,,M,S,לֹקֵחַ,taking
+Qal,Active Participle,,F,S,לֹֽקְחָה,taking
+Qal,Active Participle,,M,P,לֹֽקְחִים,taking
+Qal,Active Participle,,F,P,לֹֽקְחוֹת,taking
+Qal,Passive Participle,,M,S,לָקוּחַ,took
+Qal,Passive Participle,,F,S,לְקוּחָה,took
+Qal,Passive Participle,,M,P,לְקוּחִים,took
+Qal,Passive Participle,,F,P,לְקוּחוֹת,took

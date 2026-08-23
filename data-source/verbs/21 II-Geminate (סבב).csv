@@ -1,0 +1,250 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,סַב,he surrounded
+Qal,Perfect,3,F,S,סַ֫בָּה,she surrounded
+Qal,Perfect,2,M,S,סַבּ֫וֹתָ,you surrounded
+Qal,Perfect,2,F,S,סַבּוֹתְ,you surrounded
+Qal,Perfect,1,C,S,סַבּ֫וֹתִי,I surrounded
+Qal,Perfect,3,C,P,סַ֫בּוּ,they surrounded
+Qal,Perfect,2,M,P,סַבַּוֹתֶם,you all surrounded
+Qal,Perfect,2,F,P,סַבַּוֹתֶן,you all surrounded
+Qal,Perfect,1,C,P,סַבּ֫וֹנוּ,we surrounded
+Qal,Imperfect,3,M,S,יָסֹב,he will surround
+Qal,Imperfect,3,F,S,תָּסֹב,she will surround
+Qal,Imperfect,2,M,S,תָּסֹב,you will surround
+Qal,Imperfect,2,F,S,תָּסֹ֫בִּי,you will surround
+Qal,Imperfect,1,C,S,אָסֹב,I will surround
+Qal,Imperfect,3,M,P,יָסֹ֫בּוּ,they will surround
+Qal,Imperfect,3,F,P,תְּסֻבֶּ֫ינָה,they will surround
+Qal,Imperfect,2,M,P,תָּסֹ֫בּוּ,you all will surround
+Qal,Imperfect,2,F,P,תְּסֻבֶּ֫ינָה,you all will surround
+Qal,Imperfect,1,C,P,נָסֹב,we will surround
+Qal,Jussive,3,M,S,יָסֹב,may he surround
+Qal,Jussive,3,F,S,תָּסֹב,may she surround
+Qal,Jussive,2,M,S,תָּסֹב,may you surround
+Qal,Jussive,2,F,S,תָּסֹ֫בִּי,may you surround
+Qal,Jussive,3,M,P,יָסֹ֫בּוּ,may they surround
+Qal,Jussive,3,F,P,תְּסֻבֶּ֫ינָה,may they surround
+Qal,Jussive,2,M,P,תָּסֹ֫בּוּ,may you all surround
+Qal,Jussive,2,F,P,תְּסֻבֶּ֫ינָה,may you all surround
+Qal,Cohortative,1,C,S,אָסֹ֫בָּה,may I surround
+Qal,Cohortative,1,C,P,נָסֹ֫בָּה,may we surround
+Qal,Imperative,2,M,S,סֹב,surround!
+Qal,Imperative,2,F,S,סֹ֫בִּי,surround!
+Qal,Imperative,2,M,P,סֹ֫בּוּ,surround!
+Qal,Imperative,2,F,P,סֻבֶּ֫ינָה,surround!
+Qal,Infinitive Absolute,,,,סָבוֹב,to surround
+Qal,Infinitive Construct,,,,סֹב,to surround
+Qal,Active Participle,,M,S,סֹבֵב,surrounding
+Qal,Active Participle,,F,S,סֹֽבְבָה,surrounding
+Qal,Active Participle,,M,P,סֹֽבְבִים,surrounding
+Qal,Active Participle,,F,P,סֹֽבְבוֹת,surrounding
+Qal,Passive Participle,,M,S,סָבוּב,surrounded
+Qal,Passive Participle,,F,S,סְבוּבָה,surrounded
+Qal,Passive Participle,,M,P,סְבוּבִים,surrounded
+Qal,Passive Participle,,F,P,סְבוּבוֹת,surrounded
+Niphal,Perfect,3,M,S,נָסַב,he was surrounded
+Niphal,Perfect,3,F,S,נָסַ֫בָּה,she was surrounded
+Niphal,Perfect,2,M,S,נְסַבּ֫וֹתָ,you were surrounded
+Niphal,Perfect,2,F,S,נְסַבּוֹתְ,you were surrounded
+Niphal,Perfect,1,C,S,נְסַבּ֫וֹתִי,I was surrounded
+Niphal,Perfect,3,C,P,נָסַ֫בּוּ,they were surrounded
+Niphal,Perfect,2,M,P,נְסַבַּוֹתֶם,you all were surrounded
+Niphal,Perfect,2,F,P,נְסַבַּוֹתֶן,you all were surrounded
+Niphal,Perfect,1,C,P,נְסַבּ֫וֹנוּ,we were surrounded
+Niphal,Imperfect,3,M,S,יִסַּב,he will be surrounded
+Niphal,Imperfect,3,F,S,תִּסַּב,she will be surrounded
+Niphal,Imperfect,2,M,S,תִּסַּב,you will be surrounded
+Niphal,Imperfect,2,F,S,תִּסַּ֫בִּי,you will be surrounded
+Niphal,Imperfect,1,C,S,אֶסַּב,I will be surrounded
+Niphal,Imperfect,3,M,P,יִסַּ֫בּוּ,they will be surrounded
+Niphal,Imperfect,3,F,P,תִּסַּבֶּ֫ינָה,they will be surrounded
+Niphal,Imperfect,2,M,P,תִּסַּ֫בּוּ,you all will be surrounded
+Niphal,Imperfect,2,F,P,תִּסַּבֶּ֫ינָה,you all will be surrounded
+Niphal,Imperfect,1,C,P,נִסַּב,we will be surrounded
+Niphal,Jussive,3,M,S,יִסַּב,may he be surrounded
+Niphal,Jussive,3,F,S,תִּסַּב,may she be surrounded
+Niphal,Jussive,2,M,S,תִּסַּב,may you be surrounded
+Niphal,Jussive,2,F,S,תִּסַּ֫בִּי,may you be surrounded
+Niphal,Jussive,3,M,P,יִסַּ֫בּוּ,may they be surrounded
+Niphal,Jussive,3,F,P,תִּסַּבֶּ֫ינָה,may they be surrounded
+Niphal,Jussive,2,M,P,תִּסַּ֫בּוּ,may you all be surrounded
+Niphal,Jussive,2,F,P,תִּסַּבֶּ֫ינָה,may you all be surrounded
+Niphal,Cohortative,1,C,S,אֶסַּ֫בִּה,may I be surrounded
+Niphal,Cohortative,1,C,P,נִסַּ֫בִּה,may we be surrounded
+Niphal,Imperative,2,M,S,הִסַּב,be surrounded!
+Niphal,Imperative,2,F,S,הִסַּ֫בִּי,be surrounded!
+Niphal,Imperative,2,M,P,הִסַּ֫בּוּ,be surrounded!
+Niphal,Imperative,2,F,P,הִסַּבֶּ֫ינָה,be surrounded!
+Niphal,Infinitive Absolute,,,,הִסֹּב,to be surrounded
+Niphal,Infinitive Construct,,,,הִסַּב,to be surrounded
+Niphal,Passive Participle,,M,S,נָסָב,being surrounded
+Niphal,Passive Participle,,F,S,נִסַבָּה,being surrounded
+Niphal,Passive Participle,,M,P,נִסַבִּים,being surrounded
+Niphal,Passive Participle,,F,P,נִסַבּוֹת,being surrounded
+Polel,Perfect,3,M,S,סוֹבֵב,he surrounded
+Polel,Perfect,3,F,S,ס֫וֹבְבָה,she surrounded
+Polel,Perfect,2,M,S,סוֹבַ֫בְתָּ,you surrounded
+Polel,Perfect,2,F,S,סוֹבַבְתְּ,you surrounded
+Polel,Perfect,1,C,S,סוֹבַ֫בְתִּי,I surrounded
+Polel,Perfect,3,C,P,ס֫וֹבְבוּ,they surrounded
+Polel,Perfect,2,M,P,סוֹבַבְתֶּם,you all surrounded
+Polel,Perfect,2,F,P,סוֹבַבְתֶּן,you all surrounded
+Polel,Perfect,1,C,P,סוֹבַ֫בְנוּ,we surrounded
+Polel,Imperfect,3,M,S,יְסוֹבֵב,he will surround
+Polel,Imperfect,3,F,S,תְּסוֹבֵב,she will surround
+Polel,Imperfect,2,M,S,תְּסוֹבֵב,you will surround
+Polel,Imperfect,2,F,S,תְּסוֹבְבִי,you will surround
+Polel,Imperfect,1,C,S,אֲסוֹבֵב,I will surround
+Polel,Imperfect,3,M,P,יְסוֹבְבוּ,they will surround
+Polel,Imperfect,3,F,P,תְּסוֹבֵ֫בְנָה,they will surround
+Polel,Imperfect,2,M,P,תְּסוֹבְבוּ,you all will surround
+Polel,Imperfect,2,F,P,תְּסוֹבֵ֫בְנָה,you all will surround
+Polel,Imperfect,1,C,P,נְסוֹבֵב,we will surround
+Polel,Jussive,3,M,S,יְסוֹבֵב,may he surround
+Polel,Jussive,3,F,S,תְּסוֹבֵב,may she surround
+Polel,Jussive,2,M,S,תְּסוֹבֵב,may you surround
+Polel,Jussive,2,F,S,תְּסוֹבְבִי,may you surround
+Polel,Jussive,3,M,P,יְסוֹבְבוּ,may they surround
+Polel,Jussive,3,F,P,תְּסוֹבֵ֫בְנָה,may they surround
+Polel,Jussive,2,M,P,תְּסוֹבְבוּ,may you all surround
+Polel,Jussive,2,F,P,תְּסוֹבֵ֫בְנָה,may you all surround
+Polel,Cohortative,1,C,S,אֲסוֹבְבָה,may I surround
+Polel,Cohortative,1,C,P,נְסוֹבְבָה,may we surround
+Polel,Imperative,2,M,S,סוֹבֵב,surround!
+Polel,Imperative,2,F,S,סוֹבְבִי,surround!
+Polel,Imperative,2,M,P,סוֹבְבוּ,surround!
+Polel,Imperative,2,F,P,סוֹבֵ֫בְנָה,surround!
+Polel,Infinitive Absolute,,,,סוֹבֵב,to surround
+Polel,Infinitive Construct,,,,סוֹבֵב,to surround
+Polel,Active Participle,,M,S,מְסוֹבֵב,surrounding
+Polel,Active Participle,,F,S,מְסוֹבְבָה,surrounding
+Polel,Active Participle,,M,P,מְסוֹבְבִים,surrounding
+Polel,Active Participle,,F,P,מְסוֹבְבוֹת,surrounding
+Polal,Perfect,3,M,S,סוֹבַב,he was surrounded
+Polal,Perfect,3,F,S,סוֹבְבָה,she was surrounded
+Polal,Perfect,2,M,S,סוֹבַ֫בְתָּ,you were surrounded
+Polal,Perfect,2,F,S,סוֹבַבְתְּ,you were surrounded
+Polal,Perfect,1,C,S,סוֹבַ֫בְתִּי,I was surrounded
+Polal,Perfect,3,C,P,סוֹבְבוּ,they were surrounded
+Polal,Perfect,2,M,P,סוֹבַבְתֶּם,you all were surrounded
+Polal,Perfect,2,F,P,סוֹבַבְתֶּן,you all were surrounded
+Polal,Perfect,1,C,P,סוֹבַ֫בְנוּ,we were surrounded
+Polal,Imperfect,3,M,S,יְסוֹבַב,he will be surrounded
+Polal,Imperfect,3,F,S,תְּסוֹבַב,she will be surrounded
+Polal,Imperfect,2,M,S,תְּסוֹבַב,you will be surrounded
+Polal,Imperfect,2,F,S,תְּסוֹבְבִי,you will be surrounded
+Polal,Imperfect,1,C,S,אֲסוֹבַב,I will be surrounded
+Polal,Imperfect,3,M,P,יְסוֹבְבוּ,they will be surrounded
+Polal,Imperfect,3,F,P,תְּסוֹבַ֫בְנָה,they will be surrounded
+Polal,Imperfect,2,M,P,תְּסוֹבְבוּ,you all will be surrounded
+Polal,Imperfect,2,F,P,תְּסוֹבַ֫בְנָה,you all will be surrounded
+Polal,Imperfect,1,C,P,נְסוֹבַב,we will be surrounded
+Polal,Infinitive Absolute,,,,סוֹבַב,to be surrounded
+Polal,Infinitive Construct,,,,סוֹבַב,to be surrounded
+Polal,Passive Participle,,M,S,מְסוֹבָב,being surrounded
+Polal,Passive Participle,,F,S,מְסוֹבָבָה,being surrounded
+Polal,Passive Participle,,M,P,מְסוֹבָבִים,being surrounded
+Polal,Passive Participle,,F,P,מְסוֹבָבוֹת,being surrounded
+Hitpolel,Perfect,3,M,S,הִסְתּוֹבֵב,he surrounded himself
+Hitpolel,Perfect,3,F,S,הִסְתּוֹבְבָה,she surrounded herself
+Hitpolel,Perfect,2,M,S,הִסְתּוֹבַ֫בְתָּ,you surrounded yourself
+Hitpolel,Perfect,2,F,S,הִסְתּוֹבַבְתְּ,you surrounded yourself
+Hitpolel,Perfect,1,C,S,הִסְתּוֹבַ֫בְתִּי,I surrounded myself
+Hitpolel,Perfect,3,C,P,הִסְתּוֹבְבוּ,they surrounded themselves
+Hitpolel,Perfect,2,M,P,הִסְתּוֹבַבְתֶּם,you all surrounded yourselves
+Hitpolel,Perfect,2,F,P,הִסְתּוֹבַבְתֶּן,you all surrounded yourselves
+Hitpolel,Perfect,1,C,P,הִסְתּוֹבַ֫בְנוּ,we surrounded ourselves
+Hitpolel,Imperfect,3,M,S,יִסְתּוֹבֵב,he will surround himself
+Hitpolel,Imperfect,3,F,S,תִּסְתּוֹבֵב,she will surround herself
+Hitpolel,Imperfect,2,M,S,תִּסְתּוֹבֵב,you will surround yourself
+Hitpolel,Imperfect,2,F,S,תִּסְתּוֹבְבִי,you will surround yourself
+Hitpolel,Imperfect,1,C,S,אֶסְתּוֹבֵב,I will surround myself
+Hitpolel,Imperfect,3,M,P,יִסְתּוֹבְבוּ,they will surround themselves
+Hitpolel,Imperfect,3,F,P,תִּסְתּוֹבֵ֫בְנָה,they will surround themselves
+Hitpolel,Imperfect,2,M,P,תִּסְתּוֹבְבוּ,you all will surround yourselves
+Hitpolel,Imperfect,2,F,P,תִּסְתּוֹבֵ֫בְנָה,you all will surround yourselves
+Hitpolel,Imperfect,1,C,P,נִסְתּוֹבֵב,we will surround ourselves
+Hitpolel,Jussive,3,M,S,יִסְתּוֹבֵב,may he surround himself
+Hitpolel,Jussive,3,F,S,תִּסְתּוֹבֵב,may she surround herself
+Hitpolel,Jussive,2,M,S,תִּסְתּוֹבֵב,may you surround yourself
+Hitpolel,Jussive,2,F,S,תִּסְתּוֹבְבִי,may you surround yourself
+Hitpolel,Jussive,3,M,P,יִסְתּוֹבְבוּ,may they surround themselves
+Hitpolel,Jussive,3,F,P,תִּסְתּוֹבֵ֫בְנָה,may they surround themselves
+Hitpolel,Jussive,2,M,P,תִּסְתּוֹבְבוּ,may you all surround yourselves
+Hitpolel,Jussive,2,F,P,תִּסְתּוֹבֵ֫בְנָה,may you all surround yourselves
+Hitpolel,Cohortative,1,C,S,אֶסְתּוֹבְבָה,may I surround myself
+Hitpolel,Cohortative,1,C,P,נִסְתּוֹבְבָה,may we surround ourselves
+Hitpolel,Imperative,2,M,S,הִסְתּוֹבֵב,surround yourself!
+Hitpolel,Imperative,2,F,S,הִסְתּוֹבְבִי,surround yourself!
+Hitpolel,Imperative,2,M,P,הִסְתּוֹבְבוּ,surround yourselves!
+Hitpolel,Imperative,2,F,P,הִסְתּוֹבֵ֫בְנָה,surround yourselves!
+Hitpolel,Infinitive Absolute,,,,הִסְתּוֹבֵב,to surround oneself
+Hitpolel,Infinitive Construct,,,,הִסְתּוֹבֵב,to surround oneself
+Hitpolel,Active Participle,,M,S,מִסְתּוֹבֵב,surrounding oneself
+Hitpolel,Active Participle,,F,S,מִסְתּוֹבְבָה,surrounding oneself
+Hitpolel,Active Participle,,M,P,מִסְתּוֹבְבִים,surrounding oneself
+Hitpolel,Active Participle,,F,P,מִסְתּוֹבְבוֹת,surrounding oneself
+Hiphil,Perfect,3,M,S,הֵסֵב,he caused to surround
+Hiphil,Perfect,3,F,S,הֵסֵ֫בָּה,she caused to surround
+Hiphil,Perfect,2,M,S,הֲסִבּ֫וֹתָ,you caused to surround
+Hiphil,Perfect,2,F,S,הֲסִבּוֹתְ,you caused to surround
+Hiphil,Perfect,1,C,S,הֲסִבּ֫וֹתִי,I caused to surround
+Hiphil,Perfect,3,C,P,הֵסֵ֫בּוּ,they caused to surround
+Hiphil,Perfect,2,M,P,הֲסִבּוֹתֶם,you all caused to surround
+Hiphil,Perfect,2,F,P,הֲסִבּוֹתֶן,you all caused to surround
+Hiphil,Perfect,1,C,P,הֲסִבּ֫וֹנוּ,we caused to surround
+Hiphil,Imperfect,3,M,S,יָסֵב,he will cause to surround
+Hiphil,Imperfect,3,F,S,תָּסֵב,she will cause to surround
+Hiphil,Imperfect,2,M,S,תָּסֵב,you will cause to surround
+Hiphil,Imperfect,2,F,S,תָּסֵ֫בִּי,you will cause to surround
+Hiphil,Imperfect,1,C,S,אָסֵב,I will cause to surround
+Hiphil,Imperfect,3,M,P,יָסֵ֫בּוּ,they will cause to surround
+Hiphil,Imperfect,3,F,P,תְּסִבֶּ֫ינָה,they will cause to surround
+Hiphil,Imperfect,2,M,P,תָּסֵ֫בּוּ,you all will cause to surround
+Hiphil,Imperfect,2,F,P,תְּסִבֶּ֫ינָה,you all will cause to surround
+Hiphil,Imperfect,1,C,P,נָסֵב,we will cause to surround
+Hiphil,Jussive,3,M,S,יָסֵב,may he cause to surround
+Hiphil,Jussive,3,F,S,תָּסֵב,may she cause to surround
+Hiphil,Jussive,2,M,S,תָּסֵב,may you cause to surround
+Hiphil,Jussive,2,F,S,תָּסֵ֫בִּי,may you cause to surround
+Hiphil,Jussive,3,M,P,יָסֵ֫בּוּ,may they cause to surround
+Hiphil,Jussive,3,F,P,תְּסִבֶּ֫ינָה,may they cause to surround
+Hiphil,Jussive,2,M,P,תָּסֵ֫בּוּ,may you all cause to surround
+Hiphil,Jussive,2,F,P,תְּסִבֶּ֫ינָה,may you all cause to surround
+Hiphil,Cohortative,1,C,S,אָסֵ֫בָּה,may I cause to surround
+Hiphil,Cohortative,1,C,P,נָסֵ֫בָּה,may we cause to surround
+Hiphil,Imperative,2,M,S,הָסֵב,cause to surround!
+Hiphil,Imperative,2,F,S,הָסֵ֫בִּי,cause to surround!
+Hiphil,Imperative,2,M,P,הָסֵ֫בּוּ,cause to surround!
+Hiphil,Imperative,2,F,P,הֲסִבֶּ֫ינָה,cause to surround!
+Hiphil,Infinitive Absolute,,,,הָסֵב,to cause to surround
+Hiphil,Infinitive Construct,,,,הָסֵב,to cause to surround
+Hiphil,Active Participle,,M,S,מֵסֵב,causing to surround
+Hiphil,Active Participle,,F,S,מְסִבָּה,causing to surround
+Hiphil,Active Participle,,M,P,מְסִיבִּים,causing to surround
+Hiphil,Active Participle,,F,P,מְסִבוֹת,causing to surround
+Hophal,Perfect,3,M,S,הוּסַב,he was caused to surround
+Hophal,Perfect,3,F,S,הוּסַ֫בָּה,she was caused to surround
+Hophal,Perfect,2,M,S,הוּסַבּ֫וֹתָ,you were caused to surround
+Hophal,Perfect,2,F,S,הוּסַבּוֹתְ,you were caused to surround
+Hophal,Perfect,1,C,S,הוּסַבּ֫וֹתִי,I was caused to surround
+Hophal,Perfect,3,C,P,הוּסַ֫בּוּ,they were caused to surround
+Hophal,Perfect,2,M,P,הוּסַבּוֹתֶם,you all were caused to surround
+Hophal,Perfect,2,F,P,הוּסַבּוֹתֶן,you all were caused to surround
+Hophal,Perfect,1,C,P,הוּסַבּ֫וֹנוּ,we were caused to surround
+Hophal,Imperfect,3,M,S,יוּסַב,he will be caused to surround
+Hophal,Imperfect,3,F,S,תּוּסַב,she will be caused to surround
+Hophal,Imperfect,2,M,S,תּוּסַב,you will be caused to surround
+Hophal,Imperfect,2,F,S,תּוּסַ֫בִּי,you will be caused to surround
+Hophal,Imperfect,1,C,S,אוּסַב,I will be caused to surround
+Hophal,Imperfect,3,M,P,יוּסַ֫בּוּ,they will be caused to surround
+Hophal,Imperfect,3,F,P,תּוּסִבֶּ֫ינָה,they will be caused to surround
+Hophal,Imperfect,2,M,P,תּוּסַ֫בּוּ,you all will be caused to surround
+Hophal,Imperfect,2,F,P,תּוּסִבֶּ֫ינָה,you all will be caused to surround
+Hophal,Imperfect,1,C,P,נוּסַב,we will be caused to surround
+Hophal,Infinitive Absolute,,,,הוּסֵב,to be caused to surround
+Hophal,Infinitive Construct,,,,הוּסַב,to be caused to surround
+Hophal,Passive Participle,,M,S,מוּסָב,being caused to surround
+Hophal,Passive Participle,,F,S,מוּסָבָּה,being caused to surround
+Hophal,Passive Participle,,M,P,מוּסָבִּים,being caused to surround
+Hophal,Passive Participle,,F,P,מוּסָבּוֹת,being caused to surround

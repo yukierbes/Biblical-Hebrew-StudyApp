@@ -1,0 +1,45 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,שָׂם,he placed
+Qal,Perfect,3,F,S,שָׂ֫מָה,she placed
+Qal,Perfect,2,M,S,שַׂ֫מְתָּ,you placed
+Qal,Perfect,2,F,S,שַׂ֫מְתְּ,you placed
+Qal,Perfect,1,C,S,שַׂ֫מְתִּי,I placed
+Qal,Perfect,3,C,P,שָׂ֫מוּ,they placed
+Qal,Perfect,2,M,P,שַׂמְתֶּם,you all placed
+Qal,Perfect,2,F,P,שַׂמְתֶּן,you all placed
+Qal,Perfect,1,C,P,שַׂ֫מְנוּ,we placed
+Qal,Imperfect,3,M,S,יָשִׂים,he will place
+Qal,Imperfect,3,F,S,תָּשִׂים,she will place
+Qal,Imperfect,2,M,S,תָּשִׂים,you will place
+Qal,Imperfect,2,F,S,תָּשִׂ֫ימִי,you will place
+Qal,Imperfect,1,C,S,אָשִׂים,I will place
+Qal,Imperfect,3,M,P,יָשִׂ֫ימוּ,they will place
+Qal,Imperfect,3,F,P,תְּשֵׂ֫מְנָה,they will place
+Qal,Imperfect,2,M,P,תָּשִׂ֫ימוּ,you all will place
+Qal,Imperfect,2,F,P,תְּשֵׂ֫מְנָה,you all will place
+Qal,Imperfect,1,C,P,נָשִׂים,we will place
+Qal,Jussive,3,M,S,יָשֵׂם,may he place
+Qal,Jussive,3,F,S,תָּשֵׂם,may she place
+Qal,Jussive,2,M,S,תָּשֵׂם,may you place
+Qal,Jussive,2,F,S,תָּשִׂ֫ימִי,may you place
+Qal,Jussive,3,M,P,יָשִׂ֫ימוּ,may they place
+Qal,Jussive,3,F,P,תְּשֵׂ֫מְנָה,may they place
+Qal,Jussive,2,M,P,תָּשִׂ֫ימוּ,may you all place
+Qal,Jussive,2,F,P,תְּשֵׂ֫מְנָה,may you all place
+Qal,Cohortative,1,C,S,אָשִׂ֫ימָה,may I place
+Qal,Cohortative,1,C,P,נָשִׂ֫ימָה,may we place
+Qal,Imperative,2,M,S,שִׂים,place!
+Qal,Imperative,2,F,S,שִׂ֫ימִי,place!
+Qal,Imperative,2,M,P,שִׂ֫ימוּ,place!
+Qal,Imperative,2,F,P,שֹׂ֫מְנָה,place!
+Qal,Infinitive Absolute,,,,שׂוֹם,to place
+Qal,Infinitive Construct,,,,שִׂים,to place
+Qal,Infinitive Construct,,,,שׂוּם,to place
+Qal,Active Participle,,M,S,שָׂם,placing
+Qal,Active Participle,,F,S,שָׂמָ֫ה,placing
+Qal,Active Participle,,M,P,שָׂמִים,placing
+Qal,Active Participle,,F,P,שָׂמוֹת,placing
+Qal,Passive Participle,,M,S,שׂוּם,placed
+Qal,Passive Participle,,F,S,שׂוּמָה,placed
+Qal,Passive Participle,,M,P,שׂוּמִים,placed
+Qal,Passive Participle,,F,P,שׂוּמוֹת,placed

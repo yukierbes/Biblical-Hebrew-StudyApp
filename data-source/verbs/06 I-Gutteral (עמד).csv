@@ -1,0 +1,253 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,עָמַד,he stood
+Qal,Perfect,3,F,S,עָֽמְדָה,she stood
+Qal,Perfect,2,M,S,עָמַ֫דְתָּ,you stood
+Qal,Perfect,2,F,S,עָמַדְתְּ,you stood
+Qal,Perfect,1,C,S,עָמַ֫דְתִּי,I stood
+Qal,Perfect,3,C,P,עָֽמְדוּ,they stood
+Qal,Perfect,2,M,P,עֲמַדְתֶּם,you all stood
+Qal,Perfect,2,F,P,עֲמַדְתֶּן,you all stood
+Qal,Perfect,1,C,P,עָמַ֫דְנוּ,we stood
+Qal,Imperfect,3,M,S,יַעֲמֹד,he will stand
+Qal,Imperfect,3,F,S,תַּעֲמֹד,she will stand
+Qal,Imperfect,2,M,S,תַּעֲמֹד,you will stand
+Qal,Imperfect,2,F,S,תַּעַמְדִי,you will stand
+Qal,Imperfect,1,C,S,אֶעֱמֹד,I will stand
+Qal,Imperfect,3,M,P,יַעַמְדוּ,they will stand
+Qal,Imperfect,3,F,P,תַּעֲמֹ֫דְנָה,they will stand
+Qal,Imperfect,2,M,P,תַּעַמְדוּ,you all will stand
+Qal,Imperfect,2,F,P,תַּעֲמֹ֫דְנָה,you all will stand
+Qal,Imperfect,1,C,P,נַעֲמֹד,we will stand
+Qal,Jussive,3,M,S,יַעֲמֹד,may he stand
+Qal,Jussive,3,F,S,תַּעֲמֹד,may she stand
+Qal,Jussive,2,M,S,תַּעֲמֹד,may you stand
+Qal,Jussive,2,F,S,תַּעַמְדִי,may you stand
+Qal,Jussive,3,M,P,יַעַמְדוּ,may they stand
+Qal,Jussive,3,F,P,תַּעֲמֹ֫דְנָה,may they stand
+Qal,Jussive,2,M,P,תַּעַמְדוּ,may you all stand
+Qal,Jussive,2,F,P,תַּעֲמֹ֫דְנָה,may you all stand
+Qal,Cohortative,1,C,S,אֶעֶמְדָה,may I stand
+Qal,Cohortative,1,C,P,נַעַמְדָה,may we stand
+Qal,Imperative,2,M,S,עֲמֹד,stand!
+Qal,Imperative,2,F,S,עִמְדִי,stand!
+Qal,Imperative,2,M,P,עִמְדוּ,stand!
+Qal,Imperative,2,F,P,עֲמֹ֫דְנָה,stand!
+Qal,Infinitive Absolute,,,,עָמוֹד,to stand
+Qal,Infinitive Construct,,,,עֲמֹד,to stand
+Qal,Active Participle,,M,S,עֹמֵד,standing
+Qal,Active Participle,,F,S,עֹמְדָה,standing
+Qal,Active Participle,,F,S,עֹמֶ֫דֶת,standing
+Qal,Active Participle,,M,P,עֹמְדִים,standing
+Qal,Active Participle,,F,P,עֹמְדוֹת,standing
+Qal,Passive Participle,,M,S,עָמוּד,stood
+Qal,Passive Participle,,F,S,עֲמוּדָה,stood
+Qal,Passive Participle,,M,P,עֲמוּדִים,stood
+Qal,Passive Participle,,F,P,עֲמוּדוֹת,stood
+Niphal,Perfect,3,M,S,נֶעֱמַד,he was stood
+Niphal,Perfect,3,F,S,נֶעֶמְדָה,she was stood
+Niphal,Perfect,2,M,S,נֶעֱמַ֫דְתָּ,you were stood
+Niphal,Perfect,2,F,S,נֶעֱמַדְתְּ,you were stood
+Niphal,Perfect,1,C,S,נֶעֱמַ֫דְתִּי,I was stood
+Niphal,Perfect,3,C,P,נֶעֶמְדוּ,they were stood
+Niphal,Perfect,2,M,P,נֶעֱמַדְתֶּם,you all were stood
+Niphal,Perfect,2,F,P,נֶעֱמַדְתֶּן,you all were stood
+Niphal,Perfect,1,C,P,נֶעֱמַ֫דְנוּ,we were stood
+Niphal,Imperfect,3,M,S,יֵעָמֵד,he will be stood
+Niphal,Imperfect,3,F,S,תֵּעָמֵד,she will be stood
+Niphal,Imperfect,2,M,S,תֵּעָמֵד,you will be stood
+Niphal,Imperfect,2,F,S,תֵּעָֽמְדִי,you will be stood
+Niphal,Imperfect,1,C,S,אֵעָמֵד,I will be stood
+Niphal,Imperfect,3,M,P,יֵעָֽמְדוּ,they will be stood
+Niphal,Imperfect,3,F,P,תֵּעָמַ֫דְנָה,they will be stood
+Niphal,Imperfect,2,M,P,תֵּעָֽמְדוּ,you all will be stood
+Niphal,Imperfect,2,F,P,תֵּעָמַ֫דְנָה,you all will be stood
+Niphal,Imperfect,1,C,P,נֵעָמֵד,we will be stood
+Niphal,Jussive,3,M,S,יֵעָמֵד,may he be stood
+Niphal,Jussive,3,F,S,תֵּעָמֵד,may she be stood
+Niphal,Jussive,2,M,S,תֵּעָמֵד,may you be stood
+Niphal,Jussive,2,F,S,תֵּעָֽמְדִי,may you be stood
+Niphal,Jussive,3,M,P,יֵעָֽמְדוּ,may they be stood
+Niphal,Jussive,3,F,P,תֵּעָמַ֫דְנָה,may they be stood
+Niphal,Jussive,2,M,P,תֵּעָֽמְדוּ,may you all be stood
+Niphal,Jussive,2,F,P,תֵּעָמַ֫דְנָה,may you all be stood
+Niphal,Cohortative,1,C,S,אֵעָֽמְדָה,may I be stood
+Niphal,Cohortative,1,C,P,נֵעָֽמְדָה,may we be stood
+Niphal,Imperative,2,M,S,הֵעָמֵד,be stood!
+Niphal,Imperative,2,F,S,הֵעָֽמְדִי,be stood!
+Niphal,Imperative,2,M,P,הֵעָֽמְדוּ,be stood!
+Niphal,Imperative,2,F,P,הֵעָמַ֫דְנָה,be stood!
+Niphal,Infinitive Absolute,,,,הֵעָמֹד,to be stood
+Niphal,Infinitive Absolute,,,,נַעֲמֹד,to be stood
+Niphal,Infinitive Construct,,,,הֵעָמֵד,to be stood
+Niphal,Passive Participle,,M,S,נֶעֱמָד,being stood
+Niphal,Passive Participle,,F,S,נֶעֱמָדָה,being stood
+Niphal,Passive Participle,,M,P,נֶעֱמָדִים,being stood
+Niphal,Passive Participle,,F,P,נֶעֱמָדוֹת,being stood
+Piel,Perfect,3,M,S,עִמֵּד,he stood
+Piel,Perfect,3,F,S,עִמְּדָה,she stood
+Piel,Perfect,2,M,S,עִמַּ֫דְתָּ,you stood
+Piel,Perfect,2,F,S,עִמַּדְתְּ,you stood
+Piel,Perfect,1,C,S,עִמַּ֫דְתִּי,I stood
+Piel,Perfect,3,C,P,עִמְּדוּ,they stood
+Piel,Perfect,2,M,P,עִמַּדְתֶּם,you all stood
+Piel,Perfect,2,F,P,עִמַּדְתֶּן,you all stood
+Piel,Perfect,1,C,P,עִמַּ֫דְנוּ,we stood
+Piel,Imperfect,3,M,S,יְעַמֵּד,he will stand
+Piel,Imperfect,3,F,S,תְּעַמֵּד,she will stand
+Piel,Imperfect,2,M,S,תְּעַמֵּד,you will stand
+Piel,Imperfect,2,F,S,תְּעַמְּדִי,you will stand
+Piel,Imperfect,1,C,S,אֲעַמֵּד,I will stand
+Piel,Imperfect,3,M,P,יְעַמְּדוּ,they will stand
+Piel,Imperfect,3,F,P,תְּעַמֵּ֫דְנָה,they will stand
+Piel,Imperfect,2,M,P,תְּעַמְּדוּ,you all will stand
+Piel,Imperfect,2,F,P,תְּעַמֵּ֫דְנָה,you all will stand
+Piel,Imperfect,1,C,P,נְעַמֵּד,we will stand
+Piel,Jussive,3,M,S,יְעַמֵּד,may he stand
+Piel,Jussive,3,F,S,תְּעַמֵּד,may she stand
+Piel,Jussive,2,M,S,תְּעַמֵּד,may you stand
+Piel,Jussive,2,F,S,תְּעַמְּדִי,may you stand
+Piel,Jussive,3,M,P,יְעַמְּדוּ,may they stand
+Piel,Jussive,3,F,P,תְּעַמֵּ֫דְנָה,may they stand
+Piel,Jussive,2,M,P,תְּעַמְּדוּ,may you all stand
+Piel,Jussive,2,F,P,תְּעַמֵּ֫דְנָה,may you all stand
+Piel,Cohortative,1,C,S,אֲעַמְּדָה,may I stand
+Piel,Cohortative,1,C,P,נְעַמְּדָה,may we stand
+Piel,Imperative,2,M,S,עַמֵּד,stand!
+Piel,Imperative,2,F,S,עַמְּדִי,stand!
+Piel,Imperative,2,M,P,עַמְּדוּ,stand!
+Piel,Imperative,2,F,P,עַמֵּ֫דְנָה,stand!
+Piel,Infinitive Absolute,,,,עַמֹּד,to stand
+Piel,Infinitive Absolute,,,,עַמֵּד,to stand
+Piel,Infinitive Construct,,,,עַמֵּד,to stand
+Piel,Active Participle,,M,S,מְעַמֵּד,standing
+Piel,Active Participle,,F,S,מְעַמְּדָה,standing
+Piel,Active Participle,,M,P,מְעַמְּדִים,standing
+Piel,Active Participle,,F,P,מְעַמְּדוֹת,standing
+Pual,Perfect,3,M,S,עֻמַּד,he was stood
+Pual,Perfect,3,F,S,עֻמְּדָה,she was stood
+Pual,Perfect,2,M,S,עֻמַּ֫דְתָּ,you were stood
+Pual,Perfect,2,F,S,עֻמַּדְתְּ,you were stood
+Pual,Perfect,1,C,S,עֻמַּ֫דְתִּי,I was stood
+Pual,Perfect,3,C,P,עֻמְּדוּ,they were stood
+Pual,Perfect,2,M,P,עֻמַּדְתֶּם,you all were stood
+Pual,Perfect,2,F,P,עֻמַּדְתֶּן,you all were stood
+Pual,Perfect,1,C,P,עֻמַּ֫דְנוּ,we were stood
+Pual,Imperfect,3,M,S,יְעֻמַּד,he will be stood
+Pual,Imperfect,3,F,S,תְּעֻמַּד,she will be stood
+Pual,Imperfect,2,M,S,תְּעֻמַּד,you will be stood
+Pual,Imperfect,2,F,S,תְּעֻמְּדִי,you will be stood
+Pual,Imperfect,1,C,S,אֲעֻמַּד,I will be stood
+Pual,Imperfect,3,M,P,יְעֻמְּדוּ,they will be stood
+Pual,Imperfect,3,F,P,תְּעֻמַּ֫דְנָה,they will be stood
+Pual,Imperfect,2,M,P,תְּעֻמְּדוּ,you all will be stood
+Pual,Imperfect,2,F,P,תְּעֻמַּ֫דְנָה,you all will be stood
+Pual,Imperfect,1,C,P,נְעֻמַּד,we will be stood
+Pual,Infinitive Absolute,,,,עֻמֹּד,to be stood
+Pual,Infinitive Construct,,,,עֻמַּד,to be stood
+Pual,Passive Participle,,M,S,מְעֻמָּד,being stood
+Pual,Passive Participle,,F,S,מְעֻמָּדָה,being stood
+Pual,Passive Participle,,M,P,מְעֻמָּדִים,being stood
+Pual,Passive Participle,,F,P,מְעֻמָּדוֹת,being stood
+Hitpael,Perfect,3,M,S,הִתְעַמֵּד,he stood himself
+Hitpael,Perfect,3,F,S,הִתְעַמְּדָה,she stood herself
+Hitpael,Perfect,2,M,S,הִתְעַמַּ֫דְתָּ,you stood yourself
+Hitpael,Perfect,2,F,S,הִתְעַמַּדְתְּ,you stood yourself
+Hitpael,Perfect,1,C,S,הִתְעַמַּ֫דְתִּי,I stood myself
+Hitpael,Perfect,3,C,P,הִתְעַמְּדוּ,they stood themselves
+Hitpael,Perfect,2,M,P,הִתְעַמַּדְתֶּם,you all stood yourselves
+Hitpael,Perfect,2,F,P,הִתְעַמַּדְתֶּן,you all stood yourselves
+Hitpael,Perfect,1,C,P,הִתְעַמַּ֫דְנוּ,we stood ourselves
+Hitpael,Imperfect,3,M,S,יִתְעַמֵּד,he will stand himself
+Hitpael,Imperfect,3,F,S,תִּתְעַמֵּד,she will stand herself
+Hitpael,Imperfect,2,M,S,תִּתְעַמֵּד,you will stand yourself
+Hitpael,Imperfect,2,F,S,תִּתְעַמְּדִי,you will stand yourself
+Hitpael,Imperfect,1,C,S,אֶתְעַמֵּד,I will stand myself
+Hitpael,Imperfect,3,M,P,יִתְעַמְּדוּ,they will stand themselves
+Hitpael,Imperfect,3,F,P,תִּתְעַמֵּ֫דְנָה,they will stand themselves
+Hitpael,Imperfect,2,M,P,תִּתְעַמְּדוּ,you all will stand yourselves
+Hitpael,Imperfect,2,F,P,תִּתְעַמֵּ֫דְנָה,you all will stand yourselves
+Hitpael,Imperfect,1,C,P,נִתְעַמֵּד,we will stand ourselves
+Hitpael,Jussive,3,M,S,יִתְעַמֵּד,may he stand himself
+Hitpael,Jussive,3,F,S,תִּתְעַמֵּד,may she stand herself
+Hitpael,Jussive,2,M,S,תִּתְעַמֵּד,may you stand yourself
+Hitpael,Jussive,2,F,S,תִּתְעַמְּדִי,may you stand yourself
+Hitpael,Jussive,3,M,P,יִתְעַמְּדוּ,may they stand themselves
+Hitpael,Jussive,3,F,P,תִּתְעַמֵּ֫דְנָה,may they stand themselves
+Hitpael,Jussive,2,M,P,תִּתְעַמְּדוּ,may you all stand yourselves
+Hitpael,Jussive,2,F,P,תִּתְעַמֵּ֫דְנָה,may you all stand yourselves
+Hitpael,Cohortative,1,C,S,אֶתְעַמְּדָה,may I stand myself
+Hitpael,Cohortative,1,C,P,נִתְעַמְּדָה,may we stand ourselves
+Hitpael,Imperative,2,M,S,הִתְעַמֵּד,stand yourself!
+Hitpael,Imperative,2,F,S,הִתְעַמְּדִי,stand yourself!
+Hitpael,Imperative,2,M,P,הִתְעַמְּדוּ,stand yourselves!
+Hitpael,Imperative,2,F,P,הִתְעַמֵּ֫דְנָה,stand yourselves!
+Hitpael,Infinitive Absolute,,,,הִתְעַמֵּד,to stand oneself
+Hitpael,Infinitive Construct,,,,הִתְעַמֵּד,to stand oneself
+Hitpael,Active Participle,,M,S,מִתְעַמֵּד,standing oneself
+Hitpael,Active Participle,,F,S,מִתְעַמְּדָה,standing oneself
+Hitpael,Active Participle,,M,P,מִתְעַמְּדִים,standing oneself
+Hitpael,Active Participle,,F,P,מִתְעַמְּדוֹת,standing oneself
+Hiphil,Perfect,3,M,S,הֶעֱמִיד,he caused to stand
+Hiphil,Perfect,3,F,S,הֶעֱמִ֫ידָה,she caused to stand
+Hiphil,Perfect,2,M,S,הֶעֱמַ֫דְתָּ,you caused to stand
+Hiphil,Perfect,2,F,S,הֶעֱמַדְתְּ,you caused to stand
+Hiphil,Perfect,1,C,S,הֶעֱמַ֫דְתִּי,I caused to stand
+Hiphil,Perfect,3,C,P,הֶעֱמִ֫ידוּ,they caused to stand
+Hiphil,Perfect,2,M,P,הֶעֱמַדְתֶּם,you all caused to stand
+Hiphil,Perfect,2,F,P,הֶעֱמַדְתֶּן,you all caused to stand
+Hiphil,Perfect,1,C,P,הֶעֱמַ֫דְנוּ,we caused to stand
+Hiphil,Imperfect,3,M,S,יַעֲמִיד,he will cause to stand
+Hiphil,Imperfect,3,F,S,תַּעֲמִיד,she will cause to stand
+Hiphil,Imperfect,2,M,S,תַּעֲמִיד,you will cause to stand
+Hiphil,Imperfect,2,F,S,תַּעֲמִ֫ידִי,you will cause to stand
+Hiphil,Imperfect,1,C,S,אַעֲמִיד,I will cause to stand
+Hiphil,Imperfect,3,M,P,יַעֲמִ֫ידוּ,they will cause to stand
+Hiphil,Imperfect,3,F,P,תַּעֲמֵ֫דְנָה,they will cause to stand
+Hiphil,Imperfect,2,M,P,תַּעֲמִ֫ידוּ,you all will cause to stand
+Hiphil,Imperfect,2,F,P,תַּעֲמֵ֫דְנָה,you all will cause to stand
+Hiphil,Imperfect,1,C,P,נַעֲמִיד,we will cause to stand
+Hiphil,Jussive,3,M,S,יַעֲמֵד,may he cause to stand
+Hiphil,Jussive,3,F,S,תַּעֲמֵד,may she cause to stand
+Hiphil,Jussive,2,M,S,תַּעֲמֵד,may you cause to stand
+Hiphil,Jussive,2,F,S,תַּעֲמִ֫ידִי,may you cause to stand
+Hiphil,Jussive,3,M,P,יַעֲמִ֫ידוּ,may they cause to stand
+Hiphil,Jussive,3,F,P,תַּעֲמֵ֫דְנָה,may they cause to stand
+Hiphil,Jussive,2,M,P,תַּעֲמִ֫ידוּ,may you all cause to stand
+Hiphil,Jussive,2,F,P,תַּעֲמֵ֫דְנָה,may you all cause to stand
+Hiphil,Cohortative,1,C,S,אַעֲמִ֫ידָה,may I cause to stand
+Hiphil,Cohortative,1,C,P,נַעֲמִ֫ידָה,may we cause to stand
+Hiphil,Imperative,2,M,S,הַעֲמֵד,cause to stand!
+Hiphil,Imperative,2,F,S,הַעֲמִ֫ידִי,cause to stand!
+Hiphil,Imperative,2,M,P,הַעֲמִ֫ידוּ,cause to stand!
+Hiphil,Imperative,2,F,P,הַעֲמֵ֫דְנָה,cause to stand!
+Hiphil,Infinitive Absolute,,,,הַעֲמֵד,to cause to stand
+Hiphil,Infinitive Construct,,,,הַעֲמִיד,to cause to stand
+Hiphil,Active Participle,,M,S,מַעֲמִיד,causing to stand
+Hiphil,Active Participle,,F,S,מַעֲמִידָה,causing to stand
+Hiphil,Active Participle,,M,P,מַעֲמִידִים,causing to stand
+Hiphil,Active Participle,,F,P,מַעֲמִידוֹת,causing to stand
+Hophal,Perfect,3,M,S,הָעֳמַד,he was caused to stand
+Hophal,Perfect,3,F,S,הָעֳמְדָה,she was caused to stand
+Hophal,Perfect,2,M,S,הָעֳמַ֫דְתָּ,you were caused to stand
+Hophal,Perfect,2,F,S,הָעֳמַדְתְּ,you were caused to stand
+Hophal,Perfect,1,C,S,הָעֳמַ֫דְתִּי,I was caused to stand
+Hophal,Perfect,3,C,P,הָעֳמְדוּ,they were caused to stand
+Hophal,Perfect,2,M,P,הָעֳמַדְתֶּם,you all were caused to stand
+Hophal,Perfect,2,F,P,הָעֳמַדְתֶּן,you all were caused to stand
+Hophal,Perfect,1,C,P,הָעֳמַ֫דְנוּ,we were caused to stand
+Hophal,Imperfect,3,M,S,יָעֳמַד,he will be caused to stand
+Hophal,Imperfect,3,F,S,תָּעֳמַד,she will be caused to stand
+Hophal,Imperfect,2,M,S,תָּעֳמַד,you will be caused to stand
+Hophal,Imperfect,2,F,S,תָּעָמְדִי,you will be caused to stand
+Hophal,Imperfect,1,C,S,אָעֳמַד,I will be caused to stand
+Hophal,Imperfect,3,M,P,יָעָמְדוּ,they will be caused to stand
+Hophal,Imperfect,3,F,P,תָּעֳמַ֫דְנָה,they will be caused to stand
+Hophal,Imperfect,2,M,P,תָּעָמְדוּ,you all will be caused to stand
+Hophal,Imperfect,2,F,P,תָּעֳמַ֫דְנָה,you all will be caused to stand
+Hophal,Imperfect,1,C,P,נָעֳמַד,we will be caused to stand
+Hophal,Infinitive Absolute,,,,הָעֳמֵד,to be caused to stand
+Hophal,Infinitive Construct,,,,הָעֳמַד,to be caused to stand
+Hophal,Passive Participle,,M,S,מָעֳמָד,being caused to stand
+Hophal,Passive Participle,,F,S,מָעֳמָדָה,being caused to stand
+Hophal,Passive Participle,,M,P,מָעֳמָדִים,being caused to stand
+Hophal,Passive Participle,,F,P,מָעֳמָדוֹת,being caused to stand

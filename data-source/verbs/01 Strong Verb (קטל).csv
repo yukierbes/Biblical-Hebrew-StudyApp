@@ -1,0 +1,257 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,קָטַל,he killed
+Qal,Perfect,3,F,S,קָֽטְלָה,she killed
+Qal,Perfect,2,M,S,קָטַ֫לְתָּ,you killed
+Qal,Perfect,2,F,S,קָטַלְתְּ,you killed
+Qal,Perfect,1,C,S,קָטַ֫לְתִּי,I killed
+Qal,Perfect,3,C,P,קָֽטְלוּ,they killed
+Qal,Perfect,2,M,P,קְטַלְתֶּם,you all killed
+Qal,Perfect,2,F,P,קְטַלְתֶּן,you all killed
+Qal,Perfect,1,C,P,קָטַ֫לְנוּ,we killed
+Qal,Imperfect,3,M,S,יִקְטֹל,he will kill
+Qal,Imperfect,3,F,S,תִּקְטֹל,she will kill
+Qal,Imperfect,2,M,S,תִּקְטֹל,you will kill
+Qal,Imperfect,2,F,S,תִּקְטְלִי,you will kill
+Qal,Imperfect,2,F,S,תִּקְטְלִין,you will kill
+Qal,Imperfect,1,C,S,אֶקְטֹל,I will kill
+Qal,Imperfect,3,M,P,יִקְטְלוּ,they will kill
+Qal,Imperfect,3,M,P,יִקְטְלוּן,they will kill
+Qal,Imperfect,3,F,P,תִּקְטֹ֫לְנָה,they will kill
+Qal,Imperfect,2,M,P,תִּקְטְלוּ,you all will kill
+Qal,Imperfect,2,M,P,תִּקְטְלוּן,you all will kill
+Qal,Imperfect,2,F,P,תִּקְטֹ֫לְנָה,you all will kill
+Qal,Imperfect,1,C,P,נִקְטֹל,we will kill
+Qal,Jussive,3,M,S,יִקְטֹל,may he kill
+Qal,Jussive,3,F,S,תִּקְטֹל,may she kill
+Qal,Jussive,2,M,S,תִּקְטֹל,may you kill
+Qal,Jussive,2,F,S,תִּקְטְלִי,may you kill
+Qal,Jussive,3,M,P,יִקְטְלוּ,may they kill
+Qal,Jussive,3,F,P,תִּקְטֹ֫לְנָה,may they kill
+Qal,Jussive,2,M,P,תִּקְטְלוּ,may you all kill
+Qal,Jussive,2,F,P,תִּקְטֹ֫לְנָה,may you all kill
+Qal,Cohortative,1,C,S,אֶקְטְלָה,may I kill
+Qal,Cohortative,1,C,P,נִקְטְלָה,may we kill
+Qal,Imperative,2,M,S,קְטֹל,kill!
+Qal,Imperative,2,M,S,קָטְלָה,kill!
+Qal,Imperative,2,F,S,קִטְלִי,kill!
+Qal,Imperative,2,M,P,קִטְלוּ,kill!
+Qal,Imperative,2,F,P,קְטֹ֫לְנָה,kill!
+Qal,Infinitive Absolute,,,,קָטוֹל,to kill
+Qal,Infinitive Construct,,,,קְטֹל,to kill
+Qal,Active Participle,,M,S,קֹטֵל,killing
+Qal,Active Participle,,F,S,קֹֽטְלָה,killing
+Qal,Active Participle,,F,S,קֹטֶ֫לֶת,killing
+Qal,Active Participle,,M,P,קֹֽטְלִים,killing
+Qal,Active Participle,,F,P,קֹֽטְלוֹת,killing
+Qal,Passive Participle,,M,S,קָטוּל,killed
+Qal,Passive Participle,,F,S,קְטוּלָה,killed
+Qal,Passive Participle,,M,P,קְטוּלִים,killed
+Qal,Passive Participle,,F,P,קְטוּלוֹת,killed
+Niphal,Perfect,3,M,S,נִקְטַל,he was killed
+Niphal,Perfect,3,F,S,נִקְטְלָה,she was killed
+Niphal,Perfect,2,M,S,נִקְטַ֫לְתָּ,you were killed
+Niphal,Perfect,2,F,S,נִקְטַלְתְּ,you were killed
+Niphal,Perfect,1,C,S,נִקְטַ֫לְתִּי,I was killed
+Niphal,Perfect,3,C,P,נִקְטְלוּ,they were killed
+Niphal,Perfect,2,M,P,נִקְטַלְתֶּם,you all were killed
+Niphal,Perfect,2,F,P,נִקְטַלְתֶּן,you all were killed
+Niphal,Perfect,1,C,P,נִקְטַ֫לְנוּ,we were killed
+Niphal,Imperfect,3,M,S,יִקָּטֵל,he will be killed
+Niphal,Imperfect,3,F,S,תִּקָּטֵל,she will be killed
+Niphal,Imperfect,2,M,S,תִּקָּטֵל,you will be killed
+Niphal,Imperfect,2,F,S,תִּקָּֽטְלִי,you will be killed
+Niphal,Imperfect,1,C,S,אֶקָּטֵל,I will be killed
+Niphal,Imperfect,3,M,P,יִקָּֽטְלוּ,they will be killed
+Niphal,Imperfect,3,F,P,תִּקָּטַ֫לְנָה,they will be killed
+Niphal,Imperfect,2,M,P,תִּקָּֽטְלוּ,you all will be killed
+Niphal,Imperfect,2,F,P,תִּקָּטַ֫לְנָה,you all will be killed
+Niphal,Imperfect,1,C,P,נִקָּטֵל,we will be killed
+Niphal,Jussive,3,M,S,יִקָּטֵל,may he be killed
+Niphal,Jussive,3,F,S,תִּקָּטֵל,may she be killed
+Niphal,Jussive,2,M,S,תִּקָּטֵל,may you be killed
+Niphal,Jussive,2,F,S,תִּקָּֽטְלִי,may you be killed
+Niphal,Jussive,3,M,P,יִקָּֽטְלוּ,may they be killed
+Niphal,Jussive,3,F,P,תִּקָּטַ֫לְנָה,may they be killed
+Niphal,Jussive,2,M,P,תִּקָּֽטְלוּ,may you all be killed
+Niphal,Jussive,2,F,P,תִּקָּטַ֫לְנָה,may you all be killed
+Niphal,Cohortative,1,C,S,אִקָּֽטְלָה,may I be killed
+Niphal,Cohortative,1,C,P,נִקָּֽטְלָה,may we be killed
+Niphal,Imperative,2,M,S,הִקָּטֵל,be killed!
+Niphal,Imperative,2,F,S,הִקָּֽטְלִי,be killed!
+Niphal,Imperative,2,M,P,הִקָּֽטְלוּ,be killed!
+Niphal,Imperative,2,F,P,הִקָּטַ֫לְנָה,be killed!
+Niphal,Infinitive Absolute,,,,הִקָּטֹל,to be killed
+Niphal,Infinitive Absolute,,,,נִקְטֹל,to be killed
+Niphal,Infinitive Construct,,,,הִקָּטֵל,to be killed
+Niphal,Passive Participle,,M,S,נִקְטָל,being killed
+Niphal,Passive Participle,,F,S,נִקְטָלָה,being killed
+Niphal,Passive Participle,,M,P,נִקְטָלִים,being killed
+Niphal,Passive Participle,,F,P,נִקְטָלוֹת,being killed
+Piel,Perfect,3,M,S,קִטֵּל,he slaughtered
+Piel,Perfect,3,F,S,קִטְּלָה,she slaughtered
+Piel,Perfect,2,M,S,קִטַּ֫לְתָּ,you slaughtered
+Piel,Perfect,2,F,S,קִטַּלְתְּ,you slaughtered
+Piel,Perfect,1,C,S,קִטַּ֫לְתִּי,I slaughtered
+Piel,Perfect,3,C,P,קִטְּלוּ,they slaughtered
+Piel,Perfect,2,M,P,קִטַּלְתֶּם,you all slaughtered
+Piel,Perfect,2,F,P,קִטַּלְתֶּן,you all slaughtered
+Piel,Perfect,1,C,P,קִטַּ֫לְנוּ,we slaughtered
+Piel,Imperfect,3,M,S,יְקַטֵּל,he will slaughter
+Piel,Imperfect,3,F,S,תְּקַטֵּל,she will slaughter
+Piel,Imperfect,2,M,S,תְּקַטֵּל,you will slaughter
+Piel,Imperfect,2,F,S,תְּקַטְּלִי,you will slaughter
+Piel,Imperfect,1,C,S,אֲקַטֵּל,I will slaughter
+Piel,Imperfect,3,M,P,יְקַטְּלוּ,they will slaughter
+Piel,Imperfect,3,F,P,תְּקַטֵּ֫לְנָה,they will slaughter
+Piel,Imperfect,2,M,P,תְּקַטְּלוּ,you all will slaughter
+Piel,Imperfect,2,F,P,תְּקַטֵּ֫לְנָה,you all will slaughter
+Piel,Imperfect,1,C,P,נְקַטֵּל,we will slaughter
+Piel,Jussive,3,M,S,יְקַטֵּל,may he slaughter
+Piel,Jussive,3,F,S,תְּקַטֵּל,may she slaughter
+Piel,Jussive,2,M,S,תְּקַטֵּל,may you slaughter
+Piel,Jussive,2,F,S,תְּקַטְּלִי,may you slaughter
+Piel,Jussive,3,M,P,יְקַטְּלוּ,may they slaughter
+Piel,Jussive,3,F,P,תְּקַטֵּ֫לְנָה,may they slaughter
+Piel,Jussive,2,M,P,תְּקַטְּלוּ,may you all slaughter
+Piel,Jussive,2,F,P,תְּקַטֵּ֫לְנָה,may you all slaughter
+Piel,Cohortative,1,C,S,אֲקַטְּלָה,may I slaughter
+Piel,Cohortative,1,C,P,נְקַטְּלָה,may we slaughter
+Piel,Imperative,2,M,S,קַטֵּל,slaughter!
+Piel,Imperative,2,F,S,קַטְּלִי,slaughter!
+Piel,Imperative,2,M,P,קַטְּלוּ,slaughter!
+Piel,Imperative,2,F,P,קַטֵּ֫לְנָה,slaughter!
+Piel,Infinitive Absolute,,,,קַטֹּל,to slaughter
+Piel,Infinitive Absolute,,,,קַטֵּל,to slaughter
+Piel,Infinitive Construct,,,,קַטֵּל,to slaughter
+Piel,Active Participle,,M,S,מְקַטֵּל,slaughtering
+Piel,Active Participle,,F,S,מְקַטְּלָה,slaughtering
+Piel,Active Participle,,M,P,מְקַטְּלִים,slaughtering
+Piel,Active Participle,,F,P,מְקַטְּלוֹת,slaughtering
+Pual,Perfect,3,M,S,קֻטַּל,he was slaughtered
+Pual,Perfect,3,F,S,קֻטְּלָה,she was slaughtered
+Pual,Perfect,2,M,S,קֻטַּ֫לְתָּ,you were slaughtered
+Pual,Perfect,2,F,S,קֻטַּלְתְּ,you were slaughtered
+Pual,Perfect,1,C,S,קֻטַּ֫לְתִּי,I was slaughtered
+Pual,Perfect,3,C,P,קֻטְּלוּ,they were slaughtered
+Pual,Perfect,2,M,P,קֻטַּלְתֶּם,you all were slaughtered
+Pual,Perfect,2,F,P,קֻטַּלְתֶּן,you all were slaughtered
+Pual,Perfect,1,C,P,קֻטַּ֫לְנוּ,we were slaughtered
+Pual,Imperfect,3,M,S,יְקֻטַּל,he will be slaughtered
+Pual,Imperfect,3,F,S,תְּקֻטַּל,she will be slaughtered
+Pual,Imperfect,2,M,S,תְּקֻטַּל,you will be slaughtered
+Pual,Imperfect,2,F,S,תְּקֻטְּלִי,you will be slaughtered
+Pual,Imperfect,1,C,S,אֲקֻטַּל,I will be slaughtered
+Pual,Imperfect,3,M,P,יְקֻטְּלוּ,they will be slaughtered
+Pual,Imperfect,3,F,P,תְּקֻטַּ֫לְנָה,they will be slaughtered
+Pual,Imperfect,2,M,P,תְּקֻטְּלוּ,you all will be slaughtered
+Pual,Imperfect,2,F,P,תְּקֻטַּ֫לְנָה,you all will be slaughtered
+Pual,Imperfect,1,C,P,נְקֻטַּל,we will be slaughtered
+Pual,Infinitive Absolute,,,,קֻטֹּל,to be slaughtered
+Pual,Infinitive Construct,,,,קֻטַּל,to be slaughtered
+Pual,Passive Participle,,M,S,מְקֻטָּל,being slaughtered
+Pual,Passive Participle,,F,S,מְקֻטָּלָה,being slaughtered
+Pual,Passive Participle,,M,P,מְקֻטָּלִים,being slaughtered
+Pual,Passive Participle,,F,P,מְקֻטָּלוֹת,being slaughtered
+Hitpael,Perfect,3,M,S,הִתְקַטֵּל,he killed himself
+Hitpael,Perfect,3,F,S,הִתְקַטְּלָה,she killed herself
+Hitpael,Perfect,2,M,S,הִתְקַטַּ֫לְתָּ,you killed yourself
+Hitpael,Perfect,2,F,S,הִתְקַטַּלְתְּ,you killed yourself
+Hitpael,Perfect,1,C,S,הִתְקַטַּ֫לְתִּי,I killed myself
+Hitpael,Perfect,3,C,P,הִתְקַטְּלוּ,they killed themselves
+Hitpael,Perfect,2,M,P,הִתְקַטַּלְתֶּם,you all killed yourselves
+Hitpael,Perfect,2,F,P,הִתְקַטַּלְתֶּן,you all killed yourselves
+Hitpael,Perfect,1,C,P,הִתְקַטַּ֫לְנוּ,we killed ourselves
+Hitpael,Imperfect,3,M,S,יִתְקַטֵּל,he will kill himself
+Hitpael,Imperfect,3,F,S,תִּתְקַטֵּל,she will kill herself
+Hitpael,Imperfect,2,M,S,תִּתְקַטֵּל,you will kill yourself
+Hitpael,Imperfect,2,F,S,תִּתְקַטְּלִי,you will kill yourself
+Hitpael,Imperfect,1,C,S,אֶתְקַטֵּל,I will kill myself
+Hitpael,Imperfect,3,M,P,יִתְקַטְּלוּ,they will kill themselves
+Hitpael,Imperfect,3,F,P,תִּתְקַטֵּ֫לְנָה,they will kill themselves
+Hitpael,Imperfect,2,M,P,תִּתְקַטְּלוּ,you all will kill yourselves
+Hitpael,Imperfect,2,F,P,תִּתְקַטֵּ֫לְנָה,you all will kill yourselves
+Hitpael,Imperfect,1,C,P,נִתְקַטֵּל,we will kill ourselves
+Hitpael,Jussive,3,M,S,יִתְקַטֵּל,may he kill himself
+Hitpael,Jussive,3,F,S,תִּתְקַטֵּל,may she kill herself
+Hitpael,Jussive,2,M,S,תִּתְקַטֵּל,may you kill yourself
+Hitpael,Jussive,2,F,S,תִּתְקַטְּלִי,may you kill yourself
+Hitpael,Jussive,3,M,P,יִתְקַטְּלוּ,may they kill themselves
+Hitpael,Jussive,3,F,P,תִּתְקַטֵּ֫לְנָה,may they kill themselves
+Hitpael,Jussive,2,M,P,תִּתְקַטְּלוּ,may you all kill yourselves
+Hitpael,Jussive,2,F,P,תִּתְקַטֵּ֫לְנָה,may you all kill yourselves
+Hitpael,Cohortative,1,C,S,אֶתְקַטְּלָה,may I kill myself
+Hitpael,Cohortative,1,C,P,נִתְקַטְּלָה,may we kill ourselves
+Hitpael,Imperative,2,M,S,הִתְקַטֵּל,kill yourself!
+Hitpael,Imperative,2,F,S,הִתְקַטְּלִי,kill yourself!
+Hitpael,Imperative,2,M,P,הִתְקַטְּלוּ,kill yourselves!
+Hitpael,Imperative,2,F,P,הִתְקַטֵּ֫לְנָה,kill yourselves!
+Hitpael,Infinitive Absolute,,,,הִתְקַטֵּל,to kill oneself
+Hitpael,Infinitive Construct,,,,הִתְקַטֵּל,to kill oneself
+Hitpael,Active Participle,,M,S,מִתְקַטֵּל,killing oneself
+Hitpael,Active Participle,,F,S,מִתְקַטְּלָה,killing oneself
+Hitpael,Active Participle,,M,P,מִתְקַטְּלִים,killing oneself
+Hitpael,Active Participle,,F,P,מִתְקַטְּלוֹת,killing oneself
+Hiphil,Perfect,3,M,S,הִקְטִיל,he caused to kill
+Hiphil,Perfect,3,F,S,הִקְטִ֫ילָה,she caused to kill
+Hiphil,Perfect,2,M,S,הִקְטַ֫לְתָּ,you caused to kill
+Hiphil,Perfect,2,F,S,הִקְטַלְתְּ,you caused to kill
+Hiphil,Perfect,1,C,S,הִקְטַ֫לְתִּי,I caused to kill
+Hiphil,Perfect,3,C,P,הִקְטִ֫ילוּ,they caused to kill
+Hiphil,Perfect,2,M,P,הִקְטַלְתֶּם,you all caused to kill
+Hiphil,Perfect,2,F,P,הִקְטַלְתֶּן,you all caused to kill
+Hiphil,Perfect,1,C,P,הִקְטַ֫לְנוּ,we caused to kill
+Hiphil,Imperfect,3,M,S,יַקְטִיל,he will cause to kill
+Hiphil,Imperfect,3,F,S,תַּקְטִיל,she will cause to kill
+Hiphil,Imperfect,2,M,S,תַּקְטִיל,you will cause to kill
+Hiphil,Imperfect,2,F,S,תַּקְטִ֫ילִי,you will cause to kill
+Hiphil,Imperfect,1,C,S,אַקְטִיל,I will cause to kill
+Hiphil,Imperfect,3,M,P,יַקְטִ֫ילוּ,they will cause to kill
+Hiphil,Imperfect,3,F,P,תַּקְטֵ֫לְנָה,they will cause to kill
+Hiphil,Imperfect,2,M,P,תַּקְטִ֫ילוּ,you all will cause to kill
+Hiphil,Imperfect,2,F,P,תַּקְטֵ֫לְנָה,you all will cause to kill
+Hiphil,Imperfect,1,C,P,נַקְטִיל,we will cause to kill
+Hiphil,Jussive,3,M,S,יַקְטֵל,may he cause to kill
+Hiphil,Jussive,3,F,S,תַּקְטֵל,may she cause to kill
+Hiphil,Jussive,2,M,S,תַּקְטֵל,may you cause to kill
+Hiphil,Jussive,2,F,S,תַּקְטִ֫ילִי,may you cause to kill
+Hiphil,Jussive,3,M,P,יַקְטִ֫ילוּ,may they cause to kill
+Hiphil,Jussive,3,F,P,תַּקְטֵ֫לְנָה,may they cause to kill
+Hiphil,Jussive,2,M,P,תַּקְטִ֫ילוּ,may you all cause to kill
+Hiphil,Jussive,2,F,P,תַּקְטֵ֫לְנָה,may you all cause to kill
+Hiphil,Cohortative,1,C,S,אַקְטִ֫ילָה,may I cause to kill
+Hiphil,Cohortative,1,C,P,נַקְטִ֫ילָה,may we cause to kill
+Hiphil,Imperative,2,M,S,הַקְטֵל,cause to kill!
+Hiphil,Imperative,2,F,S,הַקְטִ֫ילִי,cause to kill!
+Hiphil,Imperative,2,M,P,הַקְטִ֫ילוּ,cause to kill!
+Hiphil,Imperative,2,F,P,הַקְטֵ֫לְנָה,cause to kill!
+Hiphil,Infinitive Absolute,,,,הַקְטֵל,to cause to kill
+Hiphil,Infinitive Construct,,,,הַקְטִיל,to cause to kill
+Hiphil,Active Participle,,M,S,מַקְטִיל,causing to kill
+Hiphil,Active Participle,,F,S,מַקְטִילָה,causing to kill
+Hiphil,Active Participle,,M,P,מַקְטִילִים,causing to kill
+Hiphil,Active Participle,,F,P,מַקְטִילוֹת,causing to kill
+Hophal,Perfect,3,M,S,הָקְטַל,he was caused to kill
+Hophal,Perfect,3,F,S,הָקְטְלָה,she was caused to kill
+Hophal,Perfect,2,M,S,הָקְטַ֫לְתָּ,you were caused to kill
+Hophal,Perfect,2,F,S,הָקְטַלְתְּ,you were caused to kill
+Hophal,Perfect,1,C,S,הָקְטַ֫לְתִּי,I was caused to kill
+Hophal,Perfect,3,C,P,הָקְטְלוּ,they were caused to kill
+Hophal,Perfect,2,M,P,הָקְטַלְתֶּם,you all were caused to kill
+Hophal,Perfect,2,F,P,הָקְטַלְתֶּן,you all were caused to kill
+Hophal,Perfect,1,C,P,הָקְטַ֫לְנוּ,we were caused to kill
+Hophal,Imperfect,3,M,S,יָקְטַל,he will be caused to kill
+Hophal,Imperfect,3,F,S,תָּקְטַל,she will be caused to kill
+Hophal,Imperfect,2,M,S,תָּקְטַל,you will be caused to kill
+Hophal,Imperfect,2,F,S,תָּקְטְלִי,you will be caused to kill
+Hophal,Imperfect,1,C,S,אָקְטַל,I will be caused to kill
+Hophal,Imperfect,3,M,P,יָקְטְלוּ,they will be caused to kill
+Hophal,Imperfect,3,F,P,תָּקְטַ֫לְנָה,they will be caused to kill
+Hophal,Imperfect,2,M,P,תָּקְטְלוּ,you all will be caused to kill
+Hophal,Imperfect,2,F,P,תָּקְטַ֫לְנָה,you all will be caused to kill
+Hophal,Imperfect,1,C,P,נָקְטַל,we will be caused to kill
+Hophal,Infinitive Absolute,,,,הָקְטֵל,to be caused to kill
+Hophal,Infinitive Construct,,,,הָקְטַל,to be caused to kill
+Hophal,Passive Participle,,M,S,מָקְטָל,being caused to kill
+Hophal,Passive Participle,,F,S,מָקְטָלָה,being caused to kill
+Hophal,Passive Participle,,M,P,מָקְטָלִים,being caused to kill
+Hophal,Passive Participle,,F,P,מָקְטָלוֹת,being caused to kill

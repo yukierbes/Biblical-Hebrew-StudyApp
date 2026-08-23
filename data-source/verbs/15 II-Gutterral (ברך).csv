@@ -1,0 +1,251 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,בָּרַךְ,he blessed
+Qal,Perfect,3,F,S,בָּֽרֲכָה,she blessed
+Qal,Perfect,2,M,S,בָּרַ֫כְתָּ,you blessed
+Qal,Perfect,2,F,S,בָּרַכְתְּ,you blessed
+Qal,Perfect,1,C,S,בָּרַ֫כְתִּי,I blessed
+Qal,Perfect,3,C,P,בָּֽרֲכוּ,they blessed
+Qal,Perfect,2,M,P,בְּרַכְתֶּם,you all blessed
+Qal,Perfect,2,F,P,בְּרַכְתֶּן,you all blessed
+Qal,Perfect,1,C,P,בָּרַ֫כְנוּ,we blessed
+Qal,Imperfect,3,M,S,יִבְרַךְ,he will bless
+Qal,Imperfect,3,F,S,תִּבְרַךְ,she will bless
+Qal,Imperfect,2,M,S,תִּבְרַךְ,you will bless
+Qal,Imperfect,2,F,S,תִּבְרֲכִי,you will bless
+Qal,Imperfect,1,C,S,אֶבְרַךְ,I will bless
+Qal,Imperfect,3,M,P,יִבְרֲכוּ,they will bless
+Qal,Imperfect,3,F,P,תִּבְרַ֫כְנָה,they will bless
+Qal,Imperfect,2,M,P,תִּבְרֲכוּ,you all will bless
+Qal,Imperfect,2,F,P,תִּבְרַ֫כְנָה,you all will bless
+Qal,Imperfect,1,C,P,נִבְרַךְ,we will bless
+Qal,Jussive,3,M,S,יִבְרַךְ,may he bless
+Qal,Jussive,3,F,S,תִּבְרַךְ,may she bless
+Qal,Jussive,2,M,S,תִּבְרַךְ,may you bless
+Qal,Jussive,2,F,S,תִּבְרֲכִי,may you bless
+Qal,Jussive,3,M,P,יִבְרֲכוּ,may they bless
+Qal,Jussive,3,F,P,תִּבְרַ֫כְנָה,may they bless
+Qal,Jussive,2,M,P,תִּבְרֲכוּ,may you all bless
+Qal,Jussive,2,F,P,תִּבְרַ֫כְנָה,may you all bless
+Qal,Cohortative,1,C,S,אֶבְרֲכָה,may I bless
+Qal,Cohortative,1,C,P,נִבְרֲכָה,may we bless
+Qal,Imperative,2,M,S,בְּרַךְ,bless!
+Qal,Imperative,2,F,S,בִּרֲכִי,bless!
+Qal,Imperative,2,M,P,בִּרֲכוּ,bless!
+Qal,Imperative,2,F,P,בְּרַ֫כְנָה,bless!
+Qal,Infinitive Absolute,,,,בָּרוֹךְ,to bless
+Qal,Infinitive Construct,,,,בְּרֹךְ,to bless
+Qal,Active Participle,,M,S,בֹּרֵךְ,blessing
+Qal,Active Participle,,F,S,בֹּֽרֲכָה,blessing
+Qal,Active Participle,,M,P,בֹּֽרֲכִים,blessing
+Qal,Active Participle,,F,P,בֹּֽרֲכוֹת,blessing
+Qal,Passive Participle,,M,S,בָּרוּכ,blessed
+Qal,Passive Participle,,F,S,בְּרוּכָה,blessed
+Qal,Passive Participle,,M,P,בְּרוּכִים,blessed
+Qal,Passive Participle,,F,P,בְּרוּכוֹת,blessed
+Niphal,Perfect,3,M,S,נִבְרַךְ,he was blessed
+Niphal,Perfect,3,F,S,נִבְרֲכָה,she was blessed
+Niphal,Perfect,2,M,S,נִבְרַ֫כְתָּ,you were blessed
+Niphal,Perfect,2,F,S,נִבְרַכְתְּ,you were blessed
+Niphal,Perfect,1,C,S,נִבְרַ֫כְתִּי,I was blessed
+Niphal,Perfect,3,C,P,נִבְרֲכוּ,they were blessed
+Niphal,Perfect,2,M,P,נִבְרַכְתֶּם,you all were blessed
+Niphal,Perfect,2,F,P,נִבְרַכְתֶּן,you all were blessed
+Niphal,Perfect,1,C,P,נִבְרַ֫כְנוּ,we were blessed
+Niphal,Imperfect,3,M,S,יִבָּרֵךְ,he will be blessed
+Niphal,Imperfect,3,F,S,תִּבָּרֵךְ,she will be blessed
+Niphal,Imperfect,2,M,S,תִּבָּרֵךְ,you will be blessed
+Niphal,Imperfect,2,F,S,תִּבָּֽרֲכִי,you will be blessed
+Niphal,Imperfect,1,C,S,אֶבָּרֵךְ,I will be blessed
+Niphal,Imperfect,3,M,P,יִבָּֽרֲכוּ,they will be blessed
+Niphal,Imperfect,3,F,P,תִּבָּרַ֫כְנָה,they will be blessed
+Niphal,Imperfect,2,M,P,תִּבָּֽרֲכוּ,you all will be blessed
+Niphal,Imperfect,2,F,P,תִּבָּרַ֫כְנָה,you all will be blessed
+Niphal,Imperfect,1,C,P,נִבָּרֵךְ,we will be blessed
+Niphal,Jussive,3,M,S,יִבָּרֵךְ,may he be blessed
+Niphal,Jussive,3,F,S,תִּבָּרֵךְ,may she be blessed
+Niphal,Jussive,2,M,S,תִּבָּרֵךְ,may you be blessed
+Niphal,Jussive,2,F,S,תִּבָּֽרֲכִי,may you be blessed
+Niphal,Jussive,3,M,P,יִבָּֽרֲכוּ,may they be blessed
+Niphal,Jussive,3,F,P,תִּבָּרַ֫כְנָה,may they be blessed
+Niphal,Jussive,2,M,P,תִּבָּֽרֲכוּ,may you all be blessed
+Niphal,Jussive,2,F,P,תִּבָּרַ֫כְנָה,may you all be blessed
+Niphal,Cohortative,1,C,S,אֶבָּֽרֲכָה,may I be blessed
+Niphal,Cohortative,1,C,P,נִבָּֽרֲכָה,may we be blessed
+Niphal,Imperative,2,M,S,הִבָּרֵךְ,be blessed!
+Niphal,Imperative,2,F,S,הִבָּֽרֲכִי,be blessed!
+Niphal,Imperative,2,M,P,הִבָּֽרֲכוּ,be blessed!
+Niphal,Imperative,2,F,P,הִבָּרַ֫כְנָה,be blessed!
+Niphal,Infinitive Absolute,,,,נִבְרֹךְ,to be blessed
+Niphal,Infinitive Absolute,,,,הִבָּרֹךְ,to be blessed
+Niphal,Infinitive Construct,,,,הִבָּרֵךְ,to be blessed
+Niphal,Passive Participle,,M,S,נִבְרָךְ,being blessed
+Niphal,Passive Participle,,F,S,נִבְרָכָה,being blessed
+Niphal,Passive Participle,,M,P,נִבְרָכִים,being blessed
+Niphal,Passive Participle,,F,P,נִבְרָכוֹת,being blessed
+Piel,Perfect,3,M,S,בֵּרֵךְ,he blessed
+Piel,Perfect,3,F,S,בֵּרְכָה,she blessed
+Piel,Perfect,2,M,S,בֵּרַ֫כְתָּ,you blessed
+Piel,Perfect,2,F,S,בֵּרַכְתְּ,you blessed
+Piel,Perfect,1,C,S,בֵּרַ֫כְתִּי,I blessed
+Piel,Perfect,3,C,P,בֵּרְכוּ,they blessed
+Piel,Perfect,2,M,P,בֵּרַכְתֶּם,you all blessed
+Piel,Perfect,2,F,P,בֵּרַכְתֶּן,you all blessed
+Piel,Perfect,1,C,P,בֵּרַ֫כְנוּ,we blessed
+Piel,Imperfect,3,M,S,יְבָרֵךְ,he will bless
+Piel,Imperfect,3,F,S,תְּבָרֵךְ,she will bless
+Piel,Imperfect,2,M,S,תְּבָרֵךְ,you will bless
+Piel,Imperfect,2,F,S,תְּבָרֲכִי,you will bless
+Piel,Imperfect,1,C,S,אֲבָרֵךְ,I will bless
+Piel,Imperfect,3,M,P,יְבָרֲכוּ,they will bless
+Piel,Imperfect,3,F,P,תְּבָרֵ֫כְנָה,they will bless
+Piel,Imperfect,2,M,P,תְּבָרֲכוּ,you all will bless
+Piel,Imperfect,2,F,P,תְּבָרֵ֫כְנָה,you all will bless
+Piel,Imperfect,1,C,P,נְבָרֵךְ,we will bless
+Piel,Jussive,3,M,S,יְבָרֵךְ,may he bless
+Piel,Jussive,3,F,S,תְּבָרֵךְ,may she bless
+Piel,Jussive,2,M,S,תְּבָרֵךְ,may you bless
+Piel,Jussive,2,F,S,תְּבָרֲכִי,may you bless
+Piel,Jussive,3,M,P,יְבָרֲכוּ,may they bless
+Piel,Jussive,3,F,P,תְּבָרֵ֫כְנָה,may they bless
+Piel,Jussive,2,M,P,תְּבָרֲכוּ,may you all bless
+Piel,Jussive,2,F,P,תְּבָרֵ֫כְנָה,may you all bless
+Piel,Cohortative,1,C,S,אֲבָרֲכָה,may I bless
+Piel,Cohortative,1,C,P,נְבָרֲכָה,may we bless
+Piel,Imperative,2,M,S,בָּרֵךְ,bless!
+Piel,Imperative,2,F,S,בָּֽרְכִי,bless!
+Piel,Imperative,2,M,P,בָּֽרְכוּ,bless!
+Piel,Imperative,2,F,P,בָּרֵ֫כְנָה,bless!
+Piel,Infinitive Absolute,,,,בָּרֵךְ,to bless
+Piel,Infinitive Construct,,,,בָּרֵךְ,to bless
+Piel,Active Participle,,M,S,מְבָרֵךְ,blessing
+Piel,Active Participle,,F,S,מְבָֽרְכָה,blessing
+Piel,Active Participle,,M,P,מְבָֽרְכִים,blessing
+Piel,Active Participle,,F,P,מְבָֽרְכוֹת,blessing
+Pual,Perfect,3,M,S,בֹּרַךְ,he was blessed
+Pual,Perfect,3,F,S,בֹּֽרְכָה,she was blessed
+Pual,Perfect,2,M,S,בֹּרַ֫כְתָּ,you were blessed
+Pual,Perfect,2,F,S,בֹּרַכְתְּ,you were blessed
+Pual,Perfect,1,C,S,בֹּרַ֫כְתִּי,I was blessed
+Pual,Perfect,3,C,P,בֹּֽרְכוּ,they were blessed
+Pual,Perfect,2,M,P,בֹּֽרַכְתֶּם,you all were blessed
+Pual,Perfect,2,F,P,בֹּֽרַכְתֶּן,you all were blessed
+Pual,Perfect,1,C,P,בֹּרַ֫כְנוּ,we were blessed
+Pual,Imperfect,3,M,S,יְבֹרַךְ,he will be blessed
+Pual,Imperfect,3,F,S,תְּבֹרַךְ,she will be blessed
+Pual,Imperfect,2,M,S,תְּבֹרַךְ,you will be blessed
+Pual,Imperfect,2,F,S,תְּבֹֽרְכִי,you will be blessed
+Pual,Imperfect,1,C,S,אֲבֹרַךְ,I will be blessed
+Pual,Imperfect,3,M,P,יְבֹֽרְכוּ,they will be blessed
+Pual,Imperfect,3,F,P,תְּבֹרַ֫כְנָה,they will be blessed
+Pual,Imperfect,2,M,P,תְּבֹֽרְכוּ,you all will be blessed
+Pual,Imperfect,2,F,P,תְּבֹרַ֫כְנָה,you all will be blessed
+Pual,Imperfect,1,C,P,נְבֹרַךְ,we will be blessed
+Pual,Infinitive Absolute,,,,בֹּרַךְ,to be blessed
+Pual,Infinitive Construct,,,,בֹּרַךְ,to be blessed
+Pual,Passive Participle,,M,S,מְבֹרֵךְ,being blessed
+Pual,Passive Participle,,F,S,מְבֹֽרְכָה,being blessed
+Pual,Passive Participle,,M,P,מְבֹֽרְכִים,being blessed
+Pual,Passive Participle,,F,P,מְבֹֽרְכוֹת,being blessed
+Hitpael,Perfect,3,M,S,הִתְבָּרֵךְ,he blessed himself
+Hitpael,Perfect,3,F,S,הִתְבָּרֲכָה,she blessed herself
+Hitpael,Perfect,2,M,S,הִתְבָּרַ֫כְתָּ,you blessed yourself
+Hitpael,Perfect,2,F,S,הִתְבָּרַכְתְּ,you blessed yourself
+Hitpael,Perfect,1,C,S,הִתְבָּרַ֫כְתִּי,I blessed myself
+Hitpael,Perfect,3,C,P,הִתְבָּרֲכוּ,they blessed themselves
+Hitpael,Perfect,2,M,P,הִתְבָּרַכְתֶּם,you all blessed yourselves
+Hitpael,Perfect,2,F,P,הִתְבָּרַכְתֶּן,you all blessed yourselves
+Hitpael,Perfect,1,C,P,הִתְבָּרַ֫כְנוּ,we blessed ourselves
+Hitpael,Imperfect,3,M,S,יִתְבָּרֵךְ,he will bless himself
+Hitpael,Imperfect,3,F,S,תִּתְבָּרֵךְ,she will bless herself
+Hitpael,Imperfect,2,M,S,תִּתְבָּרֵךְ,you will bless yourself
+Hitpael,Imperfect,2,F,S,תִּתְבָּֽרֲכִי,you will bless yourself
+Hitpael,Imperfect,1,C,S,אֶתְבָּרֵךְ,I will bless myself
+Hitpael,Imperfect,3,M,P,יִתְבָּֽרֲכוּ,they will bless themselves
+Hitpael,Imperfect,3,F,P,תִּתְבָּרֵ֫כְנָה,they will bless themselves
+Hitpael,Imperfect,2,M,P,תִּתְבָּֽרֲכוּ,you all will bless yourselves
+Hitpael,Imperfect,2,F,P,תִּתְבָּרֵ֫כְנָה,you all will bless yourselves
+Hitpael,Imperfect,1,C,P,נִתְבָּרֵךְ,we will bless ourselves
+Hitpael,Jussive,3,M,S,יִתְבָּרֵךְ,may he bless himself
+Hitpael,Jussive,3,F,S,תִּתְבָּרֵךְ,may she bless herself
+Hitpael,Jussive,2,M,S,תִּתְבָּרֵךְ,may you bless yourself
+Hitpael,Jussive,2,F,S,תִּתְבָּֽרֲכִי,may you bless yourself
+Hitpael,Jussive,3,M,P,יִתְבָּֽרֲכוּ,may they bless themselves
+Hitpael,Jussive,3,F,P,תִּתְבָּרֵ֫כְנָה,may they bless themselves
+Hitpael,Jussive,2,M,P,תִּתְבָּֽרֲכוּ,may you all bless yourselves
+Hitpael,Jussive,2,F,P,תִּתְבָּרֵ֫כְנָה,may you all bless yourselves
+Hitpael,Cohortative,1,C,S,אֶתְבָּֽרֲכָה,may I bless myself
+Hitpael,Cohortative,1,C,P,נִתְבָּֽרֲכָה,may we bless ourselves
+Hitpael,Imperative,2,M,S,הִתְבָּרֵךְ,bless yourself!
+Hitpael,Imperative,2,F,S,הִתְבָּֽרֲכִי,bless yourself!
+Hitpael,Imperative,2,M,P,הִתְבָּֽרֲכוּ,bless yourselves!
+Hitpael,Imperative,2,F,P,הִתְבָּרֵ֫כְנָה,bless yourselves!
+Hitpael,Infinitive Absolute,,,,הִתְבָּרֵךְ,to bless oneself
+Hitpael,Infinitive Construct,,,,הִתְבָּרֵךְ,to bless oneself
+Hitpael,Active Participle,,M,S,מִתְבָּרֵךְ,blessing oneself
+Hitpael,Active Participle,,F,S,מִתְבָּֽרֲכָה,blessing oneself
+Hitpael,Active Participle,,M,P,מִתְבָּֽרֲכִים,blessing oneself
+Hitpael,Active Participle,,F,P,מִתְבָּֽרֲכוֹת,blessing oneself
+Hiphil,Perfect,3,M,S,הִבְרִיכ,he caused to bless
+Hiphil,Perfect,3,F,S,הִבְרִ֫יכָה,she caused to bless
+Hiphil,Perfect,2,M,S,הִבְרַ֫כְתָּ,you caused to bless
+Hiphil,Perfect,2,F,S,הִבְרַכְתְּ,you caused to bless
+Hiphil,Perfect,1,C,S,הִבְרַ֫כְתִּי,I caused to bless
+Hiphil,Perfect,3,C,P,הִבְרִ֫יכוּ,they caused to bless
+Hiphil,Perfect,2,M,P,הִבְרַכְתֶּם,you all caused to bless
+Hiphil,Perfect,2,F,P,הִבְרַכְתֶּן,you all caused to bless
+Hiphil,Perfect,1,C,P,הִבְרַ֫כְנוּ,we caused to bless
+Hiphil,Imperfect,3,M,S,יַבְרִיךְ,he will cause to bless
+Hiphil,Imperfect,3,F,S,תַּבְרִיךְ,she will cause to bless
+Hiphil,Imperfect,2,M,S,תַּבְרִיךְ,you will cause to bless
+Hiphil,Imperfect,2,F,S,תַּבְרִ֫יכִי,you will cause to bless
+Hiphil,Imperfect,1,C,S,אַבְרִיךְ,I will cause to bless
+Hiphil,Imperfect,3,M,P,יַבְרִ֫יכוּ,they will cause to bless
+Hiphil,Imperfect,3,F,P,תַּבְרֵ֫כְנָה,they will cause to bless
+Hiphil,Imperfect,2,M,P,תַּבְרִ֫יכוּ,you all will cause to bless
+Hiphil,Imperfect,2,F,P,תַּבְרֵ֫כְנָה,you all will cause to bless
+Hiphil,Imperfect,1,C,P,נַבְרִיךְ,we will cause to bless
+Hiphil,Jussive,3,M,S,יַבְרֵךְ,may he cause to bless
+Hiphil,Jussive,3,F,S,תַּבְרֵךְ,may she cause to bless
+Hiphil,Jussive,2,M,S,תַּבְרֵךְ,may you cause to bless
+Hiphil,Jussive,2,F,S,תַּבְרִ֫יכִי,may you cause to bless
+Hiphil,Jussive,3,M,P,יַבְרִ֫יכוּ,may they cause to bless
+Hiphil,Jussive,3,F,P,תַּבְרֵ֫כְנָה,may they cause to bless
+Hiphil,Jussive,2,M,P,תַּבְרִ֫יכוּ,may you all cause to bless
+Hiphil,Jussive,2,F,P,תַּבְרֵ֫כְנָה,may you all cause to bless
+Hiphil,Cohortative,1,C,S,אַבְרִ֫יכָה,may I cause to bless
+Hiphil,Cohortative,1,C,P,נַבְרִ֫יכָה,may we cause to bless
+Hiphil,Imperative,2,M,S,הַבְרֵךְ,cause to bless!
+Hiphil,Imperative,2,F,S,הַבְרִ֫יכִי,cause to bless!
+Hiphil,Imperative,2,M,P,הַבְרִ֫יכוּ,cause to bless!
+Hiphil,Imperative,2,F,P,הַבְרֵ֫כְנָה,cause to bless!
+Hiphil,Infinitive Absolute,,,,הַבְרֵךְ,to cause to bless
+Hiphil,Infinitive Construct,,,,הַבְרִיךְ,to cause to bless
+Hiphil,Active Participle,,M,S,מַבְרִיךְ,causing to bless
+Hiphil,Active Participle,,F,S,מַבְרִיכָה,causing to bless
+Hiphil,Active Participle,,M,P,מַבְרִיכִים,causing to bless
+Hiphil,Active Participle,,F,P,מַבְרִיכוֹת,causing to bless
+Hophal,Perfect,3,M,S,הָבְרַךְ,he was caused to bless
+Hophal,Perfect,3,F,S,הָבְרֲכָה,she was caused to bless
+Hophal,Perfect,2,M,S,הָבְרַ֫כְתָּ,you were caused to bless
+Hophal,Perfect,2,F,S,הָבְרַכְתְּ,you were caused to bless
+Hophal,Perfect,1,C,S,הָבְרַ֫כְתִּי,I was caused to bless
+Hophal,Perfect,3,C,P,הָבְרֲכוּ,they were caused to bless
+Hophal,Perfect,2,M,P,הָבְרַכְתֶּם,you all were caused to bless
+Hophal,Perfect,2,F,P,הָבְרַכְתֶּן,you all were caused to bless
+Hophal,Perfect,1,C,P,הָבְרַ֫כְנוּ,we were caused to bless
+Hophal,Imperfect,3,M,S,יָבְרַךְ,he will be caused to bless
+Hophal,Imperfect,3,F,S,תָּבְרַךְ,she will be caused to bless
+Hophal,Imperfect,2,M,S,תָּבְרַךְ,you will be caused to bless
+Hophal,Imperfect,2,F,S,תָּבְרֲכִי,you will be caused to bless
+Hophal,Imperfect,1,C,S,אָבְרַךְ,I will be caused to bless
+Hophal,Imperfect,3,M,P,יָבְרֲכוּ,they will be caused to bless
+Hophal,Imperfect,3,F,P,תָּבְרַ֫כְנָה,they will be caused to bless
+Hophal,Imperfect,2,M,P,תָּבְרֲכוּ,you all will be caused to bless
+Hophal,Imperfect,2,F,P,תָּבְרַ֫כְנָה,you all will be caused to bless
+Hophal,Imperfect,1,C,P,נָבְרַךְ,we will be caused to bless
+Hophal,Infinitive Absolute,,,,הָבְרֵךְ,to be caused to bless
+Hophal,Infinitive Construct,,,,הָבְרַךְ,to be caused to bless
+Hophal,Passive Participle,,M,S,מָבְרָךְ,being caused to bless
+Hophal,Passive Participle,,F,S,מָבְרָכָה,being caused to bless
+Hophal,Passive Participle,,M,P,מָבְרָכִים,being caused to bless
+Hophal,Passive Participle,,F,P,מָבְרָכוֹת,being caused to bless

@@ -175,83 +175,55 @@ If Identity isn't enabled, or the environment variables aren't set, the
 app shows a clear message on the sign-in screen (or the sync function
 returns a clear error) rather than silently failing or exposing content.
 
-## Updating the verb data
+## Updating the data (verbs, vocabulary, accents)
 
-If you edit `Answers.xlsx` in the future, regenerate `data/verbs.json` with
-a short script like this (needs `pandas` + `openpyxl`):
+All three datasets are edited as plain CSV files under `data-source/`, then
+converted to the JSON the app actually reads with one command:
 
-```python
-import pandas as pd, json
-
-xl = pd.ExcelFile("Answers.xlsx")
-out = {}
-for sheet in xl.sheet_names:
-    df = pd.read_excel("Answers.xlsx", sheet_name=sheet)
-    df = df.loc[:, ~df.columns.str.contains("^Unnamed")]
-    if "Status" in df.columns:
-        df = df.drop(columns=["Status"])
-    df = df.fillna("")
-    out[sheet] = df.to_dict("records")
-
-with open("data/verbs.json", "w", encoding="utf-8") as f:
-    json.dump({"datasets": xl.sheet_names, "data": out}, f, ensure_ascii=False)
+```
+node scripts/build-data.mjs
 ```
 
-Then replace `netlify/functions/data/verbs.json` in the repo with the
-regenerated file (that's the datasets' one and only location now — see
-"Project structure" above) and redeploy. Bump `CACHE_VERSION` in
-`public/sw.js` too, so people who already installed the app pick up the
-new data properly.
+(or `npm run build-data`, if you have Node installed — no Python, no
+pandas, no Excel needed for this anymore.)
 
-## Updating the vocabulary data
+What to edit:
 
-`netlify/functions/data/vocabulary.json` (the datasets' one and only
-location now — see "Project structure" above) is converted from a CSV with
-columns `Lesson, Frequency, Hebrew, English, POS, Category`. Blank
-`Category` values are kept blank on purpose (no placeholder), and
-`lessonOrder` preserves the sequence lessons actually appear in the file —
-that matters because the real progression (`5A`...`5Z`, `5AA`, `5BB`) isn't
-alphabetical. If you edit the source spreadsheet, regenerate the JSON with:
+- **`data-source/vocabulary.csv`** — one row per word. Columns: `Lesson,
+  Frequency, Hebrew, English, POS, Category`. Blank `Category` is fine and
+  kept blank on purpose. `Lesson` order in the app follows the order rows
+  first appear in the file (not alphabetical — that's what makes `5A`...
+  `5Z`, `5AA`, `5BB` come out in the right sequence), so keep lessons
+  grouped together in file order.
 
-```python
-import csv, json
+- **`data-source/accents.csv`** — one row per accent mark. Columns: `Type,
+  Group, HebrewName, EnglishName, Symbol, Placement, Keyboard`. Same
+  first-appearance-order rule applies to `Type` and `Group`.
 
-def clean(s):
-    return " ".join((s or "").split())  # trims + collapses stray whitespace
+- **`data-source/verbs/*.csv`** — one file per verb paradigm (25 files).
+  Each filename starts with a two-digit number purely to control the order
+  verbs appear in the app, e.g. `01 Strong Verb (קטל).csv`, `02 Strong
+  Verb (פקד).csv`. To reorder verbs, renumber the files. To add a new
+  verb, add a new numbered CSV file with the same columns: `Binyan, Mode,
+  Person, Gender, Number, Conjugation, Gloss Translation`. The part of the
+  filename after the number (and before `.csv`) becomes that verb's
+  display name in the app.
 
-with open("Hebrew_Vocabulary.csv", encoding="utf-8") as f:
-    raw_rows = list(csv.DictReader(f))
+Any of these CSVs can be opened and edited directly in Excel, Google
+Sheets (File → Download → CSV), or a text editor — whatever's easiest.
+Commas or quotes inside a Hebrew/English field are fine as long as the
+spreadsheet program quotes the field properly when it saves, which all of
+the above do automatically.
 
-rows, lesson_order, seen_lessons = [], [], set()
-pos_set, category_set = set(), set()
+After running `node scripts/build-data.mjs`:
 
-for r in raw_rows:
-    lesson, hebrew, english = clean(r["Lesson"]), clean(r["Hebrew"]), clean(r["English"])
-    pos, category = clean(r["POS"]), clean(r["Category"])
-    if lesson not in seen_lessons:
-        seen_lessons.add(lesson)
-        lesson_order.append(lesson)
-    pos_set.add(pos)
-    if category:
-        category_set.add(category)
-    rows.append({
-        "Lesson": lesson, "Frequency": int(clean(r["Frequency"])),
-        "Hebrew": hebrew, "English": english, "POS": pos, "Category": category,
-    })
-
-out = {
-    "rows": rows,
-    "lessonOrder": lesson_order,
-    "posOrder": sorted(pos_set),
-    "categoryOrder": sorted(category_set),
-}
-with open("data/vocabulary.json", "w", encoding="utf-8") as f:
-    json.dump(out, f, ensure_ascii=False)
-```
-
-Same deployment note applies — replace
-`netlify/functions/data/vocabulary.json`, bump `CACHE_VERSION` in
-`public/sw.js`.
+1. It rewrites `netlify/functions/data/{verbs,vocabulary,accents}.json` —
+   review the diff if you want to sanity-check the change.
+2. Bump `CACHE_VERSION` in `public/sw.js`, so people who already installed
+   the app pick up the new data (see "Cloud sync" section above for why
+   this matters).
+3. Commit everything (both the edited CSV and the regenerated JSON) and
+   redeploy.
 
 ## Feature overview
 

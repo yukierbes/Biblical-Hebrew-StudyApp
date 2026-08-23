@@ -1,0 +1,251 @@
+Binyan,Mode,Person,Gender,Number,Conjugation,Gloss Translation
+Qal,Perfect,3,M,S,גָּלָה,he uncovered
+Qal,Perfect,3,F,S,גָּֽלְתָה,she uncovered
+Qal,Perfect,2,M,S,גָּלִ֫יתָ,you uncovered
+Qal,Perfect,2,F,S,גָּלִית,you uncovered
+Qal,Perfect,1,C,S,גָּלִ֫יתִי,I uncovered
+Qal,Perfect,3,C,P,גָּלוּ,they uncovered
+Qal,Perfect,2,M,P,גְּלִיתֶם,you all uncovered
+Qal,Perfect,2,F,P,גְּלִיתֶן,you all uncovered
+Qal,Perfect,1,C,P,גָּלִ֫ינוּ,we uncovered
+Qal,Imperfect,3,M,S,יִגְלֶה,he will uncover
+Qal,Imperfect,3,F,S,תִּגְלֶה,she will uncover
+Qal,Imperfect,2,M,S,תִּגְלֶה,you will uncover
+Qal,Imperfect,2,F,S,תִּגְלִי,you will uncover
+Qal,Imperfect,1,C,S,אֶגְלֶה,I will uncover
+Qal,Imperfect,3,M,P,יִגְלוּ,they will uncover
+Qal,Imperfect,3,F,P,תִּגְלֶ֫ינָה,they will uncover
+Qal,Imperfect,2,M,P,תִּגְלוּ,you all will uncover
+Qal,Imperfect,2,F,P,תִּגְלֶ֫ינָה,you all will uncover
+Qal,Imperfect,1,C,P,נִגְלֶה,we will uncover
+Qal,Jussive,3,M,S,יִגְלְ,may he uncover
+Qal,Jussive,3,F,S,תִּגְלְ,may she uncover
+Qal,Jussive,2,M,S,תִּגְלְ,may you uncover
+Qal,Jussive,2,F,S,תִּגְלִי,may you uncover
+Qal,Jussive,3,M,P,יִגְלוּ,may they uncover
+Qal,Jussive,3,F,P,תִּגְלֶ֫ינָה,may they uncover
+Qal,Jussive,2,M,P,תִּגְלוּ,may you all uncover
+Qal,Jussive,2,F,P,תִּגְלֶ֫ינָה,may you all uncover
+Qal,Cohortative,1,C,S,אֶגְלֶה,may I uncover
+Qal,Cohortative,1,C,P,נִגְלֶה,may we uncover
+Qal,Imperative,2,M,S,גְּלֵה,uncover!
+Qal,Imperative,2,F,S,גִּלִי,uncover!
+Qal,Imperative,2,M,P,גְּלוּ,uncover!
+Qal,Imperative,2,F,P,גְּלֶ֫נָה,uncover!
+Qal,Infinitive Absolute,,,,גָּלֹה,to uncover
+Qal,Infinitive Construct,,,,גְּלוֹת,to uncover
+Qal,Active Participle,,M,S,גֹּלֶה,uncovering
+Qal,Active Participle,,F,S,גֹּלָה,uncovering
+Qal,Active Participle,,M,P,גֹּלִים,uncovering
+Qal,Active Participle,,F,P,גֹּלוֹת,uncovering
+Qal,Passive Participle,,M,S,גָּלוּי,uncovered
+Qal,Passive Participle,,F,S,גְּלוּיָה,uncovered
+Qal,Passive Participle,,M,P,גְּלוּיִים,uncovered
+Qal,Passive Participle,,F,P,גְּלוּיוֹת,uncovered
+Niphal,Perfect,3,M,S,נִגְלָה,he was uncovered
+Niphal,Perfect,3,F,S,נִגְלְתָה,she was uncovered
+Niphal,Perfect,2,M,S,נִגְלֵ֫יתָ,you were uncovered
+Niphal,Perfect,2,F,S,נִגְלֵית,you were uncovered
+Niphal,Perfect,1,C,S,נִגְלֵ֫יתִי,I was uncovered
+Niphal,Perfect,3,C,P,נִגְלוּ,they were uncovered
+Niphal,Perfect,2,M,P,נִגְלֵיתֶם,you all were uncovered
+Niphal,Perfect,2,F,P,נִגְלֵיתֶן,you all were uncovered
+Niphal,Perfect,1,C,P,נִגְלֵ֫ינוּ,we were uncovered
+Niphal,Imperfect,3,M,S,יִגָּלֶה,he will be uncovered
+Niphal,Imperfect,3,F,S,תִּגָּלֶה,she will be uncovered
+Niphal,Imperfect,2,M,S,תִּגָּלֶה,you will be uncovered
+Niphal,Imperfect,2,F,S,תִּגָּלִי,you will be uncovered
+Niphal,Imperfect,1,C,S,אֶגָּלֶה,I will be uncovered
+Niphal,Imperfect,3,M,P,יִגָּלוּ,they will be uncovered
+Niphal,Imperfect,3,F,P,תִּגָּלֶ֫ינָה,they will be uncovered
+Niphal,Imperfect,2,M,P,תִּגָּלוּ,you all will be uncovered
+Niphal,Imperfect,2,F,P,תִּגָּלֶ֫ינָה,you all will be uncovered
+Niphal,Imperfect,1,C,P,נִגָּלֶה,we will be uncovered
+Niphal,Jussive,3,M,S,יִגָּל,may he be uncovered
+Niphal,Jussive,3,F,S,תִּגָּל,may she be uncovered
+Niphal,Jussive,2,M,S,תִּגָּל,may you be uncovered
+Niphal,Jussive,2,F,S,תִּגָּלִי,may you be uncovered
+Niphal,Jussive,3,M,P,יִגָּלוּ,may they be uncovered
+Niphal,Jussive,3,F,P,תִּגָּלֶ֫ינָה,may they be uncovered
+Niphal,Jussive,2,M,P,תִּגָּלוּ,may you all be uncovered
+Niphal,Jussive,2,F,P,תִּגָּלֶ֫ינָה,may you all be uncovered
+Niphal,Cohortative,1,C,S,אֶגָּלֶה,may I be uncovered
+Niphal,Cohortative,1,C,P,נִגָּלֶה,may we be uncovered
+Niphal,Imperative,2,M,S,הִגָּלֵה,be uncovered!
+Niphal,Imperative,2,F,S,הִגָּלִי,be uncovered!
+Niphal,Imperative,2,M,P,הִגָּלוּ,be uncovered!
+Niphal,Imperative,2,F,P,הִגָּלֶ֫ינָה,be uncovered!
+Niphal,Infinitive Absolute,,,,נִגְלֹה,to be uncovered
+Niphal,Infinitive Construct,,,,הִגָּלוֹת,to be uncovered
+Niphal,Passive Participle,,M,S,נִגְלֶה,being uncovered
+Niphal,Passive Participle,,F,S,נִגְלָה,being uncovered
+Niphal,Passive Participle,,M,P,נִגְלִים,being uncovered
+Niphal,Passive Participle,,F,P,נִגְלוֹת,being uncovered
+Piel,Perfect,3,M,S,גִּלָּה,he revealed
+Piel,Perfect,3,F,S,גִּלְתָה,she revealed
+Piel,Perfect,2,M,S,גִּלִּ֫יתָ,you revealed
+Piel,Perfect,2,F,S,גִּלִּית,you revealed
+Piel,Perfect,1,C,S,גִּלִּ֫יתִי,I revealed
+Piel,Perfect,3,C,P,גִּלּוּ,they revealed
+Piel,Perfect,2,M,P,גִּלִיתֶם,you all revealed
+Piel,Perfect,2,F,P,גִּלִיתֶן,you all revealed
+Piel,Perfect,1,C,P,גִּלִּ֫ינוּ,we revealed
+Piel,Imperfect,3,M,S,יְגַלֶּה,he will reveal
+Piel,Imperfect,3,F,S,תְּגַלֶּה,she will reveal
+Piel,Imperfect,2,M,S,תְּגַלֶּה,you will reveal
+Piel,Imperfect,2,F,S,תְּגַלִּי,you will reveal
+Piel,Imperfect,1,C,S,אֲגַלֶּה,I will reveal
+Piel,Imperfect,3,M,P,יְגַלּוּ,they will reveal
+Piel,Imperfect,3,F,P,תְּגַלֶּ֫ינָה,they will reveal
+Piel,Imperfect,2,M,P,תְּגַלּוּ,you all will reveal
+Piel,Imperfect,2,F,P,תְּגַלֶּ֫ינָה,you all will reveal
+Piel,Imperfect,1,C,P,נְגַלֶּה,we will reveal
+Piel,Jussive,3,M,S,יְגַל,may he reveal
+Piel,Jussive,3,F,S,תְּגַל,may she reveal
+Piel,Jussive,2,M,S,תְּגַל,may you reveal
+Piel,Jussive,2,F,S,תְּגַלִּי,may you reveal
+Piel,Jussive,3,M,P,יְגַלּוּ,may they reveal
+Piel,Jussive,3,F,P,תְּגַלֶּ֫ינָה,may they reveal
+Piel,Jussive,2,M,P,תְּגַלּוּ,may you all reveal
+Piel,Jussive,2,F,P,תְּגַלֶּ֫ינָה,may you all reveal
+Piel,Cohortative,1,C,S,אֲגַלֶּה,may I reveal
+Piel,Cohortative,1,C,P,נְגַלֶּה,may we reveal
+Piel,Imperative,2,M,S,גַלֵּה,reveal!
+Piel,Imperative,2,F,S,גַלִּי,reveal!
+Piel,Imperative,2,M,P,גַלּוּ,reveal!
+Piel,Imperative,2,F,P,גַלֶּ֫ינָה,reveal!
+Piel,Infinitive Absolute,,,,גַלֹּה,to reveal
+Piel,Infinitive Absolute,,,,גַלֵּה,to reveal
+Piel,Infinitive Construct,,,,גַלּוֹת,to reveal
+Piel,Active Participle,,M,S,מְגַלֶּה,revealing
+Piel,Active Participle,,F,S,מְגַלָּה,revealing
+Piel,Active Participle,,M,P,מְגַלִּים,revealing
+Piel,Active Participle,,F,P,מְגַלּוֹת,revealing
+Pual,Perfect,3,M,S,גֻּלָּה,he was revealed
+Pual,Perfect,3,F,S,גֻּלְּתָה,she was revealed
+Pual,Perfect,2,M,S,גֻּלֵּ֫יתָ,you were revealed
+Pual,Perfect,2,F,S,גֻּלֵּית,you were revealed
+Pual,Perfect,1,C,S,גֻּלֵּ֫יתִי,I was revealed
+Pual,Perfect,3,C,P,גֻּלּוּ,they were revealed
+Pual,Perfect,2,M,P,גֻּלֵּיתֶם,you all were revealed
+Pual,Perfect,2,F,P,גֻּלֵּיתֶן,you all were revealed
+Pual,Perfect,1,C,P,גֻּלֵּ֫ינוּ,we were revealed
+Pual,Imperfect,3,M,S,יְגֻלֶּה,he will be revealed
+Pual,Imperfect,3,F,S,תְּגֻלֶּה,she will be revealed
+Pual,Imperfect,2,M,S,תְּגֻלֶּה,you will be revealed
+Pual,Imperfect,2,F,S,תְּגֻלִּי,you will be revealed
+Pual,Imperfect,1,C,S,אֲגֻלֶּה,I will be revealed
+Pual,Imperfect,3,M,P,יְגֻלּוּ,they will be revealed
+Pual,Imperfect,3,F,P,תְּגֻלֶּ֫ינָה,they will be revealed
+Pual,Imperfect,2,M,P,תְּגֻלּוּ,you all will be revealed
+Pual,Imperfect,2,F,P,תְּגֻלֶּ֫ינָה,you all will be revealed
+Pual,Imperfect,1,C,P,נְגֻלֶּה,we will be revealed
+Pual,Infinitive Absolute,,,,גַלֹּה,to be revealed
+Pual,Infinitive Construct,,,,גַלּוֹת,to be revealed
+Pual,Passive Participle,,M,S,מְגֻלֶּה,being revealed
+Pual,Passive Participle,,F,S,מְגֻלָּה,being revealed
+Pual,Passive Participle,,M,P,מְגֻלִּים,being revealed
+Pual,Passive Participle,,F,P,מְגֻלּוֹת,being revealed
+Hitpael,Perfect,3,M,S,הִתְגַּלָּה,he uncovered himself
+Hitpael,Perfect,3,F,S,הִתְגַּלְתָה,she uncovered herself
+Hitpael,Perfect,2,M,S,הִתְגַּלִּ֫יתָ,you uncovered yourself
+Hitpael,Perfect,2,F,S,הִתְגַּלִּית,you uncovered yourself
+Hitpael,Perfect,1,C,S,הִתְגַּלִּ֫יתִי,I uncovered myself
+Hitpael,Perfect,3,C,P,הִתְגַּלּוּ,they uncovered themselves
+Hitpael,Perfect,2,M,P,הִתְגַּלִיתֶם,you all uncovered yourselves
+Hitpael,Perfect,2,F,P,הִתְגַּלִיתֶן,you all uncovered yourselves
+Hitpael,Perfect,1,C,P,הִתְגַּלִּ֫ינוּ,we uncovered ourselves
+Hitpael,Imperfect,3,M,S,יִתְגַּלֶּה,he will uncover himself
+Hitpael,Imperfect,3,F,S,תִּתְגַּלֶּה,she will uncover herself
+Hitpael,Imperfect,2,M,S,תִּתְגַּלֶּה,you will uncover yourself
+Hitpael,Imperfect,2,F,S,תִּתְגַּלִּי,you will uncover yourself
+Hitpael,Imperfect,1,C,S,אֶתְגַּלֶּה,I will uncover myself
+Hitpael,Imperfect,3,M,P,יִתְגַּלּוּ,they will uncover themselves
+Hitpael,Imperfect,3,F,P,תִּתְגַּלֶּ֫ינָה,they will uncover themselves
+Hitpael,Imperfect,2,M,P,תִּתְגַּלּוּ,you all will uncover yourselves
+Hitpael,Imperfect,2,F,P,תִּתְגַּלֶּ֫ינָה,you all will uncover yourselves
+Hitpael,Imperfect,1,C,P,נִתְגַּלֶּה,we will uncover ourselves
+Hitpael,Jussive,3,M,S,יִתְגַּל,may he uncover himself
+Hitpael,Jussive,3,F,S,תִּתְגַּל,may she uncover herself
+Hitpael,Jussive,2,M,S,תִּתְגַּל,may you uncover yourself
+Hitpael,Jussive,2,F,S,תִּתְגַּלִּי,may you uncover yourself
+Hitpael,Jussive,3,M,P,יִתְגַּלּוּ,may they uncover themselves
+Hitpael,Jussive,3,F,P,תִּתְגַּלֶּ֫ינָה,may they uncover themselves
+Hitpael,Jussive,2,M,P,תִּתְגַּלּוּ,may you all uncover yourselves
+Hitpael,Jussive,2,F,P,תִּתְגַּלֶּ֫ינָה,may you all uncover yourselves
+Hitpael,Cohortative,1,C,S,אֶתְגַּלֶּה,may I uncover myself
+Hitpael,Cohortative,1,C,P,נִתְגַּלֶּה,may we uncover ourselves
+Hitpael,Imperative,2,M,S,הִתְגַּלֵּה,uncover yourself!
+Hitpael,Imperative,2,F,S,הִתְגַּלִּי,uncover yourself!
+Hitpael,Imperative,2,M,P,הִתְגַּלּוּ,uncover yourselves!
+Hitpael,Imperative,2,F,P,הִתְגַּלֶּ֫ינָה,uncover yourselves!
+Hitpael,Infinitive Absolute,,,,הִתְגַּלֹּה,to uncover oneself
+Hitpael,Infinitive Construct,,,,הִתְגַּלּוֹת,to uncover oneself
+Hitpael,Active Participle,,M,S,מִתְגַּלֶּה,uncovering oneself
+Hitpael,Active Participle,,F,S,מִתְגַּלָּה,uncovering oneself
+Hitpael,Active Participle,,M,P,מִתְגַּלִּים,uncovering oneself
+Hitpael,Active Participle,,F,P,מִתְגַּלּוֹת,uncovering oneself
+Hiphil,Perfect,3,M,S,הִגְלָה,he caused to uncover
+Hiphil,Perfect,3,F,S,הִגְלְתָה,she caused to uncover
+Hiphil,Perfect,2,M,S,הִגְלִ֫יתָ,you caused to uncover
+Hiphil,Perfect,2,F,S,הִגְלִית,you caused to uncover
+Hiphil,Perfect,1,C,S,הִגְלִ֫יתִי,I caused to uncover
+Hiphil,Perfect,3,C,P,הִגְלוּ,they caused to uncover
+Hiphil,Perfect,2,M,P,הִגְלִיתֶם,you all caused to uncover
+Hiphil,Perfect,2,F,P,הִגְלִיתֶן,you all caused to uncover
+Hiphil,Perfect,1,C,P,הִגְלִ֫ינוּ,we caused to uncover
+Hiphil,Imperfect,3,M,S,יַגְלֶה,he will cause to uncover
+Hiphil,Imperfect,3,F,S,תַּגְלֶה,she will cause to uncover
+Hiphil,Imperfect,2,M,S,תַּגְלֶה,you will cause to uncover
+Hiphil,Imperfect,2,F,S,תַּגְלִי,you will cause to uncover
+Hiphil,Imperfect,1,C,S,אַגְלֶה,I will cause to uncover
+Hiphil,Imperfect,3,M,P,יַגְלוּ,they will cause to uncover
+Hiphil,Imperfect,3,F,P,תַּגְלֶ֫ינָה,they will cause to uncover
+Hiphil,Imperfect,2,M,P,תַּגְלוּ,you all will cause to uncover
+Hiphil,Imperfect,2,F,P,תַּגְלֶ֫ינָה,you all will cause to uncover
+Hiphil,Imperfect,1,C,P,נַגְלֶה,we will cause to uncover
+Hiphil,Jussive,3,M,S,יַגְלְ,may he cause to uncover
+Hiphil,Jussive,3,F,S,תַּגְלְ,may she cause to uncover
+Hiphil,Jussive,2,M,S,תַּגְלְ,may you cause to uncover
+Hiphil,Jussive,2,F,S,תַּגְלִי,may you cause to uncover
+Hiphil,Jussive,3,M,P,יַגְלוּ,may they cause to uncover
+Hiphil,Jussive,3,F,P,תַּגְלֶ֫ינָה,may they cause to uncover
+Hiphil,Jussive,2,M,P,תַּגְלוּ,may you all cause to uncover
+Hiphil,Jussive,2,F,P,תַּגְלֶ֫ינָה,may you all cause to uncover
+Hiphil,Cohortative,1,C,S,אַגְלֶה,may I cause to uncover
+Hiphil,Cohortative,1,C,P,נַגְלֶה,may we cause to uncover
+Hiphil,Imperative,2,M,S,הַגְלֵה,cause to uncover!
+Hiphil,Imperative,2,F,S,הַגְלִי,cause to uncover!
+Hiphil,Imperative,2,M,P,הַגְלוּ,cause to uncover!
+Hiphil,Imperative,2,F,P,הַגְלֶ֫ינָה,cause to uncover!
+Hiphil,Infinitive Absolute,,,,הַגְלֵה,to cause to uncover
+Hiphil,Infinitive Construct,,,,הַגְלוֹת,to cause to uncover
+Hiphil,Active Participle,,M,S,מַגְלֶה,causing to uncover
+Hiphil,Active Participle,,F,S,מַגְלָה,causing to uncover
+Hiphil,Active Participle,,M,P,מַגְלִים,causing to uncover
+Hiphil,Active Participle,,F,P,מַגְלוֹת,causing to uncover
+Hophal,Perfect,3,M,S,הָגְלָה,he was caused to uncover
+Hophal,Perfect,3,F,S,הָגְלְתָה,she was caused to uncover
+Hophal,Perfect,2,M,S,הָגְלֵ֫יתָ,you were caused to uncover
+Hophal,Perfect,2,F,S,הָגְלֵית,you were caused to uncover
+Hophal,Perfect,1,C,S,הָגְלֵ֫יתִי,I was caused to uncover
+Hophal,Perfect,3,C,P,הָגְלוּ,they were caused to uncover
+Hophal,Perfect,2,M,P,הָגְלֵיתֶם,you all were caused to uncover
+Hophal,Perfect,2,F,P,הָגְלֵיתֶן,you all were caused to uncover
+Hophal,Perfect,1,C,P,הָגְלֵ֫ינוּ,we were caused to uncover
+Hophal,Imperfect,3,M,S,יָגְלֶה,he will be caused to uncover
+Hophal,Imperfect,3,F,S,תָּגְלֶה,she will be caused to uncover
+Hophal,Imperfect,2,M,S,תָּגְלֶה,you will be caused to uncover
+Hophal,Imperfect,2,F,S,תָּגְלִי,you will be caused to uncover
+Hophal,Imperfect,1,C,S,אָגְלֶה,I will be caused to uncover
+Hophal,Imperfect,3,M,P,יָגְלוּ,they will be caused to uncover
+Hophal,Imperfect,3,F,P,תָּגְלֶ֫ינָה,they will be caused to uncover
+Hophal,Imperfect,2,M,P,תָּגְלוּ,you all will be caused to uncover
+Hophal,Imperfect,2,F,P,תָּגְלֶ֫ינָה,you all will be caused to uncover
+Hophal,Imperfect,1,C,P,נָגְלֶה,we will be caused to uncover
+Hophal,Infinitive Absolute,,,,הָגְלֵה,to be caused to uncover
+Hophal,Infinitive Construct,,,,הָגְלוֹת,to be caused to uncover
+Hophal,Passive Participle,,M,S,מָגְלֶה,being caused to uncover
+Hophal,Passive Participle,,F,S,מָגְלָה,being caused to uncover
+Hophal,Passive Participle,,M,P,מָגְלִים,being caused to uncover
+Hophal,Passive Participle,,F,P,מָגְלוֹת,being caused to uncover
