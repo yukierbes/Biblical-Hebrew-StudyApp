@@ -53,7 +53,7 @@ Lesson,Frequency,Hebrew,English,POS,Category
 1B,1136,שָׁמַע,"to hear, give ear to, obey",Verb,Action and Stative Verbs
 1C,770,אָדוֹן ; אֲדֹנָי,"lord, master, sir; the Lord",Noun,Worship/Cultic
 1C,959,אֶחָד ; אַחַת,(s m; f) one,Numeral,Measurement and Numbers
-1C,773,אַ֫יִנ ; אֵין,(abs; cstr) there is/are not (non-existence),Particle,
+1C,773,אַ֫יִן ; אֵין,(abs; cstr) there is/are not (non-existence),Particle,
 1C,795,אָכַל,"to eat, consume, devour",Verb,Food
 1C,738,אַל,"no, not",Particle,
 1C,738,אֵ֫לֶּה,(dem pr; c pl) these,Pronoun,
@@ -166,7 +166,7 @@ Lesson,Frequency,Hebrew,English,POS,Category
 2B,330,עֵץ,"(also coll) tree, wood",Noun,Plants and Animals
 2B,376,ר֫וּחַ,"spirit, wind, breath",Noun,Worship/Cultic
 2B,332,שָׂדֶה ; שָׂדַי,"field, country",Noun,Heavens and Earth
-2B,368,שָׁ֫עַר,gate,Noun,Building and Travel
+2B,368,שַׁ֫עַר,gate,Noun,Building and Travel
 2C,281,"אֹיֵב , אוֹיֵב",enemy,Noun,Occupation
 2C,279,אַף,"nose, nostril; (ext) anger",Noun,Humans and Anatomy
 2C,288,בָּבֶל ; בַּבְלָי,Babylon (Babel); (gent) Babylonians,Proper Noun,
