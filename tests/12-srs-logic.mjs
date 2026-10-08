@@ -15,7 +15,7 @@ global.localStorage = {
 };
 
 const { recordItemResult, pickAdaptive, getMasteryStats, recordStreakActivity, getStreakInfo } = await import(
-  "../js/srs.js"
+  "../public/js/srs.js"
 );
 
 // ---- Leitner box transitions ----

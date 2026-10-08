@@ -22,7 +22,10 @@ export function assert(condition, message) {
 
 export function summary() {
   console.log(`\n${passes} passed, ${failures} failed.`);
-  if (failures > 0) process.exit(1);
+  // Exit explicitly: the app under test starts background timers (e.g.
+  // setInterval in main.js) that would otherwise keep Node alive forever
+  // after the checks have finished.
+  process.exit(failures > 0 ? 1 : 0);
 }
 
 /**
@@ -46,6 +49,9 @@ export async function setupApp({ mobile = false } = {}) {
   global.HTMLElement = dom.window.HTMLElement;
   global.KeyboardEvent = dom.window.KeyboardEvent;
   global.Event = dom.window.Event;
+  // The app calls bare requestAnimationFrame (e.g. toast animations);
+  // Node has none, and jsdom only exposes one on its own window object.
+  global.requestAnimationFrame = (cb) => setTimeout(cb, 0);
 
   const storageData = {};
   const localStorageMock = {

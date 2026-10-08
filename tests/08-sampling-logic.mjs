@@ -1,5 +1,5 @@
 import { assert, summary } from "./helpers.mjs";
-import { pickCycling, morphKey, sampleN } from "../js/helpers.js";
+import { pickCycling, morphKey, sampleN } from "../public/js/helpers.js";
 
 console.log("Sampling logic (pickCycling, sampleN)");
 

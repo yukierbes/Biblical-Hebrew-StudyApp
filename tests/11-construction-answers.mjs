@@ -32,7 +32,7 @@ assert(!!revealedGloss, "Show Answer reveals a gloss to test against");
 // The defensive .gloss-display{direction:ltr} rule alone isn't
 // sufficient without also removing the bug at its source.
 const cssText = (await import("fs")).readFileSync(
-  new URL("../css/style.css", import.meta.url),
+  new URL("../public/css/style.css", import.meta.url),
   "utf-8"
 );
 assert(

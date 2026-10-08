@@ -1246,6 +1246,9 @@ kbd {
   html, body {
     height: auto !important;
     overflow: visible !important;
+    /* Plain white, so the page's theme color never shows through on the
+       unused part of the last sheet when "Background graphics" is on. */
+    background: #FFFFFF !important;
   }
 
   /* Explicit fixed colors here rather than the theme variables — a
@@ -1271,20 +1274,36 @@ kbd {
     page-break-after: auto;
   }
 
+  /* The header block (title + Front/Back label) is printed at the top of
+     EVERY page, front and back alike, and has a fixed height — so the
+     card grid below it starts at exactly the same spot on both sides of
+     a sheet. Both lines are kept to a single line (a long title, such as
+     a search phrase, is cut off with an ellipsis rather than wrapping)
+     so its height can never differ from one page to the next. */
+  .print-header {
+    height: 62px;
+    overflow: hidden;
+  }
+
   .print-page-label {
     font-family: var(--font-mono);
     font-size: 0.68rem;
+    line-height: 1.2;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: #999;
-    margin-bottom: 10px;
+    white-space: nowrap;
   }
 
   .print-title {
     font-family: var(--font-display);
     font-size: 1.4rem;
-    margin: 0 0 18px 0;
+    line-height: 1.25;
+    margin: 0 0 10px 0;
     color: #1C2B45;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .flashcard-grid {
@@ -1315,7 +1334,12 @@ kbd {
        was the source of the inconsistent card widths. A partial row
        now leaves genuine empty space instead. */
     flex: 0 0 calc((100% - 28px) / 3);
-    min-height: 150px;
+    /* A FIXED height, not min-height: a card that grew to fit extra text
+       (e.g. a long vocabulary definition on the back) would push every
+       row below it lower than the matching row on the other side of the
+       sheet, so the two sides would drift out of line. Long text is
+       shrunk to fit instead — see the .fit-N classes below. */
+    height: 150px;
     border: 1px solid #999;
     border-radius: 6px;
     padding: 14px 10px;
@@ -1328,16 +1352,23 @@ kbd {
     page-break-inside: avoid;
   }
 
+  /* Step-down sizing for long text (chosen in print.js from how much text
+     is on the card). Each class just scales whatever that element's
+     normal size is. */
+  .fit-1 { --fit: 0.82; }
+  .fit-2 { --fit: 0.68; }
+  .fit-3 { --fit: 0.56; }
+
   .flashcard-hebrew {
     font-family: var(--font-hebrew);
-    font-size: 1.9rem;
+    font-size: calc(1.9rem * var(--fit, 1));
     color: #1C2B45;
     direction: rtl;
   }
 
   .flashcard-gloss {
     font-family: var(--font-body);
-    font-size: 1rem;
+    font-size: calc(1rem * var(--fit, 1));
     color: #1C2B45;
     margin-bottom: 8px;
     direction: ltr;
@@ -1349,7 +1380,7 @@ kbd {
      Name) rather than an English gloss. */
   .flashcard-gloss-hebrew {
     font-family: var(--font-hebrew);
-    font-size: 1.6rem;
+    font-size: calc(1.6rem * var(--fit, 1));
     color: #1C2B45;
     margin-bottom: 6px;
     direction: rtl;
@@ -1357,7 +1388,7 @@ kbd {
 
   .flashcard-gloss-secondary {
     font-family: var(--font-body);
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--fit, 1));
     color: #1C2B45;
     margin-bottom: 8px;
     direction: ltr;

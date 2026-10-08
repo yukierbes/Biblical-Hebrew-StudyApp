@@ -91,16 +91,43 @@ function parseCsv(text) {
   return rows;
 }
 
-/** Parses a CSV file into an array of objects keyed by its header row. */
-function readCsvAsObjects(path) {
+/** Lower-cases a column heading and drops spaces/punctuation, so
+ * "Hebrew Name", "hebrew_name" and "HebrewName" all compare equal. */
+function normalizeHeader(h) {
+  return String(h).toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+/**
+ * Parses a CSV file into an array of objects.
+ *
+ * `columns` maps each column name this script uses to the headings it
+ * will accept for it in the CSV (compared ignoring case, spaces and
+ * punctuation — so "Hebrew Name" in a spreadsheet works as well as
+ * "HebrewName"). Extra columns in the CSV are ignored. If a required
+ * column can't be found the script STOPS with a clear message, rather
+ * than quietly writing blanks into the app's data (which is what used
+ * to happen when a heading didn't match exactly).
+ */
+function readCsvAsObjects(path, columns) {
   const rows = parseCsv(readFileSync(path, "utf-8"));
   if (rows.length === 0) return [];
-  const header = rows[0].map((h) => h.trim());
+  const header = rows[0].map(normalizeHeader);
+  const indexFor = {};
+  const missing = [];
+  for (const [name, accepted] of Object.entries(columns)) {
+    const idx = header.findIndex((h) => accepted.map(normalizeHeader).includes(h));
+    if (idx === -1) missing.push(name);
+    else indexFor[name] = idx;
+  }
+  if (missing.length) {
+    console.error(`\nERROR: ${path.replace(ROOT + "/", "")} is missing column(s): ${missing.join(", ")}`);
+    console.error(`  Headings found: ${rows[0].join(" | ")}`);
+    console.error(`  Nothing was written for this file — fix the heading(s) and run again.`);
+    process.exit(1);
+  }
   return rows.slice(1).map((r) => {
     const obj = {};
-    header.forEach((col, idx) => {
-      obj[col] = clean(r[idx] ?? "");
-    });
+    for (const name of Object.keys(columns)) obj[name] = clean(r[indexFor[name]] ?? "");
     return obj;
   });
 }
@@ -117,7 +144,14 @@ function writeJson(path, data) {
 // ---------- vocabulary.csv -> vocabulary.json ----------
 // Columns: Lesson, Frequency, Hebrew, English, POS, Category
 function buildVocabulary() {
-  const raw = readCsvAsObjects(join(SRC, "vocabulary.csv"));
+  const raw = readCsvAsObjects(join(SRC, "vocabulary.csv"), {
+    Lesson: ["Lesson"],
+    Frequency: ["Frequency"],
+    Hebrew: ["Hebrew"],
+    English: ["English"],
+    POS: ["POS", "Part of Speech"],
+    Category: ["Category"],
+  });
   const rows = [];
   const lessonOrder = [];
   const seenLessons = new Set();
@@ -154,7 +188,15 @@ function buildVocabulary() {
 // ---------- accents.csv -> accents.json ----------
 // Columns: Type, Group, HebrewName, EnglishName, Symbol, Placement, Keyboard
 function buildAccents() {
-  const raw = readCsvAsObjects(join(SRC, "accents.csv"));
+  const raw = readCsvAsObjects(join(SRC, "accents.csv"), {
+    Type: ["Type"],
+    Group: ["Group"],
+    HebrewName: ["HebrewName", "Hebrew Name"],
+    EnglishName: ["EnglishName", "English Name"],
+    Symbol: ["Symbol"],
+    Placement: ["Placement"],
+    Keyboard: ["Keyboard", "Keyboard Key", "Keyboard Shortcut"],
+  });
   const rows = [];
   const typeOrder = [];
   const groupOrder = [];
@@ -202,7 +244,15 @@ function buildVerbs() {
 
   for (const file of files) {
     const name = file.replace(/\.csv$/i, "").replace(/^\d+\s*/, "");
-    const raw = readCsvAsObjects(join(dir, file));
+    const raw = readCsvAsObjects(join(dir, file), {
+      Binyan: ["Binyan"],
+      Mode: ["Mode"],
+      Person: ["Person"],
+      Gender: ["Gender"],
+      Number: ["Number"],
+      Conjugation: ["Conjugation"],
+      "Gloss Translation": ["Gloss Translation", "Gloss"],
+    });
     datasets.push(name);
     data[name] = raw.map((r) => ({
       Binyan: r.Binyan || "",

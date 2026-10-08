@@ -30,7 +30,7 @@ assert(
 // --- Unlock one achievement (a quiz attempt) via history.js directly,
 // the same way Parsing/Construction/Vocabulary Typing record one, then
 // confirm the page reflects it on next render ---
-const { recordAttempt } = await import("../js/history.js");
+const { recordAttempt } = await import("../public/js/history.js");
 recordAttempt("parsing", { score: 5, total: 5, percent: 100, datasets: ["Test"], retry: false });
 
 navigateTo(document, "home");

@@ -1,5 +1,5 @@
 import { setupApp, assert, summary } from "./helpers.mjs";
-import { printFlashcards } from "../js/print.js";
+import { printFlashcards } from "../public/js/print.js";
 
 const { document } = await setupApp();
 
@@ -132,12 +132,81 @@ assert(twoBackCards.map(glossTextOf).join(",") === "gB,gA", "the 2-card back row
 // The right-align CSS rule itself must actually exist, since jsdom
 // can't render the resulting visual position to check directly.
 const cssText = (await import("fs")).readFileSync(
-  new URL("../css/style.css", import.meta.url),
+  new URL("../public/css/style.css", import.meta.url),
   "utf-8"
 );
 assert(
   /\.flashcard-row-back\s*\{[^}]*justify-content:\s*flex-end/.test(cssText),
   ".flashcard-row-back rule sets justify-content: flex-end in the stylesheet"
+);
+
+// --- Front/back ALIGNMENT: the grid must start at the same height on
+// both sides of every sheet. A title that appeared only on the first
+// front page used to push that one sheet's fronts lower than its backs.
+printFlashcards(manyRows, { title: "Big Deck" });
+const alignPages = [...printArea.querySelectorAll(".print-page")];
+assert(alignPages.length === 4, "alignment check: 20 cards still make 4 print pages");
+assert(
+  alignPages.every((pg) => pg.querySelectorAll(".print-header").length === 1),
+  "every page — front AND back, on every sheet — has exactly one header block"
+);
+assert(
+  alignPages.every((pg) => pg.querySelector(".print-header .print-title")?.textContent === "Big Deck"),
+  "every page repeats the same title, so front and back headers are identical"
+);
+assert(
+  alignPages.map((pg) => pg.querySelector(".print-page-label").textContent).join("|") ===
+    "Front|Back (answers)|Front|Back (answers)",
+  "pages alternate Front / Back (answers) across every sheet"
+);
+assert(
+  alignPages.every((pg) => pg.firstElementChild.classList.contains("print-header")),
+  "the header is the first thing on every page, ahead of the card grid"
+);
+
+// A title containing markup (e.g. a search phrase) must print as text.
+printFlashcards(rows.slice(0, 1), { title: '<b>bold</b> & "quoted"' });
+assert(
+  printArea.querySelector(".print-title").textContent === '<b>bold</b> & "quoted"' &&
+    !printArea.querySelector(".print-title b"),
+  "a title containing HTML is shown as plain text, not interpreted as markup"
+);
+
+// Long text is shrunk in steps rather than letting a card grow taller
+// (a taller back card would push its row out of line with the front).
+const longGloss = "x".repeat(150);
+printFlashcards(
+  [
+    { Conjugation: "S", "Gloss Translation": "short", Binyan: "Qal" },
+    { Conjugation: "M", "Gloss Translation": "m".repeat(60), Binyan: "Qal" },
+    { Conjugation: "L", "Gloss Translation": longGloss, Binyan: "Qal" },
+  ],
+  { title: "Fit" }
+);
+// (Back rows are reversed left-to-right, so look each gloss up by its text.)
+const glossByText = (t) =>
+  [...printArea.querySelectorAll(".flashcard-back .flashcard-gloss")].find((g) => g.textContent === t);
+assert(!/\bfit-\d/.test(glossByText("short").className), "short text is left at full size");
+assert(/\bfit-1\b/.test(glossByText("m".repeat(60)).className), "medium-long text shrinks one step");
+assert(/\bfit-3\b/.test(glossByText(longGloss).className), "very long text shrinks the maximum amount");
+
+// Hebrew niqqud are combining marks that take no width, so they must not
+// count towards how "long" a Hebrew word is.
+const pointed = "\u05D1\u05BC\u05B0\u05E8\u05B5\u05D0\u05E9\u05C1\u05B4\u05D9\u05EA".repeat(1); // 6 letters + 5 marks
+printFlashcards([{ Conjugation: pointed, "Gloss Translation": "g", Binyan: "Qal" }], { title: "Niqqud" });
+assert(
+  !/\bfit-\d/.test(printArea.querySelector(".flashcard-hebrew").className),
+  "a short pointed Hebrew word is not shrunk just because of its niqqud"
+);
+
+// The stylesheet must pin the things the alignment depends on, since
+// jsdom can't lay anything out to check it directly.
+const cssNoComments = cssText.replace(/\/\*[\s\S]*?\*\//g, "");
+assert(/\.print-header\s*\{[^}]*\bheight:\s*\d+px/.test(cssNoComments), ".print-header has a fixed height");
+assert(
+  /\.flashcard\s*\{[^}]*(^|[\s;])height:\s*\d+px/.test(cssNoComments) &&
+    !/\.flashcard\s*\{[^}]*min-height/.test(cssNoComments),
+  ".flashcard has a fixed height (not a growable min-height)"
 );
 
 summary();
