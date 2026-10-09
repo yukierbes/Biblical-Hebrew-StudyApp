@@ -1232,7 +1232,145 @@ kbd {
 
 /* ============ Printable flashcards ============ */
 
+/* Hidden on screen. Everything that styles the cards themselves is
+   written below WITHOUT a print-only media query on purpose: print.js
+   briefly un-hides this area off-screen to measure how much text fits on
+   each card (see fitAllCards there), and it has to be measured with the
+   exact same styles that will be printed. All of it is scoped under
+   #print-area, which stays hidden on screen, so it can't affect anything
+   else (the interactive flashcards use their own, separate class names). */
 #print-area { display: none; }
+
+/* No page margin from the browser. That is what makes the browser leave
+   out its own header and footer text (date/time, page title, URL, page
+   numbers) — those are printed inside the margin, so with no margin
+   there's nowhere for them to go. The pages supply their own fixed
+   margin instead (.print-page padding below), identical on the left and
+   right, which is what keeps the front and back of a sheet lined up. */
+@page { margin: 0; }
+
+#print-area .print-page {
+  box-sizing: border-box;
+  /* 0.4in of empty paper around the cards on every side (a typical
+     printer can't print closer than ~0.25in to the edge). */
+  padding: 0.4in;
+}
+
+#print-area .flashcard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#print-area .flashcard-row {
+  display: flex;
+  gap: 14px;
+}
+
+/* Back-page rows pack from the right instead of the left — see the
+   comment in print.js's printFlashcards for the full reasoning. A
+   full row of 3 looks identical either way; this only matters for a
+   partial row (1-2 cards), which needs its empty space on the left
+   for the duplex mirror-flip to land each card behind its question. */
+#print-area .flashcard-row-back {
+  justify-content: flex-end;
+}
+
+#print-area .flashcard {
+  /* Fixed at exactly 1/3 of the row's width (accounting for the two
+     14px gaps between 3 cards) rather than flex:1, which would
+     stretch cards to fill however many happen to share a row — that
+     mismatch (a lone 2-card row stretching wider than a 3-card row)
+     was the source of the inconsistent card widths. A partial row
+     now leaves genuine empty space instead. */
+  flex: 0 0 calc((100% - 28px) / 3);
+  box-sizing: border-box;
+  /* A FIXED height, not min-height: a card that grew to fit extra text
+     would push every row below it lower than the matching row on the
+     other side of the sheet, so the two sides would drift out of line.
+     Long text is shrunk to fit instead (print.js measures it). */
+  height: 150px;
+  border: 1px solid #999;
+  border-radius: 6px;
+  /* The safe margin: text is only ever placed inside this padding, never
+     over it, so there's always this much clear space between the text
+     and the cut line (14px is about 0.15in / 3.7mm). */
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  color: #1C2B45;
+}
+
+/* Wrapper around a card's text, so its total height can be measured. */
+#print-area .flashcard-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Every block of text wraps inside the safe area rather than running
+   past it, even a single very long word. --fit (1 = full size) is set
+   on a card by print.js, only when its text is too long to fit. */
+#print-area .flashcard-body > div {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+#print-area .flashcard-hebrew {
+  font-family: var(--font-hebrew);
+  font-size: calc(1.9rem * var(--fit, 1));
+  color: #1C2B45;
+  direction: rtl;
+}
+
+#print-area .flashcard-gloss {
+  font-family: var(--font-body);
+  font-size: calc(1rem * var(--fit, 1));
+  line-height: 1.25;
+  color: #1C2B45;
+  margin-bottom: 7px;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Used instead of the plain .flashcard-gloss styling above when the
+   back's primary answer is itself Hebrew text (e.g. Accents' Hebrew
+   Name) rather than an English gloss. */
+#print-area .flashcard-gloss-hebrew {
+  font-family: var(--font-hebrew);
+  font-size: calc(1.6rem * var(--fit, 1));
+  line-height: normal;
+  margin-bottom: 5px;
+  direction: rtl;
+}
+
+#print-area .flashcard-gloss-secondary {
+  font-family: var(--font-body);
+  font-size: calc(0.95rem * var(--fit, 1));
+  line-height: 1.25;
+  color: #1C2B45;
+  margin-bottom: 7px;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* The small grey line under the answer (e.g. "Qal · Perfect · 2MS").
+   Deliberately MUCH smaller than the answer itself (about 60% of its
+   size) and does not scale with --fit: it is reference text, not the
+   thing being tested. */
+#print-area .flashcard-morph {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  line-height: 1.3;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
 
 @media print {
   /* The independent-scrolling layout locks html/body to a fixed,
@@ -1240,9 +1378,7 @@ kbd {
      That clipping also applies to #print-area, since it's appended
      directly to <body> — without this override, print output gets
      silently cut off at one screen-height's worth of content instead
-     of paginating naturally across multiple sheets. This is almost
-     certainly why short decks were merging front/back onto one page
-     and long decks were losing everything past the first page. */
+     of paginating naturally across multiple sheets. */
   html, body {
     height: auto !important;
     overflow: visible !important;
@@ -1251,156 +1387,27 @@ kbd {
     background: #FFFFFF !important;
   }
 
-  /* Explicit fixed colors here rather than the theme variables — a
-     printed page should always be crisp dark-ink-on-white regardless
-     of whether dark mode is active on screen. */
   #app, #shortcuts-modal, #sidebar-backdrop, #hebrew-keyboard-modal, #vocab-category-editor-modal {
     display: none !important;
   }
 
+  /* Explicit fixed colors rather than the theme variables — a printed
+     page should always be crisp dark-ink-on-white regardless of whether
+     dark mode is active on screen. */
   #print-area {
     display: block !important;
     color: #1C2B45;
     background: #FFFFFF;
   }
 
-  .print-page {
+  #print-area .print-page {
     position: relative;
     break-after: page;
     page-break-after: always;
   }
-  .print-page-last {
+  #print-area .print-page-last {
     break-after: auto;
     page-break-after: auto;
-  }
-
-  /* The header block (title + Front/Back label) is printed at the top of
-     EVERY page, front and back alike, and has a fixed height — so the
-     card grid below it starts at exactly the same spot on both sides of
-     a sheet. Both lines are kept to a single line (a long title, such as
-     a search phrase, is cut off with an ellipsis rather than wrapping)
-     so its height can never differ from one page to the next. */
-  .print-header {
-    height: 62px;
-    overflow: hidden;
-  }
-
-  .print-page-label {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    line-height: 1.2;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #999;
-    white-space: nowrap;
-  }
-
-  .print-title {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    line-height: 1.25;
-    margin: 0 0 10px 0;
-    color: #1C2B45;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .flashcard-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .flashcard-row {
-    display: flex;
-    gap: 14px;
-  }
-
-  /* Back-page rows pack from the right instead of the left — see the
-     comment in print.js's printFlashcards for the full reasoning. A
-     full row of 3 looks identical either way; this only matters for a
-     partial row (1-2 cards), which needs its empty space on the left
-     for the duplex mirror-flip to land each card behind its question. */
-  .flashcard-row-back {
-    justify-content: flex-end;
-  }
-
-  .flashcard {
-    /* Fixed at exactly 1/3 of the row's width (accounting for the two
-       14px gaps between 3 cards) rather than flex:1, which would
-       stretch cards to fill however many happen to share a row — that
-       mismatch (a lone 2-card row stretching wider than a 3-card row)
-       was the source of the inconsistent card widths. A partial row
-       now leaves genuine empty space instead. */
-    flex: 0 0 calc((100% - 28px) / 3);
-    /* A FIXED height, not min-height: a card that grew to fit extra text
-       (e.g. a long vocabulary definition on the back) would push every
-       row below it lower than the matching row on the other side of the
-       sheet, so the two sides would drift out of line. Long text is
-       shrunk to fit instead — see the .fit-N classes below. */
-    height: 150px;
-    border: 1px solid #999;
-    border-radius: 6px;
-    padding: 14px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  /* Step-down sizing for long text (chosen in print.js from how much text
-     is on the card). Each class just scales whatever that element's
-     normal size is. */
-  .fit-1 { --fit: 0.82; }
-  .fit-2 { --fit: 0.68; }
-  .fit-3 { --fit: 0.56; }
-
-  .flashcard-hebrew {
-    font-family: var(--font-hebrew);
-    font-size: calc(1.9rem * var(--fit, 1));
-    color: #1C2B45;
-    direction: rtl;
-  }
-
-  .flashcard-gloss {
-    font-family: var(--font-body);
-    font-size: calc(1rem * var(--fit, 1));
-    color: #1C2B45;
-    margin-bottom: 8px;
-    direction: ltr;
-    unicode-bidi: isolate;
-  }
-
-  /* Used instead of the plain .flashcard-gloss styling above when the
-     back's primary answer is itself Hebrew text (e.g. Accents' Hebrew
-     Name) rather than an English gloss. */
-  .flashcard-gloss-hebrew {
-    font-family: var(--font-hebrew);
-    font-size: calc(1.6rem * var(--fit, 1));
-    color: #1C2B45;
-    margin-bottom: 6px;
-    direction: rtl;
-  }
-
-  .flashcard-gloss-secondary {
-    font-family: var(--font-body);
-    font-size: calc(0.95rem * var(--fit, 1));
-    color: #1C2B45;
-    margin-bottom: 8px;
-    direction: ltr;
-    unicode-bidi: isolate;
-  }
-
-  .flashcard-morph {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: #555;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
   }
 }
 

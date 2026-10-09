@@ -1,36 +1,102 @@
 import { wrapHebrewSpans } from "./helpers.js";
 
-const MORPH_COLUMNS = ["Binyan", "Mode", "Person", "Gender", "Number"];
+// Each entry is either a column name or an ARRAY of column names. An array
+// is a group whose values are glued together with no separator — so a verb
+// reads "Qal · Perfect · 2MS" rather than "Qal · Perfect · 2 · M · S".
+// (Entries are separated from each other by " · ".)
+const MORPH_COLUMNS = ["Binyan", "Mode", ["Person", "Gender", "Number"]];
 const CARDS_PER_ROW = 3;
 const ROWS_PER_PAGE = 4;
 const CARDS_PER_PAGE = CARDS_PER_ROW * ROWS_PER_PAGE;
 
-function escapeHtml(text) {
-  return String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// ---------- Auto-fit: text must never reach the card border ----------
+//
+// Every printed card is a FIXED size, with a safe margin of empty space
+// (the card's padding, see style.css) between the text and the border so
+// nothing gets clipped when the cards are cut out. Text that is too long
+// for that inner box is shrunk, by measuring it — not guessing from its
+// length — until it fits.
+//
+// The measuring happens in a hidden copy of the print layout whose grid is
+// REF_GRID_WIDTH_PX wide. That's deliberately NARROWER than the grid on real
+// paper (about 717px on A4 and 739px on US Letter, because the pages have
+// a fixed 0.4in margin — see style.css), and a card that fits in a narrower
+// box always fits in a wider one, so what fits here fits on paper too —
+// including if someone prints at up to roughly 115% zoom, which narrows the
+// layout. (Very small paper such as A5 is narrower still and isn't covered.)
+const REF_GRID_WIDTH_PX = 640;
+const MIN_FIT = 0.4; // smallest the main text will ever be scaled to
+const FIT_TOLERANCE = 0.01;
+
+/**
+ * Largest scale in [min, 1] at which `fits(scale)` is true. Returns 1 if
+ * the text already fits at full size, and `min` if it doesn't even fit at
+ * the smallest allowed size (there's nothing more that can be done then).
+ * `fits` must be monotonic: if it fits at some scale, it fits at any smaller one.
+ */
+export function findFitScale(fits, { min = MIN_FIT, tolerance = FIT_TOLERANCE } = {}) {
+  if (fits(1)) return 1;
+  if (!fits(min)) return min;
+  let lo = min; // known to fit
+  let hi = 1; // known not to fit
+  while (hi - lo > tolerance) {
+    const mid = (lo + hi) / 2;
+    if (fits(mid)) lo = mid;
+    else hi = mid;
+  }
+  return lo;
+}
+
+/** Shrinks one card's text (via its --fit variable) until it fits the card's inner box. */
+function fitCard(card) {
+  const body = card.firstElementChild; // the .flashcard-body wrapper
+  if (!body) return;
+  const style = window.getComputedStyle(card);
+  const availableHeight =
+    card.clientHeight - (parseFloat(style.paddingTop) || 0) - (parseFloat(style.paddingBottom) || 0);
+  if (!(availableHeight > 0)) return; // no layout (nothing to measure)
+
+  const textBlocks = [...body.children];
+  const fits = (scale) => {
+    card.style.setProperty("--fit", String(scale));
+    const tallEnough = body.getBoundingClientRect().height <= availableHeight - 1;
+    // A single very long word can't wrap, so it can poke out sideways.
+    const wideEnough = textBlocks.every((el) => el.scrollWidth <= el.clientWidth + 1);
+    return tallEnough && wideEnough;
+  };
+
+  const scale = findFitScale(fits);
+  if (scale >= 1) card.style.removeProperty("--fit");
+  else card.style.setProperty("--fit", scale.toFixed(3));
 }
 
 /**
- * Printed cards are a FIXED height (see .flashcard in style.css) — that is
- * what guarantees each back lines up exactly behind its front, since a
- * card that grew to fit extra text would push every row below it out of
- * line with the other side. Text that wouldn't fit at full size (a long
- * vocabulary definition, an idiom) is shrunk in steps instead, via the
- * .fit-1/.fit-2/.fit-3 classes. Hebrew niqqud/cantillation marks are
- * combining characters that take up no width, so they're not counted.
+ * Briefly lays the (normally hidden) print area out off-screen at the width
+ * it will have on paper, shrinks any card whose text doesn't fit, then
+ * hides it again.
  */
-const FIT_STEPS_HEBREW = [12, 18, 24];
-const FIT_STEPS_LATIN = [40, 70, 110];
+function fitAllCards(printArea) {
+  const cards = printArea.querySelectorAll(".flashcard");
+  if (cards.length === 0) return;
 
-function fitClass(text, steps) {
-  const length = String(text || "").replace(/[\u0591-\u05C7]/g, "").length;
-  const step = steps.filter((limit) => length > limit).length;
-  return step ? ` fit-${step}` : "";
+  const originalStyle = printArea.getAttribute("style");
+  const firstPage = printArea.querySelector(".print-page");
+  printArea.style.cssText =
+    "display:block;position:fixed;left:-100000px;top:0;visibility:hidden;width:2000px;";
+  try {
+    // The page's side padding is part of its width, so measure it first
+    // and set the area to (grid width + padding on both sides).
+    const pageStyle = window.getComputedStyle(firstPage);
+    const sidePadding = (parseFloat(pageStyle.paddingLeft) || 0) + (parseFloat(pageStyle.paddingRight) || 0);
+    printArea.style.width = `${REF_GRID_WIDTH_PX + sidePadding}px`;
+    cards.forEach(fitCard);
+  } finally {
+    if (originalStyle === null) printArea.removeAttribute("style");
+    else printArea.setAttribute("style", originalStyle);
+  }
 }
 
-/** The header printed at the top of EVERY page, front and back alike. */
-function pageHeaderHtml(title, label) {
-  return `<div class="print-header"><h1 class="print-title">${escapeHtml(title)}</h1><div class="print-page-label">${label}</div></div>`;
-}
+// ---------- Card markup ----------
 
 function chunk(array, size) {
   const out = [];
@@ -38,35 +104,42 @@ function chunk(array, size) {
   return out;
 }
 
+/** "Qal · Perfect · 2MS" — see MORPH_COLUMNS for how groups are glued together. */
+function metaText(row, metaFields) {
+  return metaFields
+    .map((field) =>
+      Array.isArray(field) ? field.map((c) => row[c]).filter(Boolean).join("") : row[field]
+    )
+    .filter(Boolean)
+    .join(" · ");
+}
+
 function frontCardHtml(row, frontField) {
   const hebrew = wrapHebrewSpans(row[frontField] || "");
-  const fit = fitClass(row[frontField], FIT_STEPS_HEBREW);
-  return `<div class="flashcard flashcard-front"><div class="flashcard-hebrew${fit}">${hebrew}</div></div>`;
+  return `<div class="flashcard flashcard-front"><div class="flashcard-body"><div class="flashcard-hebrew">${hebrew}</div></div></div>`;
 }
 
 function backCardHtml(row, backField, metaFields, { backFieldIsHebrew = false, secondaryField = null } = {}) {
   const gloss = wrapHebrewSpans(row[backField] || "");
-  const glossClass =
-    "flashcard-gloss" +
-    (backFieldIsHebrew ? " flashcard-gloss-hebrew" : "") +
-    fitClass(row[backField], backFieldIsHebrew ? FIT_STEPS_HEBREW : FIT_STEPS_LATIN);
+  const glossClass = "flashcard-gloss" + (backFieldIsHebrew ? " flashcard-gloss-hebrew" : "");
   const secondaryHtml = secondaryField
-    ? `<div class="flashcard-gloss-secondary${fitClass(row[secondaryField], FIT_STEPS_LATIN)}">${row[secondaryField] || ""}</div>`
+    ? `<div class="flashcard-gloss-secondary">${row[secondaryField] || ""}</div>`
     : "";
-  const morph = metaFields.map((c) => row[c]).filter(Boolean).join(" · ");
-  return `
-    <div class="flashcard flashcard-back">
-      <div class="${glossClass}">${gloss}</div>
-      ${secondaryHtml}
-      <div class="flashcard-morph">${morph}</div>
-    </div>
-  `;
+  const morph = metaText(row, metaFields);
+  return `<div class="flashcard flashcard-back"><div class="flashcard-body"><div class="${glossClass}">${gloss}</div>${secondaryHtml}<div class="flashcard-morph">${morph}</div></div></div>`;
 }
 
 /**
  * Renders `rows` as a double-sided printable flashcard sheet and opens
  * the browser's print dialog — from there the person can print to paper
  * (with double-sided/duplex turned on) or "Save as PDF".
+ *
+ * The printed pages contain ONLY the cards: no title, no "Front"/"Back"
+ * labels, nothing else (saves ink, and keeps every page's card grid in
+ * exactly the same place). The browser's own header/footer text (date,
+ * page title, URL, page numbers) is suppressed by the `@page { margin: 0 }`
+ * rule in style.css, with the pages' own fixed padding standing in for
+ * the usual paper margin.
  *
  * Each physical sheet gets a "front" page (Hebrew only) immediately
  * followed by its "back" page (gloss + parsing) — printing double-sided
@@ -75,31 +148,31 @@ function backCardHtml(row, backField, metaFields, { backFieldIsHebrew = false, s
  * long edge" duplex convention: the card in the top-left of the front
  * ends up lined up behind the card that was in the top-right of the
  * back-as-printed, so flipping the physical sheet over reveals the
- * matching answer in the same spot.
- *
- * Every page — front AND back, every sheet — carries the identical
- * header (title + "Front"/"Back" label) and every card is a fixed
- * height, so the card grid starts at the same spot on both sides of a
- * sheet and each row stays level with its counterpart. (Previously only
- * the very first front page had a title, which pushed that one sheet's
- * fronts lower than its backs.)
+ * matching answer in the same spot. Both pages start their card grid at
+ * the same place and every card is the same fixed size, so each row on
+ * the back sits exactly behind the matching row on the front.
  *
  * `frontField` names the row property shown (in Hebrew) on the front of
  * the card, `backField` the property shown as the answer on the back,
  * and `metaFields` any extra columns (e.g. morphology, part of speech)
- * shown in small text underneath the answer. Defaults match the verb
- * dataset's column names so existing callers are unaffected.
+ * shown in small text underneath the answer — an entry that is itself
+ * an array of column names is printed as one run with no separators
+ * (see MORPH_COLUMNS). Defaults match the verb dataset's column names so
+ * existing callers are unaffected.
  *
  * `backFieldIsHebrew` styles the back's primary answer in the Hebrew
  * font/RTL instead of the default body font/LTR — for datasets (like
  * Accents) whose "answer" is itself Hebrew text rather than a gloss.
  * `secondaryField`, if given, adds one more line between the primary
  * answer and the meta line (e.g. an English name under a Hebrew one).
+ *
+ * `title` is still accepted so existing callers keep working, but it is
+ * no longer printed anywhere.
  */
 export function printFlashcards(
   rows,
   {
-    title = "Flashcards",
+    title = "Flashcards", // accepted for compatibility; no longer printed
     frontField = "Conjugation",
     backField = "Gloss Translation",
     metaFields = MORPH_COLUMNS,
@@ -146,17 +219,12 @@ export function printFlashcards(
       .join("");
 
     html += `
-      <div class="print-page">
-        ${pageHeaderHtml(title, "Front")}
-        <div class="flashcard-grid">${frontHtml}</div>
-      </div>
-      <div class="print-page${isLastPage ? " print-page-last" : ""}">
-        ${pageHeaderHtml(title, "Back (answers)")}
-        <div class="flashcard-grid">${backHtml}</div>
-      </div>
+      <div class="print-page"><div class="flashcard-grid">${frontHtml}</div></div>
+      <div class="print-page${isLastPage ? " print-page-last" : ""}"><div class="flashcard-grid">${backHtml}</div></div>
     `;
   });
 
   printArea.innerHTML = html;
+  fitAllCards(printArea);
   window.print();
 }

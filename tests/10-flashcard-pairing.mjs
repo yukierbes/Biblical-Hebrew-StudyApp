@@ -1,5 +1,5 @@
 import { setupApp, assert, summary } from "./helpers.mjs";
-import { printFlashcards } from "../public/js/print.js";
+import { printFlashcards, findFitScale } from "../public/js/print.js";
 
 const { document } = await setupApp();
 
@@ -27,9 +27,24 @@ assert(pages.length === 2, "8 cards at 12/page produces exactly 2 pages (1 front
 const frontPage = pages[0];
 const backPage = pages[1];
 
-assert(frontPage.querySelector(".print-page-label").textContent === "Front", "first page is labeled Front");
-assert(backPage.querySelector(".print-page-label").textContent.includes("Back"), "second page is labeled Back");
-assert(frontPage.querySelector(".print-title")?.textContent === "Test Deck", "title appears on the front page");
+// The printed pages carry ONLY cards — no title, no "Front"/"Back" label,
+// nothing else (saves ink, and keeps every page's grid in the same place).
+assert(
+  frontPage.querySelectorAll(".flashcard-front").length === 8 && frontPage.querySelectorAll(".flashcard-back").length === 0,
+  "first page holds only the 8 front cards"
+);
+assert(
+  backPage.querySelectorAll(".flashcard-back").length === 8 && backPage.querySelectorAll(".flashcard-front").length === 0,
+  "second page holds only the 8 back cards"
+);
+assert(
+  !printArea.querySelector(".print-title, .print-page-label, .print-header, h1"),
+  "no title, Front/Back label or header anywhere on the printed pages"
+);
+assert(
+  [...pages].every((pg) => pg.children.length === 1 && pg.firstElementChild.classList.contains("flashcard-grid")),
+  "each page contains nothing but its card grid"
+);
 
 const frontRows = frontPage.querySelectorAll(".flashcard-row");
 const backRows = backPage.querySelectorAll(".flashcard-row");
@@ -140,73 +155,89 @@ assert(
   ".flashcard-row-back rule sets justify-content: flex-end in the stylesheet"
 );
 
-// --- Front/back ALIGNMENT: the grid must start at the same height on
-// both sides of every sheet. A title that appeared only on the first
-// front page used to push that one sheet's fronts lower than its backs.
+// --- Cards-only pages: nothing but the cards, on every page of a big deck.
 printFlashcards(manyRows, { title: "Big Deck" });
-const alignPages = [...printArea.querySelectorAll(".print-page")];
-assert(alignPages.length === 4, "alignment check: 20 cards still make 4 print pages");
+const bigPages = [...printArea.querySelectorAll(".print-page")];
+assert(bigPages.length === 4, "20 cards make 4 print pages (2 sheets)");
 assert(
-  alignPages.every((pg) => pg.querySelectorAll(".print-header").length === 1),
-  "every page — front AND back, on every sheet — has exactly one header block"
+  bigPages.every((pg) => pg.querySelectorAll(".flashcard-grid").length === 1 && pg.children.length === 1),
+  "every page, front and back, is just one card grid"
 );
 assert(
-  alignPages.every((pg) => pg.querySelector(".print-header .print-title")?.textContent === "Big Deck"),
-  "every page repeats the same title, so front and back headers are identical"
+  !/Big Deck/.test(printArea.textContent),
+  "the deck title is accepted but never printed"
 );
 assert(
-  alignPages.map((pg) => pg.querySelector(".print-page-label").textContent).join("|") ===
-    "Front|Back (answers)|Front|Back (answers)",
-  "pages alternate Front / Back (answers) across every sheet"
-);
-assert(
-  alignPages.every((pg) => pg.firstElementChild.classList.contains("print-header")),
-  "the header is the first thing on every page, ahead of the card grid"
+  bigPages.map((pg) => (pg.querySelector(".flashcard-front") ? "F" : "B")).join("") === "FBFB",
+  "pages alternate front, back, front, back across every sheet"
 );
 
-// A title containing markup (e.g. a search phrase) must print as text.
-printFlashcards(rows.slice(0, 1), { title: '<b>bold</b> & "quoted"' });
-assert(
-  printArea.querySelector(".print-title").textContent === '<b>bold</b> & "quoted"' &&
-    !printArea.querySelector(".print-title b"),
-  "a title containing HTML is shown as plain text, not interpreted as markup"
-);
-
-// Long text is shrunk in steps rather than letting a card grow taller
-// (a taller back card would push its row out of line with the front).
-const longGloss = "x".repeat(150);
+// --- Verb morphology line: "Qal · Perfect · 2MS" (person/gender/number
+// glued together, not separated by bullets).
 printFlashcards(
-  [
-    { Conjugation: "S", "Gloss Translation": "short", Binyan: "Qal" },
-    { Conjugation: "M", "Gloss Translation": "m".repeat(60), Binyan: "Qal" },
-    { Conjugation: "L", "Gloss Translation": longGloss, Binyan: "Qal" },
-  ],
-  { title: "Fit" }
+  [{ Conjugation: "X", "Gloss Translation": "you killed", Binyan: "Qal", Mode: "Perfect", Person: "2", Gender: "M", Number: "S" }],
+  { title: "Verb" }
 );
-// (Back rows are reversed left-to-right, so look each gloss up by its text.)
-const glossByText = (t) =>
-  [...printArea.querySelectorAll(".flashcard-back .flashcard-gloss")].find((g) => g.textContent === t);
-assert(!/\bfit-\d/.test(glossByText("short").className), "short text is left at full size");
-assert(/\bfit-1\b/.test(glossByText("m".repeat(60)).className), "medium-long text shrinks one step");
-assert(/\bfit-3\b/.test(glossByText(longGloss).className), "very long text shrinks the maximum amount");
-
-// Hebrew niqqud are combining marks that take no width, so they must not
-// count towards how "long" a Hebrew word is.
-const pointed = "\u05D1\u05BC\u05B0\u05E8\u05B5\u05D0\u05E9\u05C1\u05B4\u05D9\u05EA".repeat(1); // 6 letters + 5 marks
-printFlashcards([{ Conjugation: pointed, "Gloss Translation": "g", Binyan: "Qal" }], { title: "Niqqud" });
 assert(
-  !/\bfit-\d/.test(printArea.querySelector(".flashcard-hebrew").className),
-  "a short pointed Hebrew word is not shrunk just because of its niqqud"
+  printArea.querySelector(".flashcard-morph").textContent === "Qal · Perfect · 2MS",
+  'verb morphology prints as "Qal · Perfect · 2MS"'
+);
+printFlashcards(
+  [{ Conjugation: "X", "Gloss Translation": "killing", Binyan: "Qal", Mode: "Active Participle", Person: "", Gender: "F", Number: "P" }],
+  { title: "Verb" }
+);
+assert(
+  printArea.querySelector(".flashcard-morph").textContent === "Qal · Active Participle · FP",
+  "a missing person is simply left out of the glued group (FP)"
+);
+printFlashcards(
+  [{ Conjugation: "X", "Gloss Translation": "to kill", Binyan: "Qal", Mode: "Infinitive Construct", Person: "", Gender: "", Number: "" }],
+  { title: "Verb" }
+);
+assert(
+  printArea.querySelector(".flashcard-morph").textContent === "Qal · Infinitive Construct",
+  "an entirely empty group leaves no stray separator"
+);
+// Other datasets still use plain " · " separated columns.
+printFlashcards(
+  [{ Hebrew: "א", English: "x", Lesson: "1A", POS: "Noun", Frequency: 5 }],
+  { frontField: "Hebrew", backField: "English", metaFields: ["Lesson", "POS", "Frequency"] }
+);
+assert(
+  printArea.querySelector(".flashcard-morph").textContent === "1A · Noun · 5",
+  "vocabulary still prints its columns separated by bullets"
 );
 
-// The stylesheet must pin the things the alignment depends on, since
-// jsdom can't lay anything out to check it directly.
+// --- Auto-fit search: finds the largest size that fits.
+{
+  const calls = [];
+  // Pretend anything at or below 0.62 of full size fits.
+  const fits = (scale) => (calls.push(scale), scale <= 0.62);
+  const scale = findFitScale(fits);
+  assert(scale <= 0.62 && scale > 0.6, `finds the largest fitting scale (got ${scale.toFixed(3)}, expected just under 0.62)`);
+  assert(findFitScale(() => true) === 1, "text that already fits is left at full size");
+  assert(findFitScale(() => false) === 0.4, "text that fits at no size is clamped to the minimum scale");
+  assert(findFitScale((x) => x <= 0.5, { min: 0.45 }) >= 0.45, "never goes below the requested minimum");
+  assert(calls.length < 20, "the search is quick (binary search, not a slow scan)");
+}
+
+// --- Stylesheet: the things the alignment and safe margin depend on
+// (jsdom can't lay anything out, so these are checked in the CSS itself;
+// the real measurements are done by printing to PDF in a real browser).
 const cssNoComments = cssText.replace(/\/\*[\s\S]*?\*\//g, "");
-assert(/\.print-header\s*\{[^}]*\bheight:\s*\d+px/.test(cssNoComments), ".print-header has a fixed height");
+assert(/@page\s*\{[^}]*margin:\s*0\s*;?[^}]*\}/.test(cssNoComments), "@page margin is 0 (so the browser prints no date/title/URL/page-number text)");
+assert(/\.print-page\s*\{[^}]*padding:\s*0\.4in/.test(cssNoComments), "pages supply their own fixed margin instead");
 assert(
   /\.flashcard\s*\{[^}]*(^|[\s;])height:\s*\d+px/.test(cssNoComments) &&
     !/\.flashcard\s*\{[^}]*min-height/.test(cssNoComments),
   ".flashcard has a fixed height (not a growable min-height)"
 );
+assert(/\.flashcard\s*\{[^}]*padding:\s*1[2-9]px/.test(cssNoComments), ".flashcard has a safe inner margin (padding) so text never reaches the border");
+{
+  const px = (re) => parseFloat((cssNoComments.match(re) || [])[1]);
+  const answerRem = px(/\.flashcard-gloss\s*\{[^}]*font-size:\s*calc\(\s*([\d.]+)rem/);
+  const morphRem = px(/\.flashcard-morph\s*\{[^}]*font-size:\s*([\d.]+)rem/);
+  assert(morphRem <= answerRem * 0.65, `the small reference line (${morphRem}rem) is much smaller than the answer (${answerRem}rem)`);
+}
 
 summary();
