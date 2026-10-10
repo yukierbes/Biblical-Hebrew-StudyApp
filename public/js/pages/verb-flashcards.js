@@ -4,6 +4,7 @@ import { renderDatasetSelector, renderFilterSidebar } from "../widgets.js";
 import { wrapHebrewSpans, morphKey } from "../helpers.js";
 import { sortByPriority, recordItemResult, recordStreakActivity, getMasteryStats } from "../srs.js";
 import { consumeDeepLink } from "../deep-link.js";
+import { attachSwipeToMark } from "../swipe-card.js";
 
 const MORPH_COLUMNS = ["Binyan", "Mode", "Person", "Gender", "Number"];
 
@@ -238,6 +239,7 @@ function render(content, sidebarExtra, navigate) {
       cardBtn.innerHTML = `
         <div class="flashcard-interactive-face flashcard-interactive-hebrew">${wrapHebrewSpans(row.Conjugation || "")}</div>
         <div class="flashcard-interactive-hint">${state.flipped ? "" : "Tap to flip"}</div>
+        ${state.flipped ? `<div class="flashcard-swipe-hint">← Review Later &nbsp;·&nbsp; Know It →</div>` : ""}
       `;
     } else {
       const meta = MORPH_COLUMNS.map((c) => row[c]).filter(Boolean).join(" · ");
@@ -245,6 +247,7 @@ function render(content, sidebarExtra, navigate) {
         <div class="flashcard-interactive-face flashcard-interactive-english">${wrapHebrewSpans(row["Gloss Translation"] || "")}</div>
         <div class="flashcard-interactive-meta">${meta}</div>
         <div class="flashcard-interactive-hint">${state.flipped ? "" : "Tap to flip"}</div>
+        ${state.flipped ? `<div class="flashcard-swipe-hint">← Review Later &nbsp;·&nbsp; Know It →</div>` : ""}
       `;
     }
     cardBtn.addEventListener("click", () => {
@@ -252,6 +255,34 @@ function render(content, sidebarExtra, navigate) {
       render(content, sidebarExtra, navigate);
     });
     container.appendChild(cardBtn);
+
+    function markKnown() {
+      recordItemResult(srsMode(), morphKey(row), true);
+      recordStreakActivity();
+      state.knownCount += 1;
+      state.index += 1;
+      state.flipped = false;
+      render(content, sidebarExtra, navigate);
+    }
+
+    function markReview() {
+      recordItemResult(srsMode(), morphKey(row), false);
+      recordStreakActivity();
+      state.reviewWords.push(row);
+      state.index += 1;
+      state.flipped = false;
+      render(content, sidebarExtra, navigate);
+    }
+
+    // On a touchscreen, once the card is flipped (showing the answer),
+    // swipe right for "I Know It" / left for "Review Later" — same
+    // outcome as the buttons below, just faster once flipped. (Same
+    // gesture the vocabulary and accent flashcards already use.)
+    attachSwipeToMark(cardBtn, {
+      isEnabled: () => state.flipped,
+      onSwipeRight: markKnown,
+      onSwipeLeft: markReview,
+    });
 
     const flipRow = document.createElement("div");
     flipRow.className = "button-row";
@@ -273,27 +304,13 @@ function render(content, sidebarExtra, navigate) {
     knowBtn.type = "button";
     knowBtn.className = "btn btn-know";
     knowBtn.textContent = "I Know It";
-    knowBtn.addEventListener("click", () => {
-      recordItemResult(srsMode(), morphKey(row), true);
-      recordStreakActivity();
-      state.knownCount += 1;
-      state.index += 1;
-      state.flipped = false;
-      render(content, sidebarExtra, navigate);
-    });
+    knowBtn.addEventListener("click", markKnown);
 
     const reviewBtn = document.createElement("button");
     reviewBtn.type = "button";
     reviewBtn.className = "btn btn-review";
     reviewBtn.textContent = "Review Later";
-    reviewBtn.addEventListener("click", () => {
-      recordItemResult(srsMode(), morphKey(row), false);
-      recordStreakActivity();
-      state.reviewWords.push(row);
-      state.index += 1;
-      state.flipped = false;
-      render(content, sidebarExtra, navigate);
-    });
+    reviewBtn.addEventListener("click", markReview);
 
     markRow.appendChild(knowBtn);
     markRow.appendChild(reviewBtn);

@@ -77,6 +77,11 @@ html, body {
   display: flex;
   height: 100vh;
   position: relative;
+  /* The sidebar's width. js/sidebar-resize.js overrides this (inline, on
+     #app) when the person drags the sidebar's edge; everything that has to
+     follow the sidebar's edge — the sidebar, the collapse button and the
+     drag handle — reads this one value. */
+  --sidebar-width: 250px;
 }
 
 /* ============ Signature mark ============ */
@@ -98,7 +103,7 @@ h3::before,
 /* ============ Sidebar ============ */
 
 #sidebar {
-  width: 250px;
+  width: var(--sidebar-width);
   flex-shrink: 0;
   background: var(--paper);
   border-right: 1px solid var(--hairline);
@@ -121,7 +126,7 @@ h3::before,
 #sidebar-toggle {
   position: absolute;
   top: 32px;
-  left: 236px; /* sits on the seam between sidebar and content */
+  left: calc(var(--sidebar-width) - 14px); /* sits on the seam between sidebar and content */
   width: 30px;
   height: 30px;
   flex-shrink: 0;
@@ -149,6 +154,65 @@ h3::before,
 
 #app.sidebar-collapsed #sidebar-toggle {
   left: 10px;
+}
+
+/* The draggable edge of the sidebar: a strip straddling the seam, full
+   height, with a small grip in the middle so it can be found. */
+#sidebar-resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--sidebar-width) - 4px);
+  width: 8px;
+  cursor: col-resize;
+  touch-action: none; /* let a finger drag it instead of scrolling the page */
+  z-index: 4; /* above the sidebar, below the collapse button that sits on the same seam */
+  transition: left 0.15s ease;
+}
+#sidebar-resizer::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 2px;
+  background: var(--hairline-strong);
+  transition: background 0.12s ease, width 0.12s ease;
+}
+#sidebar-resizer:hover::after,
+#sidebar-resizer:focus-visible::after,
+#app.sidebar-resizing #sidebar-resizer::after {
+  background: var(--accent);
+  width: 4px;
+}
+#sidebar-resizer:focus-visible {
+  outline: none;
+}
+#app.sidebar-collapsed #sidebar-resizer {
+  display: none;
+}
+
+/* While dragging, follow the pointer exactly (no easing) and don't let the
+   drag select text on the page. */
+#app.sidebar-resizing {
+  cursor: col-resize;
+  user-select: none;
+  -webkit-user-select: none;
+}
+#app.sidebar-resizing #sidebar,
+#app.sidebar-resizing #sidebar-toggle,
+#app.sidebar-resizing #sidebar-resizer {
+  transition: none;
+}
+
+/* A finger needs a bigger target than a mouse pointer does. */
+@media (pointer: coarse) {
+  #sidebar-resizer {
+    width: 24px;
+    left: calc(var(--sidebar-width) - 12px);
+  }
 }
 
 .sidebar-inner {
@@ -304,12 +368,13 @@ h3::before,
 
   /* The sidebar becomes a full-height overlay rather than squeezing the
      content column down to nothing on a narrow screen. */
+  #app { --sidebar-width: 240px; }
   #sidebar {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 240px;
+    width: var(--sidebar-width);
     z-index: 20;
     box-shadow: 2px 0 16px rgba(0, 0, 0, 0.18);
   }
@@ -317,8 +382,14 @@ h3::before,
     width: 0;
     box-shadow: none;
   }
-  #sidebar-toggle { left: 226px; }
+  #sidebar-toggle { left: calc(var(--sidebar-width) - 14px); }
   #app.sidebar-collapsed #sidebar-toggle { left: 10px; }
+  /* Fixed like the sidebar it belongs to, and above it, so it can still be
+     grabbed while the sidebar is covering the page. */
+  #sidebar-resizer {
+    position: fixed;
+    z-index: 21;
+  }
 
   #app:not(.sidebar-collapsed) #sidebar-backdrop {
     display: block;
@@ -1019,6 +1090,23 @@ select:focus-visible,
   text-underline-offset: 2px;
 }
 .select-all-btn:hover { color: var(--ink); }
+.select-all-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  text-decoration: none;
+}
+.select-all-btn:disabled:hover { color: var(--accent); }
+
+/* "Select all" on the left, "Clear all" on the right, flush with the
+   edges of the checkbox list underneath. */
+.select-all-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.select-all-row .select-all-btn { margin: 0; }
 
 .checkbox-list {
   max-height: 160px;

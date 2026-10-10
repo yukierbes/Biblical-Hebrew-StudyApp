@@ -6,7 +6,7 @@ const { document } = await setupApp();
 console.log("Flashcard double-sided print pairing");
 
 // 8 fake rows: enough to span more than one row (3 per row) but stay
-// within a single page (12 per page), so we can check the reversal
+// within a single page (15 per page: 5 rows of 3), so we can check the reversal
 // math cleanly without also needing to check page-boundary behavior.
 const rows = Array.from({ length: 8 }, (_, i) => ({
   Conjugation: `HEB${i}`,
@@ -22,7 +22,7 @@ printFlashcards(rows, { title: "Test Deck" });
 
 const printArea = document.getElementById("print-area");
 const pages = printArea.querySelectorAll(".print-page");
-assert(pages.length === 2, "8 cards at 12/page produces exactly 2 pages (1 front + 1 back)");
+assert(pages.length === 2, "8 cards at 15/page produces exactly 2 pages (1 front + 1 back)");
 
 const frontPage = pages[0];
 const backPage = pages[1];
@@ -91,7 +91,7 @@ assert(backPage.querySelectorAll(".flashcard-morph").length === 8, "every back c
 assert(!frontPage.classList.contains("print-page-last"), "front page still forces a page break after it");
 assert(backPage.classList.contains("print-page-last"), "the final (back) page does not force a trailing page break");
 
-// --- Multi-page: more than 12 cards should split into multiple front/back pairs ---
+// --- Multi-page: more than 15 cards should split into multiple front/back pairs ---
 const manyRows = Array.from({ length: 20 }, (_, i) => ({
   Conjugation: `H${i}`,
   "Gloss Translation": `g${i}`,
@@ -103,7 +103,7 @@ const manyRows = Array.from({ length: 20 }, (_, i) => ({
 }));
 printFlashcards(manyRows, { title: "Big Deck" });
 const manyPages = printArea.querySelectorAll(".print-page");
-assert(manyPages.length === 4, "20 cards at 12/page produces 2 page-pairs = 4 print pages");
+assert(manyPages.length === 4, "20 cards at 15/page produces 2 page-pairs = 4 print pages");
 assert(
   printArea.querySelectorAll(".flashcard-front").length === 20,
   "all 20 cards appear exactly once as fronts across both page-pairs"
@@ -116,6 +116,31 @@ assert(
   [...manyPages].filter((p) => p.classList.contains("print-page-last")).length === 1,
   "exactly one page (the very last) skips the forced page break, even across multiple page-pairs"
 );
+
+// --- Page capacity: a sheet holds 5 rows of 3 cards (15), on each side. ---
+{
+  const deck = (n) => manyRows.concat(manyRows).slice(0, n);
+  const sheetsFor = (n) => {
+    printFlashcards(deck(n), { title: "Capacity" });
+    return printArea.querySelectorAll(".print-page").length / 2;
+  };
+  assert(sheetsFor(15) === 1, "exactly 15 cards fit on one sheet (one front page + one back page)");
+  assert(sheetsFor(16) === 2, "a 16th card starts a second sheet");
+  assert(sheetsFor(30) === 2, "30 cards make 2 full sheets");
+  assert(sheetsFor(31) === 3, "a 31st card starts a third sheet");
+
+  printFlashcards(deck(15), { title: "Capacity" });
+  const [front15, back15] = printArea.querySelectorAll(".print-page");
+  assert(front15.querySelectorAll(".flashcard-row").length === 5, "a full front page has 5 rows");
+  assert(back15.querySelectorAll(".flashcard-row").length === 5, "a full back page has 5 rows");
+  assert(
+    [...front15.querySelectorAll(".flashcard-row")].every((r) => r.children.length === 3),
+    "each of those rows has 3 cards"
+  );
+  printFlashcards(deck(16), { title: "Capacity" });
+  const secondFront = printArea.querySelectorAll(".print-page")[2];
+  assert(secondFront.querySelectorAll(".flashcard").length === 1, "the 16th card sits alone on the next sheet");
+}
 
 // --- The exact reported bug: 1 or 2 cards (a partial row) must have
 // their back-row packed against the RIGHT edge, not the left, so the

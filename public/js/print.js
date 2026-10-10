@@ -6,7 +6,7 @@ import { wrapHebrewSpans } from "./helpers.js";
 // (Entries are separated from each other by " · ".)
 const MORPH_COLUMNS = ["Binyan", "Mode", ["Person", "Gender", "Number"]];
 const CARDS_PER_ROW = 3;
-const ROWS_PER_PAGE = 4;
+const ROWS_PER_PAGE = 5;
 const CARDS_PER_PAGE = CARDS_PER_ROW * ROWS_PER_PAGE;
 
 // ---------- Auto-fit: text must never reach the card border ----------

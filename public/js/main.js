@@ -23,6 +23,7 @@ import { initHebrewKeyboard, isHebrewKeyboardOpen, closeHebrewKeyboard } from ".
 import { initAccentKeyboard, isAccentKeyboardOpen, closeAccentKeyboard } from "./accent-keyboard.js";
 import { initProgressSidebar } from "./srs.js";
 import { initCloudSyncUI, cloudSyncSignedIn, cloudSyncSignedOut, openSignIn } from "./cloud-sync.js";
+import { initSidebarResize } from "./sidebar-resize.js";
 
 const PAGES = {
   home: homePage,
@@ -89,6 +90,9 @@ setSidebarCollapsed(initiallyCollapsed);
 sidebarToggleEl.addEventListener("click", () => {
   setSidebarCollapsed(!appEl.classList.contains("sidebar-collapsed"));
 });
+
+// Drag the sidebar's edge to make it wider or narrower (remembered between visits).
+initSidebarResize({ appEl, handleEl: document.getElementById("sidebar-resizer") });
 sidebarBackdropEl.addEventListener("click", () => setSidebarCollapsed(true));
 
 let currentPage = null;

@@ -125,14 +125,33 @@ export function renderCheckboxList(container, { label, options, selected, onChan
   const selectedSet = new Set(selected || []);
   const allSelected = options.every((o) => selectedSet.has(o));
 
-  const toggleAll = document.createElement("button");
-  toggleAll.type = "button";
-  toggleAll.className = "select-all-btn";
-  toggleAll.textContent = allSelected ? "Clear all" : "Select all";
-  toggleAll.addEventListener("click", () => {
-    onChange(allSelected ? [] : [...options]);
-  });
-  container.appendChild(toggleAll);
+  // "Select all" sits at the left and "Clear all" at the right, lined up
+  // with the edge of the box below, so a person can wipe out just THIS
+  // filter's choices without touching any of the others (the sidebar's
+  // "Reset Filters" button, by contrast, resets every filter at once).
+  // Whichever one wouldn't change anything is greyed out.
+  const buttonRow = document.createElement("div");
+  buttonRow.className = "select-all-row";
+
+  const selectAllBtn = document.createElement("button");
+  selectAllBtn.type = "button";
+  selectAllBtn.className = "select-all-btn";
+  selectAllBtn.textContent = "Select all";
+  selectAllBtn.disabled = allSelected;
+  if (label) selectAllBtn.setAttribute("aria-label", `Select all: ${label}`);
+  selectAllBtn.addEventListener("click", () => onChange([...options]));
+
+  const clearAllBtn = document.createElement("button");
+  clearAllBtn.type = "button";
+  clearAllBtn.className = "select-all-btn clear-all-btn";
+  clearAllBtn.textContent = "Clear all";
+  clearAllBtn.disabled = selectedSet.size === 0;
+  if (label) clearAllBtn.setAttribute("aria-label", `Clear all: ${label}`);
+  clearAllBtn.addEventListener("click", () => onChange([]));
+
+  buttonRow.appendChild(selectAllBtn);
+  buttonRow.appendChild(clearAllBtn);
+  container.appendChild(buttonRow);
 
   const list = document.createElement("div");
   list.className = "checkbox-list";

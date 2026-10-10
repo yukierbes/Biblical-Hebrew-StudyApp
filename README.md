@@ -231,7 +231,12 @@ After running `node scripts/build-data.mjs`:
   double-sided printable-flashcard (PDF, via the browser's print dialog)
   export — Hebrew on the front, gloss + parsing on the back, laid out so
   printing double-sided and flipping the sheet lines each answer up
-  behind its question
+  behind its question. Each sheet holds 15 cards (5 rows of 3) per side
+  and the printed pages contain only the cards — no titles, labels, or
+  headers. Print in **portrait** orientation (five rows are too tall for
+  a landscape page). The browser's own date/URL/page-number text is
+  suppressed by the page's `@page { margin: 0 }` rule; if a browser still
+  shows it, untick "Headers and footers" in the print dialog
 - **Vocabulary Review** — a separate, filterable vocabulary table
   (Lesson, Part of Speech, Category, and a minimum-Frequency filter),
   with the same CSV/Excel export and visible-columns picker as Review.
@@ -273,8 +278,12 @@ After running `node scripts/build-data.mjs`:
   filtered in. All of this is per-browser (localStorage) and resettable
   from the sidebar.
 - **Sidebar** — collapsible (hamburger toggle, safe from being clipped
-  when collapsed) and independently scrollable from the page, dataset +
-  filter selection with "Select all", and an Accessibility section
+  when collapsed), independently scrollable from the page, and
+  resizable: drag its right edge (or focus the edge and use the arrow
+  keys; double-click resets) and the width is remembered. Dataset +
+  filter selection, each filter box with its own "Select all" and
+  "Clear all" (the "Reset Filters" button clears every filter at once),
+  and an Accessibility section
   (dark mode, adjustable text size 80–160%, keyboard shortcuts reference
   — also reachable by pressing `?` anywhere)
 - **Keyboard support** — visible focus rings throughout; arrow keys move
@@ -282,7 +291,9 @@ After running `node scripts/build-data.mjs`:
   the sidebar); `Enter` advances a quiz question / reveals an answer;
   digits `1`–`9` pick a Selection-mode answer; `Esc` closes dialogs
 - **Mobile** — the sidebar becomes a full-height overlay with a
-  tap-to-dismiss backdrop below 720px, rather than squeezing the page
+  tap-to-dismiss backdrop below 720px, rather than squeezing the page.
+  On the Verb, Vocabulary, and Accents flashcards, flip a card and then
+  swipe it right for "I Know It" or left for "Review Later"
 - **Installable / offline** — add-to-home-screen support via the web app
   manifest, with a service worker caching the app shell so Review,
   Parsing, Construction, and Word Lookup all keep working with no
