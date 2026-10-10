@@ -206,6 +206,23 @@ export function downloadXLSX(rows, columns, filename, sheetName = "Sheet1") {
   XLSX.writeFile(wb, filename);
 }
 
+/**
+ * Downloads a workbook with one sheet per entry of `sheets`, each given as
+ * plain rows of cells (an array of arrays) — so the sheet looks exactly like
+ * the rows, with no header row added. `widths` (optional) are column widths
+ * in characters.
+ *   sheets: [{ name, rows: [[cell, ...], ...], widths?: [number, ...] }]
+ */
+export function downloadXLSXSheets(sheets, filename) {
+  const wb = XLSX.utils.book_new();
+  for (const sheet of sheets) {
+    const ws = XLSX.utils.aoa_to_sheet(sheet.rows);
+    if (sheet.widths) ws["!cols"] = sheet.widths.map((wch) => ({ wch }));
+    XLSX.utils.book_append_sheet(wb, ws, sheet.name);
+  }
+  XLSX.writeFile(wb, filename);
+}
+
 const HEBREW_RUN = /[\u0590-\u05FF\uFB1D-\uFB4F]+/g;
 
 /**

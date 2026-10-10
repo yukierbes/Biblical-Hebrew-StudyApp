@@ -1,6 +1,6 @@
 // Bump this whenever any cached file changes, so old clients pick up
 // the new version instead of being stuck on a stale cache forever.
-const CACHE_VERSION = "hebrew-verb-app-v38";
+const CACHE_VERSION = "hebrew-verb-app-v39";
 
 const APP_SHELL = [
   "./",
@@ -34,6 +34,8 @@ const APP_SHELL = [
   "js/toast.js",
   "js/swipe-card.js",
   "js/sidebar-resize.js",
+  "js/verb-tables.js",
+  "js/print-tables.js",
   "js/srs.js",
   "js/cloud-sync.js",
   "js/auth-fetch.js",

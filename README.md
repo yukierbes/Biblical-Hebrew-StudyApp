@@ -227,7 +227,16 @@ After running `node scripts/build-data.mjs`:
 
 ## Feature overview
 
-- **Review** — browsable/filterable verb table with CSV, Excel, and
+- **Review** — the verbs in three views, chosen with the buttons above
+  the table (the choice is remembered): **List** (every form as a row),
+  **By Binyan** (for each selected verb and binyan, one small table per
+  mode — PGN | Conjugation), and **By Verb Root** (one table per verb:
+  Mode | PGN | a column for each binyan the verb has). Forms that share the
+  same PGN sit in one cell separated by "/". The sidebar's verb selection
+  and filters apply to all three. In the two table views, "Download Excel"
+  saves a workbook with one sheet per verb, laid out like the tables, and
+  "Print Tables" prints them (By Verb Root asks for a landscape page; each
+  verb starts on a new page). The List view has the CSV, Excel, and
   double-sided printable-flashcard (PDF, via the browser's print dialog)
   export — Hebrew on the front, gloss + parsing on the back, laid out so
   printing double-sided and flipping the sheet lines each answer up

@@ -1,4 +1,5 @@
 import { wrapHebrewSpans } from "./helpers.js";
+import { clearTablePrintStyle } from "./print-tables.js";
 
 // Each entry is either a column name or an ARRAY of column names. An array
 // is a group whose values are glued together with no separator — so a verb
@@ -186,6 +187,10 @@ export function printFlashcards(
     printArea.id = "print-area";
     document.body.appendChild(printArea);
   }
+
+  // A leftover page setup from printing tables (see print-tables.js) must
+  // never reach a flashcard print, which relies on `@page { margin: 0 }`.
+  clearTablePrintStyle();
 
   const pages = chunk(rows, CARDS_PER_PAGE);
   let html = "";

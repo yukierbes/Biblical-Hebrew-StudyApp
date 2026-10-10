@@ -2,10 +2,37 @@ import { getAvailableDatasets, loadVerbData } from "../data.js";
 import { applyFilters, GENERATOR_COLUMNS } from "../filters.js";
 import { renderDatasetSelector, renderFilterSidebar, renderCheckboxList } from "../widgets.js";
 import { renderTable } from "../table.js";
-import { downloadCSV, downloadXLSX, wrapHebrewSpans } from "../helpers.js";
+import { downloadCSV, downloadXLSX, downloadXLSXSheets, wrapHebrewSpans } from "../helpers.js";
 import { printFlashcards } from "../print.js";
+import { buildViewModel, viewHtml, exportSheets } from "../verb-tables.js";
+import { printVerbTables } from "../print-tables.js";
 
 let state = null;
+
+// The three ways to look at the verbs. The choice is remembered between visits.
+const VIEWS = [
+  ["list", "List"],
+  ["binyan", "By Binyan"],
+  ["root", "By Verb Root"],
+];
+const VIEW_STORAGE_KEY = "verbReviewView";
+
+function loadSavedView() {
+  try {
+    const saved = localStorage.getItem(VIEW_STORAGE_KEY);
+    return VIEWS.some(([key]) => key === saved) ? saved : "list";
+  } catch (e) {
+    return "list";
+  }
+}
+
+function saveView(view) {
+  try {
+    localStorage.setItem(VIEW_STORAGE_KEY, view);
+  } catch (e) {
+    /* storage unavailable — the choice just isn't remembered */
+  }
+}
 
 function freshState() {
   const available = getAvailableDatasets();
@@ -13,6 +40,7 @@ function freshState() {
     datasets: { selected: available.length ? [available[0]] : [] },
     filters: Object.fromEntries(GENERATOR_COLUMNS.map((c) => [c, []])),
     visibleColumns: null, // null = "all"; set once we know the columns
+    view: loadSavedView(), // "list" | "binyan" | "root"
   };
 }
 
@@ -74,8 +102,10 @@ function render(content, sidebarExtra, navigate) {
     <h1 class="page-title">Verb Review</h1>
     <div class="info-box">
       <b>Instructions</b><br>
-      Use the filters in the sidebar to narrow the table down to what you want to study.<br>
-      Download the table as CSV/Excel, or print it as flashcards, to build study lists.
+      Use the filters in the sidebar to narrow down what you want to study.<br>
+      Switch views below: <b>List</b> (every form as a row), <b>By Binyan</b> (a table for each binyan and mode),
+      or <b>By Verb Root</b> (one table per verb, with a column for each binyan).<br>
+      Download the data as CSV/Excel, print it as flashcards, or print the tables, to build study lists.
     </div>
     <hr class="hr" />
   `;
@@ -119,6 +149,76 @@ function render(content, sidebarExtra, navigate) {
     div.className = "alert alert-warning";
     div.textContent = "No verbs match the selected filters.";
     content.appendChild(div);
+    return;
+  }
+
+  // Navigation (shared by every view)
+  function appendNavigation() {
+    const navWrap = document.createElement("div");
+    navWrap.innerHTML = `<hr class="hr"/>`;
+    const homeBtn = document.createElement("button");
+    homeBtn.className = "btn btn-secondary";
+    homeBtn.textContent = "Return to Home Page";
+    homeBtn.addEventListener("click", () => navigate("home"));
+    navWrap.appendChild(homeBtn);
+    content.appendChild(navWrap);
+  }
+
+  // ---- View switcher: List | By Binyan | By Verb Root ----
+  const toolbar = document.createElement("div");
+  toolbar.className = "verb-tables-toolbar";
+  const switcher = document.createElement("div");
+  switcher.className = "view-switch";
+  switcher.setAttribute("role", "group");
+  switcher.setAttribute("aria-label", "How to view the verbs");
+  for (const [key, label] of VIEWS) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.dataset.view = key;
+    btn.textContent = label;
+    btn.setAttribute("aria-pressed", String(state.view === key));
+    btn.addEventListener("click", () => {
+      if (state.view === key) return;
+      state.view = key;
+      saveView(key);
+      render(content, sidebarExtra, navigate);
+    });
+    switcher.appendChild(btn);
+  }
+  toolbar.appendChild(switcher);
+  content.appendChild(toolbar);
+
+  // ---- The two table views ----
+  // (Visible Columns only applies to the List view, so it isn't shown here.)
+  if (state.view !== "list") {
+    const model = buildViewModel(state.view, df);
+
+    const actions = document.createElement("div");
+    actions.className = "verb-tables-actions";
+
+    const xlsxBtn = document.createElement("button");
+    xlsxBtn.className = "btn";
+    xlsxBtn.textContent = "Download Excel";
+    xlsxBtn.title = "One sheet per verb, laid out like the tables below";
+    xlsxBtn.addEventListener("click", () =>
+      downloadXLSXSheets(exportSheets(state.view, model), state.view === "binyan" ? "verbs_by_binyan.xlsx" : "verbs_by_root.xlsx")
+    );
+
+    const printBtn = document.createElement("button");
+    printBtn.className = "btn btn-secondary";
+    printBtn.textContent = "Print Tables";
+    printBtn.addEventListener("click", () => printVerbTables(state.view, model));
+
+    actions.appendChild(xlsxBtn);
+    actions.appendChild(printBtn);
+    toolbar.appendChild(actions);
+
+    const holder = document.createElement("div");
+    holder.className = "verb-tables";
+    holder.innerHTML = viewHtml(state.view, model);
+    content.appendChild(holder);
+
+    appendNavigation();
     return;
   }
 
@@ -194,13 +294,5 @@ function render(content, sidebarExtra, navigate) {
 
   renderMainTable();
 
-  // Navigation
-  const navWrap = document.createElement("div");
-  navWrap.innerHTML = `<hr class="hr"/>`;
-  const homeBtn = document.createElement("button");
-  homeBtn.className = "btn btn-secondary";
-  homeBtn.textContent = "Return to Home Page";
-  homeBtn.addEventListener("click", () => navigate("home"));
-  navWrap.appendChild(homeBtn);
-  content.appendChild(navWrap);
+  appendNavigation();
 }
