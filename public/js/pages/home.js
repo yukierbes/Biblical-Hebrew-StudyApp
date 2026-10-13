@@ -1,6 +1,7 @@
 import { getVocabRows } from "../vocab-data.js";
 import { vocabRowKey } from "../vocab-overrides.js";
 import { getAccentRows } from "../accent-data.js";
+import { getConsonantRows, getVowelRows } from "../letter-data.js";
 import { accentRowKey } from "../accent-filters.js";
 import { getDueCount, getDailyProgress } from "../srs.js";
 
@@ -22,6 +23,60 @@ const FEATURED_MODES = [
     desc: "Quickly search for a Hebrew word or English gloss to see how it parses",
     key: "search",
     buttonLabel: "Word Lookup",
+  },
+];
+
+const CONSONANT_MODES = [
+  {
+    label: "Review",
+    desc: "Browse and filter the consonants by Category, with printable flashcards and practice tables",
+    key: "consonant-review",
+    buttonLabel: "Review",
+  },
+  {
+    label: "Flashcards",
+    desc: "See a letter in Hebrew and flip to reveal its name and transliteration",
+    key: "consonant-flashcards",
+    buttonLabel: "Flashcards",
+  },
+  {
+    label: "Typing",
+    desc: "Type the letter from its name, or select the keyboard shortcut that types it, with Practice and Quiz modes",
+    key: "consonant-typing",
+    buttonLabel: "Typing",
+  },
+  {
+    label: "Games",
+    desc: "Five arcade-style modes that test recall — Survival Sprint, Beat the Clock, Memory Match, Lightning Round, and Category Sort",
+    key: "consonant-games",
+    buttonLabel: "Games",
+  },
+];
+
+const VOWEL_MODES = [
+  {
+    label: "Review",
+    desc: "Browse and filter the vowels by Class and Length, with printable flashcards and practice tables",
+    key: "vowel-review",
+    buttonLabel: "Review",
+  },
+  {
+    label: "Flashcards",
+    desc: "See a vowel in Hebrew and flip to reveal its class, name, and length",
+    key: "vowel-flashcards",
+    buttonLabel: "Flashcards",
+  },
+  {
+    label: "Typing",
+    desc: "Type the vowel from its name, or select the keyboard shortcut that types it, with Practice and Quiz modes",
+    key: "vowel-typing",
+    buttonLabel: "Typing",
+  },
+  {
+    label: "Games",
+    desc: "Five arcade-style modes that test recall — Survival Sprint, Beat the Clock, Memory Match, Lightning Round, and Class Sort",
+    key: "vowel-games",
+    buttonLabel: "Games",
   },
 ];
 
@@ -117,6 +172,12 @@ function todayCardHtml() {
   for (const mode of ["accent-typing-names", "accent-typing-symbol", "accent-flashcards"]) {
     due += getDueCount(mode, accentRows, accentRowKey);
   }
+  for (const prefix of ["consonant", "vowel"]) {
+    const rows = prefix === "consonant" ? getConsonantRows() : getVowelRows();
+    for (const mode of [`${prefix}-typing-names`, `${prefix}-typing-symbol`, `${prefix}-flashcards`]) {
+      due += getDueCount(mode, rows, (row) => row.Name);
+    }
+  }
 
   const daily = getDailyProgress();
   const pct = Math.min(100, Math.round((daily.count / daily.goal) * 100));
@@ -165,7 +226,7 @@ function sectionHtml(section, title, modes) {
   `;
 }
 
-const HOME_SECTIONS = ["verbs", "vocabulary", "accents"];
+const HOME_SECTIONS = ["consonants", "vowels", "vocabulary", "verbs", "accents"];
 
 function homeSectionStorageKey(section) {
   return `homeSectionCollapsed:${section}`;
@@ -220,8 +281,10 @@ export function mount({ content, navigate }) {
     ${todayCardHtml()}
     <div class="mode-cards">${cardsHtml(FEATURED_MODES)}</div>
 
-    ${sectionHtml("verbs", "Verbs", VERB_MODES)}
+    ${sectionHtml("consonants", "Consonants", CONSONANT_MODES)}
+    ${sectionHtml("vowels", "Vowels", VOWEL_MODES)}
     ${sectionHtml("vocabulary", "Vocabulary", VOCAB_MODES)}
+    ${sectionHtml("verbs", "Verbs", VERB_MODES)}
     ${sectionHtml("accents", "Accents", ACCENTS_MODES)}
 
     <div class="verse">

@@ -69,7 +69,13 @@ export async function setupApp({ mobile = false } = {}) {
     const u = String(url);
     if (u.includes("/.netlify/functions/get-data")) {
       const dataset = new URL(u, "http://localhost/").searchParams.get("dataset");
-      const filenames = { verbs: "verbs.json", vocabulary: "vocabulary.json", accents: "accents.json" };
+      const filenames = {
+        verbs: "verbs.json",
+        vocabulary: "vocabulary.json",
+        accents: "accents.json",
+        consonants: "consonants.json",
+        vowels: "vowels.json",
+      };
       const filename = filenames[dataset];
       if (!filename) return { ok: false, status: 400 };
       const content = readFileSync(path.join(DATA_DIR, filename), "utf-8");

@@ -1,0 +1,35 @@
+Name,Form,Transliteration,Category,Keyboard Key
+aleph,א,ʾ,"Guttural, Matres Lectionis",Shift+>
+bet,ב,v,,B
+bet (dagesh),בּ,b,BeGaD KeFaT,B & +
+gimel,ג,g,,G
+gimel (dagesh),גּ,g,BeGaD KeFaT,G & +
+dalet,ד,d,,D
+dalet (dagesh),דּ,d,BeGaD KeFaT,D & +
+he',ה,h,"Guttural, Matres Lectionis",H
+vav (waw),ו,v (w),Matres Lectionis,W
+zayin,ז,z,Sibilants,Z
+ḥet,ח,ḥ,Guttural,X
+ṭet,ט,ṭ,,V
+yod,י,y,Matres Lectionis,Y
+kaf,כ,k,,K
+kaf (dagesh),כּ,k,BeGaD KeFaT,K & +
+final kaf,ך,k,Final Form,Shift+K
+lamed,ל,l,,L
+mem,מ,m,,M
+final mem,ם,m,Final Form,Shift+M
+nun,נ,n,,N
+final nun,ן,n,Final Form,Shift+N
+samek,ס,s,Sibilants,S
+ayin,ע,ʿ,Guttural,Shift+<
+pe',פ,f,,P
+pe' (dagesh),פּ,p,BeGaD KeFaT,P & +
+final pe',ף,f,Final Form,Shift+P
+ṣadê,צ,ṣ,Sibilants,C
+final ṣadê,ץ,ṣ,Final Form,Shift+C
+qof,ק,q,,Q
+reš,ר,r,Guttural,R
+śin,שׂ,ś,Sibilants,F
+šin,שׁ,š,Sibilants,J
+tav,ת,t,,T
+tav (dagesh),תּ,t,BeGaD KeFaT,T & +

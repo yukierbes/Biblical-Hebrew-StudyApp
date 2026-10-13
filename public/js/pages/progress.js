@@ -3,6 +3,7 @@ import { getVocabRows } from "../vocab-data.js";
 import { vocabRowKey } from "../vocab-overrides.js";
 import { getAccentRows } from "../accent-data.js";
 import { accentRowKey } from "../accent-filters.js";
+import { getLetterSet } from "../letter-sets.js";
 import { renderHistoryPanel } from "../history-ui.js";
 import { setDeepLink } from "../deep-link.js";
 
@@ -80,6 +81,44 @@ function render(content, navigate) {
   content.appendChild(streakBox);
 
   content.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
+
+  // ---- Consonants and Vowels practice ----
+  for (const setId of ["consonants", "vowels"]) {
+    const set = getLetterSet(setId);
+    const heading = document.createElement("h3");
+    heading.textContent = `${set.title} Practice`;
+    content.appendChild(heading);
+
+    const rows = set.rows();
+    const grid = document.createElement("div");
+    grid.className = "mode-cards";
+    const modes = [
+      { title: `Typing: Name → ${set.Singular}`, mode: `${set.srsPrefix}-typing-names`, page: `${set.pagePrefix}-typing`, promptWith: "names" },
+      { title: `Typing: ${set.Singular} → Keyboard`, mode: `${set.srsPrefix}-typing-symbol`, page: `${set.pagePrefix}-typing`, promptWith: "symbol" },
+      { title: "Flashcards", mode: `${set.srsPrefix}-flashcards`, page: `${set.pagePrefix}-flashcards` },
+      { title: `Games: Name → ${set.Singular}`, mode: `${set.srsPrefix}-games-names`, page: `${set.pagePrefix}-games` },
+      { title: `Games: ${set.Singular} → ${set.Singular}`, mode: `${set.srsPrefix}-games-symbol`, page: `${set.pagePrefix}-games` },
+    ];
+    for (const m of modes) {
+      const stats = rows.length
+        ? getMasteryStats(m.mode, rows, set.rowKey)
+        : { newCount: 0, learning: 0, mastered: 0, total: 0 };
+      grid.appendChild(
+        renderModeCard({
+          title: m.title,
+          stats,
+          showNew: true,
+          buttonLabel: "Go Practice",
+          onGoPractice: () => {
+            if (m.promptWith) setDeepLink({ type: `${set.pagePrefix}-typing-focus`, promptWith: m.promptWith });
+            navigate(m.page);
+          },
+        })
+      );
+    }
+    content.appendChild(grid);
+    content.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
+  }
 
   // ---- Verb practice ----
   const verbHeading = document.createElement("h3");
@@ -232,6 +271,8 @@ function render(content, navigate) {
     ["construction", "Construction"],
     ["vocab-typing", "Vocabulary Typing"],
     ["accent-typing", "Accents Typing"],
+    ["consonant-typing", "Consonants Typing"],
+    ["vowel-typing", "Vowels Typing"],
   ];
   let anyHistory = false;
   for (const [mode, label] of historyModes) {

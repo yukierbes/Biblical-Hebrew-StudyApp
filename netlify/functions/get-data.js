@@ -1,4 +1,4 @@
-// GET /.netlify/functions/get-data?dataset=verbs|vocabulary|accents
+// GET /.netlify/functions/get-data?dataset=verbs|vocabulary|accents|consonants|vowels
 //
 // Requires a signed-in Netlify Identity user (any invited user — no
 // specific role needed, since registration is invite-only already).
@@ -11,7 +11,7 @@
 // format is what gets `context.clientContext.user` populated from the
 // Identity JWT automatically.
 //
-// The three datasets are imported statically below, using the standard
+// The datasets are imported statically below, using the standard
 // JSON import-attribute syntax, rather than loaded at request time via
 // createRequire(import.meta.url) — that approach crashed in Netlify's
 // deployed function environment with "The argument 'filename' must be
@@ -20,11 +20,15 @@
 import verbsData from "./data/verbs.json" with { type: "json" };
 import vocabularyData from "./data/vocabulary.json" with { type: "json" };
 import accentsData from "./data/accents.json" with { type: "json" };
+import consonantsData from "./data/consonants.json" with { type: "json" };
+import vowelsData from "./data/vowels.json" with { type: "json" };
 
 const DATASETS = {
   verbs: verbsData,
   vocabulary: vocabularyData,
   accents: accentsData,
+  consonants: consonantsData,
+  vowels: vowelsData,
 };
 
 export const handler = async (event, context) => {
@@ -43,7 +47,7 @@ export const handler = async (event, context) => {
     return {
       statusCode: 400,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ error: `Unknown dataset "${dataset}". Expected verbs, vocabulary, or accents.` }),
+      body: JSON.stringify({ error: `Unknown dataset "${dataset}". Expected verbs, vocabulary, accents, consonants, or vowels.` }),
     };
   }
 

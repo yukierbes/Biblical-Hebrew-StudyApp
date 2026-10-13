@@ -1633,6 +1633,11 @@ kbd {
   direction: rtl;
 }
 
+#print-area .flashcard-hebrew.flashcard-hebrew-glyph {
+  font-size: calc(4.5rem * var(--fit, 1));
+  line-height: 1.3;
+}
+
 #print-area .flashcard-gloss {
   font-family: var(--font-body);
   font-size: calc(1rem * var(--fit, 1));
@@ -2086,3 +2091,75 @@ kbd {
    should win via both source order AND specificity, not rely on only
    one mechanism. */
 .hidden { display: none !important; }
+
+/* ---------- Consonants / Vowels ---------- */
+
+/* Review table: the Hebrew form is shown large, like the Accents symbols. */
+.letter-form-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 44px;
+  padding: 0 6px;
+  font-family: var(--font-hebrew);
+  font-size: 1.7rem;
+  direction: rtl;
+  color: var(--ink);
+}
+
+/* Printed practice worksheet / answer key (rules live outside @media print
+   for the same reason as the Verb tables above: print-letter-table.js
+   measures nothing here, but keeps the same #print-area approach). */
+#print-area .letter-print .print-page { padding: 0.5in; }
+#print-area .letter-print-title {
+  font-family: var(--font-body);
+  font-size: 12pt;
+  font-weight: 600;
+  color: #1C2B45;
+  margin: 0 0 10pt;
+}
+#print-area table.letter-print-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: var(--font-body);
+  font-size: 10pt;
+  color: #1C2B45;
+}
+#print-area table.letter-print-table th {
+  background: none;
+  color: #444;
+  border: 1px solid #999;
+  padding: 4pt 5pt;
+  font-size: 8pt;
+  text-align: left;
+}
+#print-area table.letter-print-table td {
+  border: 1px solid #999;
+  height: 36px;
+  box-sizing: border-box;
+  padding: 2pt 6pt;
+  vertical-align: middle;
+  overflow-wrap: break-word;
+}
+#print-area table.letter-print-table td.letter-print-hebrew {
+  font-family: var(--font-hebrew);
+  font-size: 1.8rem;
+  line-height: 1;
+  direction: rtl;
+  text-align: center;
+}
+
+/* Transliteration in the Consonants table: a little larger so the small
+   marks for aleph (ʾ) and ayin (ʿ) are easy to see. */
+.letter-translit { font-size: 1.2rem; }
+
+/* A single letter or vowel mark shown large on a flashcard. The small
+   combining vowel marks need a much bigger size than a normal word to
+   be easy to see. */
+.flashcard-interactive-hebrew .letter-glyph {
+  font-size: 5rem;
+  line-height: 1.25;
+  display: inline-block;
+}

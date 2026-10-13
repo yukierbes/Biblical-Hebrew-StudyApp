@@ -15,7 +15,7 @@
 
 import { binyanTableHtml, rootTableHtml, verbNameHtml, escapeHtml } from "./verb-tables.js";
 
-const PAGE_STYLE_ID = "table-print-page-style";
+export const PAGE_STYLE_ID = "table-print-page-style";
 
 // The room (in CSS pixels) inside the 0.5in page margins. It is worked out for
 // the SMALLER of US Letter and A4 in each direction, less a few pixels to spare:

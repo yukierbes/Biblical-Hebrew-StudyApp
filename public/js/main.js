@@ -1,6 +1,7 @@
 import { loadAllData } from "./data.js";
 import { loadVocabData } from "./vocab-data.js";
 import { loadAccentData } from "./accent-data.js";
+import { loadLetterData } from "./letter-data.js";
 import * as homePage from "./pages/home.js";
 import * as reviewPage from "./pages/review.js";
 import * as verbFlashcardsPage from "./pages/verb-flashcards.js";
@@ -15,12 +16,21 @@ import * as accentReviewPage from "./pages/accent-review.js";
 import * as accentFlashcardsPage from "./pages/accent-flashcards.js";
 import * as accentTypingPage from "./pages/accent-typing.js";
 import * as accentGamesPage from "./pages/accent-games.js";
+import * as consonantReviewPage from "./pages/consonant-review.js";
+import * as consonantFlashcardsPage from "./pages/consonant-flashcards.js";
+import * as consonantTypingPage from "./pages/consonant-typing.js";
+import * as consonantGamesPage from "./pages/consonant-games.js";
+import * as vowelReviewPage from "./pages/vowel-review.js";
+import * as vowelFlashcardsPage from "./pages/vowel-flashcards.js";
+import * as vowelTypingPage from "./pages/vowel-typing.js";
+import * as vowelGamesPage from "./pages/vowel-games.js";
 import * as progressPage from "./pages/progress.js";
 import * as achievementsPage from "./pages/achievements.js";
 import * as dailyChallengePage from "./pages/daily-challenge.js";
 import { showToast } from "./toast.js";
 import { initHebrewKeyboard, isHebrewKeyboardOpen, closeHebrewKeyboard } from "./hebrew-keyboard.js";
 import { initAccentKeyboard, isAccentKeyboardOpen, closeAccentKeyboard } from "./accent-keyboard.js";
+import { initVowelKeyboard, isVowelKeyboardOpen, closeVowelKeyboard } from "./vowel-keyboard.js";
 import { initProgressSidebar } from "./srs.js";
 import { initCloudSyncUI, cloudSyncSignedIn, cloudSyncSignedOut, openSignIn } from "./cloud-sync.js";
 import { initSidebarResize } from "./sidebar-resize.js";
@@ -40,6 +50,14 @@ const PAGES = {
   "accent-flashcards": accentFlashcardsPage,
   "accent-typing": accentTypingPage,
   "accent-games": accentGamesPage,
+  "consonant-review": consonantReviewPage,
+  "consonant-flashcards": consonantFlashcardsPage,
+  "consonant-typing": consonantTypingPage,
+  "consonant-games": consonantGamesPage,
+  "vowel-review": vowelReviewPage,
+  "vowel-flashcards": vowelFlashcardsPage,
+  "vowel-typing": vowelTypingPage,
+  "vowel-games": vowelGamesPage,
   progress: progressPage,
   achievements: achievementsPage,
   "daily-challenge": dailyChallengePage,
@@ -97,10 +115,10 @@ sidebarBackdropEl.addEventListener("click", () => setSidebarCollapsed(true));
 
 let currentPage = null;
 
-// ---- Sidebar nav sections (Verbs / Vocabulary): expand/collapse,
+// ---- Sidebar nav sections (Consonants / Vowels / Vocabulary / Verbs / Accents): expand/collapse,
 // persisted per section, with the containing section auto-expanding
 // whenever its page becomes the active one so it's never hidden. ----
-const NAV_SECTIONS = ["verbs", "vocabulary", "accents"];
+const NAV_SECTIONS = ["consonants", "vowels", "vocabulary", "verbs", "accents"];
 
 function navSectionStorageKey(section) {
   return `navSectionCollapsed:${section}`;
@@ -358,18 +376,22 @@ document.addEventListener("keydown", (e) => {
     closeAccentKeyboard();
     return;
   }
+  if (e.key === "Escape" && isVowelKeyboardOpen()) {
+    closeVowelKeyboard();
+    return;
+  }
 
   const typing = isTypingContext(e.target);
 
   // "?" opens the shortcuts reference from anywhere, as long as the
   // person isn't actively typing an answer.
-  if (e.key === "?" && !typing && !isHebrewKeyboardOpen() && !isAccentKeyboardOpen()) {
+  if (e.key === "?" && !typing && !isHebrewKeyboardOpen() && !isAccentKeyboardOpen() && !isVowelKeyboardOpen()) {
     e.preventDefault();
     openShortcuts();
     return;
   }
 
-  if (typing || shortcutsOpen() || isHebrewKeyboardOpen() || isAccentKeyboardOpen()) return;
+  if (typing || shortcutsOpen() || isHebrewKeyboardOpen() || isAccentKeyboardOpen() || isVowelKeyboardOpen()) return;
 
   // Digits 1-9 pick that option within whichever Selection-mode choice
   // group currently has keyboard focus inside it (Practice or Quiz).
@@ -461,7 +483,7 @@ async function init() {
   initProgressSidebar();
   initCloudSyncUI();
   try {
-    await Promise.all([loadAllData(), loadVocabData(), loadAccentData()]);
+    await Promise.all([loadAllData(), loadVocabData(), loadAccentData(), loadLetterData()]);
   } catch (e) {
     contentEl.innerHTML = `<div class="alert alert-error">Failed to load data: ${e.message}</div>`;
     return;
@@ -470,6 +492,8 @@ async function init() {
   // the Accent Keyboard's buttons are built from the accents dataset —
   // it can only be wired up once that's loaded.
   initAccentKeyboard();
+  // Same for the Vowel Keyboard, which is built from the vowels dataset.
+  initVowelKeyboard();
   renderPage();
 
   // Catches achievement milestones crossed mid-session without a page

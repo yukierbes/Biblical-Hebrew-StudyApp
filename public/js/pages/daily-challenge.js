@@ -16,15 +16,24 @@ import {
   renderAccentAnswerInput,
   primaryAccentAnswerText,
 } from "../accent-answer-matching.js";
+import { getLetterSet } from "../letter-sets.js";
+import {
+  isFormAnswerCorrect,
+  renderPrompt as renderLetterPrompt,
+  renderAnswerInput as renderLetterAnswerInput,
+  primaryAnswerText as primaryLetterAnswerText,
+} from "../letter-answer-matching.js";
 
-const VOCAB_COUNT = 7;
-const ACCENT_COUNT = 5;
+const VOCAB_COUNT = 6;
+const ACCENT_COUNT = 4;
+const LETTER_COUNT = 3; // each of Consonants and Vowels
+const LETTER_KINDS = ["consonants", "vowels"];
 
 let state = null;
 let rerender = null;
 
 /** Builds today's mixed question set: the most due/weak Vocabulary and
- * Accents words, interleaved. Each item's prompt direction is chosen
+ * Accents words plus a few Consonants and Vowels, interleaved. Each item's prompt direction is chosen
  * at random for variety — the underlying due-ness comes from a fixed
  * reference mode per dataset (vocab-typing-hebrew / accent-typing-names)
  * as a practical proxy, since a word can be "due" differently per
@@ -48,7 +57,16 @@ function buildQuestions() {
     promptWith: Math.random() < 0.5 ? "names" : "symbol",
   }));
 
-  return sampleN([...vocabQuestions, ...accentQuestions], vocabQuestions.length + accentQuestions.length, false);
+  // Consonants and Vowels are always asked as "name → type the letter/vowel".
+  const letterQuestions = [];
+  for (const id of LETTER_KINDS) {
+    const set = getLetterSet(id);
+    const picks = sortByPriority(`${set.srsPrefix}-typing-names`, set.rows(), set.rowKey).slice(0, LETTER_COUNT);
+    for (const row of picks) letterQuestions.push({ kind: "letter", set, row, promptWith: "names" });
+  }
+
+  const all = [...vocabQuestions, ...accentQuestions, ...letterQuestions];
+  return sampleN(all, all.length, false);
 }
 
 function freshState() {
@@ -73,18 +91,22 @@ export function unmount() {
 }
 
 function srsModeFor(q) {
+  if (q.kind === "letter") return `${q.set.srsPrefix}-typing-names`;
   return q.kind === "vocab" ? "vocab-typing-" + q.direction : "accent-typing-" + q.promptWith;
 }
 
 function isCorrectFor(q, answer) {
+  if (q.kind === "letter") return isFormAnswerCorrect(q.row, answer);
   return q.kind === "vocab" ? isVocabAnswerCorrect(q.direction, q.row, answer) : isAccentAnswerCorrect(q.row, answer);
 }
 
 function correctTextFor(q) {
+  if (q.kind === "letter") return primaryLetterAnswerText(q.row);
   return q.kind === "vocab" ? primaryAnswerText(q.row, q.direction) : primaryAccentAnswerText(q.row);
 }
 
 function labelFor(q) {
+  if (q.kind === "letter") return `${q.set.title}: Name → ${q.set.Singular}`;
   if (q.kind === "vocab") return q.direction === "hebrew" ? "Vocabulary: Hebrew → English" : "Vocabulary: English → Hebrew";
   return q.promptWith === "names" ? "Accents: Name → Symbol" : "Accents: Symbol → Symbol";
 }
@@ -144,12 +166,13 @@ function render(content, sidebarExtra, navigate) {
 function renderIntro(container) {
   const vocabRows = getVocabRows();
   const accentRows = getAccentRows();
-  const hasContent = vocabRows.length > 0 || accentRows.length > 0;
+  const hasContent =
+    vocabRows.length > 0 || accentRows.length > 0 || LETTER_KINDS.some((id) => getLetterSet(id).rows().length > 0);
 
   container.innerHTML = `
     <div class="info-box">
       <b>A quick mixed round</b><br>
-      A short quiz pulling from whatever's due or weak across Vocabulary and Accents Typing right now —
+      A short quiz pulling from whatever's due or weak across Vocabulary, Accents, Consonants and Vowels typing right now —
       answering here counts toward each item's own schedule too, so it's not separate progress.
     </div>
   `;
@@ -157,7 +180,7 @@ function renderIntro(container) {
   if (!hasContent) {
     const div = document.createElement("div");
     div.className = "alert alert-warning";
-    div.textContent = "No Vocabulary or Accents data available.";
+    div.textContent = "No study data available.";
     container.appendChild(div);
     return;
   }
@@ -170,7 +193,7 @@ function renderIntro(container) {
     if (questions.length === 0) {
       const div = document.createElement("div");
       div.className = "alert alert-warning";
-      div.textContent = "Not enough Vocabulary or Accents data to build a round right now.";
+      div.textContent = "Not enough study data to build a round right now.";
       container.appendChild(div);
       return;
     }
@@ -204,6 +227,7 @@ function renderQuestion(container) {
   container.appendChild(caption);
 
   if (q.kind === "vocab") renderVocabPrompt(container, q.row, q.direction);
+  else if (q.kind === "letter") renderLetterPrompt(container, q.set, q.row, q.promptWith);
   else renderAccentPrompt(container, q.row, q.promptWith);
 
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
@@ -219,6 +243,8 @@ function renderQuestion(container) {
       checked: false,
       autofocus: true,
     });
+  } else if (q.kind === "letter") {
+    renderLetterAnswerInput(inputsWrap, { set: q.set, row: q.row, userState: state.userAnswer, checked: false });
   } else {
     renderAccentAnswerInput(inputsWrap, { word: q.row, userState: state.userAnswer, checked: false });
   }
@@ -231,12 +257,12 @@ function renderQuestion(container) {
   nextBtn.textContent = state.index === total - 1 ? "Finish" : "Next Question";
   nextBtn.addEventListener("click", () => {
     const ok = isCorrectFor(q, state.userAnswer.answer);
-    const key = q.kind === "vocab" ? vocabRowKey(q.row) : accentRowKey(q.row);
+    const key = q.kind === "vocab" ? vocabRowKey(q.row) : q.kind === "letter" ? q.set.rowKey(q.row) : accentRowKey(q.row);
     recordItemResult(srsModeFor(q), key, ok);
     recordStreakActivity();
     state.results.push({
       Prompt: labelFor(q),
-      Item: q.kind === "vocab" ? q.row.Hebrew : q.row.HebrewName,
+      Item: q.kind === "vocab" ? q.row.Hebrew : q.kind === "letter" ? q.row.Name : q.row.HebrewName,
       "Correct Answer": correctTextFor(q),
       "Your Answer": state.userAnswer.answer || "NA",
       Correct: ok,

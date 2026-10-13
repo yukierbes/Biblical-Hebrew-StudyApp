@@ -2,6 +2,7 @@ import { getAvailableDatasets, loadVerbData } from "../data.js";
 import { getVocabRows } from "../vocab-data.js";
 import { getCategoriesDisplay, vocabRowKey } from "../vocab-overrides.js";
 import { getAccentRows } from "../accent-data.js";
+import { getLetterSet } from "../letter-sets.js";
 import { renderDatasetSelector } from "../widgets.js";
 import { renderTable } from "../table.js";
 import { wrapHebrewSpans, stripNiqqud } from "../helpers.js";
@@ -378,6 +379,63 @@ function render(content, sidebarExtra, navigate) {
         })
       );
       resultsSection.appendChild(accentPrintBtn);
+    }
+
+    // ---- Consonants and Vowels ----
+    // Hebrew searches look at the letter/vowel itself; English searches
+    // look at the name and its other descriptive columns.
+    const LETTER_SEARCH_FIELDS = {
+      consonants: ["Name", "Transliteration", "Category"],
+      vowels: ["Name", "Class", "Length", "Pronunciation"],
+    };
+    for (const setId of ["consonants", "vowels"]) {
+      const set = getLetterSet(setId);
+      resultsSection.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
+
+      const heading = document.createElement("h3");
+      heading.textContent = set.title;
+      resultsSection.appendChild(heading);
+
+      const matches = set.rows().filter((row) => {
+        const form = row.Form || "";
+        const inHebrew =
+          state.searchHebrew && (state.ignoreNiqqud ? stripNiqqud(form).includes(queryStripped) : form.includes(query));
+        const text = LETTER_SEARCH_FIELDS[setId].map((f) => row[f] || "").join(" ").toLowerCase();
+        const inEnglish = state.searchGloss && text.includes(queryLower);
+        return inHebrew || inEnglish;
+      });
+
+      const caption = document.createElement("div");
+      caption.className = "caption";
+      caption.textContent =
+        matches.length === 0 ? "No matches." : `${matches.length} match${matches.length === 1 ? "" : "es"}.`;
+      resultsSection.appendChild(caption);
+
+      if (matches.length > 0) {
+        const tableWrap = document.createElement("div");
+        renderTable(tableWrap, matches, {
+          columns: set.columns,
+          cellRenderers: {
+            Form: (v) => `<span class="letter-form-cell" lang="he">${v || ""}</span>`,
+            Category: (v) => (v ? v : `<span class="caption">—</span>`),
+            Transliteration: (v) => (v ? `<span class="letter-translit">${v}</span>` : `<span class="caption">—</span>`),
+          },
+        });
+        tableWrap.querySelectorAll("thead th").forEach((th, i) => {
+          const label = set.columnLabels[set.columns[i]];
+          if (label) th.textContent = label;
+        });
+        resultsSection.appendChild(tableWrap);
+
+        const printBtn = document.createElement("button");
+        printBtn.className = "btn btn-block";
+        printBtn.style.marginTop = "14px";
+        printBtn.textContent = "Print These as Flashcards";
+        printBtn.addEventListener("click", () =>
+          printFlashcards(matches.map(set.printRow), { title: `Search: ${query}`, ...set.print })
+        );
+        resultsSection.appendChild(printBtn);
+      }
     }
   }
 

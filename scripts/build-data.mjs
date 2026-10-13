@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Regenerates netlify/functions/data/{verbs,vocabulary,accents}.json from
+// Regenerates netlify/functions/data/{verbs,vocabulary,accents,consonants,vowels}.json from
 // the plain CSV files under data-source/.
 //
 // You normally never run this yourself: Netlify runs it on every deploy (see
@@ -15,6 +15,8 @@
 // What to edit:
 //   data-source/vocabulary.csv        — one row per word
 //   data-source/accents.csv           — one row per accent mark
+//   data-source/consonants.csv        — one row per consonant form (dagesh forms are their own rows)
+//   data-source/vowels.csv            — one row per vowel
 //   data-source/verbs/*.csv           — one file per verb paradigm
 //
 // This script is deliberately fussy, because the data it writes is what the
@@ -337,6 +339,104 @@ function buildAccents() {
   output("accents.json", { rows, typeOrder, groupOrder }, rows.length, "accent marks");
 }
 
+// ---------- consonants.csv -> consonants.json ----------
+// Columns: Name, Form, Transliteration, Category, Keyboard Key
+// Category may hold several comma-separated values (e.g. "Guttural, Matres
+// Lectionis") or be blank on purpose.
+function buildConsonants() {
+  const path = join(SRC, "consonants.csv");
+  if (!existsSync(path)) {
+    errors.push("data-source/consonants.csv is missing.");
+    return;
+  }
+  const raw = readCsvAsObjects(
+    path,
+    {
+      Name: ["Name"],
+      Form: ["Form"],
+      Transliteration: ["Transliteration"],
+      Category: ["Category"],
+      Keyboard: ["Keyboard", "Keyboard Key", "Keyboard Shortcut"],
+    },
+    { hebrewColumns: ["Form"] }
+  );
+  const rows = [];
+  const categoryOrder = [];
+  const seenCats = new Set();
+  const seenNames = new Set();
+  for (const r of raw) {
+    if (!r.Name || !r.Form) continue;
+    if (seenNames.has(r.Name)) warnings.push(`consonants.csv: the name "${r.Name}" appears more than once.`);
+    seenNames.add(r.Name);
+    for (const c of splitList(r.Category)) {
+      if (!seenCats.has(c)) {
+        seenCats.add(c);
+        categoryOrder.push(c);
+      }
+    }
+    rows.push({
+      Name: r.Name,
+      Form: r.Form,
+      Transliteration: r.Transliteration || "",
+      Category: r.Category || "",
+      Keyboard: r.Keyboard || "",
+    });
+  }
+  if (rows.length === 0) errors.push("data-source/consonants.csv has no rows.");
+  output("consonants.json", { rows, categoryOrder }, rows.length, "consonant forms");
+}
+
+// ---------- vowels.csv -> vowels.json ----------
+// Columns: Class, Name, Length, Form, Pronunciation, Keyboard Key
+function buildVowels() {
+  const path = join(SRC, "vowels.csv");
+  if (!existsSync(path)) {
+    errors.push("data-source/vowels.csv is missing.");
+    return;
+  }
+  const raw = readCsvAsObjects(
+    path,
+    {
+      Class: ["Class"],
+      Name: ["Name"],
+      Length: ["Length"],
+      Form: ["Form"],
+      Pronunciation: ["Pronunciation"],
+      Keyboard: ["Keyboard", "Keyboard Key", "Keyboard Shortcut"],
+    },
+    { hebrewColumns: ["Form"] }
+  );
+  const rows = [];
+  const classOrder = [];
+  const lengthOrder = [];
+  const seenNames = new Set();
+  for (const r of raw) {
+    if (!r.Name || !r.Form) continue;
+    if (seenNames.has(r.Name)) warnings.push(`vowels.csv: the name "${r.Name}" appears more than once.`);
+    seenNames.add(r.Name);
+    if (r.Class && !classOrder.includes(r.Class)) classOrder.push(r.Class);
+    if (r.Length && !lengthOrder.includes(r.Length)) lengthOrder.push(r.Length);
+    rows.push({
+      Class: r.Class || "",
+      Name: r.Name,
+      Length: r.Length || "",
+      Form: r.Form,
+      Pronunciation: r.Pronunciation || "",
+      Keyboard: r.Keyboard || "",
+    });
+  }
+  if (rows.length === 0) errors.push("data-source/vowels.csv has no rows.");
+  output("vowels.json", { rows, classOrder, lengthOrder }, rows.length, "vowels");
+}
+
+/** "Guttural, Matres Lectionis" -> ["Guttural", "Matres Lectionis"] */
+function splitList(value) {
+  return String(value || "")
+    .split(",")
+    .map((v) => v.trim())
+    .filter(Boolean);
+}
+
 // ---------- verbs/*.csv -> verbs.json ----------
 // One file per verb paradigm. Filenames start with a two-digit number
 // ("01 Strong Verb (קטל).csv") purely to control ordering — rename/
@@ -423,10 +523,10 @@ function buildVerbs() {
 
 // ---------- files that won't be used ----------
 function warnAboutStrayFiles() {
-  const used = new Set(["vocabulary.csv", "accents.csv", "verbs"]);
+  const used = new Set(["vocabulary.csv", "accents.csv", "consonants.csv", "vowels.csv", "verbs"]);
   for (const f of existsSync(SRC) ? readdirSync(SRC) : []) {
     if (f.startsWith(".") || used.has(f)) continue;
-    warnings.push(`data-source/${f} is not used by the app (it reads vocabulary.csv, accents.csv and the files in verbs/). If it was meant to replace one of those, rename it to match.`);
+    warnings.push(`data-source/${f} is not used by the app (it reads vocabulary.csv, accents.csv, consonants.csv, vowels.csv and the files in verbs/). If it was meant to replace one of those, rename it to match.`);
   }
   const verbsDir = join(SRC, "verbs");
   for (const f of existsSync(verbsDir) ? readdirSync(verbsDir) : []) {
@@ -472,6 +572,8 @@ function guardAgainstShrinking() {
 console.log(CHECK_ONLY ? "Checking data-source/ (nothing will be written) ..." : "Building data from data-source/ ...");
 buildVocabulary();
 buildAccents();
+buildConsonants();
+buildVowels();
 buildVerbs();
 warnAboutStrayFiles();
 guardAgainstShrinking();

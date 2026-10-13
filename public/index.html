@@ -76,14 +76,24 @@
             <button class="nav-btn" data-page="achievements">Achievements</button>
             <button class="nav-btn" data-page="search">Word Lookup</button>
 
-            <button class="nav-section-toggle" type="button" data-nav-section="verbs" aria-expanded="false" aria-controls="nav-section-verbs">
-              <span class="nav-section-caret">▾</span><span>Verbs</span>
+            <button class="nav-section-toggle" type="button" data-nav-section="consonants" aria-expanded="false" aria-controls="nav-section-consonants">
+              <span class="nav-section-caret">▾</span><span>Consonants</span>
             </button>
-            <div class="nav-section-group" id="nav-section-verbs" data-nav-section-group="verbs" hidden>
-              <button class="nav-btn" data-page="review">Verb Review</button>
-              <button class="nav-btn" data-page="verb-flashcards">Verb Flashcards</button>
-              <button class="nav-btn" data-page="parsing">Verb Parsing</button>
-              <button class="nav-btn" data-page="construction">Verb Construction</button>
+            <div class="nav-section-group" id="nav-section-consonants" data-nav-section-group="consonants" hidden>
+              <button class="nav-btn" data-page="consonant-review">Consonants Review</button>
+              <button class="nav-btn" data-page="consonant-flashcards">Consonants Flashcards</button>
+              <button class="nav-btn" data-page="consonant-typing">Consonants Typing</button>
+              <button class="nav-btn" data-page="consonant-games">Consonants Games</button>
+            </div>
+
+            <button class="nav-section-toggle" type="button" data-nav-section="vowels" aria-expanded="false" aria-controls="nav-section-vowels">
+              <span class="nav-section-caret">▾</span><span>Vowels</span>
+            </button>
+            <div class="nav-section-group" id="nav-section-vowels" data-nav-section-group="vowels" hidden>
+              <button class="nav-btn" data-page="vowel-review">Vowels Review</button>
+              <button class="nav-btn" data-page="vowel-flashcards">Vowels Flashcards</button>
+              <button class="nav-btn" data-page="vowel-typing">Vowels Typing</button>
+              <button class="nav-btn" data-page="vowel-games">Vowels Games</button>
             </div>
 
             <button class="nav-section-toggle" type="button" data-nav-section="vocabulary" aria-expanded="false" aria-controls="nav-section-vocabulary">
@@ -94,6 +104,16 @@
               <button class="nav-btn" data-page="vocab-flashcards">Vocabulary Flashcards</button>
               <button class="nav-btn" data-page="vocab-typing">Vocabulary Typing</button>
               <button class="nav-btn" data-page="vocab-games">Vocabulary Games</button>
+            </div>
+
+            <button class="nav-section-toggle" type="button" data-nav-section="verbs" aria-expanded="false" aria-controls="nav-section-verbs">
+              <span class="nav-section-caret">▾</span><span>Verbs</span>
+            </button>
+            <div class="nav-section-group" id="nav-section-verbs" data-nav-section-group="verbs" hidden>
+              <button class="nav-btn" data-page="review">Verb Review</button>
+              <button class="nav-btn" data-page="verb-flashcards">Verb Flashcards</button>
+              <button class="nav-btn" data-page="parsing">Verb Parsing</button>
+              <button class="nav-btn" data-page="construction">Verb Construction</button>
             </div>
 
             <button class="nav-section-toggle" type="button" data-nav-section="accents" aria-expanded="false" aria-controls="nav-section-accents">
@@ -191,6 +211,16 @@
         <button id="accent-keyboard-close" class="modal-close" aria-label="Close">×</button>
       </div>
       <div id="accent-keyboard-body"></div>
+    </div>
+  </div>
+
+  <div id="vowel-keyboard-modal" class="modal-backdrop hidden">
+    <div class="modal-box hebrew-keyboard-box" role="dialog" aria-modal="true" aria-labelledby="vowel-keyboard-title">
+      <div class="modal-header">
+        <h3 id="vowel-keyboard-title">Vowel Keyboard</h3>
+        <button id="vowel-keyboard-close" class="modal-close" aria-label="Close">×</button>
+      </div>
+      <div id="vowel-keyboard-body"></div>
     </div>
   </div>
 

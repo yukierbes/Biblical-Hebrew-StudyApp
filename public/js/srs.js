@@ -320,6 +320,16 @@ function resetAllProgress() {
     localStorage.removeItem(scheduleKey("accent-flashcards"));
     localStorage.removeItem(scheduleKey("accent-games-names"));
     localStorage.removeItem(scheduleKey("accent-games-symbol"));
+    localStorage.removeItem(scheduleKey("consonant-typing-names"));
+    localStorage.removeItem(scheduleKey("consonant-typing-symbol"));
+    localStorage.removeItem(scheduleKey("consonant-flashcards"));
+    localStorage.removeItem(scheduleKey("consonant-games-names"));
+    localStorage.removeItem(scheduleKey("consonant-games-symbol"));
+    localStorage.removeItem(scheduleKey("vowel-typing-names"));
+    localStorage.removeItem(scheduleKey("vowel-typing-symbol"));
+    localStorage.removeItem(scheduleKey("vowel-flashcards"));
+    localStorage.removeItem(scheduleKey("vowel-games-names"));
+    localStorage.removeItem(scheduleKey("vowel-games-symbol"));
   } catch (e) {
     /* ignore */
   }

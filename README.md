@@ -3,7 +3,7 @@
 This is a full rewrite of the original Streamlit app (`home.py` + `review.py` +
 `identification.py` + `construction.py`) as a **static, framework-free
 HTML/CSS/JS single-page app** — installable as an offline-capable PWA, now
-also covering Vocabulary and Accents, with optional cloud sync via Netlify.
+also covering Consonants, Vowels, Vocabulary and Accents, with optional cloud sync via Netlify.
 
 There is no traditional backend runtime — almost everything runs client-side
 in plain JavaScript. The one exception is content privacy: the verb,
@@ -21,12 +21,14 @@ usable on an arbitrary static file host the way earlier versions were (see
 ├── netlify/
 │   └── functions/
 │       ├── sync.js                # Identity-protected progress sync (reads/writes Netlify Blobs)
-│       ├── get-data.js              # Identity-protected dataset server (verbs/vocabulary/accents)
+│       ├── get-data.js              # Identity-protected dataset server (verbs/vocabulary/accents/consonants/vowels)
 │       ├── merge-logic.js             # shared per-key "newest wins" merge, used by sync.js
 │       └── data/                        # the actual datasets — NEVER publicly reachable;
 │           ├── verbs.json                 # bundled into get-data.js's function package only
 │           ├── vocabulary.json
-│           └── accents.json
+│           ├── accents.json
+│           ├── consonants.json
+│           └── vowels.json
 ├── public/                     # <- the ONLY folder Netlify serves publicly
 │   ├── index.html                # shell page — auth gate, manifest link, theme/zoom init
 │   ├── manifest.webmanifest        # PWA manifest (installable, standalone display)
@@ -175,7 +177,7 @@ If Identity isn't enabled, or the environment variables aren't set, the
 app shows a clear message on the sign-in screen (or the sync function
 returns a clear error) rather than silently failing or exposing content.
 
-## Updating the data (verbs, vocabulary, accents)
+## Updating the data (verbs, vocabulary, accents, consonants, vowels)
 
 The app's data lives in plain CSV files under `data-source/`. **To change
 anything, upload the changed CSV to GitHub — that's all.** Netlify rebuilds the
@@ -187,7 +189,8 @@ version by itself, so there is nothing to run and nothing to bump.
 1. Edit the CSV in Excel, Numbers or Google Sheets, and **save it as CSV
    UTF-8** (see "Hebrew" below — this is the one thing that matters).
 2. On github.com, open your repository and go into the folder the file
-   belongs in: `data-source/` for `vocabulary.csv` and `accents.csv`, or
+   belongs in: `data-source/` for `vocabulary.csv`, `accents.csv`, `consonants.csv` and
+   `vowels.csv`, or
    `data-source/verbs/` for a verb file.
 3. Click **Add file → Upload files**, drag the CSV in, and click **Commit
    changes**. A file with the **same name** replaces the old one.
@@ -244,6 +247,21 @@ saved as **UTF-8**, which is a setting in the "Save as" step:
   may be written with or without spaces). Same first-appearance-order rule
   applies to `Type` and `Group`.
 
+- **`data-source/consonants.csv`** — one row per consonant *form*. Columns:
+  `Name, Form, Transliteration, Category, Keyboard Key`. A letter that changes
+  with a dagesh (bet, gimel, dalet, kaf, pe', tav) is **two rows**, e.g. `bet`
+  and `bet (dagesh)`, so each form is its own card. `Category` can list several
+  values separated by commas (`Guttural, Matres Lectionis`) and is blank on
+  purpose for letters without one. Aleph's transliteration is `ʾ` and ayin's
+  is `ʿ` (the two half-ring marks that curve like `)` and `(`).
+
+- **`data-source/vowels.csv`** — one row per vowel. Columns: `Class, Name,
+  Length, Form, Pronunciation, Keyboard Key`. `Form` begins with the dotted
+  circle `◌` that shows where the vowel attaches. qameṣ and qameṣ-ḥaṭuf are
+  written with the very same mark; the app handles that with a class hint
+  (see "Consonants and Vowels" below). Filter-list order for `Class` and
+  `Length` follows the order they first appear in the file.
+
 - **`data-source/verbs/*.csv`** — one file per verb paradigm. Each filename
   starts with a number purely to control the order verbs appear in the app,
   e.g. `01 Strong Verb (קטל).csv`. To reorder verbs, renumber the files. To add
@@ -270,6 +288,34 @@ or wrong file) can be allowed by setting the environment variable
 `ALLOW_DATA_SHRINK` to `1` in Netlify's site settings and deploying again.
 
 ## Feature overview
+
+- **Consonants and Vowels** — two study sets that work like Accents, each with
+  a sidebar section (Review, Flashcards, Typing, Games). They are listed first
+  everywhere navigation appears (sidebar, Home page), in the order
+  Consonants, Vowels, Vocabulary, Verbs, Accents.
+  - *Review*: a filterable table (Consonants by Category; Vowels by Class and
+    Length), CSV/Excel download, printable flashcards, **Print Table (Answer
+    Key)** and **Print Blank Table**. The blank table is a practice worksheet
+    where you choose what is filled in: the Hebrew form, the name, or nothing.
+    Portrait, 18 rows per page, same margin approach as the Verb tables.
+  - *Flashcards*: Hebrew on the front; the back shows the name and
+    transliteration (consonants) or the class, name and length (vowels).
+  - *Typing*: Practice and Quiz, in two directions — Name → type the
+    letter/vowel (on-screen Hebrew Keyboard, or a Vowel Keyboard whose keys
+    include the `◌` placeholder), or letter/vowel → pick the keyboard shortcut.
+    "Get Hint" reveals the Category, or the Class and then the Length.
+  - *Games*: Survival Sprint, Beat the Clock, Memory Match, Lightning Round,
+    and a Sort game (Category Sort / Class Sort).
+  - *Shared mark*: qameṣ and qameṣ-ḥaṭuf look identical, so wherever the mark
+    alone is shown (flashcard front, Lightning Round, Memory Match) the app
+    offers the vowel's class as a hint — a button on flashcards, shown
+    automatically in the timed games. Typing the mark is right for both.
+  - They also feed spaced repetition, streaks, Progress, Achievements, the
+    Daily Challenge (a few of each, "name → type it") and Word Lookup.
+  - The code is shared: `letter-sets.js` describes what differs between the
+    two sets, and `pages/letter-*.js` hold one Review/Flashcards/Typing/Games
+    implementation used by both (`pages/consonant-*.js` and `vowel-*.js` are
+    thin wrappers).
 
 - **Review** — the verbs in three views, chosen with the buttons above
   the table (the choice is remembered): **List** (every form as a row),

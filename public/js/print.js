@@ -115,9 +115,12 @@ function metaText(row, metaFields) {
     .join(" · ");
 }
 
-function frontCardHtml(row, frontField) {
+function frontCardHtml(row, frontField, glyph = false) {
   const hebrew = wrapHebrewSpans(row[frontField] || "");
-  return `<div class="flashcard flashcard-front"><div class="flashcard-body"><div class="flashcard-hebrew">${hebrew}</div></div></div>`;
+  // `glyph` cards show one letter or vowel mark, which needs far bigger type
+  // than a word to be readable.
+  const cls = glyph ? "flashcard-hebrew flashcard-hebrew-glyph" : "flashcard-hebrew";
+  return `<div class="flashcard flashcard-front"><div class="flashcard-body"><div class="${cls}">${hebrew}</div></div></div>`;
 }
 
 function backCardHtml(row, backField, metaFields, { backFieldIsHebrew = false, secondaryField = null } = {}) {
@@ -153,6 +156,7 @@ function backCardHtml(row, backField, metaFields, { backFieldIsHebrew = false, s
  * the same place and every card is the same fixed size, so each row on
  * the back sits exactly behind the matching row on the front.
  *
+ * `glyphFront: true` prints the front much larger (for single letters/vowel marks).
  * `frontField` names the row property shown (in Hebrew) on the front of
  * the card, `backField` the property shown as the answer on the back,
  * and `metaFields` any extra columns (e.g. morphology, part of speech)
@@ -175,6 +179,7 @@ export function printFlashcards(
   {
     title = "Flashcards", // accepted for compatibility; no longer printed
     frontField = "Conjugation",
+    glyphFront = false,
     backField = "Gloss Translation",
     metaFields = MORPH_COLUMNS,
     backFieldIsHebrew = false,
@@ -203,7 +208,7 @@ export function printFlashcards(
     const frontHtml = rowsOfCards
       .map(
         (rowCards) =>
-          `<div class="flashcard-row">${rowCards.map((r) => frontCardHtml(r, frontField)).join("")}</div>`
+          `<div class="flashcard-row">${rowCards.map((r) => frontCardHtml(r, frontField, glyphFront)).join("")}</div>`
       )
       .join("");
 

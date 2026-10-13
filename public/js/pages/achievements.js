@@ -4,6 +4,8 @@ import { getVocabRows } from "../vocab-data.js";
 import { getCategoriesForRow, getCustomCategoryCount } from "../vocab-overrides.js";
 import { getAllHighScores } from "./vocab-games.js";
 import { getAllHighScores as getAllAccentHighScores } from "./accent-games.js";
+import { getAllHighScores as getAllConsonantHighScores } from "./consonant-games.js";
+import { getAllHighScores as getAllVowelHighScores } from "./vowel-games.js";
 
 const VOCAB_SRS_MODES = [
   "vocab-typing-hebrew",
@@ -24,7 +26,17 @@ const ACCENT_SRS_MODES = [
   "accent-games-symbol",
 ];
 
-const QUIZ_HISTORY_MODES = ["parsing", "construction", "vocab-typing", "accent-typing"];
+const letterSrsModes = (prefix) => [
+  `${prefix}-typing-names`,
+  `${prefix}-typing-symbol`,
+  `${prefix}-flashcards`,
+  `${prefix}-games-names`,
+  `${prefix}-games-symbol`,
+];
+const CONSONANT_SRS_MODES = letterSrsModes("consonant");
+const VOWEL_SRS_MODES = letterSrsModes("vowel");
+
+const QUIZ_HISTORY_MODES = ["parsing", "construction", "vocab-typing", "accent-typing", "consonant-typing", "vowel-typing"];
 
 export const ACHIEVEMENTS = [
   // ---- Consistency ----
@@ -306,11 +318,44 @@ export const ACHIEVEMENTS = [
   },
 ];
 
+// ---- Consonants and Vowels: mastery and games (built from one template each) ----
+const LETTER_ACHIEVEMENT_SETS = [
+  { key: "consonant", Name: "Consonant", Plural: "Consonants", icon: "🔤", masteryTargets: [10, 20, 30], titles: ["Letter Learner", "Letter Scholar", "Alef-Bet Master"], game: ["Sprinter", "Speedster", "Sharp Eye", "Sorter", "Memory Master"], sortName: "Category Sort" },
+  { key: "vowel", Name: "Vowel", Plural: "Vowels", icon: "🔡", masteryTargets: [6, 12, 16], titles: ["Vowel Learner", "Vowel Scholar", "Vowel Master"], game: ["Sprinter", "Speedster", "Sharp Eye", "Sorter", "Memory Master"], sortName: "Class Sort" },
+];
+
+for (const L of LETTER_ACHIEVEMENT_SETS) {
+  L.masteryTargets.forEach((target, i) => {
+    ACHIEVEMENTS.push({
+      id: `${L.key}-mastery-${target}`,
+      section: `${L.Plural} Mastery`,
+      icon: L.icon,
+      title: L.titles[i],
+      desc: `Master ${target} ${L.Plural.toLowerCase()}`,
+      target,
+      progress: (ctx) => ctx[`mastered${L.Plural}`],
+    });
+  });
+  const scores = (ctx) => ctx[`${L.key}GameScores`];
+  const best = (ctx, game) => Math.max(scores(ctx)[`${game}-names`] ?? 0, scores(ctx)[`${game}-symbol`] ?? 0);
+  const g = (suffix, title, desc, target, progress) =>
+    ACHIEVEMENTS.push({ id: `${L.key}-game-${suffix}`, section: `${L.Plural} Games`, icon: "🎮", title: `${L.Name} ${title}`, desc, target, progress });
+  g("sprint", L.game[0], `Score 10 in ${L.Plural} Survival Sprint`, 10, (ctx) => best(ctx, "sprint"));
+  g("clock", L.game[1], `Score 20 in ${L.Plural} Beat the Clock`, 20, (ctx) => best(ctx, "clock"));
+  g("lightning", L.game[2], `Score 10 or higher in ${L.Plural} Lightning Round`, 10, (ctx) => best(ctx, "lightning"));
+  g("sort", L.game[3], `Score 10 in ${L.sortName}`, 10, (ctx) => scores(ctx)["sort"] ?? 0);
+  g("memory", L.game[4], `Complete a ${L.Plural} Memory Match round`, 1, (ctx) =>
+    Object.keys(scores(ctx)).some((k) => k.startsWith("memory-")) ? 1 : 0
+  );
+}
+
 export function buildContext() {
   const streak = getStreakInfo();
   const masteredVocab = getMasteredKeyCount(VOCAB_SRS_MODES);
   const masteredVerbs = getMasteredKeyCount(VERB_SRS_MODES);
   const masteredAccents = getMasteredKeyCount(ACCENT_SRS_MODES);
+  const masteredConsonants = getMasteredKeyCount(CONSONANT_SRS_MODES);
+  const masteredVowels = getMasteredKeyCount(VOWEL_SRS_MODES);
 
   let totalQuizzes = 0;
   let perfectQuizzes = 0;
@@ -335,6 +380,10 @@ export function buildContext() {
     masteredVocab,
     masteredVerbs,
     masteredAccents,
+    masteredConsonants,
+    masteredVowels,
+    consonantGameScores: getAllConsonantHighScores(),
+    vowelGameScores: getAllVowelHighScores(),
     totalQuizzes,
     perfectQuizzes,
     categorizedWords,
