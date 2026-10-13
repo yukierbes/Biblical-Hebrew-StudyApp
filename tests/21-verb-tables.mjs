@@ -1,9 +1,11 @@
 import { setupApp, assert, summary, navigateTo, click } from "./helpers.mjs";
+import { readFileSync } from "node:fs";
 import {
   PGN_ORDER, pgnOf, joinForms, groupRowsByVerb, binyanimFor, buildBinyanTables, buildRootTable, buildViewModel,
   binyanViewHtml, rootViewHtml, binyanSheetRows, rootSheetRows, sheetNameFor, exportSheets,
 } from "../public/js/verb-tables.js";
-import { printVerbTables, clearTablePrintStyle } from "../public/js/print-tables.js";
+import { printVerbTables, clearTablePrintStyle, prepareForPrint, paginate, PAGE_AREA } from "../public/js/print-tables.js";
+import { rootTableHtml } from "../public/js/verb-tables.js";
 import { loadVerbData } from "../public/js/data.js";
 
 const { document } = await setupApp();
@@ -205,6 +207,53 @@ console.log("\nThe Excel layout");
 }
 
 // ======================================================================
+console.log("\nPutting whole modes on pages");
+
+{
+  assert(JSON.stringify(paginate([100, 100, 100], 250)) === "[[0,1],[2]]", "blocks fill a page, then continue on the next");
+  assert(JSON.stringify(paginate([100, 160, 100], 250)) === "[[0],[1],[2]]", "a block that doesn't fit the room left moves to the next page whole (never split)");
+  assert(JSON.stringify(paginate([300, 50], 250)) === "[[0],[1]]", "a block taller than a page still gets a page of its own");
+  assert(JSON.stringify(paginate([], 250)) === "[]", "nothing to print gives no pages");
+  assert(JSON.stringify(paginate([0, 0, 0], 10)) === "[[0,1,2]]", "when nothing can be measured, everything stays together");
+  // A strong verb's modes, at 26px a row: Perfect 9, Imperfect 10, Jussive 8, Cohortative 2, Imperative 4, Infinitives 1+1, Participles 4+4
+  const rows = [9, 10, 8, 2, 4, 1, 1, 4, 4].map((n) => n * 26);
+  const pages = paginate(rows, PAGE_AREA.root.height - 60);
+  assert(pages[0].join() === "0,1" && pages[1][0] === 2, "Jussive starts a page rather than being split across two");
+  assert(pages.flat().join() === "0,1,2,3,4,5,6,7,8", "every mode is placed exactly once, in order");
+  assert(PAGE_AREA.root.width > PAGE_AREA.root.height && PAGE_AREA.binyan.height > PAGE_AREA.binyan.width, "the By Verb Root pages are landscape and the By Binyan pages portrait");
+}
+
+// ======================================================================
+console.log("\nBlank practice worksheets");
+
+{
+  const root = buildRootTable(STRONG, verbRows(STRONG));
+  const box = document.createElement("div");
+  box.innerHTML = rootTableHtml(root, { blank: true, printLayout: true });
+  const cells = [...box.querySelectorAll("td.verb-table-form")];
+  assert(cells.length === 43 * 7, "a cell for every row of every binyan");
+  assert(cells.every((td) => td.textContent === ""), "no answers are printed");
+  const crossed = box.querySelectorAll("td.verb-table-unused");
+  assert(crossed.length === 52, `the 52 cells this verb doesn't use are marked to be crossed out (${crossed.length})`);
+  assert([...crossed].every((td) => td.querySelector("svg.crossed-out line")), "...each with a diagonal line (drawn as SVG, so it prints without 'background graphics')");
+  assert(box.querySelectorAll("td.verb-table-blank").length === cells.length - 52, "every other cell is an empty box to write in");
+  const pualImperative = [...box.querySelectorAll("tbody.mode-group")].find((g) => g.querySelector(".verb-table-mode").textContent === "Imperative");
+  const pualCol = root.binyanim.indexOf("Pual") + 2;
+  assert([...pualImperative.querySelectorAll("tr")].every((tr) => tr.children[pualCol].classList.contains("verb-table-unused")), "e.g. every Pual Imperative cell is crossed out");
+  const qalCol = root.binyanim.indexOf("Qal") + 2;
+  assert([...pualImperative.querySelectorAll("tr")].every((tr) => tr.children[qalCol].classList.contains("verb-table-blank")), "...while the Qal Imperative cells are left to fill in");
+  assert(box.querySelector("table").classList.contains("blank-table") && box.querySelector("table").classList.contains("print-root"), "the table is marked as a blank worksheet");
+  assert(box.querySelectorAll("tbody.mode-group").length === 9, "each mode is its own block, so it can be placed on a page whole");
+  assert(box.querySelector("colgroup") && /width:100%/.test(box.querySelector("table").getAttribute("style")), "a seven-binyan table uses the full page width, with fixed columns");
+  const qalOnly = document.createElement("div");
+  qalOnly.innerHTML = rootTableHtml(buildRootTable("Stative Verb (\u05DB\u05D1\u05D3)", verbRows("Stative Verb (\u05DB\u05D1\u05D3)")), { blank: true, printLayout: true });
+  assert(parseFloat(qalOnly.querySelector("table").getAttribute("style").match(/width:([\d.]+)%/)[1]) < 40, "a Qal-only verb gets a narrow table rather than one stretched across the page");
+  const filled = document.createElement("div");
+  filled.innerHTML = rootTableHtml(root, { printLayout: true });
+  assert(filled.querySelectorAll("td.verb-table-unused").length === 0 && filled.textContent.includes("\u05E7\u05B8\u05D8\u05B7\u05DC"), "the filled table (the answer key) still shows the forms and has no cross-out lines");
+}
+
+// ======================================================================
 console.log("\nThe Verb Review page");
 
 {
@@ -252,7 +301,8 @@ console.log("\nThe Verb Review page");
   click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Tables"));
   const area = document.getElementById("print-area");
   assert(printed === 1 && area.querySelectorAll(".binyan-table").length === 51, "Print Tables prints the tables");
-  assert(/0\.5in/.test(document.getElementById("table-print-page-style").textContent), "using ordinary page margins for the tables");
+  assert(/size:\s*portrait/.test(document.getElementById("table-print-page-style").textContent), "By Binyan asks for a portrait page");
+  assert(!/margin/.test(document.getElementById("table-print-page-style").textContent), "...and leaves the margin alone (the stylesheet's zero margin is what keeps the browser's date/title/address off)");
   window.dispatchEvent(new window.Event("afterprint"));
   assert(!document.getElementById("table-print-page-style"), "and puts the page setup back when printing is done");
   await switchView("root");
@@ -260,6 +310,40 @@ console.log("\nThe Verb Review page");
   assert(/landscape/.test(document.getElementById("table-print-page-style").textContent), "the wide By Verb Root table asks for a landscape page");
   clearTablePrintStyle();
   assert(!document.getElementById("table-print-page-style"), "the page setup can always be cleared");
+
+  // Print Blank Tables
+  const buttonLabels = () => [...content.querySelectorAll(".verb-tables-actions button")].map((b) => b.textContent).join("|");
+  assert(buttonLabels() === "Download Excel|Print Tables|Print Blank Tables", "the table views have Download Excel, Print Tables and Print Blank Tables");
+  printed = 0;
+  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Blank Tables"));
+  assert(printed === 1 && area.querySelectorAll("table.blank-table").length > 0, "Print Blank Tables prints the blank worksheets");
+  assert(area.querySelectorAll("td.verb-table-unused").length === 52, "...with the unused cells marked to be crossed out");
+  assert(![...area.querySelectorAll("td.verb-table-form")].some((td) => td.textContent.trim()), "...and no answers");
+  assert(area.querySelectorAll(".print-page").length >= 1 && [...area.querySelectorAll(".print-page")].every((pg) => pg.querySelector(".pt-title")), "every page carries the verb's title");
+  assert(area.querySelectorAll(".print-page-last").length === 1 && area.lastElementChild.lastElementChild.classList.contains("print-page-last"), "only the last page lacks a page break after it");
+  await switchView("binyan");
+  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Blank Tables"));
+  assert(area.querySelectorAll("table.binyan-table.blank-table").length === 51 && area.querySelectorAll("td.verb-table-unused").length === 0, "By Binyan blanks: every table empty, nothing crossed out (every row there is used)");
+  const expectedRows = buildBinyanTables(STRONG, verbRows(STRONG)).reduce((n, b) => n + Math.ceil(b.tables.length / 3), 0);
+  assert(area.querySelectorAll(".pt-row").length === expectedRows && [...area.querySelectorAll(".pt-row")].every((r) => r.children.length <= 3), `...laid out three tables to a row (${expectedRows} rows)`);
+  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Tables"));
+  assert(area.querySelectorAll("table.blank-table").length === 0 && area.textContent.includes("\u05E7\u05B8\u05D8\u05B7\u05DC"), "Print Tables still prints the filled answer key");
+
+  // Closing the sign-in widget before printing (its frame carries a Netlify logo)
+  let closed = 0;
+  const savedIdentity = window.netlifyIdentity;
+  window.netlifyIdentity = { close: () => closed++ };
+  prepareForPrint();
+  assert(closed === 1, "printing closes the sign-in widget first");
+  window.netlifyIdentity = { close: () => { throw new Error("boom"); } };
+  let threw = false;
+  try { prepareForPrint(); } catch (e) { threw = true; }
+  assert(!threw, "...and a widget that misbehaves can't stop printing");
+  window.netlifyIdentity = undefined;
+  prepareForPrint();
+  assert(true, "...and it copes with there being no widget at all");
+  window.netlifyIdentity = savedIdentity;
+  await switchView("root");
 
   // Filters narrow the tables.
   const ticks = (title) => {
@@ -272,6 +356,16 @@ console.log("\nThe Verb Review page");
   assert([...content.querySelectorAll(".root-table thead th")].map((t) => t.textContent).join() === "Mode,PGN,Qal", "ticking Qal in the sidebar leaves just the Qal column");
   await switchView("list");
   assert(!!content.querySelector("table.custom-table"), "and the List view comes back");
+}
+
+// The stylesheet: what the printed pages depend on (jsdom can't lay anything out, so this is checked in the CSS itself)
+{
+  const css = readFileSync(new URL("../public/css/style.css", import.meta.url), "utf-8").replace(/\/\*[\s\S]*?\*\//g, "");
+  assert(/@page\s*\{[^}]*margin:\s*0/.test(css), "@page margin is zero, so the browser prints no date, page title, address or page numbers");
+  assert(/body\s*>\s*\*:not\(#print-area\)\s*\{[^}]*display:\s*none\s*!important/.test(css), "when printing, everything on the page except the print area is hidden (pop-ups, the sign-in widget's frame, any overlay)");
+  assert(/#print-area \.verb-tables-print \.print-page\s*\{[^}]*padding:\s*0\.5in/.test(css), "each printed page supplies its own 0.5in margin");
+  assert(!/@media print\s*\{[^@]*#print-area \.pt-block/.test(css), "the table print rules aren't print-only (the measuring copy needs them too)");
+  assert(/vector-effect:\s*non-scaling-stroke/.test(css) && /\.crossed-out\b/.test(css), "the cross-out line is styled as an SVG stroke");
 }
 
 summary();

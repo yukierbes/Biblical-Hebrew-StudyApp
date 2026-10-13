@@ -1,5 +1,7 @@
-// Bump this whenever any cached file changes, so old clients pick up
-// the new version instead of being stuck on a stale cache forever.
+// A new version here makes browsers drop their old cached copy of the app and
+// pick up the new files and data. You don't edit this by hand: on every Netlify
+// deploy, scripts/stamp-sw.mjs replaces it with that deploy's commit id.
+// (The value below is only what runs when the site is served some other way.)
 const CACHE_VERSION = "hebrew-verb-app-v39";
 
 const APP_SHELL = [

@@ -986,54 +986,90 @@ table.root-table tr.group-start td { border-top: 2px solid var(--hairline-strong
 table.root-table td.verb-table-mode { text-align: left; font-weight: 500; color: var(--ink); }
 .verb-tables .table-wrap { margin: 0; }
 
-/* ---- Printing the tables ("Print Tables") ---- */
-@media print {
-  /* (the app's little decorative square before headings isn't printed) */
-  #print-area .verb-tables-title::before,
-  #print-area .verb-tables-binyan-title::before { content: none; display: none; }
-  #print-area .verb-tables-print {
-    font-size: 9pt;
-    line-height: 1.25;
-    color: #1C2B45;
-  }
-  #print-area .verb-tables-title {
-    font-size: 14pt;
-    color: #1C2B45;
-    margin: 0 0 8pt;
-    padding-bottom: 3pt;
-    border-bottom: 1px solid #666;
-    break-after: avoid;
-  }
-  /* Each verb starts on a fresh page. */
-  #print-area .verb-tables-verb + .verb-tables-verb { break-before: page; }
-  #print-area .verb-tables-binyan-title {
-    color: #444;
-    font-size: 8.5pt;
-    margin: 12pt 0 5pt;
-    break-after: avoid;
-  }
-  #print-area .binyan-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10pt;
-  }
-  #print-area table.verb-table { break-inside: avoid; font-size: 9pt; color: #1C2B45; }
-  #print-area table.verb-table caption { color: #444; font-size: 7.5pt; }
-  #print-area table.verb-table th {
-    background: none;
-    color: #444;
-    border-color: #999;
-    padding: 3pt 4pt;
-    font-size: 7pt;
-  }
-  #print-area table.verb-table td { border-color: #bbb; padding: 2.5pt 5pt; color: #1C2B45; background: none; }
-  #print-area td.verb-table-pgn,
-  #print-area td.verb-table-mode { color: #444; font-size: 7.5pt; }
-  #print-area table.root-table td.verb-table-mode { color: #1C2B45; }
-  #print-area table.root-table tr.group-start td { border-top: 1.5px solid #666; }
-  #print-area table.root-table td.verb-table-form { min-width: 0; }
-  #print-area table.root-table thead { display: table-header-group; } /* repeat the column titles on every page */
-  #print-area table.root-table tr { break-inside: avoid; }
-  #print-area .verb-tables .table-wrap { border: 0; overflow: visible; }
+/* ---- Printing the tables ("Print Tables" / "Print Blank Tables") ----
+   Like the flashcards, these rules are NOT inside @media print: print-tables.js
+   briefly shows the hidden print area off-screen to measure each mode / row of
+   tables so it can place whole ones on pages, and that has to be measured with
+   the very styles that get printed. They are all scoped under #print-area, which
+   stays hidden on screen. Colors are fixed (not theme variables) so a printout
+   is always dark ink on white, even in dark mode. */
+#print-area .verb-tables-print {
+  font-size: 9pt;
+  line-height: 1.25;
+  color: #1C2B45;
+}
+/* 0.5in of white space on every side of EVERY page (the page itself has no margin). */
+#print-area .verb-tables-print .print-page { padding: 0.5in; }
+
+#print-area .pt-title {
+  display: flow-root;
+  font-family: var(--font-display);
+  font-size: 14pt;
+  line-height: 1.25;
+  color: #1C2B45;
+  padding-bottom: 3pt;
+  margin-bottom: 8pt;
+  border-bottom: 1px solid #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#print-area .pt-continued {
+  font-family: var(--font-body);
+  font-size: 8pt;
+  color: #666;
+  margin-left: 8pt;
+}
+
+/* By Binyan: rows of three tables, each row (with its binyan heading, if it starts one) is one unit for page breaks. */
+#print-area .pt-block { display: flow-root; padding-bottom: 10pt; }
+#print-area .pt-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10pt;
+  align-items: start;
+}
+#print-area .verb-tables-binyan-title {
+  color: #444;
+  font-size: 8.5pt;
+  margin: 0 0 5pt;
+}
+#print-area .verb-tables-binyan-title::before { content: none; display: none; } /* (no decorative square) */
+
+#print-area table.verb-table { font-size: 9pt; color: #1C2B45; }
+#print-area table.verb-table caption { color: #444; font-size: 7.5pt; }
+#print-area table.verb-table th {
+  background: none;
+  color: #444;
+  border-color: #999;
+  padding: 3pt 4pt;
+  font-size: 7pt;
+}
+#print-area table.verb-table td { border-color: #bbb; padding: 2pt 5pt; color: #1C2B45; background: none; }
+#print-area table.verb-table td.verb-table-form { font-size: 1.2em; line-height: 1.2; }
+#print-area td.verb-table-pgn,
+#print-area td.verb-table-mode { color: #444; font-size: 7.5pt; }
+#print-area table.root-table td.verb-table-mode { color: #1C2B45; white-space: normal; } /* long names ("Infinitive Construct") wrap instead of spilling into the next column */
+#print-area table.root-table tr.group-start td { border-top: 1.5px solid #666; }
+#print-area table.print-root { table-layout: fixed; }
+#print-area table.print-root td.verb-table-form { min-width: 0; }
+
+/* Practice worksheets: the answer cells are empty and tall enough to write Hebrew in. */
+#print-area table.blank-table td { height: 28px; }
+/* A cell this verb doesn't use at all is crossed out with a diagonal line (an inline SVG, so it prints without "background graphics"). */
+#print-area td.verb-table-unused { position: relative; }
+#print-area .crossed-out {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#print-area .crossed-out line {
+  stroke: #555;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
 }
 
 /* Feature field boxes (parsing / construction) */
@@ -1656,9 +1692,12 @@ kbd {
     background: #FFFFFF !important;
   }
 
-  #app, #shortcuts-modal, #sidebar-backdrop, #hebrew-keyboard-modal, #vocab-category-editor-modal,
-  #toast-container {
-    display: none !important; /* a pop-up on screen while printing would otherwise be printed on every page */
+  /* Hide EVERYTHING in the page except the print area — not just the app itself but
+     anything else attached to <body>: pop-up toasts, dialogs, and third-party additions
+     such as the sign-in widget's frame (which carries a Netlify logo). Anything fixed to
+     the screen would otherwise be repeated on every printed page. */
+  body > *:not(#print-area) {
+    display: none !important;
   }
 
   /* Explicit fixed colors rather than the theme variables — a printed

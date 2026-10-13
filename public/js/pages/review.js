@@ -207,10 +207,18 @@ function render(content, sidebarExtra, navigate) {
     const printBtn = document.createElement("button");
     printBtn.className = "btn btn-secondary";
     printBtn.textContent = "Print Tables";
+    printBtn.title = "Print the tables as they are (an answer key)";
     printBtn.addEventListener("click", () => printVerbTables(state.view, model));
+
+    const blankBtn = document.createElement("button");
+    blankBtn.className = "btn btn-secondary";
+    blankBtn.textContent = "Print Blank Tables";
+    blankBtn.title = "Print the same tables with the answers left empty, for practice (cells a verb doesn't use are crossed out)";
+    blankBtn.addEventListener("click", () => printVerbTables(state.view, model, { blank: true }));
 
     actions.appendChild(xlsxBtn);
     actions.appendChild(printBtn);
+    actions.appendChild(blankBtn);
     toolbar.appendChild(actions);
 
     const holder = document.createElement("div");

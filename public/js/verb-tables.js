@@ -126,6 +126,7 @@ const esc = (s) =>
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+export { esc as escapeHtml };
 
 const HEBREW = /[\u0590-\u05FF\uFB1D-\uFB4F]/;
 
@@ -133,16 +134,30 @@ const HEBREW = /[\u0590-\u05FF\uFB1D-\uFB4F]/;
  * A verb's name as a heading: Hebrew runs get the Hebrew font, and the Latin
  * part stays as it is ("Strong Verb (קטל)").
  */
-function verbNameHtml(name) {
+export function verbNameHtml(name) {
   return esc(name).replace(/[\u0590-\u05FF\uFB1D-\uFB4F]+/g, (m) => `<span lang="he" dir="rtl">${m}</span>`);
 }
+
+/** A diagonal line from corner to corner, marking a cell that is simply not used. Drawn as SVG (not a CSS
+ * background) because browsers don't print backgrounds unless asked to. */
+const CROSSED_OUT_LINE =
+  '<svg class="crossed-out" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
+  '<line x1="0" y1="100" x2="100" y2="0"/></svg>';
 
 /**
  * A cell of Hebrew forms. The WHOLE cell is one right-to-left run, so two forms
  * joined with "/" read right-to-left exactly as they do in the Excel sheet
  * (first form on the right), instead of each form being flipped on its own.
+ *
+ * `blank` is for practice worksheets: the answer is left empty, to be written
+ * in. If `crossOutUnused` is also set, a cell that has no form at all (that
+ * binyan simply doesn't have it) is crossed out with a diagonal line instead.
  */
-function formCellHtml(forms, className = "verb-table-form") {
+export function formCellHtml(forms, { className = "verb-table-form", blank = false, crossOutUnused = false } = {}) {
+  if (blank) {
+    if (!forms && crossOutUnused) return `<td class="${className} verb-table-unused">${CROSSED_OUT_LINE}</td>`;
+    return `<td class="${className} verb-table-blank"></td>`;
+  }
   if (!forms) return `<td class="${className}"></td>`;
   // <wbr> after each "/" lets a long pair of forms wrap onto two lines (instead
   // of stretching its column); it adds no characters, so copying still gives "a/b".
@@ -151,12 +166,12 @@ function formCellHtml(forms, className = "verb-table-form") {
   return `<td class="${className}">${inner}</td>`;
 }
 
-function binyanTableHtml(binyan, table) {
+export function binyanTableHtml(binyan, table, { blank = false } = {}) {
   const body = table.rows
-    .map((r) => `<tr><td class="verb-table-pgn">${esc(r.pgn)}</td>${formCellHtml(r.forms)}</tr>`)
+    .map((r) => `<tr><td class="verb-table-pgn">${esc(r.pgn)}</td>${formCellHtml(r.forms, { blank })}</tr>`)
     .join("");
   return (
-    `<table class="verb-table binyan-table">` +
+    `<table class="verb-table binyan-table${blank ? " blank-table" : ""}">` +
     `<caption>${esc(binyan)} ${esc(table.mode)}</caption>` +
     `<thead><tr><th>PGN</th><th>Conjugation</th></tr></thead>` +
     `<tbody>${body}</tbody></table>`
@@ -184,33 +199,67 @@ export function binyanViewHtml(verbs) {
     .join("");
 }
 
+/** How wide (as a % of the page) a printed root table is: narrower for a verb with fewer binyanim. */
+export function rootTableWidthPercent(binyanimCount) {
+  return Math.min(100, Math.round((16.5 + 12 * binyanimCount) * 10) / 10);
+}
+
+/**
+ * One By Verb Root table. Each mode is its own <tbody>, so a printout can place
+ * whole modes on a page.
+ *   blank    — practice worksheet: answers left empty, unused cells crossed out
+ *   groups   — only these modes (default: all); used when a table continues on a new page
+ *   printLayout — fixed column widths, so every page of a printout has identical columns
+ */
+export function rootTableHtml(root, { blank = false, groups = root.groups, printLayout = false } = {}) {
+  const head = `<tr><th>Mode</th><th>PGN</th>${root.binyanim.map((b) => `<th>${esc(b)}</th>`).join("")}</tr>`;
+  const body = groups
+    .map(
+      (g) =>
+        `<tbody class="mode-group">` +
+        g.rows
+          .map(
+            (r, i) =>
+              `<tr${i === 0 ? ' class="group-start"' : ""}>` +
+              // The mode is named once, on the first row of its group (as in the example sheet).
+              `<td class="verb-table-mode">${i === 0 ? esc(g.mode) : ""}</td>` +
+              `<td class="verb-table-pgn">${esc(r.pgn)}</td>` +
+              r.cells.map((c) => formCellHtml(c, { blank, crossOutUnused: true })).join("") +
+              `</tr>`
+          )
+          .join("") +
+        `</tbody>`
+    )
+    .join("");
+
+  let tableAttrs = "";
+  let colgroup = "";
+  if (printLayout) {
+    const total = rootTableWidthPercent(root.binyanim.length);
+    const modePct = ((11 / total) * 100).toFixed(2);
+    const pgnPct = ((5.5 / total) * 100).toFixed(2);
+    const binyanPct = (((total - 16.5) / root.binyanim.length / total) * 100).toFixed(2);
+    tableAttrs = ` style="width:${total}%"`;
+    colgroup =
+      `<colgroup><col style="width:${modePct}%"><col style="width:${pgnPct}%">` +
+      root.binyanim.map(() => `<col style="width:${binyanPct}%">`).join("") +
+      `</colgroup>`;
+  }
+  return (
+    `<table class="verb-table root-table${printLayout ? " print-root" : ""}${blank ? " blank-table" : ""}"${tableAttrs}>` +
+    `${colgroup}<thead>${head}</thead>${body}</table>`
+  );
+}
+
 export function rootViewHtml(verbs) {
   return verbs
-    .map(({ name, root }) => {
-      const head =
-        `<tr><th>Mode</th><th>PGN</th>${root.binyanim.map((b) => `<th>${esc(b)}</th>`).join("")}</tr>`;
-      const body = root.groups
-        .map((g) =>
-          g.rows
-            .map(
-              (r, i) =>
-                `<tr${i === 0 ? ' class="group-start"' : ""}>` +
-                // The mode is named once, on the first row of its group (as in the example sheet).
-                `<td class="verb-table-mode">${i === 0 ? esc(g.mode) : ""}</td>` +
-                `<td class="verb-table-pgn">${esc(r.pgn)}</td>` +
-                r.cells.map((c) => formCellHtml(c)).join("") +
-                `</tr>`
-            )
-            .join("")
-        )
-        .join("");
-      return (
+    .map(
+      ({ name, root }) =>
         `<section class="verb-tables-verb">` +
         `<h2 class="verb-tables-title">${verbNameHtml(name)}</h2>` +
-        `<div class="table-wrap"><table class="verb-table root-table"><thead>${head}</thead><tbody>${body}</tbody></table></div>` +
+        `<div class="table-wrap">${rootTableHtml(root)}</div>` +
         `</section>`
-      );
-    })
+    )
     .join("");
 }
 

@@ -177,53 +177,97 @@ returns a clear error) rather than silently failing or exposing content.
 
 ## Updating the data (verbs, vocabulary, accents)
 
-All three datasets are edited as plain CSV files under `data-source/`, then
-converted to the JSON the app actually reads with one command:
+The app's data lives in plain CSV files under `data-source/`. **To change
+anything, upload the changed CSV to GitHub — that's all.** Netlify rebuilds the
+app's data from the CSVs on every deploy and gives the app a fresh cache
+version by itself, so there is nothing to run and nothing to bump.
 
-```
-node scripts/build-data.mjs
-```
+### The steps (no Terminal needed)
 
-(or `npm run build-data`, if you have Node installed — no Python, no
-pandas, no Excel needed for this anymore.)
+1. Edit the CSV in Excel, Numbers or Google Sheets, and **save it as CSV
+   UTF-8** (see "Hebrew" below — this is the one thing that matters).
+2. On github.com, open your repository and go into the folder the file
+   belongs in: `data-source/` for `vocabulary.csv` and `accents.csv`, or
+   `data-source/verbs/` for a verb file.
+3. Click **Add file → Upload files**, drag the CSV in, and click **Commit
+   changes**. A file with the **same name** replaces the old one.
+   (GitHub Desktop works too: replace the file in your local folder, then
+   commit and push.)
+4. Netlify starts a deploy by itself. Open the site's **Deploys** tab in
+   Netlify: after a minute or two it says **Published**. Reload the app
+   (once, or twice if it was open) and the change is there.
 
-What to edit:
+### If something is wrong with a file
+
+The build checks the CSVs before it publishes anything. If it finds a problem it
+**stops, changes nothing, and the site keeps running its previous version**.
+The deploy shows as **Failed** in Netlify, and opening it shows a plain-language
+list of everything that needs fixing, for example:
+
+> `data-source/vocabulary.csv: the "Hebrew" column should contain Hebrew, but
+> row 17 "???" has none. This almost always means the file was saved in the
+> wrong format…`
+
+Fix the file and upload it again. Smaller things (an unknown binyan or mode that
+is probably a typo, a stray file named `vocabulary (1).csv`, a lesson split into
+two places) are listed as **warnings**: the build still goes ahead, but they're
+worth a look in the same deploy log.
+
+To check a file on your own computer before uploading it, run
+`npm run check-data` — it reads everything, reports problems, and writes nothing.
+
+### Hebrew
+
+Hebrew (with its vowel points) is fully supported — the files just have to be
+saved as **UTF-8**, which is a setting in the "Save as" step:
+
+- **Excel (Mac or Windows):** File → Save As → choose **CSV UTF-8 (Comma
+  delimited)**. Do **not** choose the plain "CSV (Comma delimited)" — it
+  silently turns Hebrew into `?` marks. (The build catches this and refuses the
+  file, but it's better to avoid it.)
+- **Google Sheets:** File → Download → **Comma-separated values (.csv)**. This is
+  always UTF-8.
+- **Numbers:** File → Export To → CSV, and under "Advanced Options" pick
+  **Unicode (UTF-8)**.
+
+### What's in each file
 
 - **`data-source/vocabulary.csv`** — one row per word. Columns: `Lesson,
   Frequency, Hebrew, English, POS, Category`. Blank `Category` is fine and
   kept blank on purpose. `Lesson` order in the app follows the order rows
   first appear in the file (not alphabetical — that's what makes `5A`...
-  `5Z`, `5AA`, `5BB` come out in the right sequence), so keep lessons
-  grouped together in file order.
+  `5Z`, `5AA`, `5BB` come out in the right sequence), so keep each lesson's
+  words together.
 
 - **`data-source/accents.csv`** — one row per accent mark. Columns: `Type,
-  Group, HebrewName, EnglishName, Symbol, Placement, Keyboard`. Same
-  first-appearance-order rule applies to `Type` and `Group`.
+  Group, Hebrew Name, English Name, Symbol, Placement, Keyboard Key` (headings
+  may be written with or without spaces). Same first-appearance-order rule
+  applies to `Type` and `Group`.
 
-- **`data-source/verbs/*.csv`** — one file per verb paradigm (25 files).
-  Each filename starts with a two-digit number purely to control the order
-  verbs appear in the app, e.g. `01 Strong Verb (קטל).csv`, `02 Strong
-  Verb (פקד).csv`. To reorder verbs, renumber the files. To add a new
-  verb, add a new numbered CSV file with the same columns: `Binyan, Mode,
+- **`data-source/verbs/*.csv`** — one file per verb paradigm. Each filename
+  starts with a number purely to control the order verbs appear in the app,
+  e.g. `01 Strong Verb (קטל).csv`. To reorder verbs, renumber the files. To add
+  a new verb, upload a new numbered CSV with the same columns: `Binyan, Mode,
   Person, Gender, Number, Conjugation, Gloss Translation`. The part of the
-  filename after the number (and before `.csv`) becomes that verb's
-  display name in the app.
+  filename after the number (and before `.csv`) becomes that verb's display
+  name in the app. (A verb that uses Polel/Polal/Hitpolel also needs adding to
+  `POLEL_DATASETS` in `public/js/constants.js`; the build warns if it's missing.)
 
-Any of these CSVs can be opened and edited directly in Excel, Google
-Sheets (File → Download → CSV), or a text editor — whatever's easiest.
-Commas or quotes inside a Hebrew/English field are fine as long as the
-spreadsheet program quotes the field properly when it saves, which all of
-the above do automatically.
+### How it works (for the curious)
 
-After running `node scripts/build-data.mjs`:
+`netlify.toml` tells Netlify to run `node scripts/build-data.mjs &&
+node scripts/stamp-sw.mjs` on every deploy. The first rebuilds
+`netlify/functions/data/*.json` from the CSVs (and does all the checking above);
+the second writes the deploy's commit id into `CACHE_VERSION` in
+`public/sw.js`, so every deploy is a new version and browsers drop their old
+cached copy. The CSVs are the source of truth: the JSON files in the repository
+are regenerated from them on every deploy. `npm run build-data` writes the JSON
+on your own computer, if you ever want to run the app locally against changed data.
 
-1. It rewrites `netlify/functions/data/{verbs,vocabulary,accents}.json` —
-   review the diff if you want to sanity-check the change.
-2. Bump `CACHE_VERSION` in `public/sw.js`, so people who already installed
-   the app pick up the new data (see "Cloud sync" section above for why
-   this matters).
-3. Commit everything (both the edited CSV and the regenerated JSON) and
-   redeploy.
+A deliberate large reduction (the check refuses to publish a file that has less
+than half the rows of the current data, because that is nearly always a cut-off
+or wrong file) can be allowed by setting the environment variable
+`ALLOW_DATA_SHRINK` to `1` in Netlify's site settings and deploying again.
 
 ## Feature overview
 
@@ -234,9 +278,14 @@ After running `node scripts/build-data.mjs`:
   Mode | PGN | a column for each binyan the verb has). Forms that share the
   same PGN sit in one cell separated by "/". The sidebar's verb selection
   and filters apply to all three. In the two table views, "Download Excel"
-  saves a workbook with one sheet per verb, laid out like the tables, and
-  "Print Tables" prints them (By Verb Root asks for a landscape page; each
-  verb starts on a new page). The List view has the CSV, Excel, and
+  saves a workbook with one sheet per verb, laid out like the tables;
+  "Print Tables" prints them (an answer key) and "Print Blank Tables" prints
+  the same tables with the answers left empty for practice, with a diagonal
+  line through any cell the verb doesn't use. Printouts carry only the tables
+  (no browser date, title, address or page numbers — the page margin is zero and
+  the app supplies its own), each verb starts on a new page, and a whole mode is
+  never split across two pages (By Verb Root asks for a landscape page, By
+  Binyan for portrait). The List view has the CSV, Excel, and
   double-sided printable-flashcard (PDF, via the browser's print dialog)
   export — Hebrew on the front, gloss + parsing on the back, laid out so
   printing double-sided and flipping the sheet lines each answer up
