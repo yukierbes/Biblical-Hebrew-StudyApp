@@ -41,7 +41,7 @@ const CONSONANT_MODES = [
   },
   {
     label: "Typing",
-    desc: "Type the letter from its name, or select the keyboard shortcut that types it, with Practice and Quiz modes",
+    desc: "Type the letter from its name, or type the name of the letter shown, with Practice and Quiz modes",
     key: "consonant-typing",
     buttonLabel: "Typing",
   },
@@ -68,7 +68,7 @@ const VOWEL_MODES = [
   },
   {
     label: "Typing",
-    desc: "Type the vowel from its name, or select the keyboard shortcut that types it, with Practice and Quiz modes",
+    desc: "Type the vowel from its name, or type the name of the vowel shown, with Practice and Quiz modes",
     key: "vowel-typing",
     buttonLabel: "Typing",
   },
@@ -149,7 +149,7 @@ const ACCENTS_MODES = [
   },
   {
     label: "Typing",
-    desc: "Type the accent from its name, or select the SIL keyboard shortcut that types it, with Practice and Quiz modes",
+    desc: "Type the accent from its name, or type the English name of the accent shown, with Practice and Quiz modes",
     key: "accent-typing",
     buttonLabel: "Typing",
   },
@@ -169,12 +169,12 @@ function todayCardHtml() {
   for (const mode of ["vocab-typing-hebrew", "vocab-typing-english", "vocab-flashcards-hebrew", "vocab-flashcards-english"]) {
     due += getDueCount(mode, vocabRows, vocabRowKey);
   }
-  for (const mode of ["accent-typing-names", "accent-typing-symbol", "accent-flashcards"]) {
+  for (const mode of ["accent-typing-names", "accent-typing-form", "accent-flashcards"]) {
     due += getDueCount(mode, accentRows, accentRowKey);
   }
   for (const prefix of ["consonant", "vowel"]) {
     const rows = prefix === "consonant" ? getConsonantRows() : getVowelRows();
-    for (const mode of [`${prefix}-typing-names`, `${prefix}-typing-symbol`, `${prefix}-flashcards`]) {
+    for (const mode of [`${prefix}-typing-names`, `${prefix}-typing-form`, `${prefix}-flashcards`]) {
       due += getDueCount(mode, rows, (row) => row.Name);
     }
   }

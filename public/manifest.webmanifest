@@ -1,7 +1,7 @@
 {
-  "name": "Biblical Hebrew Verb Practice",
-  "short_name": "Hebrew Verbs",
-  "description": "Practice, quiz, and look up Biblical Hebrew verb conjugations — works offline once installed.",
+  "name": "Biblical Hebrew Study App",
+  "short_name": "Hebrew Study",
+  "description": "Study Biblical Hebrew consonants, vowels, vocabulary, verbs, and accents — works offline once installed.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
