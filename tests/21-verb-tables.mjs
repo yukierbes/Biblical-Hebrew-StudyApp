@@ -298,36 +298,36 @@ console.log("\nThe Verb Review page");
   // Print Tables
   let printed = 0;
   window.print = () => printed++;
-  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Tables"));
+  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Table (Answer Key)"));
   const area = document.getElementById("print-area");
-  assert(printed === 1 && area.querySelectorAll(".binyan-table").length === 51, "Print Tables prints the tables");
+  assert(printed === 1 && area.querySelectorAll(".binyan-table").length === 51, "Print Table (Answer Key) prints the tables");
   assert(/size:\s*portrait/.test(document.getElementById("table-print-page-style").textContent), "By Binyan asks for a portrait page");
   assert(!/margin/.test(document.getElementById("table-print-page-style").textContent), "...and leaves the margin alone (the stylesheet's zero margin is what keeps the browser's date/title/address off)");
   window.dispatchEvent(new window.Event("afterprint"));
   assert(!document.getElementById("table-print-page-style"), "and puts the page setup back when printing is done");
   await switchView("root");
-  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Tables"));
+  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Table (Answer Key)"));
   assert(/landscape/.test(document.getElementById("table-print-page-style").textContent), "the wide By Verb Root table asks for a landscape page");
   clearTablePrintStyle();
   assert(!document.getElementById("table-print-page-style"), "the page setup can always be cleared");
 
   // Print Blank Tables
-  const buttonLabels = () => [...content.querySelectorAll(".verb-tables-actions button")].map((b) => b.textContent).join("|");
-  assert(buttonLabels() === "Download Excel|Print Tables|Print Blank Tables", "the table views have Download Excel, Print Tables and Print Blank Tables");
+  const buttonLabels = () => [...content.querySelectorAll(".button-row button")].map((b) => b.textContent).join("|");
+  assert(buttonLabels() === "Print Blank Table|Print Table (Answer Key)|Download Excel", "the table views have Print Table (blank and answer key) above Download Excel");
   printed = 0;
-  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Blank Tables"));
-  assert(printed === 1 && area.querySelectorAll("table.blank-table").length > 0, "Print Blank Tables prints the blank worksheets");
+  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Blank Table"));
+  assert(printed === 1 && area.querySelectorAll("table.blank-table").length > 0, "Print Blank Table prints the blank worksheets");
   assert(area.querySelectorAll("td.verb-table-unused").length === 52, "...with the unused cells marked to be crossed out");
   assert(![...area.querySelectorAll("td.verb-table-form")].some((td) => td.textContent.trim()), "...and no answers");
   assert(area.querySelectorAll(".print-page").length >= 1 && [...area.querySelectorAll(".print-page")].every((pg) => pg.querySelector(".pt-title")), "every page carries the verb's title");
   assert(area.querySelectorAll(".print-page-last").length === 1 && area.lastElementChild.lastElementChild.classList.contains("print-page-last"), "only the last page lacks a page break after it");
   await switchView("binyan");
-  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Blank Tables"));
+  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Blank Table"));
   assert(area.querySelectorAll("table.binyan-table.blank-table").length === 51 && area.querySelectorAll("td.verb-table-unused").length === 0, "By Binyan blanks: every table empty, nothing crossed out (every row there is used)");
   const expectedRows = buildBinyanTables(STRONG, verbRows(STRONG)).reduce((n, b) => n + Math.ceil(b.tables.length / 3), 0);
   assert(area.querySelectorAll(".pt-row").length === expectedRows && [...area.querySelectorAll(".pt-row")].every((r) => r.children.length <= 3), `...laid out three tables to a row (${expectedRows} rows)`);
-  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Tables"));
-  assert(area.querySelectorAll("table.blank-table").length === 0 && area.textContent.includes("\u05E7\u05B8\u05D8\u05B7\u05DC"), "Print Tables still prints the filled answer key");
+  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Print Table (Answer Key)"));
+  assert(area.querySelectorAll("table.blank-table").length === 0 && area.textContent.includes("\u05E7\u05B8\u05D8\u05B7\u05DC"), "Print Table (Answer Key) still prints the filled answer key");
 
   // Closing the sign-in widget before printing (its frame carries a Netlify logo)
   let closed = 0;

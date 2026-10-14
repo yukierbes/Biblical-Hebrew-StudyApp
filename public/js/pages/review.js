@@ -1,6 +1,8 @@
 import { getAvailableDatasets, loadVerbData } from "../data.js";
 import { applyFilters, GENERATOR_COLUMNS } from "../filters.js";
-import { renderDatasetSelector, renderFilterSidebar, renderCheckboxList } from "../widgets.js";
+import { renderDatasetSelector, renderFilterSidebar } from "../widgets.js";
+import { createColumnState, visibleColumns, renderColumnPicker } from "../review-columns.js";
+import { createPrintState, renderReviewTools } from "../review-tools.js";
 import { renderTable } from "../table.js";
 import { downloadCSV, downloadXLSX, downloadXLSXSheets, wrapHebrewSpans } from "../helpers.js";
 import { printFlashcards } from "../print.js";
@@ -39,7 +41,8 @@ function freshState() {
   return {
     datasets: { selected: available.length ? [available[0]] : [] },
     filters: Object.fromEntries(GENERATOR_COLUMNS.map((c) => [c, []])),
-    visibleColumns: null, // null = "all"; set once we know the columns
+    columns: null, // the column picker's state; created once we know the columns
+    print: createPrintState(),
     view: loadSavedView(), // "list" | "binyan" | "root"
   };
 }
@@ -105,7 +108,7 @@ function render(content, sidebarExtra, navigate) {
       Use the filters in the sidebar to narrow down what you want to study.<br>
       Switch views below: <b>List</b> (every form as a row), <b>By Binyan</b> (a table for each binyan and mode),
       or <b>By Verb Root</b> (one table per verb, with a column for each binyan).<br>
-      Download the data as CSV/Excel, print it as flashcards, or print the tables, to build study lists.
+      Print the table (or a blank copy to practice on), download it as CSV/Excel, or print flashcards — all from the buttons just below.
     </div>
     <hr class="hr" />
   `;
@@ -189,37 +192,28 @@ function render(content, sidebarExtra, navigate) {
   content.appendChild(toolbar);
 
   // ---- The two table views ----
-  // (Visible Columns only applies to the List view, so it isn't shown here.)
+  // (The Columns list only applies to the List view, so it isn't shown here.)
   if (state.view !== "list") {
     const model = buildViewModel(state.view, df);
 
-    const actions = document.createElement("div");
-    actions.className = "verb-tables-actions";
-
-    const xlsxBtn = document.createElement("button");
-    xlsxBtn.className = "btn";
-    xlsxBtn.textContent = "Download Excel";
-    xlsxBtn.title = "One sheet per verb, laid out like the tables below";
-    xlsxBtn.addEventListener("click", () =>
-      downloadXLSXSheets(exportSheets(state.view, model), state.view === "binyan" ? "verbs_by_binyan.xlsx" : "verbs_by_root.xlsx")
-    );
-
-    const printBtn = document.createElement("button");
-    printBtn.className = "btn btn-secondary";
-    printBtn.textContent = "Print Tables";
-    printBtn.title = "Print the tables as they are (an answer key)";
-    printBtn.addEventListener("click", () => printVerbTables(state.view, model));
-
-    const blankBtn = document.createElement("button");
-    blankBtn.className = "btn btn-secondary";
-    blankBtn.textContent = "Print Blank Tables";
-    blankBtn.title = "Print the same tables with the answers left empty, for practice (cells a verb doesn't use are crossed out)";
-    blankBtn.addEventListener("click", () => printVerbTables(state.view, model, { blank: true }));
-
-    actions.appendChild(xlsxBtn);
-    actions.appendChild(printBtn);
-    actions.appendChild(blankBtn);
-    toolbar.appendChild(actions);
+    renderReviewTools(content, {
+      title: "Verbs",
+      print: state.print,
+      customPrint: {
+        description:
+          "Prints the tables below (the verbs and filters you have selected). The blank table leaves the answers empty for practice, with a diagonal line through any cell the verb doesn't use.",
+        blank: () => printVerbTables(state.view, model, { blank: true }),
+        key: () => printVerbTables(state.view, model),
+      },
+      downloads: [
+        {
+          text: "Download Excel",
+          title: "One sheet per verb, laid out like the tables below",
+          onClick: () =>
+            downloadXLSXSheets(exportSheets(state.view, model), state.view === "binyan" ? "verbs_by_binyan.xlsx" : "verbs_by_root.xlsx"),
+        },
+      ],
+    });
 
     const holder = document.createElement("div");
     holder.className = "verb-tables";
@@ -230,77 +224,42 @@ function render(content, sidebarExtra, navigate) {
     return;
   }
 
-  // Visible columns selector
+  // Columns: show / hide / reorder (remembered). The table, downloads and
+  // printed table all follow it.
   const allColumns = Object.keys(df[0]);
-  if (!state.visibleColumns || state.visibleColumns.some((c) => !allColumns.includes(c))) {
-    state.visibleColumns = [...allColumns];
+  if (!state.columns || state.columns.all.join("|") !== allColumns.join("|")) {
+    state.columns = createColumnState("verb-review", allColumns);
   }
+  renderColumnPicker(sidebarExtra, state.columns, {
+    onChange: () => render(content, sidebarExtra, navigate),
+  });
+  const cols = visibleColumns(state.columns);
 
-  const colSidebarDivider = document.createElement("hr");
-  colSidebarDivider.className = "sidebar-divider";
-  sidebarExtra.appendChild(colSidebarDivider);
-
-  const colWrap = document.createElement("div");
-  colWrap.className = "sidebar-section";
-  colWrap.innerHTML = `<h3 class="sidebar-title">Visible Columns</h3>`;
-  const colList = document.createElement("div");
-  colWrap.appendChild(colList);
-  sidebarExtra.appendChild(colWrap);
-
-  renderCheckboxList(colList, {
-    options: allColumns,
-    selected: state.visibleColumns,
-    onChange: (next) => {
-      state.visibleColumns = next.length ? next : [...allColumns];
-      renderMainTable();
-    },
+  // Print Table and Download & Print, above the (long) table.
+  renderReviewTools(content, {
+    title: "Verbs",
+    print: state.print,
+    getRows: () => df,
+    getColumns: () => cols,
+    hebrewColumns: ["Conjugation"],
+    weights: { Dataset: 1.6, Binyan: 0.9, Mode: 1.1, Person: 0.7, Gender: 0.7, Number: 0.7, Conjugation: 1.2, "Gloss Translation": 2 },
+    downloads: [
+      { text: "Download CSV", onClick: () => downloadCSV(df, cols, "verbs_filtered.csv") },
+      { text: "Download Excel", onClick: () => downloadXLSX(df, cols, "verbs_filtered.xlsx", "Verbs") },
+      {
+        text: "Print Flashcards",
+        title: "Prints up to 300 cards from the currently filtered table",
+        onClick: () => printFlashcards(df.slice(0, 300), { title: "Verb Flashcards" }),
+      },
+    ],
   });
 
-  // Table + downloads container (re-rendered independently so column
-  // toggles don't rebuild the whole sidebar)
   const tableSection = document.createElement("div");
   content.appendChild(tableSection);
-
-  function renderMainTable() {
-    tableSection.innerHTML = "";
-    const cols = state.visibleColumns.filter((c) => allColumns.includes(c));
-
-    renderTable(tableSection, df, {
-      columns: cols,
-      cellRenderers: { Dataset: (v) => wrapHebrewSpans(v) },
-    });
-
-    const dlWrap = document.createElement("div");
-    dlWrap.innerHTML = `<hr class="hr"/><h3>Download Data</h3>`;
-    const btnRow = document.createElement("div");
-    btnRow.className = "button-row";
-
-    const csvBtn = document.createElement("button");
-    csvBtn.className = "btn btn-block";
-    csvBtn.textContent = "Download CSV";
-    csvBtn.addEventListener("click", () => downloadCSV(df, cols, "verbs_filtered.csv"));
-
-    const xlsxBtn = document.createElement("button");
-    xlsxBtn.className = "btn btn-block";
-    xlsxBtn.textContent = "Download Excel";
-    xlsxBtn.addEventListener("click", () => downloadXLSX(df, cols, "verbs_filtered.xlsx", "Verbs"));
-
-    const printBtn = document.createElement("button");
-    printBtn.className = "btn btn-block";
-    printBtn.textContent = "Print Flashcards";
-    printBtn.title = "Prints up to 300 cards from the currently filtered table";
-    printBtn.addEventListener("click", () =>
-      printFlashcards(df.slice(0, 300), { title: "Verb Flashcards" })
-    );
-
-    btnRow.appendChild(csvBtn);
-    btnRow.appendChild(xlsxBtn);
-    btnRow.appendChild(printBtn);
-    dlWrap.appendChild(btnRow);
-    tableSection.appendChild(dlWrap);
-  }
-
-  renderMainTable();
+  renderTable(tableSection, df, {
+    columns: cols,
+    cellRenderers: { Dataset: (v) => wrapHebrewSpans(v) },
+  });
 
   appendNavigation();
 }

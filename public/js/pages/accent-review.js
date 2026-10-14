@@ -4,6 +4,8 @@ import { renderCheckboxList, renderPresetControls } from "../widgets.js";
 import { renderTable } from "../table.js";
 import { downloadCSV, downloadXLSX, wrapHebrewSpans } from "../helpers.js";
 import { printFlashcards } from "../print.js";
+import { createColumnState, visibleColumns, renderColumnPicker } from "../review-columns.js";
+import { createPrintState, renderReviewTools } from "../review-tools.js";
 
 const DISPLAY_COLUMNS = ["Type", "Group", "HebrewName", "EnglishName", "Symbol", "Placement", "Keyboard"];
 const COLUMN_LABELS = {
@@ -19,7 +21,12 @@ const COLUMN_LABELS = {
 let state = null;
 
 function freshState() {
-  return { filters: { Type: [], Group: [] } };
+  return {
+    filters: { Type: [], Group: [] },
+    columns: createColumnState("accent-review", DISPLAY_COLUMNS),
+    // The Keyboard Key column is left out of printed tables unless it is ticked.
+    print: createPrintState({ excluded: ["Keyboard"] }),
+  };
 }
 
 export function mount({ content, sidebarExtra, navigate }) {
@@ -139,94 +146,81 @@ function render(content, sidebarExtra, navigate) {
 
   sidebarExtra.appendChild(filterWrap);
 
+  renderColumnPicker(sidebarExtra, state.columns, {
+    labels: COLUMN_LABELS,
+    onChange: () => render(content, sidebarExtra, navigate),
+  });
+
   // ---- Main content ----
   const wrap = document.createElement("div");
   wrap.innerHTML = `
     <h1 class="page-title">Accents Review</h1>
     <div class="info-box">
       <b>Instructions</b><br>
-      Use the Type and Group filters in the sidebar to narrow the list down to what you want to study.<br>
-      Download the table as CSV/Excel to build study lists.
+      Use the Type and Group filters in the sidebar to narrow the list down to what you want to study, and the Columns list to choose what the table shows.<br>
+      Print the table (or a blank copy to practice on), download it, or print flashcards — all from the buttons just below.
     </div>
     <hr class="hr" />
   `;
   content.appendChild(wrap);
 
-  const tableSection = document.createElement("div");
-  content.appendChild(tableSection);
+  const filtered = applyAccentFilters(allRows, state.filters);
+  const cols = visibleColumns(state.columns);
 
-  function renderMainTable() {
-    const filtered = applyAccentFilters(allRows, state.filters);
-    tableSection.innerHTML = "";
-
-    if (filtered.length === 0) {
-      const div = document.createElement("div");
-      div.className = "alert alert-warning";
-      div.textContent = "No accents match the selected filters.";
-      tableSection.appendChild(div);
-      return;
-    }
-
-    const caption = document.createElement("div");
-    caption.className = "caption";
-    caption.textContent = `${filtered.length} of ${allRows.length} accents.`;
-    tableSection.appendChild(caption);
-
-    const tableContainer = document.createElement("div");
-    tableSection.appendChild(tableContainer);
-    renderTable(tableContainer, filtered, {
-      columns: DISPLAY_COLUMNS,
-      cellRenderers: {
-        HebrewName: (v) => wrapHebrewSpans(v),
-        Symbol: (v) => `<span class="accent-symbol-cell" lang="he">${v || ""}</span>`,
-        Placement: (v) => wrapHebrewSpans(v),
-        Group: (v) => (v ? v : `<span class="caption">—</span>`),
-      },
-    });
-    // Table header uses raw column keys by default — relabel them.
-    tableContainer.querySelectorAll("thead th").forEach((th, i) => {
-      const key = DISPLAY_COLUMNS[i];
-      if (COLUMN_LABELS[key]) th.textContent = COLUMN_LABELS[key];
-    });
-
-    const dlWrap = document.createElement("div");
-    dlWrap.innerHTML = `<hr class="hr"/><h3>Download Data</h3>`;
-    const btnRow = document.createElement("div");
-    btnRow.className = "button-row";
-
-    const csvBtn = document.createElement("button");
-    csvBtn.className = "btn btn-block";
-    csvBtn.textContent = "Download CSV";
-    csvBtn.addEventListener("click", () => downloadCSV(filtered, DISPLAY_COLUMNS, "accents_filtered.csv"));
-
-    const xlsxBtn = document.createElement("button");
-    xlsxBtn.className = "btn btn-block";
-    xlsxBtn.textContent = "Download Excel";
-    xlsxBtn.addEventListener("click", () =>
-      downloadXLSX(filtered, DISPLAY_COLUMNS, "accents_filtered.xlsx", "Accents")
-    );
-
-    const printBtn = document.createElement("button");
-    printBtn.className = "btn btn-block";
-    printBtn.textContent = "Print Flashcards";
-    printBtn.title = "Prints up to 300 cards from the currently filtered table";
-    printBtn.addEventListener("click", () =>
-      printFlashcards(filtered.slice(0, 300), {
-        title: "Accents Flashcards",
-        frontField: "Placement",
-        backField: "HebrewName",
-        backFieldIsHebrew: true,
-        secondaryField: "EnglishName",
-        metaFields: ["Type", "Group"],
-      })
-    );
-
-    btnRow.appendChild(csvBtn);
-    btnRow.appendChild(xlsxBtn);
-    btnRow.appendChild(printBtn);
-    dlWrap.appendChild(btnRow);
-    tableSection.appendChild(dlWrap);
+  if (filtered.length === 0) {
+    const div = document.createElement("div");
+    div.className = "alert alert-warning";
+    div.textContent = "No accents match the selected filters.";
+    content.appendChild(div);
+    return;
   }
 
-  renderMainTable();
+  renderReviewTools(content, {
+    title: "Accents",
+    print: state.print,
+    getRows: () => filtered,
+    getColumns: () => cols,
+    labels: COLUMN_LABELS,
+    hebrewColumns: ["HebrewName", "Symbol", "Placement"],
+    weights: { Type: 1, Group: 1, HebrewName: 1.3, EnglishName: 1.5, Symbol: 0.8, Placement: 1.2, Keyboard: 1.2 },
+    downloads: [
+      { text: "Download CSV", onClick: () => downloadCSV(filtered, cols, "accents_filtered.csv") },
+      { text: "Download Excel", onClick: () => downloadXLSX(filtered, cols, "accents_filtered.xlsx", "Accents") },
+      {
+        text: "Print Flashcards",
+        title: "Prints up to 300 cards from the currently filtered table",
+        onClick: () =>
+          printFlashcards(filtered.slice(0, 300), {
+            title: "Accents Flashcards",
+            frontField: "Placement",
+            backField: "HebrewName",
+            backFieldIsHebrew: true,
+            secondaryField: "EnglishName",
+            metaFields: ["Type", "Group"],
+          }),
+      },
+    ],
+  });
+
+  const caption = document.createElement("div");
+  caption.className = "caption";
+  caption.textContent = `${filtered.length} of ${allRows.length} accents.`;
+  content.appendChild(caption);
+
+  const tableContainer = document.createElement("div");
+  content.appendChild(tableContainer);
+  renderTable(tableContainer, filtered, {
+    columns: cols,
+    cellRenderers: {
+      HebrewName: (v) => wrapHebrewSpans(v),
+      Symbol: (v) => `<span class="accent-symbol-cell" lang="he">${v || ""}</span>`,
+      Placement: (v) => wrapHebrewSpans(v),
+      Group: (v) => (v ? v : `<span class="caption">—</span>`),
+    },
+  });
+  // Table header uses raw column keys by default — relabel them.
+  tableContainer.querySelectorAll("thead th").forEach((th, i) => {
+    const key = cols[i];
+    if (COLUMN_LABELS[key]) th.textContent = COLUMN_LABELS[key];
+  });
 }

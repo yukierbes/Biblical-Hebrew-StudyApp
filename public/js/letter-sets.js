@@ -66,6 +66,7 @@ const CONSONANTS = {
   columns: ["Name", "Form", "Transliteration", "Category", "Keyboard"],
   columnLabels: { Name: "Name", Form: "Form", Transliteration: "Transliteration", Category: "Category", Keyboard: "Keyboard Key" },
   hebrewColumns: ["Form"],
+  printWeights: { Name: 1.2, Form: 0.8, Transliteration: 1, Category: 1.6, Keyboard: 1 },
   csvName: "consonants_filtered",
 
   // Flashcards (and the printed cards): Hebrew on the front; name and
@@ -139,6 +140,7 @@ const VOWELS = {
   columns: ["Class", "Name", "Length", "Form", "Pronunciation", "Keyboard"],
   columnLabels: { Class: "Class", Name: "Name", Length: "Length", Form: "Form", Pronunciation: "Pronunciation", Keyboard: "Keyboard Key" },
   hebrewColumns: ["Form"],
+  printWeights: { Class: 0.6, Name: 1.4, Length: 1.3, Form: 0.8, Pronunciation: 1, Keyboard: 1.2 },
   csvName: "vowels_filtered",
 
   // Hebrew on the front; class, name and length on the back.

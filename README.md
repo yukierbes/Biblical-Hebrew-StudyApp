@@ -289,6 +289,31 @@ or wrong file) can be allowed by setting the environment variable
 
 ## Feature overview
 
+- **Review pages share one layout** (Consonants, Vowels, Vocabulary, Verbs,
+  Accents). Above the table, because the lists can be long, come two
+  sections: **Print Table**, then **Download & Print** (CSV, Excel,
+  flashcards where the page offers them). The sidebar has a **Columns** list on
+  every page: tick to show or hide a column, use the arrows to reorder; the
+  choice is remembered per page, and the table, the downloads and the printed
+  table all follow it (*Reset Columns* restores the default).
+  - *Print Table* prints the filtered table as an **answer key** or a **blank
+    practice worksheet**. You choose which of the shown columns to print (the
+    **Keyboard Key** column is unticked by default on Consonants, Vowels and
+    Accents), which column is filled in on the worksheet (or none), and
+    optionally a **random sample of up to 100 rows** drawn from whatever the
+    filters leave — a different sample each time you print, handy for quizzes.
+    Tables with more than six columns print landscape, the rest portrait; rows are
+    measured and packed so none is split across pages, and the column headings
+    repeat on every page.
+  - Verbs: the **List** view prints like the others. **By Binyan** and
+    **By Verb Root** keep their own layouts (their tables are the printout), so
+    their Print Table section is just *Print Blank Table* / *Print Table
+    (Answer Key)* for the verbs and filters selected. On screen they are now
+    styled like the other Review tables.
+  - Code: `review-columns.js` (the Columns list), `review-tools.js` (the two
+    sections), `print-data-table.js` (the printing). `print-letter-table.js` is
+    obsolete and can be deleted.
+
 - **Consonants and Vowels** — two study sets that work like Accents, each with
   a sidebar section (Review, Flashcards, Typing, Games). They are listed first
   everywhere navigation appears (sidebar, Home page), in the order

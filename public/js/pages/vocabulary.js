@@ -1,5 +1,7 @@
 import { loadVocabData, getVocabRows, getLessonOrder, getPosOrder } from "../vocab-data.js";
 import { renderCheckboxList, renderPresetControls } from "../widgets.js";
+import { createColumnState, visibleColumns, renderColumnPicker } from "../review-columns.js";
+import { createPrintState, renderReviewTools } from "../review-tools.js";
 import { renderTable } from "../table.js";
 import { downloadCSV, downloadXLSX, wrapHebrewSpans } from "../helpers.js";
 import { printFlashcards } from "../print.js";
@@ -17,7 +19,8 @@ function freshState() {
   return {
     filters: { Lesson: [], POS: [], Category: [], Root: [] },
     minFrequency: "",
-    visibleColumns: [...DISPLAY_COLUMNS],
+    columns: createColumnState("vocabulary-review", DISPLAY_COLUMNS),
+    print: createPrintState(),
     selectedKeys: new Set(),
   };
 }
@@ -250,7 +253,7 @@ function render(content, sidebarExtra, navigate) {
       Click <i>Edit</i> next to a word's Category to reassign it — a word can belong to more than one category, and you can add brand-new categories on the fly.<br>
       Click <i>Edit</i> next to a word's Root to group it with its root family (one root per word) — use <i>Manage Roots</i> in the sidebar to rename, delete, or filter by a root.<br>
       Check multiple rows to bulk-assign or remove a category or root at once.<br>
-      Download the table as CSV/Excel to build study lists.
+      Choose the columns to show in the sidebar. Print the table (or a blank copy, for a quiz), download it as CSV/Excel, or print flashcards — all from the buttons just below.
     </div>
     <hr class="hr" />
   `;
@@ -261,26 +264,10 @@ function render(content, sidebarExtra, navigate) {
   const tableSection = document.createElement("div");
   content.appendChild(tableSection);
 
-  // Visible columns selector (uses the live-filtered row count for the
-  // "no matches" case, but the column list itself never changes).
-  const colDivider = document.createElement("hr");
-  colDivider.className = "sidebar-divider";
-  sidebarExtra.appendChild(colDivider);
-
-  const colWrap = document.createElement("div");
-  colWrap.className = "sidebar-section";
-  colWrap.innerHTML = `<h3 class="sidebar-title">Visible Columns</h3>`;
-  const colList = document.createElement("div");
-  colWrap.appendChild(colList);
-  sidebarExtra.appendChild(colWrap);
-
-  renderCheckboxList(colList, {
-    options: DISPLAY_COLUMNS,
-    selected: state.visibleColumns,
-    onChange: (next) => {
-      state.visibleColumns = next.length ? next : [...DISPLAY_COLUMNS];
-      renderMainTable();
-    },
+  // Columns: show / hide / reorder. Rebuilds the page so the picker's arrows
+  // and the table, downloads and printed table all follow the new choice.
+  renderColumnPicker(sidebarExtra, state.columns, {
+    onChange: () => render(content, sidebarExtra, navigate),
   });
 
   function renderMainTable() {
@@ -294,6 +281,37 @@ function render(content, sidebarExtra, navigate) {
       tableSection.appendChild(div);
       return;
     }
+
+    const cols = visibleColumns(state.columns);
+
+    // Exports and printouts reflect each word's current (override-aware)
+    // categories and root, not just the dataset's original Category field.
+    const exportRows = filtered.map((r) => ({ ...r, Category: getCategoriesForRow(r).join(", "), Root: getRootForWord(r) }));
+
+    // ---- Print Table and Download & Print, above the (possibly long) table ----
+    renderReviewTools(tableSection, {
+      title: "Vocabulary",
+      print: state.print,
+      getRows: () => exportRows,
+      getColumns: () => cols,
+      hebrewColumns: ["Hebrew", "Root"],
+      weights: { Lesson: 0.6, Hebrew: 1.2, English: 2, POS: 0.7, Category: 1.3, Root: 1, Frequency: 0.8 },
+      downloads: [
+        { text: "Download CSV", onClick: () => downloadCSV(exportRows, cols, "vocabulary_filtered.csv") },
+        { text: "Download Excel", onClick: () => downloadXLSX(exportRows, cols, "vocabulary_filtered.xlsx", "Vocabulary") },
+        {
+          text: "Print Flashcards",
+          title: "Prints up to 300 cards from the currently filtered table",
+          onClick: () =>
+            printFlashcards(filtered.slice(0, 300), {
+              title: "Vocabulary Flashcards",
+              frontField: "Hebrew",
+              backField: "English",
+              metaFields: ["Lesson", "POS", "Frequency"],
+            }),
+        },
+      ],
+    });
 
     const caption = document.createElement("div");
     caption.className = "caption";
@@ -363,7 +381,6 @@ function render(content, sidebarExtra, navigate) {
     bulkBar.appendChild(selectedCountLabel);
     tableSection.appendChild(bulkBar);
 
-    const cols = state.visibleColumns.filter((c) => DISPLAY_COLUMNS.includes(c));
     const tableContainer = document.createElement("div");
     tableSection.appendChild(tableContainer);
     renderTable(tableContainer, filtered, {
@@ -412,44 +429,6 @@ function render(content, sidebarExtra, navigate) {
         if (row) openRootEditor(row, renderMainTable);
       });
     });
-
-    const dlWrap = document.createElement("div");
-    dlWrap.innerHTML = `<hr class="hr"/><h3>Download Data</h3>`;
-    const btnRow = document.createElement("div");
-    btnRow.className = "button-row";
-
-    // Exports reflect each word's current (override-aware) categories
-    // and root, not just the dataset's original Category field.
-    const exportRows = filtered.map((r) => ({ ...r, Category: getCategoriesForRow(r).join(", "), Root: getRootForWord(r) }));
-
-    const csvBtn = document.createElement("button");
-    csvBtn.className = "btn btn-block";
-    csvBtn.textContent = "Download CSV";
-    csvBtn.addEventListener("click", () => downloadCSV(exportRows, cols, "vocabulary_filtered.csv"));
-
-    const xlsxBtn = document.createElement("button");
-    xlsxBtn.className = "btn btn-block";
-    xlsxBtn.textContent = "Download Excel";
-    xlsxBtn.addEventListener("click", () => downloadXLSX(exportRows, cols, "vocabulary_filtered.xlsx", "Vocabulary"));
-
-    const printBtn = document.createElement("button");
-    printBtn.className = "btn btn-block";
-    printBtn.textContent = "Print Flashcards";
-    printBtn.title = "Prints up to 300 cards from the currently filtered table";
-    printBtn.addEventListener("click", () =>
-      printFlashcards(filtered.slice(0, 300), {
-        title: "Vocabulary Flashcards",
-        frontField: "Hebrew",
-        backField: "English",
-        metaFields: ["Lesson", "POS", "Frequency"],
-      })
-    );
-
-    btnRow.appendChild(csvBtn);
-    btnRow.appendChild(xlsxBtn);
-    btnRow.appendChild(printBtn);
-    dlWrap.appendChild(btnRow);
-    tableSection.appendChild(dlWrap);
   }
 
   renderMainTable();

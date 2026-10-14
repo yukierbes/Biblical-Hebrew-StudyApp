@@ -2163,3 +2163,73 @@ kbd {
   line-height: 1.25;
   display: inline-block;
 }
+
+/* ---------- Review pages: column picker, print-table options ---------- */
+
+.column-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 0;
+}
+.column-picker-row label { flex: 1; font-size: 0.9rem; cursor: pointer; }
+.column-move-btn {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  color: var(--ink-soft);
+  font-size: 0.6rem;
+  line-height: 1;
+  width: 24px;
+  height: 22px;
+  cursor: pointer;
+}
+.column-move-btn:hover:not(:disabled) { color: var(--ink); background: var(--paper); }
+.column-move-btn:disabled { opacity: 0.3; cursor: default; }
+
+.print-col-row { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.print-col-option { font-size: 0.9rem; cursor: pointer; white-space: nowrap; }
+.print-sample-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.print-sample-input {
+  width: 72px;
+  padding: 6px 8px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font: inherit;
+}
+.print-sample-input:disabled { opacity: 0.5; }
+
+/* ---------- Verb Review (By Binyan / By Verb Root) on screen ----------
+   Styled like the other Review tables: a rounded card, a quiet column-heading
+   row, thin lines between rows only, and centred cells. These rules are scoped to
+   the on-screen tables (`.verb-tables` without `-print`), so the printed
+   versions keep their own layout. */
+.verb-tables:not(.verb-tables-print) table.verb-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  overflow: hidden;
+}
+.verb-tables:not(.verb-tables-print) table.verb-table th {
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  padding: 10px 8px;
+  font-size: 0.75rem;
+}
+.verb-tables:not(.verb-tables-print) table.verb-table td {
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  padding: 8px;
+  text-align: center;
+}
+.verb-tables:not(.verb-tables-print) table.verb-table tbody:last-child tr:last-child td,
+.verb-tables:not(.verb-tables-print) table.verb-table > tr:last-child td { border-bottom: 0; }
+.verb-tables:not(.verb-tables-print) td.verb-table-form { text-align: center; }
+.verb-tables:not(.verb-tables-print) table.root-table td.verb-table-mode { text-align: center; }
+.verb-tables:not(.verb-tables-print) table.root-table tr.group-start td { border-top: 2px solid var(--hairline-strong); }
+.verb-tables:not(.verb-tables-print) table.verb-table caption { padding: 0 2px 8px; }
