@@ -2263,3 +2263,109 @@ kbd {
 .verb-tables:not(.verb-tables-print) table.root-table td.verb-table-mode { text-align: center; }
 .verb-tables:not(.verb-tables-print) table.root-table tr.group-start td { border-top: 2px solid var(--hairline-strong); }
 .verb-tables:not(.verb-tables-print) table.verb-table caption { padding: 0 2px 8px; }
+
+/* ---------- Home page: Today, resume row, area tiles, weak spots ---------- */
+
+.today-card-main { flex: 1 1 280px; min-width: 0; }
+.today-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 0 1 280px;
+  min-width: 200px;
+}
+.today-card-actions .btn { width: 100%; }
+.today-card-sub { margin: 0; text-align: center; }
+.today-streak { margin: 8px 0 10px; font-size: 0.95rem; }
+.today-streak-count { font-weight: 600; color: var(--ink); }
+.today-streak-nudge { display: block; color: var(--ink-soft); font-size: 0.85rem; margin-top: 2px; }
+.today-streak-risk .today-streak-nudge { color: var(--accent-text); font-weight: 600; }
+
+.resume-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: var(--paper-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+}
+.resume-main { flex: 1 1 220px; min-width: 0; }
+.resume-title { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.resume-page { font-size: 1.05rem; color: var(--ink); }
+.resume-activity { flex-basis: 100%; margin: 0; }
+
+.area-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+.area-tile {
+  background: var(--paper-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.area-tile-new { border-color: var(--accent); }
+.area-tile-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.area-tile-head h2 { margin: 0; font-size: 1.25rem; }
+.area-tile-flag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 2px 8px;
+}
+.area-tile-pct { font-size: 1.9rem; font-weight: 600; color: var(--ink); line-height: 1; }
+.area-tile-pct span { font-size: 0.85rem; font-weight: 400; color: var(--ink-soft); }
+.area-tile-caption { margin: 0; }
+.area-tile-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.area-tile-actions .btn { flex: 1 1 auto; }
+
+.home-duo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+.home-card {
+  background: var(--paper-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.home-card h3 { margin: 0; }
+.weak-list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.weak-label { font-size: 1.05rem; color: var(--ink); }
+.weak-list .caption { display: block; margin: 0; }
+.wotd-form { font-family: var(--font-hebrew); font-size: 2.6rem; text-align: center; color: var(--ink); line-height: 1.4; }
+.wotd-parse { text-align: center; }
+.wotd-gloss { margin-top: 4px; color: var(--ink); }
+
+/* The feedback prompt: one quiet line instead of a boxed panel. */
+.feedback-line {
+  margin: 18px 0 6px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+.feedback-line a { color: var(--ink-soft); text-decoration: underline; }
+.feedback-line a:hover { color: var(--ink); }
+
+@media (max-width: 640px) {
+  /* Stacked on a phone: no fixed flex-basis, or it becomes a tall empty gap. */
+  .today-card-main,
+  .today-card-actions { flex: 0 0 auto; width: 100%; }
+}

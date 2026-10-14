@@ -25,6 +25,8 @@ const APP_SHELL = [
   "js/accent-keyboard.js",
   "js/accent-answer-matching.js",
   "js/letter-data.js",
+  "js/session.js",
+  "js/home-data.js",
   "js/letter-sets.js",
   "js/letter-sidebar.js",
   "js/letter-answer-matching.js",

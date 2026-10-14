@@ -289,6 +289,32 @@ or wrong file) can be allowed by setting the environment variable
 
 ## Feature overview
 
+- **Home page** — what to do next, from your own practice data (the numbers
+  come from `public/js/home-data.js`; the page is `pages/home.js`):
+  - *Today*: items due for review, your **streak** (and a nudge such as "One
+    answer today keeps it going"), the daily-goal bar, and a **Study now**
+    button that opens the right page, already set to the right mode, for the
+    area with the most items due ("3 due in Vowels · Typing"). With nothing
+    due it points at an area you haven't started, or the Daily Challenge.
+  - *Pick up where you left off*: the last page you used (remembered on this
+    device) plus when you last practised and your last quiz score.
+  - *One tile per area* (Consonants, Vowels, Vocabulary, Verbs, Accents) with
+    percent mastered, how many are due, and quick buttons for Review,
+    Flashcards, Typing and Games (Verbs: Review, Flashcards, Parsing,
+    Construction). An area you haven't touched says **Start here**.
+  - *Weak spots*: the (up to five) items missed most — at least two misses and
+    right less than 80% of the time — with **Drill these**, a short quiz on
+    exactly those items (it opens the Daily Challenge page as a "Weak-Spot
+    Drill"). Verb forms aren't included, because the drill has no verb questions.
+  - *Verb of the day*: one verb form, the same all day; "Show parsing" reveals it.
+  - Feedback is a single quiet line at the bottom.
+- **Where the app opens.** Opening the app, opening it in a new tab, or signing
+  in always lands on **Home**. Refreshing while you're using it (or when the
+  app reloads itself after an update) keeps you on the current page. "Using it"
+  is remembered per browser tab (so closing the tab or opening a new one starts
+  fresh), and a tab left untouched for 30 minutes also starts on Home next
+  time (`public/js/session.js`).
+
 - **Review pages share one layout** (Consonants, Vowels, Vocabulary, Verbs,
   Accents). Above the table, because the lists can be long, come two
   sections: **Print Table**, then **Download & Print** (CSV, Excel,

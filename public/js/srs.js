@@ -253,6 +253,13 @@ export function getScheduleSummary(mode) {
   return { totalTracked: items.length, learning: items.length - mastered, mastered };
 }
 
+/** The saved schedule for one mode: { [itemKey]: { box, dueDate, timesSeen,
+ * timesCorrect } }. Read-only — used by the Home page's weak-spot and
+ * progress summaries. */
+export function getScheduleEntries(mode) {
+  return loadSchedule(mode);
+}
+
 /**
  * Counts DISTINCT item keys mastered across several SRS modes at once
  * (e.g. every mode a person could have practiced a given word or verb

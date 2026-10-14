@@ -1,58 +1,102 @@
-import { setupApp, assert, summary, navigateTo } from "./helpers.mjs";
-import { recordItemResult } from "../public/js/srs.js";
+import { setupApp, assert, summary, navigateTo, findButtonByText, click } from "./helpers.mjs";
+import { recordItemResult, recordStreakActivity } from "../public/js/srs.js";
 import { getLetterSet } from "../public/js/letter-sets.js";
-import { getAccentRows } from "../public/js/accent-data.js";
-import { accentRowKey } from "../public/js/accent-filters.js";
 import { readFileSync } from "fs";
 
-// The Home page's "Today" card must count the typing modes that exist now
-// (Name → letter, and Letter → name), not the old keyboard-shortcut mode, and
-// the Typing cards must describe what Typing does today.
+// The Home page: Today card (due count, streak, Study now), pick up where you
+// left off, one tile per area, weak spots with a drill, verb of the day, and
+// the small feedback line.
 
-const { document, window } = await setupApp();
+const { document } = await setupApp();
 const content = document.getElementById("content");
-const wait = (ms = 60) => new Promise((r) => setTimeout(r, ms));
-const due = () => {
-  const txt = content.querySelector(".today-card-due").textContent;
-  const m = txt.match(/^(\d+)/);
-  return m ? Number(m[1]) : 0;
-};
-const show = async () => {
+const wait = (ms = 80) => new Promise((r) => setTimeout(r, ms));
+const goHome = async () => {
   navigateTo(document, "progress");
   await wait();
   navigateTo(document, "home");
-  await wait(100);
+  await wait(120);
 };
-
-console.log("\nDue count");
-await show();
-const start = due();
+const text = (sel) => (content.querySelector(sel) ? content.querySelector(sel).textContent.replace(/\s+/g, " ").trim() : "");
 const vowels = getLetterSet("vowels");
 const consonants = getLetterSet("consonants");
+const vk = (i) => vowels.rowKey(vowels.rows()[i]);
+const ck = (i) => consonants.rowKey(consonants.rows()[i]);
 
-// A miss makes an item due again straight away.
-recordItemResult("vowel-typing-form", vowels.rowKey(vowels.rows()[0]), false);
-await show();
-assert(due() === start + 1, "a missed Vowel → name question counts as due");
+console.log("\nA brand-new learner");
+await goHome();
+const tiles = [...content.querySelectorAll(".area-tile")];
+assert(
+  JSON.stringify(tiles.map((t) => t.dataset.homeSection)) === JSON.stringify(["consonants", "vowels", "vocabulary", "verbs", "accents"]),
+  "five area tiles in the order Consonants, Vowels, Vocabulary, Verbs, Accents"
+);
+assert(tiles.every((t) => t.querySelectorAll("[data-goto]").length === 4), "every tile has four quick buttons");
+assert(tiles.every((t) => /Start here/.test(t.textContent)), "an untouched area says Start here");
+assert(tiles.every((t) => /0%/.test(t.textContent)), "an untouched area shows 0%");
+assert(/all caught up/i.test(text(".today-card-due")), "nothing is due yet");
+assert(findButtonByText(content, "Start here"), "Study now offers a place to start");
+assert(/Consonants Flashcards/.test(text(".today-card-sub")), "...Consonants Flashcards first");
+assert(/start a streak/i.test(text(".today-streak")), "no streak yet");
+assert(/Nothing here yet/.test(text(".home-card")), "weak spots start empty");
+assert(!!content.querySelector(".wotd-form") && content.querySelector(".wotd-form").textContent.length > 0, "a verb of the day is shown");
+assert(content.querySelector(".wotd-parse").hasAttribute("hidden"), "its parsing starts hidden");
+click(findButtonByText(content, "Show parsing"));
+assert(!content.querySelector(".wotd-parse").hasAttribute("hidden"), "Show parsing reveals it");
+assert(/Qal|Niphal|Piel|Pual|Hitpael|Hiphil|Hophal|Polel|Polal|Hitpolel/.test(text(".wotd-parse")), "...with the binyan");
+assert(/My Progress/.test(text(".resume-page")), "Home offers to resume the last page visited (the test just visited My Progress)");
+assert(!/keyboard shortcut/i.test(content.textContent), "no mention of the old keyboard-shortcut typing mode");
+assert(/Send feedback/.test(text(".feedback-line")) && !content.querySelector(".feedback-box"), "feedback is a single quiet line");
+const typingBtn = tiles[1].querySelector('[data-goto="vowel-typing"]');
+assert(/name of the vowel shown/.test(typingBtn.title), "the Typing button's tooltip describes Typing today");
 
-recordItemResult("consonant-typing-form", consonants.rowKey(consonants.rows()[0]), false);
-await show();
-assert(due() === start + 2, "a missed Consonant → name question counts as due");
+console.log("\nDue items and Study now");
+for (let i = 0; i < 3; i++) recordItemResult("vowel-flashcards", vk(0), false);
+recordItemResult("vowel-flashcards", vk(1), false);
+await goHome();
+assert(/2 items due/.test(text(".today-card-due")), "two missed vowels are due");
+assert(/2 due/.test(content.querySelector('[data-home-section="vowels"]').textContent), "the Vowels tile says 2 due");
+assert(/2 due in Vowels · Flashcards/.test(text(".today-card-sub")), "Study now names the area and the queue");
+click(findButtonByText(content, "Study now"));
+await wait();
+assert(content.querySelector("h1").textContent === "Vowels Flashcards", "Study now opens Vowels Flashcards");
 
-recordItemResult("accent-typing-form", accentRowKey(getAccentRows()[0]), false);
-await show();
-assert(due() === start + 3, "a missed Accent → name question counts as due");
+// The Letter → name typing queue counts too (not the old shortcut mode).
+for (const i of [0, 1, 2]) recordItemResult("consonant-typing-form", ck(i), false);
+recordItemResult("vowel-typing-symbol", vk(5), false);
+await goHome();
+assert(/5 items due/.test(text(".today-card-due")), "3 consonant + 2 vowel items due; the old shortcut mode is not counted");
+assert(/3 due in Consonants · Typing/.test(text(".today-card-sub")), "Study now moves to the area with the most due");
+click(findButtonByText(content, "Study now"));
+await wait();
+assert(content.querySelector("h1").textContent === "Consonants Typing", "...and opens Consonants Typing");
 
-recordItemResult("vowel-typing-symbol", vowels.rowKey(vowels.rows()[1]), false);
-await show();
-assert(due() === start + 3, "the old keyboard-shortcut mode is no longer counted");
+console.log("\nStreak");
+await goHome();
+recordStreakActivity();
+await goHome();
+assert(/1-day streak/.test(text(".today-streak")), "the streak shows on Home");
+assert(/Kept for today/.test(text(".today-streak-nudge")), "...and says it is kept for today");
 
-console.log("\nTyping cards");
-const cards = [...content.querySelectorAll(".mode-card")].map((c) => c.textContent);
-assert(!cards.some((t) => /keyboard shortcut/i.test(t)), "no Typing card mentions a keyboard shortcut");
-assert(cards.some((t) => /name of the letter shown/.test(t)), "Consonants Typing card describes Letter → name");
-assert(cards.some((t) => /name of the vowel shown/.test(t)), "Vowels Typing card describes Vowel → name");
-assert(cards.some((t) => /English name of the accent shown/.test(t)), "Accents Typing card describes Accent → name");
+console.log("\nWeak spots");
+const weakItems = [...content.querySelectorAll(".weak-list li")];
+assert(weakItems.length === 1 && weakItems[0].textContent.includes(vowels.rows()[0].Name.normalize("NFC").slice(0, 3)), "only the vowel missed three times is a weak spot");
+assert(/Vowels · missed 3 of 3/.test(weakItems[0].textContent.replace(/\s+/g, " ")), "...with its miss count");
+click(findButtonByText(content, "Drill these"));
+await wait();
+assert(content.querySelector("h1").textContent === "Weak-Spot Drill", "Drill these opens the Weak-Spot Drill");
+click(findButtonByText(content, "Start Drill"));
+await wait();
+assert(!!content.querySelector(".hebrew-display"), "the drill asks a question");
+
+console.log("\nPick up where you left off");
+navigateTo(document, "vowel-typing");
+await wait();
+navigateTo(document, "home");
+await wait(120);
+assert(/Vowels Typing/.test(text(".resume-page")), "Home offers to resume the last page");
+assert(/Last practised today/.test(text(".resume-activity")), "...and shows when you last practised");
+click(findButtonByText(content, "Resume"));
+await wait();
+assert(content.querySelector("h1").textContent === "Vowels Typing", "Resume goes back to it");
 
 console.log("\nInstalled-app name");
 const manifest = JSON.parse(readFileSync(new URL("../public/manifest.webmanifest", import.meta.url), "utf-8"));

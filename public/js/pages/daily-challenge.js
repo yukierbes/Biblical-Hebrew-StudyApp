@@ -17,6 +17,7 @@ import {
   primaryAccentAnswerText,
 } from "../accent-answer-matching.js";
 import { getLetterSet } from "../letter-sets.js";
+import { consumeDeepLink } from "../deep-link.js";
 import {
   isFormAnswerCorrect,
   renderPrompt as renderLetterPrompt,
@@ -69,8 +70,30 @@ function buildQuestions() {
   return sampleN(all, all.length, false);
 }
 
+/** Questions for the Home page's "Drill these": one per weak item, in the
+ * direction it is missed in most (Vocabulary), or "name → type it" (letters,
+ * vowels, accents). Items that no longer exist are skipped. */
+function buildDrillQuestions(items) {
+  const questions = [];
+  for (const item of items) {
+    if (item.areaId === "consonants" || item.areaId === "vowels") {
+      const set = getLetterSet(item.areaId);
+      const row = set.rows().find((r) => set.rowKey(r) === item.key);
+      if (row) questions.push({ kind: "letter", set, row, promptWith: "names" });
+    } else if (item.areaId === "vocabulary") {
+      const row = getVocabRows().find((r) => vocabRowKey(r) === item.key);
+      if (row) questions.push({ kind: "vocab", row, direction: item.direction || "hebrew" });
+    } else if (item.areaId === "accents") {
+      const row = getAccentRows().find((r) => accentRowKey(r) === item.key);
+      if (row) questions.push({ kind: "accent", row, promptWith: "names" });
+    }
+  }
+  return sampleN(questions, questions.length, false);
+}
+
 function freshState() {
   return {
+    drill: null, // set by Home's "Drill these": the weak items to quiz on
     step: "intro", // "intro" -> "question" -> "summary"
     questions: [],
     index: 0,
@@ -82,6 +105,8 @@ function freshState() {
 export function mount({ content, sidebarExtra, navigate }) {
   state = freshState();
   rerender = () => render(content, sidebarExtra, navigate);
+  const link = consumeDeepLink();
+  if (link && link.type === "weak-drill" && Array.isArray(link.items) && link.items.length > 0) state.drill = link.items;
   rerender();
 }
 
@@ -145,7 +170,7 @@ function render(content, sidebarExtra, navigate) {
   content.innerHTML = "";
 
   const wrap = document.createElement("div");
-  wrap.innerHTML = `<h1 class="page-title">Daily Challenge</h1><hr class="hr"/>`;
+  wrap.innerHTML = `<h1 class="page-title">${state.drill ? "Weak-Spot Drill" : "Daily Challenge"}</h1><hr class="hr"/>`;
   content.appendChild(wrap);
 
   const body = document.createElement("div");
@@ -168,6 +193,37 @@ function renderIntro(container) {
   const accentRows = getAccentRows();
   const hasContent =
     vocabRows.length > 0 || accentRows.length > 0 || LETTER_KINDS.some((id) => getLetterSet(id).rows().length > 0);
+
+  if (state.drill) {
+    container.innerHTML = `
+      <div class="info-box">
+        <b>A short drill on the items you miss most</b><br>
+        ${state.drill.length} item${state.drill.length === 1 ? "" : "s"} from your practice history. Answering here counts toward each item's own
+        schedule, so getting them right moves them forward.
+      </div>
+    `;
+    const startDrill = document.createElement("button");
+    startDrill.className = "btn btn-block";
+    startDrill.textContent = "Start Drill";
+    startDrill.addEventListener("click", () => {
+      const questions = buildDrillQuestions(state.drill);
+      if (questions.length === 0) {
+        const div = document.createElement("div");
+        div.className = "alert alert-warning";
+        div.textContent = "Those items are no longer available. Try the Daily Challenge instead.";
+        container.appendChild(div);
+        return;
+      }
+      state.questions = questions;
+      state.index = 0;
+      state.results = [];
+      state.userAnswer = { answer: "" };
+      state.step = "question";
+      rerender();
+    });
+    container.appendChild(startDrill);
+    return;
+  }
 
   container.innerHTML = `
     <div class="info-box">
@@ -304,7 +360,7 @@ function renderSummary(container) {
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
   const againBtn = document.createElement("button");
   againBtn.className = "btn btn-block";
-  againBtn.textContent = "Do Another Round";
+  againBtn.textContent = state.drill ? "Start a Daily Challenge" : "Do Another Round";
   againBtn.addEventListener("click", () => {
     state = freshState();
     rerender();

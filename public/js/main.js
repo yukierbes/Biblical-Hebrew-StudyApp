@@ -2,6 +2,7 @@ import { loadAllData } from "./data.js";
 import { loadVocabData } from "./vocab-data.js";
 import { loadAccentData } from "./accent-data.js";
 import { loadLetterData } from "./letter-data.js";
+import { startSession, touchSession, endSession, recordVisit } from "./session.js";
 import * as homePage from "./pages/home.js";
 import * as reviewPage from "./pages/review.js";
 import * as verbFlashcardsPage from "./pages/verb-flashcards.js";
@@ -203,6 +204,11 @@ function renderPage() {
 
   currentPage = pageModule;
   pageModule.mount({ content: contentEl, sidebarExtra: sidebarExtraEl, navigate });
+
+  // Still in use (so a refresh stays on this page), and remembered as the
+  // place to pick up from on the Home page.
+  touchSession();
+  recordVisit(pageName);
 
   // Move focus to the new page's content so keyboard and screen-reader
   // users get a clear signal that the page changed, without adding a
@@ -478,6 +484,25 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+// True from a real sign-in until the app has used it to decide where to land.
+let justSignedIn = false;
+
+/** Keeps the session "active" while the person is clicking or typing, so a
+ * refresh keeps them on their page but a long-abandoned tab starts over on Home. */
+function watchForActivity() {
+  let last = 0;
+  const touch = () => {
+    const now = Date.now();
+    if (now - last > 30000) {
+      last = now;
+      touchSession();
+    }
+  };
+  for (const ev of ["pointerdown", "keydown", "touchstart"]) {
+    document.addEventListener(ev, touch, { passive: true, capture: true });
+  }
+}
+
 async function init() {
   initHebrewKeyboard();
   initProgressSidebar();
@@ -494,6 +519,17 @@ async function init() {
   initAccentKeyboard();
   // Same for the Vowel Keyboard, which is built from the vowels dataset.
   initVowelKeyboard();
+
+  // Where to land. A fresh start — opening the app, a new tab, or just having
+  // signed in — always begins on the Home page. A refresh in the middle of
+  // using the app stays on the current page (see session.js).
+  const freshStart = startSession({ forceFresh: justSignedIn });
+  justSignedIn = false;
+  if (freshStart && window.location.hash) {
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+  }
+  watchForActivity();
+
   renderPage();
 
   // Catches achievement milestones crossed mid-session without a page
@@ -659,6 +695,8 @@ if (setPasswordFormEl) {
       // event (driven by its internal store, which we never touched)
       // won't fire on its own — hand the now-authenticated user to the
       // same gate logic manually.
+      justSignedIn = true;
+      endSession();
       handleAuthState(user);
     } catch (err) {
       setPasswordErrorEl.textContent =
@@ -679,10 +717,15 @@ if (!identity) {
 } else {
   identity.on("init", handleAuthState);
   identity.on("login", (user) => {
+    justSignedIn = true;
+    endSession();
     handleAuthState(user);
     identity.close();
   });
-  identity.on("logout", () => handleAuthState(null));
+  identity.on("logout", () => {
+    endSession();
+    handleAuthState(null);
+  });
   identity.init();
 }
 
