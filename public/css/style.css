@@ -2086,6 +2086,36 @@ kbd {
 }
 .hebrew-kb-space { flex: 1; }
 
+/* ---------- Review pages: collapsible Print Table / Download & Print ---------- */
+.review-section-heading { margin: 0; }
+/* The toggle has its own arrow, so drop the usual small square before h3s. */
+.review-section-heading::before { content: none; }
+.review-section-toggle {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 0;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.review-section-toggle:hover { color: var(--ink); }
+.review-section-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: var(--radius); }
+.review-section-toggle::before {
+  content: "▸";
+  display: inline-block;
+  width: 1em;
+  color: var(--ink-soft);
+}
+.review-section-toggle[aria-expanded="true"]::before { content: "▾"; }
+.review-section-body { padding-top: 6px; }
+.review-section-body[hidden] { display: none; }
+
 /* Kept last in the file (in addition to !important) as defense in
    depth: a utility class whose entire purpose is "force this hidden"
    should win via both source order AND specificity, not rely on only

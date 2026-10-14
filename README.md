@@ -292,7 +292,11 @@ or wrong file) can be allowed by setting the environment variable
 - **Review pages share one layout** (Consonants, Vowels, Vocabulary, Verbs,
   Accents). Above the table, because the lists can be long, come two
   sections: **Print Table**, then **Download & Print** (CSV, Excel,
-  flashcards where the page offers them). The sidebar has a **Columns** list on
+  flashcards where the page offers them). Both are **collapsible**: click the
+  heading to expand or collapse. They start collapsed each time the app is
+  opened, and stay as you left them while you change filters or move between
+  Review pages (the state lives in memory in `review-tools.js`, not in storage).
+  The sidebar has a **Columns** list on
   every page: tick to show or hide a column, use the arrows to reorder; the
   choice is remembered per page, and the table, the downloads and the printed
   table all follow it (*Reset Columns* restores the default).
@@ -310,6 +314,11 @@ or wrong file) can be allowed by setting the environment variable
     their Print Table section is just *Print Blank Table* / *Print Table
     (Answer Key)* for the verbs and filters selected. On screen they are now
     styled like the other Review tables.
+  - Dotted circles: a vowel or accent form such as `◌ָ` is a dotted circle
+    (U+25CC) followed by a combining mark. `wrapHebrewSpans()` in `helpers.js`
+    keeps the circle in the same text run as the mark; if they are split into two
+    spans the browser shapes them separately and the printed mark drifts off the
+    circle.
   - Code: `review-columns.js` (the Columns list), `review-tools.js` (the two
     sections), `print-data-table.js` (the printing). `print-letter-table.js` is
     obsolete and can be deleted.

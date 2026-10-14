@@ -223,7 +223,12 @@ export function downloadXLSXSheets(sheets, filename) {
   XLSX.writeFile(wb, filename);
 }
 
-const HEBREW_RUN = /[\u0590-\u05FF\uFB1D-\uFB4F]+/g;
+// A dotted circle (U+25CC) is how the dataset shows "a vowel or accent mark
+// goes here" (e.g. ◌ָ). It is not in the Hebrew Unicode blocks, but it must
+// stay in the SAME text run as the mark that follows it: if it is split off
+// into its own span, the browser shapes the two separately and the mark no
+// longer sits on the circle (this showed up in printed vowel tables/cards).
+const HEBREW_RUN = /\u25CC*[\u0590-\u05FF\uFB1D-\uFB4F][\u0590-\u05FF\uFB1D-\uFB4F\u25CC]*/g;
 
 /**
  * Wrap any run of Hebrew-script characters in a `<span lang="he" dir="rtl">`

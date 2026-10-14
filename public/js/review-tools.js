@@ -31,6 +31,52 @@ const mkEl = (tag, className, text) => {
   return el;
 };
 
+// Whether each section is expanded. Both start collapsed every time the app is
+// opened. It is kept here (not inside the page) because the Review pages redraw
+// themselves whenever a filter changes, and the section the person opened must
+// not snap shut each time. Shared by all Review pages, so it also stays put
+// as they move between pages.
+const expanded = { print: false, downloads: false };
+
+/**
+ * A section with a clickable heading that shows/hides its body. Returns the
+ * body element for the caller to fill. The section is closed unless
+ * expanded[key] says otherwise.
+ */
+function collapsibleSection(container, key, heading) {
+  const wrap = mkEl("div", "review-section");
+  const bodyId = `review-section-${key}-${Math.random().toString(36).slice(2, 8)}`;
+
+  const h = mkEl("h3", "review-section-heading");
+  const btn = mkEl("button", "review-section-toggle");
+  btn.type = "button";
+  btn.setAttribute("aria-controls", bodyId);
+  // (The ▸ / ▾ arrow is drawn by CSS from aria-expanded, so the heading's text
+  // stays plain.)
+  btn.textContent = heading;
+  h.appendChild(btn);
+  wrap.appendChild(h);
+
+  const body = mkEl("div", "review-section-body");
+  body.id = bodyId;
+  wrap.appendChild(body);
+
+  const apply = () => {
+    const open = expanded[key];
+    btn.setAttribute("aria-expanded", String(open));
+    body.hidden = !open;
+  };
+  btn.addEventListener("click", () => {
+    expanded[key] = !expanded[key];
+    apply();
+  });
+  apply();
+
+  container.appendChild(wrap);
+  container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
+  return body;
+}
+
 /**
  * Adds the Print Table section, and then the Download & Print section, to `container`.
  *
@@ -56,8 +102,7 @@ export function renderReviewTools(container, cfg) {
   renderDownloads();
 
   function renderPrintTable() {
-    const section = mkEl("div");
-    container.appendChild(section);
+    const section = collapsibleSection(container, "print", "Print Table");
 
     const redraw = () => {
       section.innerHTML = "";
@@ -77,7 +122,6 @@ export function renderReviewTools(container, cfg) {
       const currentGiven = () => (print.given === "none" || printCols.includes(print.given) ? print.given : defaultGiven);
       const given = currentGiven();
 
-      sec.appendChild(mkEl("h3", "", "Print Table"));
       sec.appendChild(
         mkEl("div", "caption", "Prints the table as it is filtered above, using the columns chosen in the sidebar. Use the blank table to make a quiz.")
       ).style.marginBottom = "10px";
@@ -190,13 +234,11 @@ export function renderReviewTools(container, cfg) {
       btnRow.appendChild(blank);
       btnRow.appendChild(key);
       sec.appendChild(btnRow);
-      sec.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
     }
   }
 
   function renderCustomPrint() {
-    const sec = mkEl("div");
-    sec.appendChild(mkEl("h3", "", "Print Table"));
+    const sec = collapsibleSection(container, "print", "Print Table");
     const cap = mkEl("div", "caption", customPrint.description);
     cap.style.marginBottom = "10px";
     sec.appendChild(cap);
@@ -210,14 +252,11 @@ export function renderReviewTools(container, cfg) {
     btnRow.appendChild(blank);
     btnRow.appendChild(key);
     sec.appendChild(btnRow);
-    sec.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
-    container.appendChild(sec);
   }
 
   function renderDownloads() {
     if (downloads.length === 0) return;
-    const wrap = mkEl("div");
-    wrap.appendChild(mkEl("h3", "", "Download & Print"));
+    const wrap = collapsibleSection(container, "downloads", "Download & Print");
     const btnRow = mkEl("div", "button-row");
     for (const d of downloads) {
       const b = mkEl("button", "btn btn-block", d.text);
@@ -226,7 +265,5 @@ export function renderReviewTools(container, cfg) {
       btnRow.appendChild(b);
     }
     wrap.appendChild(btnRow);
-    wrap.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
-    container.appendChild(wrap);
   }
 }
