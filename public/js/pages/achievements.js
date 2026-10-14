@@ -20,7 +20,8 @@ const VERB_SRS_MODES = ["parsing", "construction", "verb-flashcards-hebrew", "ve
 
 const ACCENT_SRS_MODES = [
   "accent-typing-names",
-  "accent-typing-symbol",
+  "accent-typing-symbol", // (still written by the Daily Challenge's "copy the accent" questions)
+  "accent-typing-form",
   "accent-flashcards",
   "accent-games-names",
   "accent-games-symbol",
@@ -28,7 +29,8 @@ const ACCENT_SRS_MODES = [
 
 const letterSrsModes = (prefix) => [
   `${prefix}-typing-names`,
-  `${prefix}-typing-symbol`,
+  `${prefix}-typing-symbol`, // (the old keyboard-shortcut option; kept so earlier practice still counts)
+  `${prefix}-typing-form`,
   `${prefix}-flashcards`,
   `${prefix}-games-names`,
   `${prefix}-games-symbol`,

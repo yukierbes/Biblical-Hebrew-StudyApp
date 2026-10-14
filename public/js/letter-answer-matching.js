@@ -2,6 +2,7 @@ import { wrapHebrewSpans, sampleN } from "./helpers.js";
 import { openHebrewKeyboard } from "./hebrew-keyboard.js";
 import { openVowelKeyboard } from "./vowel-keyboard.js";
 import { PLACEHOLDER, isSharedForm, ambiguityHints } from "./letter-sets.js";
+import { isNameAnswerCorrect, lookAlikes, nameAnswerText } from "./name-matching.js";
 
 // Shared answer checking and prompt/answer widgets for Typing and the
 // typing-style Games on the Consonants and Vowels pages — the counterpart
@@ -29,6 +30,28 @@ export function isFormAnswerCorrect(row, userValue) {
  * was..." feedback after a miss. */
 export function primaryAnswerText(row) {
   return row.Form || "";
+}
+
+// ---- Form → type the name (lenient: see name-matching.js) ----
+
+const nameOf = (row) => row.Name || "";
+const formOf = (row) => normalizeForm(row.Form);
+
+/** The rows that are written exactly like `row` (qameṣ / qameṣ-ḥaṭuf), `row`
+ * included — shown the form alone, either name is a right answer. */
+export function sameFormRows(set, row) {
+  return lookAlikes(row, set.rows(), formOf);
+}
+
+/** Form → Name: is `typed` an acceptable spelling of the shown form's name?
+ * Marks, capitals, spaces and hyphens do not matter ("sere" for ṣere). */
+export function isNameCorrect(set, row, typed) {
+  return isNameAnswerCorrect(typed, sameFormRows(set, row), nameOf, set.rows());
+}
+
+/** The name(s) to show as the answer ("qameṣ / qameṣ-ḥaṭuf" for the shared mark). */
+export function primaryNameText(set, row) {
+  return nameAnswerText(row, sameFormRows(set, row), nameOf);
 }
 
 /** Symbol → Keyboard: given the mark, pick the keyboard shortcut that types it. */
@@ -116,7 +139,7 @@ export function sharedFormNote(set, row) {
 export function renderPrompt(container, set, row, promptWith, { showSharedNote = false } = {}) {
   const div = document.createElement("div");
   div.className = "hebrew-display";
-  if (promptWith === "symbol") {
+  if (promptWith === "symbol" || promptWith === "form") {
     div.innerHTML = `<span lang="he" dir="rtl">${row.Form || ""}</span>${showSharedNote ? sharedFormNote(set, row) : ""}`;
   } else {
     div.innerHTML = set.promptNameHtml(row);

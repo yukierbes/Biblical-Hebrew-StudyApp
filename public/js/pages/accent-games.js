@@ -264,8 +264,8 @@ function renderMenu(container, pool) {
       const bestN = getHighScore(`${game.key}-names`);
       const bestS = getHighScore(`${game.key}-symbol`);
       const parts = [];
-      if (bestN !== null) parts.push(`Names→Symbol ${bestN}`);
-      if (bestS !== null) parts.push(`Symbol→Symbol ${bestS}`);
+      if (bestN !== null) parts.push(`Name→Accent ${bestN}`);
+      if (bestS !== null) parts.push(`Accent→Accent ${bestS}`);
       bestCaption.textContent = parts.length ? "Best: " + parts.join(" · ") : "No score yet";
     }
     top.appendChild(bestCaption);
@@ -1157,7 +1157,7 @@ function renderPromptSetup(container, { title, desc, promptWith, onPromptChange,
   group.className = "choice-group";
   for (const [value, text] of [
     ["names", "Hebrew/English Name"],
-    ["symbol", "Symbol"],
+    ["symbol", "Accent"],
   ]) {
     const btn = document.createElement("button");
     btn.type = "button";

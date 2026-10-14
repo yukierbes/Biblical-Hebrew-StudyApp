@@ -28,6 +28,7 @@ const APP_SHELL = [
   "js/letter-sets.js",
   "js/letter-sidebar.js",
   "js/letter-answer-matching.js",
+  "js/name-matching.js",
   "js/vowel-keyboard.js",
   "js/print-data-table.js",
   "js/print-letter-table.js",

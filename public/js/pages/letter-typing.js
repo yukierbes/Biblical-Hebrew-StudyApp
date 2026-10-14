@@ -8,19 +8,19 @@ import { recordStreakActivity, pickAdaptive, recordItemResult, getMasteryStats }
 import { consumeDeepLink } from "../deep-link.js";
 import {
   isFormAnswerCorrect,
-  isKeyboardAnswerCorrect,
-  buildKeyboardOptions,
+  isNameCorrect,
+  primaryNameText,
   renderPrompt,
   renderAnswerInput,
-  renderKeyboardChoiceInput,
   renderRevealedAnswer,
-  renderRevealedKeyboardAnswer,
 } from "../letter-answer-matching.js";
+import { renderNameInput, renderRevealedName } from "../name-matching.js";
 
 /**
  * Typing for the Consonants or Vowels set, with Practice and Quiz modes.
- *   "names"  — shown the name, type the letter/vowel (with the on-screen keyboard).
- *   "symbol" — shown the letter/vowel, pick the keyboard shortcut that types it.
+ *   "names" — shown the name, type the letter/vowel (with the on-screen keyboard).
+ *   "form"  — shown the letter/vowel, type its name. The name is checked
+ *             leniently (see name-matching.js): "sere" is fine for ṣere.
  */
 export function createTypingPage(setId) {
   const set = getLetterSet(setId);
@@ -37,7 +37,6 @@ export function createTypingPage(setId) {
       practice: {
         word: null,
         userAnswer: "",
-        symbolOptions: [],
         checked: false,
         showAnswer: false,
         genWarning: false,
@@ -55,7 +54,6 @@ export function createTypingPage(setId) {
       lockedPool: null,
       pendingLength: null,
       questions: [],
-      questionOptions: [],
       index: 0,
       results: [],
       userAnswers: { answer: "" },
@@ -70,7 +68,9 @@ export function createTypingPage(setId) {
     rerender = () => render(content, sidebarExtra, navigate);
     const link = consumeDeepLink();
     if (link && link.type === `${set.pagePrefix}-typing-focus`) {
-      if (link.promptWith === "names" || link.promptWith === "symbol") state.promptWith = link.promptWith;
+      // "symbol" was the old keyboard-shortcut option; it is now the name option.
+      if (link.promptWith === "names") state.promptWith = "names";
+      else if (link.promptWith === "form" || link.promptWith === "symbol") state.promptWith = "form";
     }
     rerender();
   }
@@ -80,9 +80,10 @@ export function createTypingPage(setId) {
     rerender = null;
   }
 
-  const isSymbolMode = () => state.promptWith === "symbol";
+  const isNameMode = () => state.promptWith === "form";
+  const promptLabel = () => (isNameMode() ? `${set.Singular} → Name` : `Name → ${set.Singular}`);
   const srsMode = () => `${set.srsPrefix}-typing-${state.promptWith}`;
-  const isCorrectFor = (row, answer) => (isSymbolMode() ? isKeyboardAnswerCorrect(row, answer) : isFormAnswerCorrect(row, answer));
+  const isCorrectFor = (row, answer) => (isNameMode() ? isNameCorrect(set, row, answer) : isFormAnswerCorrect(row, answer));
 
   // ================= Hints (Practice mode only) =================
 
@@ -128,7 +129,7 @@ export function createTypingPage(setId) {
   function renderPractice(container, pool) {
     const p = state.practice;
     const stats = getMasteryStats(srsMode(), pool, set.rowKey);
-    const symbolMode = isSymbolMode();
+    const nameMode = isNameMode();
     const hintBits = set.id === "vowels" ? "the Class, then the Length" : "the Category (if it has one)";
 
     container.innerHTML = `
@@ -137,8 +138,8 @@ export function createTypingPage(setId) {
         <b>Instructions</b><br>
         Click <i>Generate a ${set.Singular}</i> for a prompt.<br>
         ${
-          symbolMode
-            ? `Pick the keyboard shortcut that types the ${set.singular} shown — this is how you'll actually enter it when typing Biblical Hebrew.<br>`
+          nameMode
+            ? `Type the name of the ${set.singular} shown. Marks aren't needed — for example <i>sere</i>, <i>sureq</i> and <i>sin</i> are all accepted.<br>`
             : `Use the <i>${set.keyboardButtonLabel}</i> to enter the matching ${set.singular}.${
                 set.id === "vowels" ? " The circle (◌) shows where the vowel goes." : ""
               }<br>`
@@ -168,7 +169,6 @@ export function createTypingPage(setId) {
       }
       p.genWarning = false;
       p.word = pickAdaptive(srsMode(), pool, set.rowKey);
-      p.symbolOptions = symbolMode ? buildKeyboardOptions(p.word, pool) : [];
       p.showAnswer = false;
       p.userAnswer = "";
       p.checked = false;
@@ -195,16 +195,12 @@ export function createTypingPage(setId) {
     inputsWrap.style.maxWidth = "500px";
     inputsWrap.style.margin = "0 auto";
     const userState = { answer: p.userAnswer };
-    if (symbolMode) {
-      renderKeyboardChoiceInput(inputsWrap, {
-        row: p.word,
-        options: p.symbolOptions,
+    if (nameMode) {
+      renderNameInput(inputsWrap, {
+        label: "Name",
         userState,
         checked: p.checked,
-        onSelect: () => {
-          p.userAnswer = userState.answer;
-          rerender();
-        },
+        isCorrect: p.checked && isNameCorrect(set, p.word, userState.answer),
       });
     } else {
       renderAnswerInput(inputsWrap, { set, row: p.word, userState, checked: p.checked });
@@ -240,7 +236,7 @@ export function createTypingPage(setId) {
     container.appendChild(btnRow);
 
     if (p.showAnswer) {
-      if (symbolMode) renderRevealedKeyboardAnswer(container, p.word);
+      if (nameMode) renderRevealedName(container, primaryNameText(set, p.word));
       else renderRevealedAnswer(container, p.word);
     }
   }
@@ -340,7 +336,6 @@ export function createTypingPage(setId) {
     startBtn.addEventListener("click", () => {
       const n = q.pendingLength || defaultN;
       q.questions = sampleN(q.lockedPool, n, false);
-      q.questionOptions = isSymbolMode() ? q.questions.map((item) => buildKeyboardOptions(item, q.lockedPool)) : [];
       q.index = 0;
       q.results = [];
       q.userAnswers = { answer: "" };
@@ -361,7 +356,7 @@ export function createTypingPage(setId) {
     }
 
     const item = q.questions[q.index];
-    const symbolMode = isSymbolMode();
+    const nameMode = isNameMode();
 
     const progress = document.createElement("div");
     progress.className = "progress-bar-outer";
@@ -379,14 +374,9 @@ export function createTypingPage(setId) {
     const inputsWrap = document.createElement("div");
     inputsWrap.style.maxWidth = "500px";
     inputsWrap.style.margin = "0 auto";
-    if (symbolMode) {
-      renderKeyboardChoiceInput(inputsWrap, {
-        row: item,
-        options: q.questionOptions[q.index] || [],
-        userState: q.userAnswers,
-        checked: false, // no in-quiz feedback — everything is graded together at the end
-        onSelect: () => rerender(),
-      });
+    if (nameMode) {
+      // No in-quiz feedback — everything is graded together at the end.
+      renderNameInput(inputsWrap, { label: "Name", userState: q.userAnswers, checked: false });
     } else {
       renderAnswerInput(inputsWrap, { set, row: item, userState: q.userAnswers, checked: false });
     }
@@ -422,14 +412,13 @@ export function createTypingPage(setId) {
 
   function record(item, userAnswerValue) {
     const q = state.quiz;
-    const symbolMode = isSymbolMode();
-    const userAnswer = symbolMode ? userAnswerValue || "" : (userAnswerValue || "").trim();
+    const userAnswer = (userAnswerValue || "").trim();
     const ok = isCorrectFor(item, userAnswer);
 
     q.results.push({
       Name: item.Name ?? "",
       Form: item.Form ?? "",
-      Prompt: symbolMode ? `${set.Singular} → Keyboard` : `Name → ${set.Singular}`,
+      Prompt: promptLabel(),
       "Your Answer": userAnswer || "NA",
       Correct: ok,
       Score: ok ? 1 : 0,
@@ -451,7 +440,7 @@ export function createTypingPage(setId) {
         score: earned,
         total: totalPoints,
         percent,
-        datasets: [isSymbolMode() ? `${set.Singular} → Keyboard` : `Name → ${set.Singular}`],
+        datasets: [promptLabel()],
         retry: q.isRetry,
       });
       q.historyRecorded = true;
@@ -500,9 +489,7 @@ export function createTypingPage(setId) {
       retryBtn.style.marginBottom = "10px";
       retryBtn.addEventListener("click", () => {
         const missedRows = missedIndices.map((i) => q.questions[i]);
-        const missedOptions = missedIndices.map((i) => q.questionOptions[i]);
         q.questions = missedRows;
-        q.questionOptions = missedOptions;
         q.index = 0;
         q.results = [];
         q.userAnswers = { answer: "" };
@@ -584,7 +571,7 @@ export function createTypingPage(setId) {
     const dirDisabled = quizActive && state.quiz.step !== "filters";
     for (const [value, label] of [
       ["names", `Name → type the ${set.singular}`],
-      ["symbol", `${set.Singular} → Select Keyboard Input`],
+      ["form", `${set.Singular} → type the name`],
     ]) {
       const btn = document.createElement("button");
       btn.type = "button";

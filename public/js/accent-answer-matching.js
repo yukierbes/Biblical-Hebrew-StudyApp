@@ -1,5 +1,7 @@
 import { wrapHebrewSpans, sampleN } from "./helpers.js";
 import { openAccentKeyboard } from "./accent-keyboard.js";
+import { getAccentRows } from "./accent-data.js";
+import { isNameAnswerCorrect, lookAlikes, nameAnswerText } from "./name-matching.js";
 
 // ================= Answer normalization / matching =================
 
@@ -14,6 +16,29 @@ export function isAccentAnswerCorrect(word, userValue) {
   const norm = normalizeSymbol(userValue);
   if (!norm) return false;
   return norm === normalizeSymbol(word.Symbol);
+}
+
+// ---- Accent → type the English name (lenient: see name-matching.js) ----
+
+const englishName = (word) => word.EnglishName || "";
+const symbolOf = (word) => normalizeSymbol(word.Symbol);
+
+/** The accents written with exactly the same mark as `word`, `word` included.
+ * Shown the mark alone, any of their names is a right answer (prose and poetry
+ * share many marks, and revia / revia gadol / revia qaton are one mark). */
+export function sameSymbolAccents(word) {
+  return lookAlikes(word, getAccentRows(), symbolOf);
+}
+
+/** Accent → Name: is `typed` an acceptable spelling of the shown accent's
+ * English name? Capitals, spaces and hyphens do not matter. */
+export function isAccentNameCorrect(word, typed) {
+  return isNameAnswerCorrect(typed, sameSymbolAccents(word), englishName, getAccentRows());
+}
+
+/** The name(s) to show as the answer ("revia / revia gadol / revia qaton"). */
+export function primaryAccentNameText(word) {
+  return nameAnswerText(word, sameSymbolAccents(word), englishName);
 }
 
 /** The answer a typing-based game/quiz question is always graded
@@ -58,7 +83,7 @@ export function buildKeyboardOptions(word, pool) {
 export function renderAccentPrompt(container, word, promptWith) {
   const div = document.createElement("div");
   div.className = "hebrew-display";
-  if (promptWith === "symbol") {
+  if (promptWith === "symbol" || promptWith === "form") {
     div.innerHTML = `<span lang="he" dir="rtl">${word.Symbol || ""}</span>`;
   } else {
     div.innerHTML = `

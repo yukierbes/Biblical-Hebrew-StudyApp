@@ -108,7 +108,7 @@ function correctTextFor(q) {
 function labelFor(q) {
   if (q.kind === "letter") return `${q.set.title}: Name → ${q.set.Singular}`;
   if (q.kind === "vocab") return q.direction === "hebrew" ? "Vocabulary: Hebrew → English" : "Vocabulary: English → Hebrew";
-  return q.promptWith === "names" ? "Accents: Name → Symbol" : "Accents: Symbol → Symbol";
+  return q.promptWith === "names" ? "Accents: Name → Accent" : "Accents: Accent → Accent";
 }
 
 function render(content, sidebarExtra, navigate) {

@@ -276,7 +276,7 @@ export function mount({ content, navigate }) {
   wrap.className = "home-bg";
 
   wrap.innerHTML = `
-    <h1 class="page-title">Biblical Hebrew Verb Practice</h1>
+    <h1 class="page-title">Biblical Hebrew Study App</h1>
     <p>How would you like to study?</p>
     ${todayCardHtml()}
     <div class="mode-cards">${cardsHtml(FEATURED_MODES)}</div>

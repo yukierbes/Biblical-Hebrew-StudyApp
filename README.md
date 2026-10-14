@@ -1,4 +1,4 @@
-# Biblical Hebrew Verb Practice — Static Web App
+# Biblical Hebrew Study App — Static Web App
 
 This is a full rewrite of the original Streamlit app (`home.py` + `review.py` +
 `identification.py` + `construction.py`) as a **static, framework-free
@@ -336,8 +336,21 @@ or wrong file) can be allowed by setting the environment variable
     transliteration (consonants) or the class, name and length (vowels).
   - *Typing*: Practice and Quiz, in two directions — Name → type the
     letter/vowel (on-screen Hebrew Keyboard, or a Vowel Keyboard whose keys
-    include the `◌` placeholder), or letter/vowel → pick the keyboard shortcut.
+    include the `◌` placeholder), or letter/vowel → **type its name**.
     "Get Hint" reveals the Category, or the Class and then the Length.
+    Names are checked leniently (`name-matching.js`) because the transliteration
+    marks are awkward to type: capitals, spaces, hyphens, apostrophes and every
+    mark are ignored (*sere* for ṣere, *sureq* for šureq, *hatef patah* for
+    ḥāṭef-pataḥ), š may also be written *sh*, *vav (waw)* takes either name, and
+    "(dagesh)" stays part of the name (*bet* is not *bet (dagesh)*). *sin* is
+    accepted for both šin and śin, but typing the marked *śin* for šin is wrong.
+    When two forms look identical (qameṣ / qameṣ-ḥaṭuf) either name is right,
+    and Show Answer lists both. Accents work the same way: Name → type the
+    accent, or accent → type its English name (any accents written with the same
+    mark, such as revia / revia gadol / revia qaton, are all accepted).
+    Progress records the new direction as `…-typing-form`; the old
+    keyboard-shortcut option is gone from the Typing pages (the games still have
+    a keyboard-shortcut mode).
   - *Games*: Survival Sprint, Beat the Clock, Memory Match, Lightning Round,
     and a Sort game (Category Sort / Class Sort).
   - *Shared mark*: qameṣ and qameṣ-ḥaṭuf look identical, so wherever the mark

@@ -94,7 +94,7 @@ function render(content, navigate) {
     grid.className = "mode-cards";
     const modes = [
       { title: `Typing: Name → ${set.Singular}`, mode: `${set.srsPrefix}-typing-names`, page: `${set.pagePrefix}-typing`, promptWith: "names" },
-      { title: `Typing: ${set.Singular} → Keyboard`, mode: `${set.srsPrefix}-typing-symbol`, page: `${set.pagePrefix}-typing`, promptWith: "symbol" },
+      { title: `Typing: ${set.Singular} → Name`, mode: `${set.srsPrefix}-typing-form`, page: `${set.pagePrefix}-typing`, promptWith: "form" },
       { title: "Flashcards", mode: `${set.srsPrefix}-flashcards`, page: `${set.pagePrefix}-flashcards` },
       { title: `Games: Name → ${set.Singular}`, mode: `${set.srsPrefix}-games-names`, page: `${set.pagePrefix}-games` },
       { title: `Games: ${set.Singular} → ${set.Singular}`, mode: `${set.srsPrefix}-games-symbol`, page: `${set.pagePrefix}-games` },
@@ -226,16 +226,16 @@ function render(content, navigate) {
   accentGrid.className = "mode-cards";
 
   const accentModes = [
-    { title: "Typing: Names → Symbol", mode: "accent-typing-names", page: "accent-typing", promptWith: "names" },
+    { title: "Typing: Name → Accent", mode: "accent-typing-names", page: "accent-typing", promptWith: "names" },
     {
-      title: "Typing: Symbol → Keyboard",
-      mode: "accent-typing-symbol",
+      title: "Typing: Accent → Name",
+      mode: "accent-typing-form",
       page: "accent-typing",
-      promptWith: "symbol",
+      promptWith: "form",
     },
     { title: "Flashcards", mode: "accent-flashcards", page: "accent-flashcards" },
-    { title: "Games: Names → Symbol", mode: "accent-games-names", page: "accent-games" },
-    { title: "Games: Symbol → Keyboard", mode: "accent-games-symbol", page: "accent-games" },
+    { title: "Games: Name → Accent", mode: "accent-games-names", page: "accent-games" },
+    { title: "Games: Accent → Keyboard", mode: "accent-games-symbol", page: "accent-games" },
   ];
 
   for (const am of accentModes) {

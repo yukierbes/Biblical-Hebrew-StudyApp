@@ -9,14 +9,13 @@ import { applyAccentFilters, accentRowKey } from "../accent-filters.js";
 import { consumeDeepLink } from "../deep-link.js";
 import {
   isAccentAnswerCorrect,
-  isKeyboardAnswerCorrect,
-  buildKeyboardOptions,
+  isAccentNameCorrect,
+  primaryAccentNameText,
   renderAccentPrompt,
   renderAccentAnswerInput,
-  renderKeyboardChoiceInput,
   renderRevealedAccentAnswer,
-  renderRevealedKeyboardAnswer,
 } from "../accent-answer-matching.js";
+import { renderNameInput, renderRevealedName } from "../name-matching.js";
 
 let state = null;
 let rerender = null;
@@ -25,14 +24,13 @@ function freshState() {
   return {
     filters: { Type: [], Group: [] },
     mode: "practice", // "practice" | "quiz"
-    // "names" -> shown Hebrew/English name, type the Symbol via the
-    // Accent Keyboard. "symbol" -> shown the Symbol, select which SIL
-    // keyboard shortcut (the Keyboard column) types it.
+    // "names" -> shown Hebrew/English name, type the accent via the Accent
+    // Keyboard. "form" -> shown the accent, type its English name (checked
+    // leniently — see name-matching.js).
     promptWith: "names",
     practice: {
       word: null,
       userAnswer: "",
-      symbolOptions: [], // "symbol" mode only — this word's multiple-choice options
       checked: false,
       showAnswer: false,
       genWarning: false,
@@ -50,7 +48,6 @@ function freshQuizState() {
     lockedPool: null,
     pendingLength: null,
     questions: [],
-    questionOptions: [], // "symbol" mode only — parallel to `questions`
     index: 0,
     results: [],
     userAnswers: { answer: "" },
@@ -66,7 +63,9 @@ export function mount({ content, sidebarExtra, navigate }) {
 
   const link = consumeDeepLink();
   if (link && link.type === "accent-typing-focus") {
-    if (link.promptWith === "names" || link.promptWith === "symbol") state.promptWith = link.promptWith;
+    // "symbol" was the old keyboard-shortcut option; it is now the name option.
+    if (link.promptWith === "names") state.promptWith = "names";
+    else if (link.promptWith === "form" || link.promptWith === "symbol") state.promptWith = "form";
   }
 
   rerender();
@@ -123,13 +122,15 @@ function colorCell(rawValue, isCorrect) {
   return `<span class="pill ${isCorrect ? "pill-good" : "pill-bad"}">${wrapHebrewSpans(rawValue)}</span>`;
 }
 
-function isSymbolMode() {
-  return state.promptWith === "symbol";
+function isNameMode() {
+  return state.promptWith === "form";
 }
+
+const promptLabel = () => (isNameMode() ? "Accent → Name" : "Name → Accent");
 
 /** Correctness check for whichever mode is active. */
 function isCorrectFor(word, answer) {
-  return isSymbolMode() ? isKeyboardAnswerCorrect(word, answer) : isAccentAnswerCorrect(word, answer);
+  return isNameMode() ? isAccentNameCorrect(word, answer) : isAccentAnswerCorrect(word, answer);
 }
 
 // ================= Practice mode =================
@@ -141,7 +142,7 @@ function srsMode() {
 function renderPractice(container, pool) {
   const p = state.practice;
   const stats = getMasteryStats(srsMode(), pool, accentRowKey);
-  const symbolMode = isSymbolMode();
+  const nameMode = isNameMode();
 
   container.innerHTML = `
     <h3>Accents Typing Practice</h3>
@@ -149,8 +150,8 @@ function renderPractice(container, pool) {
       <b>Instructions</b><br>
       Click <i>Generate an Accent</i> for a prompt.<br>
       ${
-        symbolMode
-          ? "Pick the SIL keyboard shortcut that types the accent shown — this is how you'll actually enter it when typing Biblical Hebrew.<br>"
+        nameMode
+          ? "Type the English name of the accent shown. Capitals and spaces don't matter — for example <i>zaqeph qaton</i> or <i>Zaqeph Qaton</i>.<br>"
           : "Use the <i>Accent Keyboard</i> to enter the matching accent mark.<br>"
       }
       Accents you get right come back less often; ones you miss come back sooner — <i>Generate an Accent</i> adapts to what you're still learning.<br>
@@ -178,7 +179,6 @@ function renderPractice(container, pool) {
     }
     p.genWarning = false;
     p.word = pickAdaptive(srsMode(), pool, accentRowKey);
-    p.symbolOptions = symbolMode ? buildKeyboardOptions(p.word, pool) : [];
     p.showAnswer = false;
     p.userAnswer = "";
     p.checked = false;
@@ -207,16 +207,12 @@ function renderPractice(container, pool) {
   inputsWrap.style.maxWidth = "500px";
   inputsWrap.style.margin = "0 auto";
   const userState = { answer: p.userAnswer };
-  if (symbolMode) {
-    renderKeyboardChoiceInput(inputsWrap, {
-      word: p.word,
-      options: p.symbolOptions,
+  if (nameMode) {
+    renderNameInput(inputsWrap, {
+      label: "Name",
       userState,
       checked: p.checked,
-      onSelect: () => {
-        p.userAnswer = userState.answer;
-        rerender();
-      },
+      isCorrect: p.checked && isAccentNameCorrect(p.word, userState.answer),
     });
   } else {
     renderAccentAnswerInput(inputsWrap, {
@@ -256,7 +252,7 @@ function renderPractice(container, pool) {
   container.appendChild(btnRow);
 
   if (p.showAnswer) {
-    if (symbolMode) renderRevealedKeyboardAnswer(container, p.word);
+    if (nameMode) renderRevealedName(container, primaryAccentNameText(p.word));
     else renderRevealedAccentAnswer(container, p.word);
   }
 }
@@ -358,7 +354,6 @@ function renderQuizLengthStep(container) {
   startBtn.addEventListener("click", () => {
     const n = q.pendingLength || defaultN;
     q.questions = sampleN(q.lockedPool, n, false);
-    q.questionOptions = isSymbolMode() ? q.questions.map((item) => buildKeyboardOptions(item, q.lockedPool)) : [];
     q.index = 0;
     q.results = [];
     q.userAnswers = { answer: "" };
@@ -379,7 +374,7 @@ function renderQuizQuestionStep(container) {
   }
 
   const item = q.questions[q.index];
-  const symbolMode = isSymbolMode();
+  const nameMode = isNameMode();
 
   const progress = document.createElement("div");
   progress.className = "progress-bar-outer";
@@ -398,14 +393,9 @@ function renderQuizQuestionStep(container) {
   const inputsWrap = document.createElement("div");
   inputsWrap.style.maxWidth = "500px";
   inputsWrap.style.margin = "0 auto";
-  if (symbolMode) {
-    renderKeyboardChoiceInput(inputsWrap, {
-      word: item,
-      options: q.questionOptions[q.index] || [],
-      userState: q.userAnswers,
-      checked: false, // no in-quiz feedback — everything is graded together at the end
-      onSelect: () => rerender(),
-    });
+  if (nameMode) {
+    // No in-quiz feedback — everything is graded together at the end.
+    renderNameInput(inputsWrap, { label: "Name", userState: q.userAnswers, checked: false });
   } else {
     renderAccentAnswerInput(inputsWrap, {
       word: item,
@@ -445,15 +435,14 @@ function renderQuizQuestionStep(container) {
 
 function record(item, userAnswerValue) {
   const q = state.quiz;
-  const symbolMode = isSymbolMode();
-  const userAnswer = symbolMode ? userAnswerValue || "" : (userAnswerValue || "").trim();
+  const userAnswer = (userAnswerValue || "").trim();
   const ok = isCorrectFor(item, userAnswer);
 
   q.results.push({
     Type: item.Type ?? "",
     HebrewName: item.HebrewName ?? "",
     EnglishName: item.EnglishName ?? "",
-    Prompt: symbolMode ? "Symbol → Keyboard" : "Names → Symbol",
+    Prompt: promptLabel(),
     "Your Answer": userAnswer || "NA",
     Correct: ok,
     Score: ok ? 1 : 0,
@@ -476,7 +465,7 @@ function renderQuizSummaryStep(container) {
       score: earned,
       total: totalPoints,
       percent,
-      datasets: [isSymbolMode() ? "Symbol → Keyboard" : "Names → Symbol"],
+      datasets: [promptLabel()],
       retry: q.isRetry,
     });
     q.historyRecorded = true;
@@ -530,9 +519,7 @@ function renderQuizSummaryStep(container) {
     retryBtn.style.marginBottom = "10px";
     retryBtn.addEventListener("click", () => {
       const missedRows = missedIndices.map((i) => q.questions[i]);
-      const missedOptions = missedIndices.map((i) => q.questionOptions[i]);
       q.questions = missedRows;
-      q.questionOptions = missedOptions;
       q.index = 0;
       q.results = [];
       q.userAnswers = { answer: "" };
@@ -642,8 +629,8 @@ function render(content, sidebarExtra, navigate) {
   dirGroup.className = "choice-group";
   const dirDisabled = quizActive && state.quiz.step !== "filters";
   for (const [value, label] of [
-    ["names", "Hebrew/English Name → type Symbol"],
-    ["symbol", "Symbol → Select Keyboard Input"],
+    ["names", "Hebrew/English Name → type Accent"],
+    ["form", "Accent → type the English name"],
   ]) {
     const btn = document.createElement("button");
     btn.type = "button";
