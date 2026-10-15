@@ -306,7 +306,13 @@ or wrong file) can be allowed by setting the environment variable
     right less than 80% of the time — with **Drill these**, a short quiz on
     exactly those items (it opens the Daily Challenge page as a "Weak-Spot
     Drill"). Verb forms aren't included, because the drill has no verb questions.
+  - *Vocabulary of the day*: one word, the same all day, shown in Hebrew;
+    "Show definition" reveals the English, lesson and frequency.
   - *Verb of the day*: one verb form, the same all day; "Show parsing" reveals it.
+  - *Closest achievements*: the (up to four) achievements you are furthest
+    along on, with progress bars, and a link to all of them in My Progress.
+  - These four boxes (Vocabulary of the day, Verb of the day, Weak spots,
+    Closest achievements) sit in a 2×2 grid and are always the same size.
   - Feedback is a single quiet line at the bottom. (My Progress, Achievements
     and Word Lookup are reached from the sidebar; the Weak spots card links to
     the full list in My Progress.)

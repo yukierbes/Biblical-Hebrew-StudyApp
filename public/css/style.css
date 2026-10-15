@@ -743,7 +743,7 @@ h2, h3 {
   font-size: 2.3rem;
   color: var(--ink);
   font-family: var(--font-hebrew);
-  line-height: 2.3rem;
+  line-height: 2.1; /* roomy, so the vowel points and accents on one line never touch the next */
   margin-top: 5rem;
 }
 
@@ -2563,3 +2563,18 @@ kbd {
   .pm-quizzes { grid-template-columns: 1fr; }
   .pm-tile { width: 52px; height: 52px; }
 }
+
+/* The four Home info boxes (Vocabulary of the day, Verb of the day, Weak spots,
+   Closest achievements): every row is as tall as the tallest box, so they are
+   all the same size, with their buttons lined up along the bottom. */
+.home-duo { grid-auto-rows: 1fr; }
+.home-card-foot { margin-top: auto; display: flex; flex-direction: column; gap: 6px; }
+.votd-answer { text-align: center; }
+.goal-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.goal-list li { display: flex; gap: 10px; align-items: flex-start; }
+.goal-icon { font-size: 1.4rem; line-height: 1.2; }
+.goal-main { flex: 1; min-width: 0; }
+.goal-title { color: var(--ink); font-weight: 600; font-size: 0.95rem; }
+.goal-desc { margin: 0 0 4px; }
+.home-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 700px) { .home-duo { grid-template-columns: minmax(0, 1fr); } }

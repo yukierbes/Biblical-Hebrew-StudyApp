@@ -19,6 +19,7 @@ import { getLetterSet } from "./letter-sets.js";
 import { getAvailableDatasets, loadVerbData } from "./data.js";
 import { morphKey } from "./helpers.js";
 import { loadHistory } from "./history.js";
+import { ACHIEVEMENTS, buildContext } from "./pages/achievements.js";
 import {
   getDueCount,
   getMasteredKeyCount,
@@ -326,6 +327,46 @@ export function getWordOfTheDay(now = new Date()) {
     gloss: row["Gloss Translation"] || "",
     parsing: { verb: row.Dataset, binyan: row.Binyan, mode: row.Mode, pgn },
   };
+}
+
+/**
+ * One vocabulary word for the day — the same all day, a different one tomorrow:
+ *   { hebrew, english, lesson, frequency, pos } or null.
+ * (Hashed separately from the verb of the day, so the two don't move in step.)
+ */
+export function getVocabOfTheDay(now = new Date()) {
+  const rows = getVocabRows().filter((r) => r.Hebrew && r.English);
+  if (rows.length === 0) return null;
+  const row = rows[hashString("vocab-" + ymd(now)) % rows.length];
+  return { hebrew: row.Hebrew, english: row.English, lesson: row.Lesson, frequency: row.Frequency, pos: row.POS };
+}
+
+// ---------------------------------------------------------------------
+// Achievements closest to being earned
+// ---------------------------------------------------------------------
+
+/**
+ * The achievements not yet unlocked that are furthest along, nearest first:
+ *   [{ id, icon, title, desc, progress, target, ratio }]
+ * Only ones with some progress are listed. Returns { items, allUnlocked }.
+ */
+export function getClosestAchievements(limit = 4) {
+  const ctx = buildContext();
+  const locked = ACHIEVEMENTS.map((a) => ({ a, progress: a.progress(ctx) })).filter(({ a, progress }) => progress < a.target);
+  const items = locked
+    .map(({ a, progress }) => ({
+      id: a.id,
+      icon: a.icon,
+      title: a.title,
+      desc: a.desc,
+      progress,
+      target: a.target,
+      ratio: progress / a.target,
+    }))
+    .filter((x) => x.ratio > 0)
+    .sort((x, y) => y.ratio - x.ratio)
+    .slice(0, limit);
+  return { items, allUnlocked: locked.length === 0 };
 }
 
 // ---------------------------------------------------------------------

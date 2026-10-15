@@ -8,6 +8,8 @@ import {
   getStreakStatus,
   getWeakSpots,
   getWordOfTheDay,
+  getVocabOfTheDay,
+  getClosestAchievements,
   getRecentActivity,
   timeAgo,
   dayAgo,
@@ -145,6 +147,9 @@ function weakCardHtml(weak) {
       <div class="home-card">
         <h3>Weak spots</h3>
         <p class="caption">Nothing here yet. Items you miss more than once show up here, ready for a quick drill.</p>
+        <div class="home-card-foot">
+          <button type="button" class="pm-link" data-progress-tab="strengths">See weak spots in My Progress →</button>
+        </div>
       </div>`;
   }
   const items = weak
@@ -157,8 +162,10 @@ function weakCardHtml(weak) {
     <div class="home-card">
       <h3>Weak spots</h3>
       <ol class="weak-list">${items}</ol>
-      <button class="btn btn-block" data-drill>Drill these</button>
-      <button type="button" class="pm-link" data-progress-tab="strengths">See all weak spots in My Progress →</button>
+      <div class="home-card-foot">
+        <button class="btn btn-block" data-drill>Drill these</button>
+        <button type="button" class="pm-link" data-progress-tab="strengths">See all weak spots in My Progress →</button>
+      </div>
     </div>`;
 }
 
@@ -174,7 +181,54 @@ function wotdCardHtml(w) {
         <div class="caption">${wrapHebrewSpans(p.verb)}</div>
         ${w.gloss ? `<div class="wotd-gloss">${esc(w.gloss)}</div>` : ""}
       </div>
-      <button class="btn btn-outline btn-block" data-wotd-toggle>Show parsing</button>
+      <div class="home-card-foot">
+        <button class="btn btn-outline btn-block" data-wotd-toggle>Show parsing</button>
+      </div>
+    </div>`;
+}
+
+function votdCardHtml(v) {
+  if (!v) return "";
+  const bits = [];
+  if (v.lesson) bits.push(`Lesson ${esc(v.lesson)}`);
+  if (v.frequency !== undefined && v.frequency !== "") bits.push(`Frequency ${esc(Number(v.frequency).toLocaleString())}`);
+  if (v.pos) bits.push(esc(v.pos));
+  return `
+    <div class="home-card">
+      <h3>Vocabulary of the day</h3>
+      <div class="wotd-form" lang="he" dir="rtl">${wrapHebrewSpans(v.hebrew)}</div>
+      <div class="votd-answer" hidden>
+        <div class="wotd-gloss">${esc(v.english)}</div>
+        <div class="caption">${bits.join(" · ")}</div>
+      </div>
+      <div class="home-card-foot">
+        <button class="btn btn-outline btn-block" data-votd-toggle>Show definition</button>
+      </div>
+    </div>`;
+}
+
+function achievementsCardHtml({ items, allUnlocked }) {
+  const body = items.length
+    ? `<ul class="goal-list">${items
+        .map(
+          (a) => `<li>
+            <span class="goal-icon" aria-hidden="true">${esc(a.icon)}</span>
+            <div class="goal-main">
+              <div class="goal-title">${esc(a.title)} <span class="caption">· ${a.progress.toLocaleString()} / ${a.target.toLocaleString()}</span></div>
+              <div class="caption goal-desc">${esc(a.desc)}</div>
+              <div class="progress-bar-outer"><div class="progress-bar-inner" style="width:${Math.round(a.ratio * 100)}%"></div></div>
+            </div>
+          </li>`
+        )
+        .join("")}</ul>`
+    : `<p class="caption">${allUnlocked ? "Every achievement is unlocked — well done!" : "Practice a little and the goals you are closest to will show up here."}</p>`;
+  return `
+    <div class="home-card">
+      <h3>Closest achievements</h3>
+      ${body}
+      <div class="home-card-foot">
+        <button type="button" class="pm-link" data-progress-tab="achievements">See all achievements in My Progress →</button>
+      </div>
     </div>`;
 }
 
@@ -185,6 +239,8 @@ export function mount({ content, navigate }) {
   const streak = getStreakStatus();
   const weak = getWeakSpots(5);
   const wotd = getWordOfTheDay();
+  const votd = getVocabOfTheDay();
+  const goals = getClosestAchievements(4);
   const lastVisit = getLastVisit();
   const recent = getRecentActivity();
 
@@ -200,8 +256,10 @@ export function mount({ content, navigate }) {
     <div class="area-tiles">${allStats.map(tileHtml).join("")}</div>
 
     <div class="home-duo">
-      ${weakCardHtml(weak)}
+      ${votdCardHtml(votd)}
       ${wotdCardHtml(wotd)}
+      ${weakCardHtml(weak)}
+      ${achievementsCardHtml(goals)}
     </div>
 
     <div class="verse">
@@ -253,6 +311,17 @@ export function mount({ content, navigate }) {
       navigate("progress");
     });
   });
+
+  const votdBtn = wrap.querySelector("[data-votd-toggle]");
+  if (votdBtn) {
+    votdBtn.addEventListener("click", () => {
+      const panel = wrap.querySelector(".votd-answer");
+      const show = panel.hasAttribute("hidden");
+      if (show) panel.removeAttribute("hidden");
+      else panel.setAttribute("hidden", "");
+      votdBtn.textContent = show ? "Hide definition" : "Show definition";
+    });
+  }
 
   const wotdBtn = wrap.querySelector("[data-wotd-toggle]");
   if (wotdBtn) {

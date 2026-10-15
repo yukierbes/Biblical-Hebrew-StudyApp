@@ -16,6 +16,7 @@ const goHome = async () => {
   navigateTo(document, "home");
   await wait(120);
 };
+const card = (title) => [...content.querySelectorAll(".home-card")].find((c) => c.querySelector("h3").textContent.trim() === title);
 const text = (sel) => (content.querySelector(sel) ? content.querySelector(sel).textContent.replace(/\s+/g, " ").trim() : "");
 const vowels = getLetterSet("vowels");
 const consonants = getLetterSet("consonants");
@@ -36,7 +37,22 @@ assert(/all caught up/i.test(text(".today-card-due")), "nothing is due yet");
 assert(findButtonByText(content, "Start here"), "Study now offers a place to start");
 assert(/Consonants Flashcards/.test(text(".today-card-sub")), "...Consonants Flashcards first");
 assert(/start a streak/i.test(text(".today-streak")), "no streak yet");
-assert(/Nothing here yet/.test(text(".home-card")), "weak spots start empty");
+assert(
+  JSON.stringify([...content.querySelectorAll(".home-card h3")].map((h) => h.textContent.trim())) ===
+    JSON.stringify(["Vocabulary of the day", "Verb of the day", "Weak spots", "Closest achievements"]),
+  "four info boxes: Vocabulary of the day, Verb of the day, then Weak spots and Closest achievements below"
+);
+assert(/Nothing here yet/.test(card("Weak spots").textContent), "weak spots start empty");
+const votd = card("Vocabulary of the day");
+assert(votd.querySelector(".wotd-form").textContent.trim().length > 0, "a Hebrew word is shown");
+assert(votd.querySelector(".votd-answer").hasAttribute("hidden"), "its definition starts hidden");
+click(findButtonByText(votd, "Show definition"));
+assert(!votd.querySelector(".votd-answer").hasAttribute("hidden"), "Show definition reveals it");
+assert(/Lesson .+ · Frequency [\d,]+/.test(votd.querySelector(".votd-answer").textContent.replace(/\s+/g, " ")), "...with the lesson and frequency");
+assert(votd.querySelector(".wotd-gloss").textContent.trim().length > 0, "...and the English definition");
+click(findButtonByText(votd, "Hide definition"));
+assert(votd.querySelector(".votd-answer").hasAttribute("hidden"), "Hide definition hides it again");
+assert(/Practice a little/.test(card("Closest achievements").textContent), "no goals to show before any practice");
 assert(!!content.querySelector(".wotd-form") && content.querySelector(".wotd-form").textContent.length > 0, "a verb of the day is shown");
 assert(content.querySelector(".wotd-parse").hasAttribute("hidden"), "its parsing starts hidden");
 click(findButtonByText(content, "Show parsing"));
@@ -86,6 +102,16 @@ assert(content.querySelector("h1").textContent === "Weak-Spot Drill", "Drill the
 click(findButtonByText(content, "Start Drill"));
 await wait();
 assert(!!content.querySelector(".hebrew-display"), "the drill asks a question");
+
+console.log("\nClosest achievements");
+await goHome();
+const goals = card("Closest achievements");
+const goalTitles = [...goals.querySelectorAll(".goal-title")];
+assert(goalTitles.length >= 1 && goalTitles.length <= 4, "achievements you are partway to are listed (at most four)");
+assert(goals.querySelectorAll(".progress-bar-inner").length === goalTitles.length, "each shows a progress bar");
+assert(/\d+ \/ \d+/.test(goalTitles[0].textContent), "...and how far along it is");
+const ratios = [...goals.querySelectorAll(".progress-bar-inner")].map((b) => parseInt(b.style.width, 10));
+assert(ratios.every((r, i) => i === 0 || ratios[i - 1] >= r), "the closest one comes first");
 
 console.log("\nPick up where you left off");
 navigateTo(document, "vowel-typing");
