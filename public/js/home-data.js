@@ -332,7 +332,7 @@ export function getWordOfTheDay(now = new Date()) {
 // Recent activity
 // ---------------------------------------------------------------------
 
-const QUIZ_HISTORY_MODES = [
+export const QUIZ_HISTORY_MODES = [
   ["parsing", "Verb Parsing"],
   ["construction", "Verb Construction"],
   ["vocab-typing", "Vocabulary Typing"],

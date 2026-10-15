@@ -520,23 +520,19 @@ function renderAchievementCard(achievement, ctx) {
   return card;
 }
 
-function render(content, navigate) {
-  content.innerHTML = "";
-
+/**
+ * The Achievements content (summary, "Almost There" and every section), without
+ * a page title — so it can sit inside the My Progress "Achievements" tab.
+ */
+export function renderAchievementsInto(content) {
   const ctx = buildContext();
 
   const unlockedCount = ACHIEVEMENTS.filter((a) => a.progress(ctx) >= a.target).length;
 
-  const wrap = document.createElement("div");
-  wrap.innerHTML = `
-    <h1 class="page-title">Achievements</h1>
-    <div class="info-box">
-      <b>About this page</b><br>
-      Badges for the goals you reach across the whole app — streaks, mastery, quizzes, categories, and games.<br>
-      This is stored in your browser only; it won't follow you to a different browser or device.
-    </div>
-  `;
-  content.appendChild(wrap);
+  const intro = document.createElement("p");
+  intro.className = "caption";
+  intro.textContent = "Badges for the goals you reach across the whole app — streaks, mastery, quizzes, categories, and games.";
+  content.appendChild(intro);
 
   const summaryBox = document.createElement("div");
   summaryBox.className = "info-box";
@@ -579,6 +575,15 @@ function render(content, navigate) {
     }
     content.appendChild(grid);
   }
+}
+
+function render(content, navigate) {
+  content.innerHTML = "";
+
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `<h1 class="page-title">Achievements</h1>`;
+  content.appendChild(wrap);
+  renderAchievementsInto(content);
 
   content.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
   const homeBtn = document.createElement("button");

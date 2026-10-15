@@ -14,30 +14,9 @@ import {
 } from "../home-data.js";
 
 // The Home page: what to do next (Today), where you left off, one tile per
-// study area with its progress, your weak spots, a verb form of the day, and
-// shortcuts to Progress, Achievements and Word Lookup. All the numbers come
-// from home-data.js.
-
-const FEATURED_MODES = [
-  {
-    label: "My Progress",
-    desc: "See your streak, spaced-repetition mastery, and recent quiz scores across the whole app",
-    key: "progress",
-    buttonLabel: "My Progress",
-  },
-  {
-    label: "Achievements",
-    desc: "Badges and goals for streaks, mastery, quizzes, categories, and games — see what you're closest to earning",
-    key: "achievements",
-    buttonLabel: "Achievements",
-  },
-  {
-    label: "Word Lookup",
-    desc: "Quickly search for a Hebrew word or English gloss to see how it parses",
-    key: "search",
-    buttonLabel: "Word Lookup",
-  },
-];
+// study area with its progress, your weak spots, and a verb form of the day.
+// (My Progress, Achievements and Word Lookup are in the sidebar; Achievements
+// now lives inside My Progress.) All the numbers come from home-data.js.
 
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const plural = (n, one, many) => (n === 1 ? one : many);
@@ -179,6 +158,7 @@ function weakCardHtml(weak) {
       <h3>Weak spots</h3>
       <ol class="weak-list">${items}</ol>
       <button class="btn btn-block" data-drill>Drill these</button>
+      <button type="button" class="pm-link" data-progress-tab="strengths">See all weak spots in My Progress →</button>
     </div>`;
 }
 
@@ -196,23 +176,6 @@ function wotdCardHtml(w) {
       </div>
       <button class="btn btn-outline btn-block" data-wotd-toggle>Show parsing</button>
     </div>`;
-}
-
-// ---------------- Cards for the shortcut row ----------------
-
-function cardsHtml(modes) {
-  return modes
-    .map(
-      (m) => `
-        <div class="mode-card">
-          <div>
-            <h2>${m.label}</h2>
-            <p>${m.desc}</p>
-          </div>
-          <button class="btn btn-block" data-goto="${m.key}">${m.buttonLabel}</button>
-        </div>`
-    )
-    .join("");
 }
 
 export function mount({ content, navigate }) {
@@ -240,8 +203,6 @@ export function mount({ content, navigate }) {
       ${weakCardHtml(weak)}
       ${wotdCardHtml(wotd)}
     </div>
-
-    <div class="mode-cards">${cardsHtml(FEATURED_MODES)}</div>
 
     <div class="verse">
       וְאָהַבְתָּ אֵת יְהוָה אֱלֹהֶיךָ בְּכָל&#8209;לְבָבְךָ<br/>
@@ -285,6 +246,13 @@ export function mount({ content, navigate }) {
       navigate("daily-challenge");
     });
   }
+
+  wrap.querySelectorAll("[data-progress-tab]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      setDeepLink({ type: "progress-tab", tab: btn.dataset.progressTab });
+      navigate("progress");
+    });
+  });
 
   const wotdBtn = wrap.querySelector("[data-wotd-toggle]");
   if (wotdBtn) {

@@ -159,5 +159,9 @@ export function countButtonsByText(root, text) {
 }
 
 export function navigateTo(document, page) {
-  document.querySelector(`.nav-btn[data-page="${page}"]`).dispatchEvent(new Event("click", { bubbles: true }));
+  const btn = document.querySelector(`.nav-btn[data-page="${page}"]`);
+  if (btn) btn.dispatchEvent(new Event("click", { bubbles: true }));
+  // A page with no sidebar button of its own (Achievements is a tab of My
+  // Progress) is reached by its address, exactly like a bookmarked link.
+  else document.defaultView.location.hash = `#${page}`;
 }

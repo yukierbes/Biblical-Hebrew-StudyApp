@@ -27,6 +27,8 @@ const APP_SHELL = [
   "js/letter-data.js",
   "js/session.js",
   "js/home-data.js",
+  "js/progress-data.js",
+  "js/progress-charts.js",
   "js/letter-sets.js",
   "js/letter-sidebar.js",
   "js/letter-answer-matching.js",

@@ -2369,3 +2369,197 @@ kbd {
   .today-card-main,
   .today-card-actions { flex: 0 0 auto; width: 100%; }
 }
+
+/* ============================================================
+   My Progress — tabs, stat cards, charts, item map
+   Colours come from the theme variables, so everything follows
+   light and dark mode. Charts are inline SVG styled from here.
+   ============================================================ */
+.pm-intro { margin: 0 0 14px; }
+
+.pm-tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--hairline-strong);
+  margin-bottom: 18px;
+  overflow-x: auto;
+}
+.pm-tab {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  padding: 9px 14px;
+  font: inherit;
+  color: var(--ink-soft);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pm-tab:hover { color: var(--ink); }
+.pm-tab:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.pm-tab-on { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+
+.pm-panel h3 { margin: 26px 0 10px; }
+.pm-panel h3:first-child { margin-top: 4px; }
+.pm-panel h4 { margin: 18px 0 8px; font-size: 1rem; }
+
+.pm-card {
+  background: var(--paper-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+.pm-note { margin: 12px 0 0; }
+
+/* Link-styled buttons and choice pills */
+.pm-link {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0 2px;
+  margin-left: 6px;
+  font: inherit;
+  color: var(--accent-text);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.pm-link:hover { color: var(--ink); }
+.pm-pills { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+.pm-pill {
+  appearance: none;
+  background: var(--paper-raised);
+  border: 1px solid var(--hairline-strong);
+  border-radius: 999px;
+  padding: 5px 13px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.pm-pill:hover { color: var(--ink); border-color: var(--ink-soft); }
+.pm-pill-on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.pm-pill-on:hover { color: var(--paper); }
+
+/* Overview: headline numbers */
+.pm-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+.pm-stat {
+  background: var(--paper-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pm-stat-value { font-family: var(--font-display); font-size: 2rem; line-height: 1.1; color: var(--ink); }
+.pm-stat-of { font-size: 1.1rem; color: var(--ink-soft); }
+.pm-stat-label { color: var(--ink-soft); font-size: 0.9rem; }
+.pm-stat .caption { margin: 0; }
+
+/* Mastery bars: mastered | learning | (the rest is "new") */
+.pm-stack { display: flex; height: 12px; background: var(--hairline); border-radius: 6px; overflow: hidden; }
+.pm-seg { display: block; height: 100%; }
+.pm-seg-mastered { background: var(--good); }
+.pm-seg-learning { background: var(--accent); }
+.pm-seg-new { background: var(--hairline-strong); }
+.pm-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 10px; }
+.pm-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.pm-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+
+.pm-area-rows { display: flex; flex-direction: column; gap: 14px; }
+.pm-area-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin-bottom: 5px; }
+.pm-area-head .caption { margin: 0; }
+.pm-area-foot { margin: 4px 0 0; }
+
+/* Charts */
+.pm-chart, .pm-heatmap { display: block; width: 100%; height: auto; }
+.pm-chart { max-width: 560px; }
+.pm-heatmap { max-width: 640px; min-width: 440px; margin-bottom: 8px; }
+.pm-scroll { overflow-x: auto; }
+.pm-chart-label { fill: var(--ink-soft); font-size: 10px; font-family: var(--font-body); }
+.pm-chart-num { fill: var(--ink); font-size: 11px; font-family: var(--font-body); }
+.pm-chart-axis, .pm-chart-grid { stroke: var(--hairline-strong); stroke-width: 1; }
+.pm-bar { fill: var(--accent); }
+.pm-bar-today { fill: var(--ink); }
+.pm-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; }
+.pm-dot { fill: var(--accent); }
+.pm-dot-last { fill: var(--ink); }
+.pm-heat-0 { fill: var(--hairline); }
+.pm-heat-1 { fill: var(--good); fill-opacity: 0.28; }
+.pm-heat-2 { fill: var(--good); fill-opacity: 0.5; }
+.pm-heat-3 { fill: var(--good); fill-opacity: 0.75; }
+.pm-heat-4 { fill: var(--good); }
+
+/* Mastery tab */
+.pm-big { font-family: var(--font-display); font-size: 2.2rem; line-height: 1.1; margin-bottom: 8px; }
+.pm-big span { font-family: var(--font-body); font-size: 1rem; color: var(--ink-soft); }
+.pm-area-summary .caption { margin: 0; }
+.pm-mode-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; padding: 6px 0; border-bottom: 1px solid var(--hairline); }
+.pm-mode-row:last-child { border-bottom: 0; }
+.pm-mode-row .caption { margin: 0; }
+
+.pm-tile-key { display: flex; flex-wrap: wrap; gap: 14px; margin: 0 0 10px; }
+.pm-tile-key span { display: inline-flex; align-items: center; gap: 6px; }
+.pm-key { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 1px solid var(--hairline-strong); border-radius: 4px; font-style: normal; font-size: 0.7rem; }
+.pm-tile-group { margin: 14px 0 6px; font-weight: 600; font-size: 0.9rem; color: var(--ink-soft); }
+.pm-tiles { display: flex; flex-wrap: wrap; gap: 6px; }
+.pm-tile {
+  position: relative;
+  appearance: none;
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.pm-tile-form { font-family: var(--font-hebrew); font-size: 1.7rem; line-height: 1; }
+.pm-tile-mark { position: absolute; top: 1px; right: 4px; font-size: 0.7rem; font-weight: 700; }
+.pm-tile-learning { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+.pm-tile-mastered { background: var(--good-soft); border-color: var(--good); color: var(--ink); }
+.pm-tile-mastered .pm-tile-mark, .pm-key.pm-tile-mastered { color: var(--good); }
+.pm-tile-weak { border-color: var(--bad); box-shadow: inset 0 0 0 1px var(--bad); }
+.pm-tile-weak .pm-tile-mark, .pm-key.pm-tile-weak { color: var(--bad); }
+.pm-tile[aria-pressed="true"] { outline: 2px solid var(--ink); outline-offset: 1px; }
+.pm-tile:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.pm-tile-detail { margin-top: 14px; padding: 10px 14px; border: 1px dashed var(--hairline-strong); border-radius: var(--radius); color: var(--ink-soft); min-height: 44px; }
+.pm-tile-detail b { color: var(--ink); }
+
+.pm-group-row { display: grid; grid-template-columns: minmax(110px, 190px) 1fr 70px; align-items: center; gap: 12px; padding: 5px 0; }
+.pm-group-label { overflow-wrap: anywhere; }
+.pm-group-note { margin: 0; text-align: right; }
+
+/* Strengths tab */
+.pm-weak-list { margin-bottom: 12px; }
+.pm-acc-title { font-weight: 600; margin-bottom: 4px; }
+.pm-acc-summary { margin: 0 0 8px; }
+.pm-acc-row { display: grid; grid-template-columns: minmax(110px, 190px) 1fr minmax(120px, 190px); align-items: center; gap: 12px; padding: 4px 0; }
+.pm-acc-track { height: 10px; background: var(--hairline); border-radius: 5px; overflow: hidden; }
+.pm-acc-fill { height: 100%; border-radius: 5px; background: var(--accent); }
+.pm-acc-good .pm-acc-fill { background: var(--good); }
+.pm-acc-low .pm-acc-fill { background: var(--bad); }
+.pm-acc-faint .pm-acc-fill { background: var(--ink-faint); opacity: 0.6; }
+.pm-acc-faint .pm-acc-label { color: var(--ink-faint); }
+.pm-acc-note { font-size: 0.82rem; color: var(--ink-soft); }
+
+/* Quizzes tab */
+.pm-quizzes { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; align-items: start; }
+.pm-quiz { margin-bottom: 0; }
+.pm-quiz-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px; }
+.pm-quiz .caption { margin: 6px 0 0; }
+.pm-details { margin-top: 10px; }
+.pm-details summary { cursor: pointer; color: var(--accent-text); font-size: 0.9rem; }
+
+@media (max-width: 640px) {
+  .pm-group-row, .pm-acc-row { grid-template-columns: 1fr; gap: 4px; }
+  .pm-group-note { text-align: left; }
+  .pm-quizzes { grid-template-columns: 1fr; }
+  .pm-tile { width: 52px; height: 52px; }
+}

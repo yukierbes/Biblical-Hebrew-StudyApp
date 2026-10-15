@@ -307,7 +307,37 @@ or wrong file) can be allowed by setting the environment variable
     exactly those items (it opens the Daily Challenge page as a "Weak-Spot
     Drill"). Verb forms aren't included, because the drill has no verb questions.
   - *Verb of the day*: one verb form, the same all day; "Show parsing" reveals it.
-  - Feedback is a single quiet line at the bottom.
+  - Feedback is a single quiet line at the bottom. (My Progress, Achievements
+    and Word Lookup are reached from the sidebar; the Weak spots card links to
+    the full list in My Progress.)
+- **My Progress** — how you're doing over time (Home is "what to do now"; this
+  is "how am I doing"). The numbers come from `public/js/progress-data.js`, the
+  charts are plain inline SVG from `progress-charts.js`, and the page is
+  `pages/progress.js`. Five tabs (which tab was open is remembered while the app
+  stays open, and a fresh load starts on Overview):
+  - *Overview*: streak (with best), today's goal, items mastered, active days;
+    **mastery by area** (a bar of mastered / learning / new per area, with a
+    Details link); **reviews coming up** (how many reviews fall due each day
+    this week); and the **activity calendar** (one square per day for 26
+    weeks, darker the closer to your daily goal).
+  - *Mastery*: one area at a time. Per-mode counts, then for Consonants, Vowels
+    and Accents a **map of every item** (mastered ✓, learning, not practised,
+    often missed !; click one for its answer counts) and for Vocabulary and
+    Verbs mastery **by lesson / part of speech** and **by binyan / verb form /
+    person / verb**.
+  - *Strengths*: the full **weak-spots list** (filter by area, **Drill the worst
+    15**), and **accuracy by category** (class, length, lesson, binyan, accent
+    type, …). A category with fewer than 5 answers is greyed out rather than
+    judged.
+  - *Quizzes*: score-over-time charts for each quiz with best / average / latest,
+    an Improving / Steady / Slipping tag once there are four attempts, and the
+    recent-attempts list. The app keeps the last 20 attempts of each quiz.
+  - *Achievements*: the badges and goals (this used to be its own page; the old
+    `#achievements` address still works and opens this tab).
+  - The calendar needs a per-day tally that earlier versions didn't keep, so it
+    is recorded from the update that added it (`hebrewVerbApp:activityLog`,
+    last 400 days; like all progress it syncs per key, so the most recently
+    synced device's calendar wins if you practise on two devices).
 - **Where the app opens.** Opening the app, opening it in a new tab, or signing
   in always lands on **Home**. Refreshing while you're using it (or when the
   app reloads itself after an update) keeps you on the current page. "Using it"

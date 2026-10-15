@@ -60,7 +60,8 @@ const PAGES = {
   "vowel-typing": vowelTypingPage,
   "vowel-games": vowelGamesPage,
   progress: progressPage,
-  achievements: achievementsPage,
+  // Achievements now lives inside My Progress; the old address opens that tab.
+  achievements: progressPage.achievementsRoute,
   "daily-challenge": dailyChallengePage,
 };
 
@@ -166,7 +167,11 @@ function initNavSections() {
 }
 initNavSections();
 
-function setActiveNav(pageName) {
+/** The sidebar item a page belongs under (Achievements is a tab of My Progress). */
+const navPageFor = (pageName) => (pageName === "achievements" ? "progress" : pageName);
+
+function setActiveNav(rawPageName) {
+  const pageName = navPageFor(rawPageName);
   navButtons.forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.page === pageName);
   });
@@ -208,7 +213,7 @@ function renderPage() {
   // Still in use (so a refresh stays on this page), and remembered as the
   // place to pick up from on the Home page.
   touchSession();
-  recordVisit(pageName);
+  recordVisit(navPageFor(pageName));
 
   // Move focus to the new page's content so keyboard and screen-reader
   // users get a clear signal that the page changed, without adding a

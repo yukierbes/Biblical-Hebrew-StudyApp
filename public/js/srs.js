@@ -14,6 +14,13 @@ const scheduleKey = (mode) => `hebrewVerbApp:srs:${mode}`;
 // answer moves an item up a box; any wrong answer resets it to box 1.
 const INTERVAL_DAYS = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 14 };
 const MAX_BOX = 5;
+/** The Leitner box that counts as "mastered". */
+export const MASTERED_BOX = MAX_BOX;
+
+// A tally of practice answers per calendar day, for the My Progress activity
+// calendar: { "2026-10-14": 23, ... }. Kept to the last ACTIVITY_DAYS_KEPT days.
+const ACTIVITY_KEY = "hebrewVerbApp:activityLog";
+const ACTIVITY_DAYS_KEPT = 400;
 
 function todayString() {
   const d = new Date();
@@ -80,6 +87,22 @@ function bumpDailyProgress() {
   const stored = loadJSON(DAILY_PROGRESS_KEY, { date: today, count: 0 });
   const count = (stored.date === today ? stored.count : 0) + 1;
   saveJSON(DAILY_PROGRESS_KEY, { date: today, count });
+  bumpActivityLog(today);
+}
+
+/** Practice answers per day: { "YYYY-MM-DD": count }. Recording began with the
+ * update that added the My Progress calendar, so earlier days are not in it. */
+export function getActivityLog() {
+  const log = loadJSON(ACTIVITY_KEY, {});
+  return log && typeof log === "object" && !Array.isArray(log) ? log : {};
+}
+
+function bumpActivityLog(today) {
+  const log = getActivityLog();
+  log[today] = (log[today] || 0) + 1;
+  const days = Object.keys(log).sort();
+  for (const old of days.slice(0, Math.max(0, days.length - ACTIVITY_DAYS_KEPT))) delete log[old];
+  saveJSON(ACTIVITY_KEY, log);
 }
 
 // ============ Streak freezes ============
@@ -312,6 +335,7 @@ function resetAllProgress() {
     localStorage.removeItem(DAILY_GOAL_KEY);
     localStorage.removeItem(DAILY_PROGRESS_KEY);
     localStorage.removeItem(FREEZE_KEY);
+    localStorage.removeItem(ACTIVITY_KEY);
     localStorage.removeItem(scheduleKey("parsing"));
     localStorage.removeItem(scheduleKey("construction"));
     localStorage.removeItem(scheduleKey("vocab-typing-hebrew"));
