@@ -300,6 +300,19 @@ export function getMasteredKeyCount(modes) {
   return set.size;
 }
 
+/** The DISTINCT item keys mastered in at least one of `modes` — the same
+ * test getMasteredKeyCount uses, but returning the keys themselves. The Daily
+ * Challenge uses this to slip a few already-mastered items in for review. */
+export function getMasteredKeys(modes) {
+  const set = new Set();
+  for (const mode of modes) {
+    for (const [key, sched] of Object.entries(loadSchedule(mode))) {
+      if (sched.box >= MAX_BOX) set.add(key);
+    }
+  }
+  return set;
+}
+
 // ============ Sidebar UI ============
 
 /**
@@ -339,6 +352,7 @@ export function resetAllProgress() {
     localStorage.removeItem(DAILY_PROGRESS_KEY);
     localStorage.removeItem(FREEZE_KEY);
     localStorage.removeItem(ACTIVITY_KEY);
+    localStorage.removeItem("hebrewVerbApp:dailyLog"); // the Daily Challenge calendar
     localStorage.removeItem(scheduleKey("parsing"));
     localStorage.removeItem(scheduleKey("construction"));
     localStorage.removeItem(scheduleKey("vocab-typing-hebrew"));

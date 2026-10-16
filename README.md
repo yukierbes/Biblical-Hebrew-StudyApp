@@ -289,6 +289,32 @@ or wrong file) can be allowed by setting the environment variable
 
 ## Feature overview
 
+- **Daily Challenge** — a short round, personal to the learner, built to be
+  quick, easy and worth coming back to (`pages/daily-challenge.js`; the
+  question building and grading are in `daily-data.js`, the calendar/history/
+  settings in `daily-history.js`):
+  - *Setup*: **5, 10 or 15 questions**; tick which areas to pull from
+    (Consonants, Vowels, Vocabulary, Verbs, Accents); optional **Hard mode**
+    (type the answers) and **Sound**. Choices are remembered.
+  - *Personal*: due, weak and never-seen items come first. Once you have mastered
+    items, about a quarter of the questions are mastered ones, kept fresh for
+    review. Every answer feeds each item's own spaced-repetition schedule.
+  - *Question types*: **tap the answer** among four choices (press 1–4); **verbs**
+    by tapping Binyan, Mode, Person, Gender and Number, as on the Parsing page
+    (a form that fits several parsings accepts any of them, and shows the usual
+    hint); and, in 10- and 15-question rounds, **match to category** (items to
+    their consonant category, vowel class, part of speech or accent type).
+  - *Instant feedback* after every question (✓/✗ with words and icons, not
+    colour alone), then **Next** (or Enter). Leave with **Save & exit** and the
+    round is waiting, at the next question, for the rest of that day.
+  - *Finish*: 1–3 stars (finishing, 70%, 90%), your best run of correct answers, how
+    today compares with yesterday, and **a list of every question with what you
+    chose and the correct answer**.
+  - *Calendar*: each day you finish a round is filled in with its stars; the
+    Achievements page has Daily Challenge badges (first challenge, 7 / 30 days,
+    3 and 7 days in a row, a perfect round, Star Collector, Hard Mode).
+  - Home's "Drill these" uses the same screens for your weak items.
+
 - **Home page** — what to do next, from your own practice data (the numbers
   come from `public/js/home-data.js`; the page is `pages/home.js`):
   - *Today*: items due for review, your **streak** (and a nudge such as "One
@@ -420,7 +446,7 @@ or wrong file) can be allowed by setting the environment variable
     offers the vowel's class as a hint — a button on flashcards, shown
     automatically in the timed games. Typing the mark is right for both.
   - They also feed spaced repetition, streaks, Progress, Achievements, the
-    Daily Challenge (a few of each, "name → type it") and Word Lookup.
+    Daily Challenge and Word Lookup.
   - The code is shared: `letter-sets.js` describes what differs between the
     two sets, and `pages/letter-*.js` hold one Review/Flashcards/Typing/Games
     implementation used by both (`pages/consonant-*.js` and `vowel-*.js` are

@@ -1,5 +1,6 @@
 import { getStreakInfo, getMasteredKeyCount } from "../srs.js";
 import { loadHistory } from "../history.js";
+import { getStats as getDailyStats } from "../daily-history.js";
 import { getVocabRows } from "../vocab-data.js";
 import { getCategoriesForRow, getCustomCategoryCount } from "../vocab-overrides.js";
 import { getAllHighScores } from "./vocab-games.js";
@@ -351,6 +352,20 @@ for (const L of LETTER_ACHIEVEMENT_SETS) {
   );
 }
 
+// ---- Daily Challenge ----
+for (const [id, icon, title, desc, target, key] of [
+  ["daily-first", "📅", "First Challenge", "Finish your first Daily Challenge", 1, "days"],
+  ["daily-week", "🗓️", "Regular", "Finish the Daily Challenge on 7 different days", 7, "days"],
+  ["daily-month", "🏅", "Dedicated", "Finish the Daily Challenge on 30 different days", 30, "days"],
+  ["daily-run-3", "🔁", "On a Roll", "Finish the Daily Challenge 3 days in a row", 3, "bestRun"],
+  ["daily-run-7", "🔥", "Daily Habit", "Finish the Daily Challenge 7 days in a row", 7, "bestRun"],
+  ["daily-perfect", "💯", "Flawless", "Get every question right in a Daily Challenge", 1, "perfectDays"],
+  ["daily-stars", "🌟", "Star Collector", "Earn 3 stars on 10 different days", 10, "threeStarDays"],
+  ["daily-hard", "⌨️", "Hard Mode", "Finish the Daily Challenge in Hard mode on 5 days", 5, "hardDays"],
+]) {
+  ACHIEVEMENTS.push({ id, section: "Daily Challenge", icon, title, desc, target, progress: (ctx) => ctx.dailyStats[key] });
+}
+
 export function buildContext() {
   const streak = getStreakInfo();
   const masteredVocab = getMasteredKeyCount(VOCAB_SRS_MODES);
@@ -378,6 +393,7 @@ export function buildContext() {
   const hasAccentMemoryScore = Object.keys(accentGameScores).some((k) => k.startsWith("memory-"));
 
   return {
+    dailyStats: getDailyStats(),
     longestStreak: streak.longestStreak,
     masteredVocab,
     masteredVerbs,
