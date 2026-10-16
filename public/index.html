@@ -67,7 +67,17 @@
 
     <aside id="sidebar">
       <div class="sidebar-inner">
-        <div class="sidebar-section">
+        <!-- Type a few letters of a page's name to jump to it ("/" focuses this box).
+             See js/page-finder.js. -->
+        <div class="page-finder">
+          <label class="sr-only" for="page-finder-input">Go to a page</label>
+          <input id="page-finder-input" type="text" class="page-finder-input" role="combobox"
+                 aria-expanded="false" aria-controls="page-finder-list" aria-autocomplete="list"
+                 placeholder="Go to…   ( / )" autocomplete="off" spellcheck="false" />
+          <ul id="page-finder-list" class="page-finder-list" role="listbox" aria-label="Matching pages" hidden></ul>
+        </div>
+
+        <div class="sidebar-section" data-collapse-default="open">
           <h3 class="sidebar-title">Navigation</h3>
           <nav id="nav-buttons">
             <button class="nav-btn" data-page="home">Home</button>
@@ -126,38 +136,23 @@
             </div>
           </nav>
         </div>
-        <div class="sidebar-section sidebar-divider-section">
-          <h3 class="sidebar-title">Account</h3>
-          <div id="account-section"></div>
-        </div>
-
-        <div class="sidebar-section sidebar-divider-section">
-          <h3 class="sidebar-title">Progress</h3>
-          <div id="streak-display"></div>
-          <div class="daily-goal-edit">
-            <label for="daily-goal-input" class="caption">Daily goal</label>
-            <input id="daily-goal-input" type="number" min="1" max="200" class="daily-goal-input" />
-          </div>
-          <button id="reset-progress" type="button" class="select-all-btn" style="margin-top: 8px;">Reset Progress</button>
-        </div>
         <div id="sidebar-extra"></div>
-        <div class="sidebar-section sidebar-footer">
-          <h3 class="sidebar-title">Accessibility</h3>
+        <!-- Pinned to the bottom of the sidebar: today's streak (a link to My Progress),
+             the Accessibility buttons in one row, and the Account. -->
+        <div class="sidebar-footer">
+          <div id="streak-display"></div>
 
-          <button id="theme-toggle" type="button" class="shortcuts-link">Dark Mode</button>
-
-          <div class="zoom-control">
-            <span class="sidebar-label" style="margin: 0 0 6px 0;">Text Size</span>
-            <div class="zoom-buttons">
-              <button id="zoom-out" type="button" class="zoom-btn" aria-label="Decrease text size">A−</button>
-              <button id="zoom-reset" type="button" class="zoom-btn zoom-reset" aria-label="Reset text size">100%</button>
-              <button id="zoom-in" type="button" class="zoom-btn" aria-label="Increase text size">A+</button>
-            </div>
+          <div class="a11y-row zoom-buttons" role="group" aria-label="Accessibility: theme, text size, shortcuts">
+            <button id="theme-toggle" type="button" class="zoom-btn a11y-theme">Dark Mode</button>
+            <button id="zoom-out" type="button" class="zoom-btn" aria-label="Decrease text size" title="Smaller text">A−</button>
+            <button id="zoom-reset" type="button" class="zoom-btn zoom-reset" aria-label="Reset text size" title="Reset text size">100%</button>
+            <button id="zoom-in" type="button" class="zoom-btn" aria-label="Increase text size" title="Larger text">A+</button>
+            <button id="shortcuts-toggle" type="button" class="zoom-btn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (press ? anytime)">?</button>
           </div>
 
-          <div class="footer-group">
-            <button id="shortcuts-toggle" type="button" class="shortcuts-link">Keyboard Shortcuts</button>
-            <div class="caption" style="margin-top: 4px;">or press <kbd>?</kbd> anytime</div>
+          <div class="sidebar-section sidebar-account" data-collapse-default="collapsed">
+            <h3 class="sidebar-title">Account</h3>
+            <div id="account-section"></div>
           </div>
         </div>
       </div>
@@ -187,6 +182,7 @@
         <li><span><kbd>Space</kbd> / <kbd>Enter</kbd></span><span>Activate the focused button, checkbox, or radio</span></li>
         <li><span><kbd>1</kbd>–<kbd>9</kbd></span><span>Pick an answer while using Selection mode (click a choice once first)</span></li>
         <li><span><kbd>Enter</kbd></span><span>Advance to the next question, or reveal the answer, during a quiz</span></li>
+        <li><span><kbd>/</kbd></span><span>Jump to the "Go to…" page finder in the sidebar</span></li>
         <li><span><kbd>?</kbd></span><span>Open this shortcuts reference</span></li>
         <li><span><kbd>Esc</kbd></span><span>Close this dialog</span></li>
       </ul>

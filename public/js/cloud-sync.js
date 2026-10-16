@@ -10,6 +10,7 @@
 
 import { renderStreakDisplay } from "./srs.js";
 import { authFetch } from "./auth-fetch.js";
+import { setSectionSummary } from "./sidebar-collapse.js";
 
 const SYNC_PREFIX = "hebrewVerbApp:";
 const META_KEY = "hebrewVerbApp:cloudSync:meta";
@@ -189,16 +190,22 @@ function timeAgo(ts) {
 function renderAccountUI() {
   const section = document.getElementById("account-section");
   if (!section) return;
+  // The Account header is collapsed by default, so its summary says how syncing is going.
+  const header = section.closest(".sidebar-section");
 
   if (!status.available) {
     section.innerHTML = `<div class="caption">Cloud sync isn't available on this deployment.</div>`;
+    setSectionSummary(header, "Sync off");
     return;
   }
 
   if (!status.signedIn) {
     section.innerHTML = `<div class="caption">Not signed in.</div>`;
+    setSectionSummary(header, "Not signed in");
     return;
   }
+
+  setSectionSummary(header, status.error ? "Sync error" : status.syncing ? "Syncing…" : "Synced ✓");
 
   const statusLine = status.error
     ? `<span style="color:var(--bad);">Sync error: ${status.error}</span>`

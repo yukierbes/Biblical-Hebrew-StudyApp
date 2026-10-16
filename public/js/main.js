@@ -35,6 +35,8 @@ import { initVowelKeyboard, isVowelKeyboardOpen, closeVowelKeyboard } from "./vo
 import { initProgressSidebar } from "./srs.js";
 import { initCloudSyncUI, cloudSyncSignedIn, cloudSyncSignedOut, openSignIn } from "./cloud-sync.js";
 import { initSidebarResize } from "./sidebar-resize.js";
+import { initSidebarCollapse } from "./sidebar-collapse.js";
+import { initPageFinder } from "./page-finder.js";
 
 const PAGES = {
   home: homePage,
@@ -264,17 +266,26 @@ navButtons.forEach((btn) => {
 
 window.addEventListener("hashchange", renderPage);
 
+// Collapsible sidebar headers (Navigation, Filters, Account …) and the "Go to…"
+// page finder. See sidebar-collapse.js and page-finder.js.
+initSidebarCollapse();
+const pageFinder = initPageFinder({ navigate });
+
 // ============ Dark mode ============
 
 const themeToggleEl = document.getElementById("theme-toggle");
 
+// The button is a small icon in the sidebar's Accessibility row; its words are
+// still there for screen readers (and say what pressing it will do).
 function setTheme(dark) {
   if (dark) {
     document.documentElement.setAttribute("data-theme", "dark");
-    themeToggleEl.textContent = "Light Mode";
+    themeToggleEl.innerHTML = `<span aria-hidden="true">☀</span><span class="sr-only">Light Mode</span>`;
+    themeToggleEl.title = "Switch to light mode";
   } else {
     document.documentElement.removeAttribute("data-theme");
-    themeToggleEl.textContent = "Dark Mode";
+    themeToggleEl.innerHTML = `<span aria-hidden="true">☾</span><span class="sr-only">Dark Mode</span>`;
+    themeToggleEl.title = "Switch to dark mode";
   }
   try {
     localStorage.setItem("theme", dark ? "dark" : "light");
@@ -365,7 +376,11 @@ const GROUP_SELECTOR = "#nav-buttons, .choice-group, .button-row, .zoom-buttons,
 
 function getFocusableItems(container) {
   return [...container.querySelectorAll("button, input, a[href]")].filter(
-    (el) => !el.disabled && !el.closest("[hidden]")
+    (el) =>
+      !el.disabled &&
+      !el.closest("[hidden]") &&
+      // Inside a collapsed sidebar section only the header itself can be reached.
+      !(el.closest(".sidebar-section.is-collapsed") && !el.closest(".sidebar-title, .sidebar-head-action"))
   );
 }
 
@@ -399,6 +414,15 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "?" && !typing && !isHebrewKeyboardOpen() && !isAccentKeyboardOpen() && !isVowelKeyboardOpen()) {
     e.preventDefault();
     openShortcuts();
+    return;
+  }
+
+  // "/" jumps to the sidebar's "Go to…" page finder (opening the sidebar first if it
+  // is folded away), as long as the person isn't typing an answer.
+  if (e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey && !shortcutsOpen() && !isHebrewKeyboardOpen() && !isAccentKeyboardOpen() && !isVowelKeyboardOpen()) {
+    e.preventDefault();
+    setSidebarCollapsed(false);
+    setTimeout(() => pageFinder.focus(), 0);
     return;
   }
 

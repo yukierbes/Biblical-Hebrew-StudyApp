@@ -485,26 +485,48 @@ or wrong file) can be allowed by setting the environment variable
   incorrect), and "Generate" prioritizes forms that are due for review,
   then never-seen forms, then recently-mastered ones last — so practice
   time naturally goes where it's needed instead of drilling the same
-  well-known forms. A "Progress" section in the sidebar tracks a daily
-  streak (visible on every page) and a small New/Learning/Mastered
-  readout appears on each Practice page for whatever's currently
-  filtered in. All of this is per-browser (localStorage) and resettable
-  from the sidebar.
+  well-known forms. A small streak chip at the bottom of the sidebar shows the daily
+  streak and today's goal on every page (it links to My Progress), and a
+  small New/Learning/Mastered readout appears on each Practice page for
+  whatever's currently filtered in. The daily-goal setting and **Reset
+  progress** are on My Progress (Overview → Settings).
 - **Sidebar** — collapsible (hamburger toggle, safe from being clipped
   when collapsed), independently scrollable from the page, and
   resizable: drag its right edge (or focus the edge and use the arrow
-  keys; double-click resets) and the width is remembered. Dataset +
-  filter selection, each filter box with its own "Select all" and
-  "Clear all" (the "Reset Filters" button clears every filter at once),
-  and an Accessibility section
-  (dark mode, adjustable text size 80–160%, keyboard shortcuts reference
-  — also reachable by pressing `?` anywhere)
+  keys; double-click resets) and the width is remembered. Top to bottom:
+  - **Go to…** page finder (`page-finder.js`): type a few letters ("vow typ")
+    and pick Vowels Typing; Up/Down and Enter work, Esc clears, and `/`
+    jumps to it from anywhere you aren't typing. It reads the page list from
+    the navigation buttons (plus a few hidden alias words such as "parse" or
+    "lookup", and Achievements), so it can't drift out of step.
+  - **Navigation**, then the current page's own sections (Verbal Roots,
+    Filters, Columns …), each with its "Select all" / "Clear all" and a
+    "Reset Filters" button.
+  - A **footer pinned to the bottom** (it stays on screen while the rest
+    scrolls): the streak chip, **Accessibility** in one row of small buttons
+    (theme, A−, 100%, A+, `?` shortcuts — also reachable by pressing `?`
+    anywhere), and **Account** (collapsed, its header showing "Synced ✓").
+  - **Collapsible headers** (`sidebar-collapse.js`): every sidebar section
+    header folds down to just its title, and each filter box (Lesson, POS,
+    Binyan …) folds to one line with a summary — "all" or "3 of 12" (`widgets.js`
+    `renderCheckboxList`). The module *watches* the sidebar and upgrades any
+    `.sidebar-section` with a `.sidebar-title`, so pages need no changes (and
+    their redraws keep the state). What is open is remembered by title/label.
+    Defaults: Navigation open, Account closed, filter boxes closed, a page's
+    sections open on a computer and **closed on a phone** (a phone and a
+    computer remember separately).
+  - **Filters · N active · Reset**: the Filters header counts the boxes that
+    are really restricting something (some but not all options ticked) and, when
+    there are any, shows a Reset link that presses the page's own "Reset
+    Filters" button, so it works even with Filters folded.
 - **Keyboard support** — visible focus rings throughout; arrow keys move
   along a row of buttons or jump to the row above/below (including into
   the sidebar); `Enter` advances a quiz question / reveals an answer;
   digits `1`–`9` pick a Selection-mode answer; `Esc` closes dialogs
 - **Mobile** — the sidebar becomes a full-height overlay with a
-  tap-to-dismiss backdrop below 720px, rather than squeezing the page.
+  tap-to-dismiss backdrop below 720px, rather than squeezing the page; there
+  Navigation comes first and the page's filters start folded. On a very short
+  screen the footer stops being pinned.
   On the Verb, Vocabulary, and Accents flashcards, flip a card and then
   swipe it right for "I Know It" or left for "Review Later"
 - **Installable / offline** — add-to-home-screen support via the web app

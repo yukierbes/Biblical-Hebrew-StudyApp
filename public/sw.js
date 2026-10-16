@@ -50,6 +50,8 @@ const APP_SHELL = [
   "js/toast.js",
   "js/swipe-card.js",
   "js/sidebar-resize.js",
+  "js/sidebar-collapse.js",
+  "js/page-finder.js",
   "js/verb-tables.js",
   "js/print-tables.js",
   "js/srs.js",

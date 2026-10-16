@@ -2,6 +2,7 @@ import { GENERATOR_COLUMNS } from "./constants.js";
 import { orderedOptionsFromRows } from "./filters.js";
 import { wrapHebrewSpans } from "./helpers.js";
 import { listPresets, savePreset, deletePreset, getPreset } from "./filter-presets.js";
+import { readCollapsed, writeCollapsed } from "./sidebar-collapse.js";
 
 let uidCounter = 0;
 function uid(prefix) {
@@ -107,11 +108,37 @@ export function renderPresetControls(container, { pageKey, getSnapshot, applySna
 export function renderCheckboxList(container, { label, options, selected, onChange, emptyText }) {
   container.innerHTML = "";
 
+  // A labelled box folds down to just its label (a button), with a short summary
+  // after it — "all" or "3 of 12" — so a closed box still shows what it is
+  // filtering. Open/closed is remembered by label and starts closed. Everything
+  // after the label (Select all row, the list) is hidden by CSS when closed, so the
+  // label, button row and list stay siblings in the same order as always.
   if (label) {
-    const lbl = document.createElement("div");
-    lbl.className = "sidebar-label";
+    const key = `box:${label}`;
+    const lbl = document.createElement("button");
+    lbl.type = "button";
+    lbl.className = "sidebar-label filter-box-toggle";
     lbl.textContent = label;
+
+    const chosen = (options || []).filter((o) => (selected || []).includes(o)).length;
+    const total = (options || []).length;
+    const active = chosen > 0 && chosen < total; // none or all ticked = no restriction
+    lbl.dataset.summary = active ? `${chosen} of ${total}` : "all";
+    lbl.dataset.filterActive = String(active);
+
+    const apply = (collapsed) => {
+      container.classList.toggle("filter-box-collapsed", collapsed);
+      lbl.setAttribute("aria-expanded", String(!collapsed));
+    };
+    apply(readCollapsed(key, true));
+    lbl.addEventListener("click", () => {
+      const nowCollapsed = !container.classList.contains("filter-box-collapsed");
+      apply(nowCollapsed);
+      writeCollapsed(key, nowCollapsed);
+    });
     container.appendChild(lbl);
+  } else {
+    container.classList.remove("filter-box-collapsed");
   }
 
   if (!options || options.length === 0) {

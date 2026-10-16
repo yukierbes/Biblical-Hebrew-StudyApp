@@ -2,6 +2,7 @@ import { setDeepLink, consumeDeepLink } from "../deep-link.js";
 import { wrapHebrewSpans } from "../helpers.js";
 import { getAreas, getAllAreaStats } from "../home-data.js";
 import { renderHistoryPanel } from "../history-ui.js";
+import { getDailyGoal, setDailyGoal, resetAllProgress } from "../srs.js";
 import { renderAchievementsInto } from "./achievements.js";
 import {
   MIN_ANSWERS,
@@ -254,7 +255,33 @@ function renderOverview(panel, ctx) {
       <div class="pm-scroll">${heatmapSvg(grid)}</div>
       ${heatLegend(grid.goal)}
       <div class="caption">${fmt(grid.activeDays)} active ${plural(grid.activeDays, "day", "days")} · ${fmt(grid.answers)} ${plural(grid.answers, "answer", "answers")} in the last ${grid.weeks} weeks. ${calNote}</div>
+    </div>
+    <h3>Settings</h3>
+    <div class="pm-card pm-settings">
+      <div class="pm-setting-row">
+        <div><label for="pm-daily-goal"><b>Daily goal</b></label>
+          <div class="caption">Practice answers per day. Fills the bar on the Home page and in the sidebar.</div></div>
+        <input id="pm-daily-goal" type="number" min="1" max="200" class="daily-goal-input" value="${getDailyGoal()}" />
+      </div>
+      <div class="pm-setting-row">
+        <div><b>Reset progress</b>
+          <div class="caption">Clears your streak, daily goal, activity calendar and every review schedule. This can't be undone.</div></div>
+        <button type="button" id="pm-reset" class="btn btn-outline btn-sm pm-danger">Reset progress…</button>
+      </div>
     </div>`;
+
+  const goalInput = panel.querySelector("#pm-daily-goal");
+  goalInput.addEventListener("change", () => {
+    const n = parseInt(goalInput.value, 10);
+    if (Number.isFinite(n) && n > 0) setDailyGoal(n);
+    ctx.rerender();
+  });
+  panel.querySelector("#pm-reset").addEventListener("click", () => {
+    if (window.confirm("Reset your streak and spaced-repetition progress? This can't be undone.")) {
+      resetAllProgress();
+      ctx.rerender();
+    }
+  });
 
   // On a narrow screen the calendar scrolls sideways; start at the newest weeks.
   panel.querySelectorAll(".pm-scroll").forEach((el) => {

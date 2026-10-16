@@ -107,7 +107,7 @@ h3::before,
   flex-shrink: 0;
   background: var(--paper);
   border-right: 1px solid var(--hairline);
-  padding: 32px 22px;
+  padding: 0; /* the padding lives on .sidebar-inner, so the footer can sit flush at the bottom */
   transition: width 0.15s ease, padding 0.15s ease;
   height: 100vh;
   overflow-y: auto;
@@ -218,6 +218,11 @@ h3::before,
 .sidebar-inner {
   opacity: 1;
   transition: opacity 0.1s ease;
+  box-sizing: border-box;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 22px 0;
 }
 
 #app.sidebar-collapsed .sidebar-inner {
@@ -2578,3 +2583,195 @@ kbd {
 .goal-desc { margin: 0 0 4px; }
 .home-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 700px) { .home-duo { grid-template-columns: minmax(0, 1fr); } }
+
+
+/* ============================================================
+   Sidebar: collapsible headers, filter boxes, page finder,
+   and the footer pinned to the bottom (streak, accessibility, account)
+   ============================================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- collapsible section headers --- */
+.sidebar-section { position: relative; }
+.sidebar-title.is-collapsible::before { content: "▾"; font-size: 0.85em; margin-right: 0.45em; }
+.sidebar-section.is-collapsed > .sidebar-title.is-collapsible::before { content: "▸"; }
+.sidebar-title-toggle {
+  appearance: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  max-width: calc(100% - 52px); /* leaves room for the Reset shortcut on the right */
+  margin: 0;
+  padding: 2px 0;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.sidebar-title-toggle:hover { color: var(--ink); }
+.sidebar-title-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 2px; }
+.sidebar-title-toggle::after {
+  content: attr(data-summary);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--accent-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sidebar-section.is-collapsed > :not(.sidebar-title):not(.sidebar-head-action) { display: none; }
+.sidebar-section.is-collapsed > .sidebar-title { margin-bottom: 0; }
+.sidebar-section.is-collapsed { margin-bottom: 14px; }
+.sidebar-head-action {
+  position: absolute;
+  top: 0;
+  right: 0;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 2px 0 2px 8px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--accent-text);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.sidebar-head-action:hover { color: var(--ink); }
+
+/* --- collapsible filter boxes (Lesson, POS, Binyan …) --- */
+.filter-box-toggle {
+  appearance: none;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  width: 100%;
+  padding: 3px 0;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.filter-box-toggle:hover { color: var(--ink); }
+.filter-box-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 2px; }
+.filter-box-toggle::before { content: "▾"; font-size: 0.85em; }
+.filter-box-toggle[aria-expanded="false"]::before { content: "▸"; }
+.filter-box-toggle::after {
+  content: attr(data-summary);
+  margin-left: auto;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-faint);
+}
+.filter-box-toggle[data-filter-active="true"]::after { color: var(--accent-text); font-weight: 600; }
+.filter-box-collapsed > :not(.filter-box-toggle) { display: none; }
+.filter-box-collapsed { margin-bottom: 4px !important; }
+
+/* --- "Go to…" page finder --- */
+.page-finder { position: relative; margin-bottom: 18px; }
+.page-finder-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 10px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+}
+.page-finder-input::placeholder { color: var(--ink-faint); }
+.page-finder-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.page-finder-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: 30;
+  margin: 4px 0 0;
+  padding: 4px;
+  list-style: none;
+  max-height: 300px;
+  overflow-y: auto;
+  background: var(--paper-raised);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+}
+.page-finder-list li { padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; color: var(--ink); }
+.page-finder-list li.is-active { background: var(--accent-soft); }
+.page-finder-list li.page-finder-empty { color: var(--ink-soft); cursor: default; }
+
+/* --- the footer, pinned to the bottom of the sidebar --- */
+.sidebar-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin: auto -22px 0; /* auto top: sits at the bottom even when the page is short */
+  padding: 12px 22px 14px;
+  gap: 10px;
+  background: var(--paper);
+  border-top: 1px solid var(--hairline);
+}
+.sidebar-footer .sidebar-section { margin: 0; }
+.sidebar-footer .sidebar-title { margin-bottom: 8px; }
+.sidebar-footer .sidebar-section.is-collapsed { margin-bottom: 0; }
+.sidebar-account .sidebar-title-toggle { max-width: 100%; }
+
+/* streak chip: a small link to My Progress */
+#streak-display { text-align: left; padding: 0; }
+.streak-chip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 8px;
+  padding: 7px 10px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  color: inherit;
+  text-decoration: none;
+}
+.streak-chip:hover { border-color: var(--accent); }
+.streak-chip:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.streak-chip-top { flex: 1 1 100%; display: flex; align-items: baseline; gap: 8px; }
+.streak-chip .streak-count { font-size: 1.35rem; }
+.streak-chip .streak-label { margin: 0; }
+.streak-none { font-size: 0.82rem; color: var(--ink-soft); }
+.streak-chip .daily-goal-bar { display: block; flex: 1 1 60px; margin: 0; }
+.streak-chip .daily-goal-fill { display: block; }
+.streak-chip .daily-goal-label { margin: 0; white-space: nowrap; }
+
+/* accessibility: one row of small buttons */
+.a11y-row { gap: 5px; }
+.a11y-row .zoom-btn { min-width: 0; padding: 6px 0; font-size: 0.85rem; }
+.a11y-row .zoom-reset { flex: 1.5; font-size: 0.7rem; }
+
+/* a short screen (a phone on its side) can't spare room for a pinned footer */
+@media (max-height: 520px) {
+  .sidebar-footer { position: static; }
+}
+
+/* --- My Progress: Settings card --- */
+.pm-setting-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 8px 0; }
+.pm-setting-row + .pm-setting-row { border-top: 1px solid var(--hairline); }
+.pm-setting-row .caption { margin: 2px 0 0; }
+.pm-danger { color: var(--bad); border-color: var(--bad); white-space: nowrap; }
+.pm-danger:hover { background: var(--bad); color: var(--paper); }

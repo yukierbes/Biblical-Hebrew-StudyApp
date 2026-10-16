@@ -302,6 +302,10 @@ export function getMasteredKeyCount(modes) {
 
 // ============ Sidebar UI ============
 
+/**
+ * The sidebar's streak chip: a small link to My Progress showing the streak and
+ * today's goal. (The daily-goal setting and Reset Progress now live on My Progress.)
+ */
 export function renderStreakDisplay() {
   if (typeof document === "undefined") return;
   const el = document.getElementById("streak-display");
@@ -313,23 +317,22 @@ export function renderStreakDisplay() {
   const pct = Math.min(100, Math.round((daily.count / daily.goal) * 100));
   const freezeNote = freezes > 0 ? ` <span title="${freezes} streak freeze${freezes === 1 ? "" : "s"} available">🧊×${freezes}</span>` : "";
 
-  const streakHtml = streak.currentStreak
-    ? `
-      <div class="streak-count">${streak.currentStreak}</div>
-      <div class="streak-label">Day Streak${streak.longestStreak > streak.currentStreak ? ` · Best ${streak.longestStreak}` : ""}${freezeNote}</div>
-    `
-    : `<div class="caption" style="text-align:center;">Practice today to start a streak.</div>`;
+  const headline = streak.currentStreak
+    ? `<span class="streak-count">${streak.currentStreak}</span>
+       <span class="streak-label">Day Streak${streak.longestStreak > streak.currentStreak ? ` · Best ${streak.longestStreak}` : ""}${freezeNote}</span>`
+    : `<span class="streak-none">Practice today to start a streak.</span>`;
 
   el.innerHTML = `
-    ${streakHtml}
-    <div class="daily-goal" title="${daily.count} of ${daily.goal} today's practice items">
-      <div class="daily-goal-bar"><div class="daily-goal-fill" style="width:${pct}%"></div></div>
-      <div class="daily-goal-label">${daily.count} / ${daily.goal} today</div>
-    </div>
+    <a class="streak-chip" href="#progress" title="Open My Progress — ${daily.count} of ${daily.goal} practice items today">
+      <span class="streak-chip-top">${headline}</span>
+      <span class="daily-goal-bar"><span class="daily-goal-fill" style="width:${pct}%"></span></span>
+      <span class="daily-goal-label">${daily.count} / ${daily.goal} today</span>
+    </a>
   `;
 }
 
-function resetAllProgress() {
+/** Clears the streak, goal, calendar and every review schedule (the caller asks first). */
+export function resetAllProgress() {
   try {
     localStorage.removeItem(STREAK_KEY);
     localStorage.removeItem(DAILY_GOAL_KEY);
@@ -372,33 +375,9 @@ function resetAllProgress() {
 
 let initialized = false;
 
-/** Wires up the (already-in-the-DOM) Progress sidebar section. Call once. */
+/** Draws the sidebar's streak chip. Call once. */
 export function initProgressSidebar() {
   if (initialized) return;
   initialized = true;
-
   renderStreakDisplay();
-
-  const goalInput = document.getElementById("daily-goal-input");
-  if (goalInput) {
-    goalInput.value = getDailyGoal();
-    goalInput.addEventListener("change", () => {
-      const n = parseInt(goalInput.value, 10);
-      if (Number.isFinite(n) && n > 0) setDailyGoal(n);
-      goalInput.value = getDailyGoal();
-    });
-  }
-
-  const resetBtn = document.getElementById("reset-progress");
-  if (resetBtn) {
-    resetBtn.addEventListener("click", () => {
-      const confirmed = window.confirm(
-        "Reset your streak and spaced-repetition progress? This can't be undone."
-      );
-      if (confirmed) {
-        resetAllProgress();
-        goalInput.value = getDailyGoal();
-      }
-    });
-  }
 }
