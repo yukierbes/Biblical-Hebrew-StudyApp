@@ -22,6 +22,8 @@ import {
 } from "../progress-data.js";
 import { esc, stackedBar, stackLegend, accuracyRow, barChartSvg, lineChartSvg, heatmapSvg, heatLegend } from "../progress-charts.js";
 
+import { getDisplayName, setDisplayName, getCelebrationStyle, setCelebrationStyle, CELEBRATION_STYLES, MAX_NAME_LENGTH } from "../profile.js";
+import { celebrate } from "../celebrate.js";
 // My Progress: how you are doing over time. (The Home page is for "what should I
 // do now"; this page is for looking back.) Five tabs:
 //   Overview      streak, mastery by area, reviews coming up, practice calendar
@@ -264,6 +266,21 @@ function renderOverview(panel, ctx) {
         <input id="pm-daily-goal" type="number" min="1" max="200" class="daily-goal-input" value="${getDailyGoal()}" />
       </div>
       <div class="pm-setting-row">
+        <div><label for="pm-name"><b>Display name</b></label>
+          <div class="caption">Shown in the greeting on the Home page. Leave it empty if you'd rather not.</div></div>
+        <input id="pm-name" type="text" maxlength="${MAX_NAME_LENGTH}" class="pm-name-input" autocomplete="given-name" value="${esc(getDisplayName())}" />
+      </div>
+      <div class="pm-setting-row pm-celebrate-row">
+        <div><b>Celebration style</b>
+          <div class="caption">How the app marks reaching your daily goal, a streak milestone, an achievement or a strong score.</div></div>
+        <div class="pm-celebrate-controls">
+          <div class="choice-group" id="pm-celebrate" role="group" aria-label="Celebration style">
+            ${CELEBRATION_STYLES.map((st) => `<button type="button" class="choice-btn${getCelebrationStyle() === st.id ? " selected" : ""}" data-style="${st.id}" aria-pressed="${getCelebrationStyle() === st.id}" title="${esc(st.desc)}">${esc(st.label)}</button>`).join("")}
+          </div>
+          <button type="button" id="pm-celebrate-preview" class="btn btn-outline btn-sm">Preview</button>
+        </div>
+      </div>
+      <div class="pm-setting-row">
         <div><b>Reset progress</b>
           <div class="caption">Clears your streak, daily goal, activity calendar and every review schedule. This can't be undone.</div></div>
         <button type="button" id="pm-reset" class="btn btn-outline btn-sm pm-danger">Reset progress…</button>
@@ -276,6 +293,18 @@ function renderOverview(panel, ctx) {
     if (Number.isFinite(n) && n > 0) setDailyGoal(n);
     ctx.rerender();
   });
+  const nameInput = panel.querySelector("#pm-name");
+  nameInput.addEventListener("change", () => {
+    nameInput.value = setDisplayName(nameInput.value);
+  });
+  panel.querySelectorAll("#pm-celebrate [data-style]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      setCelebrationStyle(btn.dataset.style);
+      ctx.rerender();
+      celebrate("goal", { force: true }); // show the choice straight away
+    });
+  });
+  panel.querySelector("#pm-celebrate-preview").addEventListener("click", () => celebrate("goal", { force: true }));
   panel.querySelector("#pm-reset").addEventListener("click", () => {
     if (window.confirm("Reset your streak and spaced-repetition progress? This can't be undone.")) {
       resetAllProgress();

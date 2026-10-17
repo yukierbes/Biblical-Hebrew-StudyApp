@@ -1,3 +1,4 @@
+import { applyPersonalFilter } from "./personal.js";
 /** Stable identity for an accent row (there's no explicit id column). */
 export function accentRowKey(row) {
   return [row.Type, row.HebrewName, row.EnglishName].join("||");
@@ -17,5 +18,5 @@ export function applyAccentFilters(rows, filters) {
     const set = new Set(filters.Group);
     out = out.filter((r) => !r.Group || set.has(r.Group));
   }
-  return out;
+  return applyPersonalFilter("accents", out, accentRowKey);
 }

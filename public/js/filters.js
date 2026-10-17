@@ -1,3 +1,4 @@
+import { applyPersonalFilter } from "./personal.js";
 import {
   GENERATOR_COLUMNS,
   BINYAN_ORDER,
@@ -54,7 +55,7 @@ export function orderedOptionsFromRows(rows, column) {
 }
 
 /** Apply a { column: string[] } filter selection to an array of rows. */
-export function applyFilters(rows, filters) {
+export function applyFilters(rows, filters, { personal = true } = {}) {
   let out = rows;
   for (const col of GENERATOR_COLUMNS) {
     const vals = filters[col];
@@ -63,7 +64,8 @@ export function applyFilters(rows, filters) {
       out = out.filter((r) => set.has((r[col] ?? "").toString()));
     }
   }
-  return out;
+  // "My list": keep only the starred (or noted) verb roots. A verb root is one paradigm (Dataset).
+  return personal ? applyPersonalFilter("verbs", out, (r) => r.Dataset) : out;
 }
 
 export { GENERATOR_COLUMNS };

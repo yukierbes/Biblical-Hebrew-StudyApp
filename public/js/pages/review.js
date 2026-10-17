@@ -9,6 +9,8 @@ import { printFlashcards } from "../print.js";
 import { buildViewModel, viewHtml, exportSheets, STRONG_VERB, verbNameHtml } from "../verb-tables.js";
 import { printVerbTables } from "../print-tables.js";
 
+import { addTrayColumn, createItemTray } from "../item-tray.js";
+import { verbFormSpec } from "../item-specs.js";
 let state = null;
 
 // The three ways to look at the verbs. The choice is remembered between visits.
@@ -213,7 +215,7 @@ function render(content, sidebarExtra, navigate) {
     // The Strong Verb's rows for the comparison: always the Strong Verb (קטל), even if the
     // verb selection hides it, but cut down by the same Binyan / Mode / Person / Gender /
     // Number filters, so its columns line up with the verb's own.
-    const strongRows = state.view === "root" && state.compareStrong ? applyFilters(loadVerbData([STRONG_VERB]), state.filters) : null;
+    const strongRows = state.view === "root" && state.compareStrong ? applyFilters(loadVerbData([STRONG_VERB]), state.filters, { personal: false }) : null;
     const model = buildViewModel(state.view, df, { strongRows });
     const comparing = model.some((v) => v.root && v.root.compared);
 
@@ -245,6 +247,7 @@ function render(content, sidebarExtra, navigate) {
     const holder = document.createElement("div");
     holder.className = "verb-tables";
     holder.innerHTML = viewHtml(state.view, model);
+    attachVerbTableTrays(holder);
     content.appendChild(holder);
 
     appendNavigation();
@@ -287,10 +290,35 @@ function render(content, sidebarExtra, navigate) {
     columns: cols,
     cellRenderers: { Dataset: (v) => wrapHebrewSpans(v) },
   });
+  // ☆ ✎ belong to the verb root; ⚑ names the exact form.
+  addTrayColumn(tableSection, df, verbFormSpec, { noteColumn: false });
 
   appendNavigation();
 }
 
+
+/**
+ * Star / note / report buttons for the By Binyan and By Verb Root views: one set beside each
+ * verb's name (the star and note belong to the verb root), and, in the By Binyan view, a
+ * report-only button beside each binyan so a mistake can be pinned to one table.
+ */
+function attachVerbTableTrays(holder) {
+  holder.querySelectorAll("h2.verb-tables-title[data-verb]").forEach((h) => {
+    const name = h.dataset.verb;
+    const tray = createItemTray({ area: "verbs", key: name, label: name, reportLabel: name + " (table)" });
+    tray.classList.add("verb-tables-tray");
+    h.insertAdjacentElement("afterend", tray);
+  });
+  holder.querySelectorAll("h3.verb-tables-binyan-title[data-verb]").forEach((h) => {
+    const { verb, binyan } = h.dataset;
+    const tray = createItemTray(
+      { area: "verbs", key: verb, label: verb, reportKey: `${verb}||${binyan}`, reportLabel: `${verb} · ${binyan} table` },
+      { personal: false }
+    );
+    tray.classList.add("verb-tables-tray");
+    h.insertAdjacentElement("afterend", tray);
+  });
+}
 
 /**
  * The "Compare with Strong Verb (קטל)" switch above the By Verb Root tables, and, once

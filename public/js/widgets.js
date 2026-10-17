@@ -5,6 +5,7 @@ import { listPresets, savePreset, deletePreset, getPreset } from "./filter-prese
 import { readCollapsed, writeCollapsed } from "./sidebar-collapse.js";
 import { upgradeSnapshotFilters } from "./filter-state.js";
 
+import { renderMyListFilter, setListMode } from "./personal.js";
 let uidCounter = 0;
 function uid(prefix) {
   uidCounter += 1;
@@ -268,9 +269,12 @@ export function renderFilterSidebar(container, { rows, filtersState, onChange, d
   resetBtn.style.marginBottom = "12px";
   resetBtn.addEventListener("click", () => {
     for (const col of GENERATOR_COLUMNS) filtersState[col] = [];
+    setListMode("verbs", "all");
     onChange(filtersState);
   });
   wrap.appendChild(resetBtn);
+  // My list: study only the verb roots the student has starred (or written a note on).
+  if (!disabled) renderMyListFilter(wrap, { area: "verbs", onChange: () => onChange(filtersState) });
 
   for (const col of GENERATOR_COLUMNS) {
     const colDiv = document.createElement("div");

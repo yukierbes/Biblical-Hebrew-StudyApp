@@ -18,6 +18,10 @@ import {
 } from "../accent-answer-matching.js";
 import { renderNameInput, renderRevealedName } from "../name-matching.js";
 
+import { encouragementEl } from "../result-extras.js";
+import { renderMyListFilter, setListMode } from "../personal.js";
+import { createItemTray } from "../item-tray.js";
+import { accentSpec } from "../item-specs.js";
 let state = null;
 let rerender = null;
 
@@ -200,6 +204,7 @@ function renderPractice(container, pool) {
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
   renderAccentPrompt(container, p.word, state.promptWith);
+  container.appendChild(createItemTray(accentSpec(p.word), { showNote: !!p.checked }));
   renderHintArea(container, p.word);
 
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
@@ -388,6 +393,7 @@ function renderQuizQuestionStep(container) {
   container.appendChild(caption);
 
   renderAccentPrompt(container, item, state.promptWith);
+  container.appendChild(createItemTray(accentSpec(item), { showNote: false }));
 
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
@@ -475,6 +481,7 @@ function renderQuizSummaryStep(container) {
   const scoreEl = document.createElement("h3");
   scoreEl.textContent = `Score: ${earned} / ${totalPoints} (${percent}%)`;
   container.appendChild(scoreEl);
+    container.appendChild(encouragementEl(percent));
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
   const columns = ["Type", "HebrewName", "EnglishName", "Prompt", "Your Answer", "Score"];
@@ -668,9 +675,11 @@ function render(content, sidebarExtra, navigate) {
     resetBtn.style.marginBottom = "12px";
     resetBtn.addEventListener("click", () => {
       state.filters = { Type: null, Group: null };
+      setListMode("accents", "all");
       rerender();
     });
     filterWrap.appendChild(resetBtn);
+    renderMyListFilter(filterWrap, { area: "accents", onChange: () => { rerender(); } });
 
   const presetDiv = document.createElement("div");
   presetDiv.style.marginBottom = "16px";

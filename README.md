@@ -23,6 +23,8 @@ usable on an arbitrary static file host the way earlier versions were (see
 │       ├── sync.js                # Identity-protected progress sync (reads/writes Netlify Blobs)
 │       ├── get-data.js              # Identity-protected dataset server (verbs/vocabulary/accents/consonants/vowels)
 │       ├── merge-logic.js             # shared per-key "newest wins" merge, used by sync.js
+│       ├── report.js                    # "Report a mistake": students add flags; only the owner reads them
+│       ├── report-logic.js                # report checks: cleaning, who is the owner, per-student limits
 │       └── data/                        # the actual datasets — NEVER publicly reachable;
 │           ├── verbs.json                 # bundled into get-data.js's function package only
 │           ├── vocabulary.json
@@ -286,6 +288,63 @@ A deliberate large reduction (the check refuses to publish a file that has less
 than half the rows of the current data, because that is nearly always a cut-off
 or wrong file) can be allowed by setting the environment variable
 `ALLOW_DATA_SHRINK` to `1` in Netlify's site settings and deploying again.
+
+## Mistake reports, personal lists and notes, and personal touches
+
+### Report a mistake (and the owner's review page)
+
+Every study item has a small row of three faint buttons: **☆** (star), **✎** (note) and
+**⚑** (report a mistake). They appear on flashcards, typing, games, parsing, construction and in
+the review tables, and stay quiet until the student hovers or focuses them. **⚑** opens a short
+dialog (what looks wrong, plus optional details) and sends the report with the item's name.
+If the student is offline, the report waits on their device and is sent later.
+
+**Reports are stored** in their own Netlify Blobs store (`hebrew-verb-app-reports`), one record per
+report, separate from anyone's progress. Students can only *add* reports.
+
+**Limits** (so no one can flood you): each student can send **10 reports a day and 100 in total**,
+and can't report the same item twice in a day. You (the owner) are not limited. Change the two
+numbers at the top of `netlify/functions/report-logic.js` (`MAX_REPORTS_PER_DAY`, `MAX_REPORTS_TOTAL`).
+
+**The owner page** ("Mistake Reports", just under Word Lookup in the sidebar) is visible only to you:
+
+1. In Netlify: *Site configuration → Environment variables → Add a variable*:
+   `OWNER_EMAIL` = the email you sign in with. (Several owners: separate the emails with commas.
+   The name may be typed in any capitalisation.) Then *Deploys → Trigger deploy*, because
+   environment variable changes only apply to a new deploy.
+2. Sign in with that email. The "Mistake Reports" link appears. (Alternatively give a user the
+   Netlify Identity role `admin`.) Anyone else who opens `#reports` is told it is for the owner,
+   and the server refuses to return any reports to them.
+
+On the page, reports are grouped by item, so a word reported by three students appears once with a
+count. It shows which source file to edit (for example `data-source/vocabulary.csv`). For each report you can
+**Mark fixed**, **Dismiss**, **Reopen** or **Delete**, and **Copy open reports (CSV)** for a spreadsheet.
+Fix the data the usual way (see *Updating the data*), then mark the reports fixed.
+
+### Personal lists and notes
+
+A student can **star** anything (a word, consonant, vowel, accent, or a whole **verb root**) and
+write a **note** (a memory trick). The note appears under the item on flashcards (once flipped) and in Typing and Parsing practice (once the answer is checked); it stays hidden in quizzes, games and Construction so it can't give an answer away.
+The sidebar of each Review, Flashcards, Typing and Games page has a **My list** filter
+(*Everything / Starred / With my note*), so a student can study only their own list. In the Review tables the
+★ column and a "My note" column let them star and annotate straight from the table.
+The stars, notes and the My list choice are saved under the `hebrewVerbApp:` prefix, so they sync
+across devices like the rest of the student's progress (each area, such as Vocabulary, syncs as one unit,
+newest save wins).
+
+### Personal touches
+
+- **Display name**: set on Home when first asked, or in *My Progress → Settings*. Home then says
+  "Shalom, Dana."
+- **Encouragement**: the line under the greeting on Home, and the line on results screens, match how the
+  student is doing (new, back after a break, goal met, a streak at risk, struggling, doing very well). The wording
+  lives in `public/js/encourage.js`, which has no dependencies, so it is easy to edit.
+- **Celebration style** (*My Progress → Settings*, with a Preview): *Soft sparkle* (default), *Confetti*,
+  *Sound chime* or *Quiet*. It plays when the daily goal is reached, on a streak milestone (3, 7, 14, 30, 50, 100,
+  200, 365 days), when an achievement unlocks, and after a strong quiz, Daily Challenge or flashcard round, or a
+  new game high score. At most one every few seconds, and with "reduce motion" on a device the animations become
+  a brief still glow.
+
 
 ## Feature overview
 

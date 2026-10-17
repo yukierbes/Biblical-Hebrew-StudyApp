@@ -8,6 +8,9 @@ import { printFlashcards } from "../print.js";
 import { createColumnState, visibleColumns, renderColumnPicker } from "../review-columns.js";
 import { createPrintState, renderReviewTools } from "../review-tools.js";
 
+import { renderMyListFilter, setListMode } from "../personal.js";
+import { addTrayColumn } from "../item-tray.js";
+import { accentSpec } from "../item-specs.js";
 const DISPLAY_COLUMNS = ["Type", "Group", "HebrewName", "EnglishName", "Symbol", "Placement", "Keyboard"];
 const COLUMN_LABELS = {
   Type: "Type",
@@ -98,9 +101,11 @@ function render(content, sidebarExtra, navigate) {
   resetBtn.style.marginBottom = "12px";
   resetBtn.addEventListener("click", () => {
     state.filters = { Type: null, Group: null };
+    setListMode("accents", "all");
     render(content, sidebarExtra, navigate);
   });
   filterWrap.appendChild(resetBtn);
+  renderMyListFilter(filterWrap, { area: "accents", onChange: () => { render(content, sidebarExtra, navigate); } });
 
   const presetDiv = document.createElement("div");
   presetDiv.style.marginBottom = "16px";
@@ -224,4 +229,5 @@ function render(content, sidebarExtra, navigate) {
     const key = cols[i];
     if (COLUMN_LABELS[key]) th.textContent = COLUMN_LABELS[key];
   });
+  addTrayColumn(tableContainer, filtered, accentSpec);
 }

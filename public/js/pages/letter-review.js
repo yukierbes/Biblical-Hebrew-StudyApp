@@ -7,6 +7,8 @@ import { printFlashcards } from "../print.js";
 import { createColumnState, visibleColumns, renderColumnPicker } from "../review-columns.js";
 import { createPrintState, renderReviewTools } from "../review-tools.js";
 
+import { addTrayColumn } from "../item-tray.js";
+import { letterSpec } from "../item-specs.js";
 /**
  * The Review page for the Consonants or Vowels set: a filterable table with
  * the Print Table and Download & Print sections above it. Written once and
@@ -109,6 +111,7 @@ export function createReviewPage(setId) {
         const label = set.columnLabels[cols[i]];
         if (label) th.textContent = label;
       });
+      addTrayColumn(tableContainer, filtered, (row) => letterSpec(set, row));
     }
 
     const navWrap = document.createElement("div");

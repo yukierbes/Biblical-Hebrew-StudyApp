@@ -7,6 +7,10 @@ import { getRootOptions, applyRootFilter } from "../vocab-roots.js";
 import { recordStreakActivity, recordItemResult } from "../srs.js";
 import { isAnswerCorrect, primaryAnswerText, renderAnswerInput } from "../vocab-answer-matching.js";
 
+import { celebrateRun } from "../result-extras.js";
+import { renderMyListFilter, setListMode } from "../personal.js";
+import { createItemTray } from "../item-tray.js";
+import { vocabSpec } from "../item-specs.js";
 const HIGH_SCORE_KEY = "hebrewVerbApp:vocabGameHighScores";
 
 const GAMES = [
@@ -406,6 +410,8 @@ function renderSprint(container, pool) {
 
   renderGamePrompt(container, s.current, s.direction);
 
+  container.appendChild(createItemTray(vocabSpec(s.current), { showNote: false }));
+
   const inputsWrap = document.createElement("div");
   inputsWrap.style.maxWidth = "500px";
   inputsWrap.style.margin = "0 auto";
@@ -562,6 +568,8 @@ function renderClock(container, pool) {
 
   renderGamePrompt(container, c.current, c.direction);
 
+  container.appendChild(createItemTray(vocabSpec(c.current), { showNote: false }));
+
   const inputsWrap = document.createElement("div");
   inputsWrap.style.maxWidth = "500px";
   inputsWrap.style.margin = "0 auto";
@@ -717,6 +725,7 @@ function renderLightning(container, pool) {
 
   const word = l.questions[l.index];
   renderGamePrompt(container, word, l.direction);
+  container.appendChild(createItemTray(vocabSpec(word), { showNote: false }));
 
   const optionsGrid = document.createElement("div");
   optionsGrid.className = "game-option-grid game-option-grid-2col";
@@ -1223,6 +1232,7 @@ function renderRunSummary(container, { title, lines, isNewHigh, onPlayAgain }) {
     box.appendChild(newHigh);
   }
   container.appendChild(box);
+  celebrateRun(title + lines.join("|"), isNewHigh);
 
   const btnRow = document.createElement("div");
   btnRow.className = "button-row";
@@ -1300,9 +1310,11 @@ function render(content, sidebarExtra, navigate) {
     resetBtn.addEventListener("click", () => {
       state.filters = { Lesson: null, POS: null, Category: null, Root: null };
       state.minFrequency = "";
+      setListMode("vocab", "all");
       rerender();
     });
     filterWrap.appendChild(resetBtn);
+    renderMyListFilter(filterWrap, { area: "vocab", onChange: () => { rerender(); } });
 
   const presetDiv = document.createElement("div");
   presetDiv.style.marginBottom = "16px";

@@ -5,6 +5,9 @@ import { renderAmbiguityHintPanel } from "../letter-answer-matching.js";
 import { sortByPriority, recordItemResult, recordStreakActivity, getMasteryStats } from "../srs.js";
 import { attachSwipeToMark } from "../swipe-card.js";
 
+import { appendRoundResult } from "../result-extras.js";
+import { createItemTray } from "../item-tray.js";
+import { letterSpec } from "../item-specs.js";
 /**
  * Flashcards for the Consonants or Vowels set. The Hebrew is on the front;
  * the back shows the name and its transliteration (consonants) or its class
@@ -158,6 +161,8 @@ export function createFlashcardsPage(setId) {
         render(content, sidebarExtra, navigate);
       });
       container.appendChild(cardBtn);
+      // Star, note and report buttons (the note shows once the card is flipped).
+      container.appendChild(createItemTray(letterSpec(set, row), { showNote: state.flipped }));
 
       // qameṣ and qameṣ-ḥaṭuf look the same on the front: offer the class as a hint.
       if (!state.flipped) {
@@ -223,6 +228,7 @@ export function createFlashcardsPage(setId) {
         ${state.reviewWords.length ? ` ${state.reviewWords.length} marked for review.` : ""}
       `;
       container.appendChild(summaryBox);
+    appendRoundResult(container, state.deck, total ? Math.round((state.knownCount / total) * 100) : 0);
 
       const btnRow = document.createElement("div");
       btnRow.className = "button-row";

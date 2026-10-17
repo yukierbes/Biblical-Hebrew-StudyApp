@@ -1,4 +1,8 @@
 import { pickOne } from "./helpers.js";
+import { celebrate } from "./celebrate.js";
+import { showToast } from "./toast.js";
+import { getDisplayName } from "./profile.js";
+import { STREAK_MILESTONES, streakMilestoneMessage } from "./encourage.js";
 
 const STREAK_KEY = "hebrewVerbApp:streak";
 const DAILY_GOAL_KEY = "hebrewVerbApp:dailyGoal";
@@ -85,9 +89,17 @@ export function getDailyProgress() {
 function bumpDailyProgress() {
   const today = todayString();
   const stored = loadJSON(DAILY_PROGRESS_KEY, { date: today, count: 0 });
-  const count = (stored.date === today ? stored.count : 0) + 1;
+  const before = stored.date === today ? stored.count : 0;
+  const count = before + 1;
   saveJSON(DAILY_PROGRESS_KEY, { date: today, count });
   bumpActivityLog(today);
+  return { before, count };
+}
+
+/** "Dana, " or "" — for the few messages that address the student by name. */
+function nameLead() {
+  const name = getDisplayName();
+  return name ? `${name}, ` : "";
 }
 
 /** Practice answers per day: { "YYYY-MM-DD": count }. Recording began with the
@@ -125,10 +137,11 @@ function setStreakFreezeCount(n) {
  * call each day actually changes the streak, though every call still
  * counts toward today's daily-goal progress. */
 export function recordStreakActivity() {
-  bumpDailyProgress();
+  const { before, count } = bumpDailyProgress();
 
   const streak = getStreakInfo();
   const today = todayString();
+  const firstActivityToday = streak.lastActiveDate !== today;
 
   if (streak.lastActiveDate === today) {
     // already counted today
@@ -153,6 +166,22 @@ export function recordStreakActivity() {
 
   saveJSON(STREAK_KEY, streak);
   renderStreakDisplay();
+
+  // Marking the moment: the daily goal (once a day, on the answer that reaches it) and a
+  // streak milestone (on the first practice of the day that lands on one).
+  const goal = getDailyGoal();
+  if (before < goal && count >= goal) {
+    celebrate("goal");
+    showToast({
+      icon: "🎯",
+      title: "Daily goal reached!",
+      body: `${nameLead()}well done. That's ${goal} answers today.`.replace(/^./, (c) => c.toUpperCase()),
+      duration: 5000,
+    });
+  } else if (firstActivityToday && STREAK_MILESTONES.includes(streak.currentStreak)) {
+    celebrate("streak");
+    showToast({ icon: "🔥", title: "Streak milestone!", body: streakMilestoneMessage(streak.currentStreak), duration: 5000 });
+  }
 }
 
 // ============ Spaced repetition (Leitner boxes) ============

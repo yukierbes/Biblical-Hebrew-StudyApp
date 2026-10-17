@@ -3352,3 +3352,120 @@ html[data-pattern="weave"] #sidebar {
 @media (max-width: 720px) {
   .sidebar-footer { position: static; }
 }
+
+/* =====================================================================
+   Update 9: item tray (star / note / report), dialogs, My list, greeting,
+   encouragement, celebrations, owner reports page.
+   Everything uses the theme variables, so every palette and dark mode follows.
+   ===================================================================== */
+
+/* [hidden] must win over .nav-btn's display (the owner-only link starts hidden) */
+.nav-btn[hidden] { display: none !important; }
+
+/* --- the tray: faint until hovered or focused, so study screens stay calm --- */
+.item-tray-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 6px 0 2px; }
+.item-tray { display: inline-flex; align-items: center; gap: 2px; opacity: 0.45; transition: opacity 0.15s; }
+.item-tray:hover, .item-tray:focus-within { opacity: 1; }
+@media (hover: none) { .item-tray { opacity: 0.6; } }
+.item-btn {
+  appearance: none; background: transparent; border: 0; border-radius: var(--radius);
+  min-width: 30px; min-height: 30px; padding: 0 6px; cursor: pointer;
+  font: inherit; font-size: 1rem; line-height: 1; color: var(--ink-soft);
+}
+.item-btn:hover { background: var(--accent-soft); color: var(--ink); }
+.item-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.item-btn.is-on { color: var(--accent); }
+.item-star.is-on { color: var(--accent); }
+.item-report { font-size: 0.85rem; }
+.item-note-line {
+  max-width: 460px; text-align: center; font-style: italic; font-size: 0.95rem;
+  color: var(--accent-text); background: var(--accent-soft); border-radius: var(--radius); padding: 4px 10px;
+}
+.item-note-line[hidden] { display: none; }
+.verb-tables-tray { align-items: flex-start; margin: 0 0 6px; }
+
+/* tray column in review tables */
+.custom-table th.tray-col, .custom-table td.tray-col { width: 1%; white-space: nowrap; text-align: center; padding-left: 4px; padding-right: 4px; }
+.custom-table .item-tray-row { opacity: 0.35; }
+.custom-table tr:hover .item-tray-row, .custom-table .item-tray-row:focus-within { opacity: 1; }
+.custom-table .item-tray-row .item-btn { min-width: 26px; min-height: 26px; padding: 0 3px; }
+.custom-table .item-tray-row .item-star.is-on { opacity: 1; }
+.custom-table td.note-col { font-style: italic; color: var(--accent-text); min-width: 120px; }
+
+/* --- dialogs (note and report) --- */
+.item-dialog-backdrop {
+  position: fixed; inset: 0; z-index: 9000; display: flex; align-items: center; justify-content: center;
+  padding: 16px; background: rgb(0 0 0 / 0.45);
+}
+.item-dialog {
+  width: min(460px, 100%); max-height: 90vh; overflow: auto;
+  background: var(--paper-raised); color: var(--ink); border: 1px solid var(--hairline-strong);
+  border-radius: 8px; padding: 18px 20px; box-shadow: 0 12px 40px rgb(0 0 0 / 0.3);
+}
+.item-dialog-title { margin: 0 0 4px; font-family: var(--font-display); font-size: 1.15rem; }
+.item-dialog-item { margin-bottom: 10px; color: var(--ink-soft); font-size: 1.05rem; }
+.item-dialog-reasons { border: 0; margin: 8px 0; padding: 0; }
+.item-dialog-reasons legend { padding: 0; margin-bottom: 4px; font-weight: 600; }
+.item-dialog-reason { display: block; padding: 5px 0; cursor: pointer; }
+.item-dialog-text {
+  width: 100%; box-sizing: border-box; margin-top: 6px; padding: 8px; resize: vertical;
+  font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--hairline-strong); border-radius: var(--radius);
+}
+.item-dialog-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.item-dialog-danger { margin-left: auto; color: var(--bad); }
+.item-dialog-error { min-height: 1.2em; margin-top: 6px; color: var(--bad); font-size: 0.9rem; }
+
+/* --- My list filter in the sidebar --- */
+.mylist-choices { flex-wrap: wrap; }
+
+/* --- Home greeting and encouragement --- */
+.home-greeting { margin: 4px 0 18px; }
+.home-greeting-hello { font-family: var(--font-display); font-size: 1.9rem; line-height: 1.2; color: var(--ink); }
+.encourage-line { margin: 6px 0 0; font-size: 1.02rem; color: var(--ink-soft); }
+.encourage-cheer { color: var(--good); }
+.encourage-gentle { color: var(--accent-text); }
+.home-name-prompt { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; font-size: 0.95rem; color: var(--ink-soft); }
+.home-name-prompt input { padding: 6px 8px; font: inherit; color: var(--ink); background: var(--paper-raised); border: 1px solid var(--hairline-strong); border-radius: var(--radius); }
+.home-bg .encourage-line, #home-page .encourage-line { text-shadow: none; }
+
+/* --- settings: name and celebration style --- */
+.pm-name-input { padding: 6px 8px; font: inherit; width: 200px; max-width: 100%; color: var(--ink); background: var(--paper-raised); border: 1px solid var(--hairline-strong); border-radius: var(--radius); }
+.pm-celebrate-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; justify-content: flex-end; }
+@media (max-width: 640px) { .pm-celebrate-row { flex-direction: column; align-items: flex-start; } .pm-celebrate-controls { justify-content: flex-start; } }
+
+/* --- celebrations: a layer that ignores clicks and removes itself --- */
+#celebrate-layer { position: fixed; inset: 0; z-index: 9500; pointer-events: none; overflow: hidden; }
+.celebrate-glow {
+  position: absolute; inset: 0;
+  box-shadow: inset 0 0 120px 30px var(--accent);
+  opacity: 0; animation: celebrate-glow 2.2s ease-out forwards;
+}
+.celebrate-glow.celebrate-calm { animation-duration: 1.4s; }
+@keyframes celebrate-glow { 0% { opacity: 0; } 25% { opacity: 0.35; } 100% { opacity: 0; } }
+.celebrate-star {
+  position: absolute; color: var(--accent); opacity: 0; transform: scale(0.3);
+  animation: celebrate-twinkle 1.6s ease-in-out forwards;
+}
+@keyframes celebrate-twinkle { 0% { opacity: 0; transform: scale(0.3) rotate(0); } 40% { opacity: 1; transform: scale(1) rotate(25deg); } 100% { opacity: 0; transform: scale(0.6) rotate(60deg) translateY(-14px); } }
+.celebrate-confetti {
+  position: absolute; top: -14px; width: 9px; height: 14px; border-radius: 2px; opacity: 0.95;
+  animation: celebrate-fall linear forwards;
+}
+@keyframes celebrate-fall { to { transform: translate(var(--drift, 0), 105vh) rotate(var(--spin, 360deg)); opacity: 0.9; } }
+
+/* --- owner page: mistake reports --- */
+.rep-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 12px 0 6px; }
+.rep-group { margin: 12px 0; }
+.rep-group-head { margin-bottom: 8px; }
+.rep-item { font-size: 1.35rem; font-family: var(--font-hebrew), var(--font-body); }
+.rep-report { padding: 8px 0; border-top: 1px solid var(--hairline); }
+.rep-report.rep-fixed, .rep-report.rep-dismissed { opacity: 0.6; }
+.rep-note { margin-top: 2px; color: var(--ink-soft); }
+.rep-meta { font-size: 0.85rem; color: var(--ink-faint); margin: 2px 0 6px; }
+.rep-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.rep-delete { color: var(--bad); }
+
+/* the tray and its columns never print */
+@media print {
+  .item-tray-wrap, .item-tray, .tray-col, .note-col, .verb-tables-tray, #celebrate-layer, .item-dialog-backdrop { display: none !important; }
+}

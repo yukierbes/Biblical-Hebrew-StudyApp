@@ -4,6 +4,7 @@ import { renderCheckboxList, renderPresetControls } from "../widgets.js";
 import { wrapHebrewSpans, sampleN } from "../helpers.js";
 import { applyAccentFilters, accentRowKey } from "../accent-filters.js";
 import { recordStreakActivity, recordItemResult } from "../srs.js";
+import { celebrateRun } from "../result-extras.js";
 import {
   isAccentAnswerCorrect,
   renderAccentPrompt,
@@ -11,6 +12,9 @@ import {
   primaryAccentAnswerText,
 } from "../accent-answer-matching.js";
 
+import { renderMyListFilter, setListMode } from "../personal.js";
+import { createItemTray } from "../item-tray.js";
+import { accentSpec } from "../item-specs.js";
 const HIGH_SCORE_KEY = "hebrewVerbApp:accentGameHighScores";
 
 const GAMES = [
@@ -401,6 +405,8 @@ function renderSprint(container, pool) {
 
   renderAccentPrompt(container, s.current, s.promptWith);
 
+  container.appendChild(createItemTray(accentSpec(s.current), { showNote: false }));
+
   const inputsWrap = document.createElement("div");
   inputsWrap.style.maxWidth = "500px";
   inputsWrap.style.margin = "0 auto";
@@ -556,6 +562,8 @@ function renderClock(container, pool) {
 
   renderAccentPrompt(container, c.current, c.promptWith);
 
+  container.appendChild(createItemTray(accentSpec(c.current), { showNote: false }));
+
   const inputsWrap = document.createElement("div");
   inputsWrap.style.maxWidth = "500px";
   inputsWrap.style.margin = "0 auto";
@@ -710,6 +718,7 @@ function renderLightning(container, pool) {
 
   const word = l.questions[l.index];
   renderAccentPrompt(container, word, l.promptWith);
+  container.appendChild(createItemTray(accentSpec(word), { showNote: false }));
 
   const optionsGrid = document.createElement("div");
   optionsGrid.className = "game-option-grid game-option-grid-2col";
@@ -1203,6 +1212,7 @@ function renderRunSummary(container, { title, lines, isNewHigh, onPlayAgain }) {
     box.appendChild(newHigh);
   }
   container.appendChild(box);
+  celebrateRun(title + lines.join("|"), isNewHigh);
 
   const btnRow = document.createElement("div");
   btnRow.className = "button-row";
@@ -1279,9 +1289,11 @@ function render(content, sidebarExtra, navigate) {
     resetBtn.style.marginBottom = "12px";
     resetBtn.addEventListener("click", () => {
       state.filters = { Type: null, Group: null };
+      setListMode("accents", "all");
       rerender();
     });
     filterWrap.appendChild(resetBtn);
+    renderMyListFilter(filterWrap, { area: "accents", onChange: () => { rerender(); } });
 
   const presetDiv = document.createElement("div");
   presetDiv.style.marginBottom = "16px";

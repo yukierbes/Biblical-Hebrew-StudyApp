@@ -9,6 +9,7 @@ import { recordStreakActivity, pickAdaptive, recordItemResult, getMasteryStats }
 import { applyVocabFilters, getCategoryOptions, getCategoriesForRow } from "../vocab-overrides.js";
 import { getRootOptions, applyRootFilter } from "../vocab-roots.js";
 import { consumeDeepLink } from "../deep-link.js";
+import { encouragementEl } from "../result-extras.js";
 import {
   isAnswerCorrect,
   renderPrompt,
@@ -16,6 +17,9 @@ import {
   renderRevealedAnswer,
 } from "../vocab-answer-matching.js";
 
+import { renderMyListFilter, setListMode } from "../personal.js";
+import { createItemTray } from "../item-tray.js";
+import { vocabSpec } from "../item-specs.js";
 let state = null;
 let rerender = null;
 
@@ -194,6 +198,7 @@ function renderPractice(container, pool) {
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
   renderPrompt(container, p.word, state.promptSide);
+  container.appendChild(createItemTray(vocabSpec(p.word), { showNote: !!p.checked }));
   renderHintArea(container, p.word);
 
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
@@ -374,6 +379,7 @@ function renderQuizQuestionStep(container) {
   container.appendChild(caption);
 
   renderPrompt(container, item, state.promptSide);
+  container.appendChild(createItemTray(vocabSpec(item), { showNote: false }));
 
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
@@ -459,6 +465,7 @@ function renderQuizSummaryStep(container) {
   const scoreEl = document.createElement("h3");
   scoreEl.textContent = `Score: ${earned} / ${totalPoints} (${percent}%)`;
   container.appendChild(scoreEl);
+    container.appendChild(encouragementEl(percent));
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
   const columns = ["Lesson", "Hebrew", "English", "Prompt", "Your Answer", "Score"];
@@ -655,9 +662,11 @@ function render(content, sidebarExtra, navigate) {
     resetBtn.addEventListener("click", () => {
       state.filters = { Lesson: null, POS: null, Category: null, Root: null };
       state.minFrequency = "";
+      setListMode("vocab", "all");
       rerender();
     });
     filterWrap.appendChild(resetBtn);
+    renderMyListFilter(filterWrap, { area: "vocab", onChange: () => { rerender(); } });
 
   const presetDiv = document.createElement("div");
   presetDiv.style.marginBottom = "16px";

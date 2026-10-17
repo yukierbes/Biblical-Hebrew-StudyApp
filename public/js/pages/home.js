@@ -14,6 +14,10 @@ import {
   timeAgo,
   dayAgo,
 } from "../home-data.js";
+import { getDisplayName, setDisplayName, isNamePromptDismissed, dismissNamePrompt, MAX_NAME_LENGTH } from "../profile.js";
+import { homeMessage, seedFromDate } from "../encourage.js";
+import { getQuizTrends } from "../progress-data.js";
+import { ymd } from "../daily-history.js";
 
 // The Home page: what to do next (Today), where you left off, one tile per
 // study area with its progress, your weak spots, and a verb form of the day.
@@ -27,6 +31,48 @@ const plural = (n, one, many) => (n === 1 ? one : many);
 function pageLabel(page) {
   const btn = document.querySelector(`.nav-btn[data-page="${page}"]`);
   return btn ? btn.textContent.trim() : null;
+}
+
+// ---------------- Greeting and encouragement ----------------
+
+/** What the encouragement line needs to know, gathered from the saved practice data. */
+function encouragementFacts(streak, due, recent, todayStr) {
+  const trends = getQuizTrends();
+  const latest = [];
+  for (const t of trends) latest.push(...t.attempts.slice(-3));
+  const recentAvg = latest.length >= 2 ? latest.reduce((a, b) => a + b, 0) / latest.length : null;
+  const trend = trends.some((t) => t.trend === "down") ? "down" : trends.some((t) => t.trend === "up") ? "up" : null;
+  const last = recent.lastPracticeDate;
+  const daysAway = last ? Math.round((Date.parse(todayStr) - Date.parse(last)) / 86400000) : null;
+  return {
+    isNew: !last && trends.length === 0,
+    streak: streak.streak,
+    practisedToday: streak.practisedToday,
+    atRisk: streak.atRisk,
+    count: streak.count,
+    goal: streak.goal,
+    due,
+    daysAway,
+    recentAvg,
+    trend,
+  };
+}
+
+function greetingHtml(name, message, showPrompt) {
+  const prompt = showPrompt
+    ? `<form class="home-name-prompt" id="home-name-form">
+         <label for="home-name-input">What should we call you?</label>
+         <input id="home-name-input" type="text" maxlength="${MAX_NAME_LENGTH}" autocomplete="given-name" placeholder="Your first name" />
+         <button type="submit" class="btn btn-sm btn-primary">Save</button>
+         <button type="button" class="btn btn-sm btn-outline" id="home-name-skip">Not now</button>
+       </form>`
+    : "";
+  return `
+    <div class="home-greeting">
+      <div class="home-greeting-hello">Shalom${name ? `, ${esc(name)}` : ""}.</div>
+      <p class="encourage-line encourage-${message.tone}" id="home-encourage">${esc(message.text)}</p>
+      ${prompt}
+    </div>`;
 }
 
 // ---------------- Today card ----------------
@@ -248,8 +294,14 @@ export function mount({ content, navigate }) {
   wrap.id = "home-page";
   wrap.className = "home-bg";
 
+  const todayStr = ymd();
+  const message = homeMessage(encouragementFacts(streak, due, recent, todayStr), seedFromDate(todayStr));
+  const displayName = getDisplayName();
+  const showNamePrompt = !displayName && !isNamePromptDismissed();
+
   wrap.innerHTML = `
     <h1 class="page-title">Biblical Hebrew Study App</h1>
+    <div id="home-greeting-slot">${greetingHtml(displayName, message, showNamePrompt)}</div>
     ${todayCardHtml(due, suggestion, streak)}
     ${resumeHtml(lastVisit, recent)}
 
@@ -272,6 +324,26 @@ export function mount({ content, navigate }) {
       <a href="https://forms.gle/abrMxJfCp6mpLH9y6" target="_blank" rel="noopener">Send feedback</a>
     </div>
   `;
+
+  // The name prompt: save a name, or decline once and never be asked again on this account.
+  const slot = wrap.querySelector("#home-greeting-slot");
+  const redrawGreeting = (promptStill) => {
+    slot.innerHTML = greetingHtml(getDisplayName(), message, promptStill);
+    bindNamePrompt();
+  };
+  function bindNamePrompt() {
+    const form = slot.querySelector("#home-name-form");
+    if (!form) return;
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (setDisplayName(form.querySelector("input").value)) redrawGreeting(false);
+    });
+    slot.querySelector("#home-name-skip").addEventListener("click", () => {
+      dismissNamePrompt();
+      redrawGreeting(false);
+    });
+  }
+  bindNamePrompt();
 
   wrap.querySelectorAll("[data-goto]").forEach((btn) => {
     btn.addEventListener("click", () => navigate(btn.dataset.goto));

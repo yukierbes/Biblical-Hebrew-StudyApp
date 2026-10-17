@@ -27,7 +27,7 @@ const MODE_WORDS = { review: "table browse", flashcards: "cards", typing: "type"
 /** Every page the finder can offer: [{ page, label, haystack }]. */
 function collectPages(root) {
   const pages = [];
-  root.querySelectorAll("#nav-buttons .nav-btn[data-page]").forEach((btn) => {
+  root.querySelectorAll("#nav-buttons .nav-btn[data-page]:not([hidden])").forEach((btn) => {
     const page = btn.dataset.page;
     const label = btn.textContent.trim();
     const mode = Object.keys(MODE_WORDS).find((m) => page.endsWith(m) || label.toLowerCase().endsWith(m));

@@ -61,7 +61,8 @@ for (const page of ["consonant-review", "vowel-review", "accent-review"]) {
 console.log("\nColumn picker: hide and reorder");
 navigateTo(document, "consonant-review");
 await wait();
-const headers = () => [...content.querySelectorAll("thead th")].map((th) => th.textContent.trim());
+// The ★ (My list) and "My note" columns are added by the item tray; the column picker doesn't control them.
+const headers = () => [...content.querySelectorAll("thead th:not(.tray-col):not(.note-col)")].map((th) => th.textContent.trim());
 assert(headers().join("|") === "Name|Form|Transliteration|Category|Keyboard Key", "default column order");
 const row = (label) => [...sidebarExtra.querySelectorAll(".column-picker-row")].find((r) => r.textContent.includes(label));
 row("Category").querySelector('button[aria-label^="Move up"]').click();

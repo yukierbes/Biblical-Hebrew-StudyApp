@@ -33,6 +33,8 @@ import {
 } from "../daily-history.js";
 import { playCorrect, playFinish, playWrong } from "../daily-sound.js";
 
+import { celebrate } from "../celebrate.js";
+import { celebrationForPercent, resultMessage } from "../encourage.js";
 // The Daily Challenge: a short round (5, 10 or 15 questions) that is personal to
 // the learner, answered by tapping (typing is the optional Hard mode), with
 // instant feedback after every question, a summary of every answer at the end,
@@ -726,6 +728,13 @@ function next() {
 function completeRound() {
   if (state.recorded) return;
   state.recorded = true;
+  {
+    // A good round (or drill) earns a flourish in the student's chosen style.
+    const done = state.results.length;
+    const right = state.results.filter((r) => r.correct).length;
+    const kind = celebrationForPercent(done ? Math.round((right / done) * 100) : 0);
+    if (kind) celebrate(kind);
+  }
   if (state.drill) return;
   const score = state.results.filter((r) => r.correct).length;
   state.yesterday = getYesterday();
@@ -750,6 +759,7 @@ function renderSummary(container, navigate) {
     </div>
     <h2 class="daily-hero-title">${percent === 100 ? "Perfect round!" : percent >= 70 ? "Nice work!" : "Good effort — keep going!"}</h2>
     <div class="daily-hero-score">${score} / ${total} <span class="caption">(${percent}%)</span></div>
+    <p class="encourage-line encourage-${resultMessage(percent, percent).tone}">${esc(resultMessage(percent, percent).text)}</p>
     <div class="daily-hero-chips">
       ${state.settings.hard ? `<span class="pill pill-warn">Hard mode</span>` : ""}
       ${state.bestCombo >= 2 ? `<span class="pill pill-good">🔥 Best streak: ${state.bestCombo} in a row</span>` : ""}

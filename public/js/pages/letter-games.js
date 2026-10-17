@@ -3,6 +3,7 @@ import { selectFiltersMessage } from "../filter-state.js";
 import { renderLetterFilters, resetSidebarKeepingScroll } from "../letter-sidebar.js";
 import { wrapHebrewSpans, sampleN } from "../helpers.js";
 import { recordStreakActivity, recordItemResult } from "../srs.js";
+import { celebrateRun } from "../result-extras.js";
 import {
   isFormAnswerCorrect,
   renderPrompt,
@@ -10,6 +11,8 @@ import {
   primaryAnswerText,
 } from "../letter-answer-matching.js";
 
+import { createItemTray } from "../item-tray.js";
+import { letterSpec } from "../item-specs.js";
 // Games for the Consonants or Vowels set: Survival Sprint, Beat the Clock,
 // Memory Match, Lightning Round, and a Sort game. This is the Accents games
 // page generalized — same five games, same scoring and high-score handling —
@@ -412,6 +415,8 @@ export function createGamesPage(setId) {
 
     renderPrompt(container, set, s.current, s.promptWith);
 
+    container.appendChild(createItemTray(letterSpec(set, s.current), { showNote: false }));
+
     const inputsWrap = document.createElement("div");
     inputsWrap.style.maxWidth = "500px";
     inputsWrap.style.margin = "0 auto";
@@ -567,6 +572,8 @@ export function createGamesPage(setId) {
     container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
     renderPrompt(container, set, c.current, c.promptWith);
+
+    container.appendChild(createItemTray(letterSpec(set, c.current), { showNote: false }));
 
     const inputsWrap = document.createElement("div");
     inputsWrap.style.maxWidth = "500px";
@@ -726,6 +733,7 @@ export function createGamesPage(setId) {
 
     const word = l.questions[l.index];
     renderPrompt(container, set, word, l.promptWith, { showSharedNote: true });
+    container.appendChild(createItemTray(letterSpec(set, word), { showNote: false }));
 
     const optionsGrid = document.createElement("div");
     optionsGrid.className = "game-option-grid game-option-grid-2col";
@@ -1223,6 +1231,7 @@ export function createGamesPage(setId) {
       box.appendChild(newHigh);
     }
     container.appendChild(box);
+    celebrateRun(title + lines.join("|"), isNewHigh);
 
     const btnRow = document.createElement("div");
     btnRow.className = "button-row";

@@ -16,6 +16,9 @@ import { recordAttempt } from "../history.js";
 import { renderHistoryPanel } from "../history-ui.js";
 import { pickAdaptive, recordItemResult, recordStreakActivity, getMasteryStats } from "../srs.js";
 
+import { encouragementEl } from "../result-extras.js";
+import { createItemTray } from "../item-tray.js";
+import { verbFormSpec } from "../item-specs.js";
 const PRACTICE_FIELDS = ["Binyan", "Mode", "Person", "Gender", "Number"]; // label === column
 const QUIZ_FIELDS = ["Binyan", "Stem", "Person", "Gender", "Number"];
 const QUIZ_FIELD_MAP = { Stem: "Mode" };
@@ -340,6 +343,7 @@ function renderPractice(container, df) {
   heb.className = "hebrew-display";
   heb.innerHTML = `<span lang="he" dir="rtl">${row.Conjugation}</span>`;
   container.appendChild(heb);
+  container.appendChild(createItemTray(verbFormSpec(row), { showNote: !!p.checked }));
 
   const matchingRows = df.filter((r) => r.Conjugation === row.Conjugation);
   const ambiguityHints = computeAmbiguityHints(row, matchingRows);
@@ -661,6 +665,7 @@ function renderQuizQuestionStep(container, df, navigate) {
   heb.className = "hebrew-display";
   heb.innerHTML = `<span lang="he" dir="rtl">${row.Conjugation}</span>`;
   container.appendChild(heb);
+  container.appendChild(createItemTray(verbFormSpec(row), { showNote: false }));
 
   const matchingRows = df.filter((r) => r.Conjugation === row.Conjugation);
   const ambiguityHints = computeAmbiguityHints(row, matchingRows);
@@ -812,6 +817,7 @@ function renderQuizSummaryStep(container, navigate) {
   const scoreEl = document.createElement("h3");
   scoreEl.textContent = `Score: ${earned} / ${totalPoints} (${percent}%)`;
   container.appendChild(scoreEl);
+    container.appendChild(encouragementEl(percent));
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
   const columns = ["Question", "Conjugation", ...QUIZ_FIELDS.flatMap((f) => [f, `Your ${f}`]), "Score"];

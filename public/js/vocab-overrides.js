@@ -1,3 +1,4 @@
+import { applyPersonalFilter } from "./personal.js";
 import { getCategoryOrder } from "./vocab-data.js";
 
 const CATEGORY_OVERRIDES_KEY = "hebrewVerbApp:vocabCategoryOverrides";
@@ -151,7 +152,8 @@ export function applyVocabFilters(rows, filters, minFrequency) {
   if (!Number.isNaN(min)) {
     out = out.filter((r) => r.Frequency >= min);
   }
-  return out;
+  // "My list" (starred / with a note), chosen in the sidebar; "Everything" changes nothing.
+  return applyPersonalFilter("vocab", out, vocabRowKey);
 }
 
 // ================= Bulk assignment & category admin =================

@@ -8,6 +8,10 @@ import { sortByPriority, recordItemResult, recordStreakActivity, getMasteryStats
 import { consumeDeepLink } from "../deep-link.js";
 import { attachSwipeToMark } from "../swipe-card.js";
 
+import { appendRoundResult } from "../result-extras.js";
+import { renderMyListFilter, setListMode } from "../personal.js";
+import { createItemTray } from "../item-tray.js";
+import { vocabSpec } from "../item-specs.js";
 let state = null;
 
 function freshState() {
@@ -114,9 +118,11 @@ function render(content, sidebarExtra, navigate) {
   resetBtn.addEventListener("click", () => {
     state.filters = { Lesson: null, POS: null, Category: null, Root: null };
     state.minFrequency = "";
+    setListMode("vocab", "all");
     restartAndRender();
   });
   filterWrap.appendChild(resetBtn);
+  renderMyListFilter(filterWrap, { area: "vocab", onChange: () => { restartAndRender(); } });
 
   const presetDiv = document.createElement("div");
   presetDiv.style.marginBottom = "16px";
@@ -343,6 +349,8 @@ function render(content, sidebarExtra, navigate) {
       render(content, sidebarExtra, navigate);
     });
     container.appendChild(cardBtn);
+    // Star, note and report buttons (the note shows once the card is flipped).
+    container.appendChild(createItemTray(vocabSpec(row), { showNote: state.flipped }));
 
     function markKnown() {
       recordItemResult(srsMode(), vocabRowKey(row), true);
@@ -414,6 +422,7 @@ function render(content, sidebarExtra, navigate) {
       ${state.reviewWords.length ? ` ${state.reviewWords.length} marked for review.` : ""}
     `;
     container.appendChild(summaryBox);
+    appendRoundResult(container, state.deck, total ? Math.round((state.knownCount / total) * 100) : 0);
 
     const btnRow = document.createElement("div");
     btnRow.className = "button-row";

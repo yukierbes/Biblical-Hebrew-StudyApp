@@ -6,6 +6,9 @@ import { sortByPriority, recordItemResult, recordStreakActivity, getMasteryStats
 import { consumeDeepLink } from "../deep-link.js";
 import { attachSwipeToMark } from "../swipe-card.js";
 
+import { appendRoundResult } from "../result-extras.js";
+import { createItemTray } from "../item-tray.js";
+import { verbFormSpec } from "../item-specs.js";
 const MORPH_COLUMNS = ["Binyan", "Mode", "Person", "Gender", "Number"];
 
 let state = null;
@@ -255,6 +258,8 @@ function render(content, sidebarExtra, navigate) {
       render(content, sidebarExtra, navigate);
     });
     container.appendChild(cardBtn);
+    // Star, note and report buttons (the note shows once the card is flipped).
+    container.appendChild(createItemTray(verbFormSpec(row), { showNote: state.flipped }));
 
     function markKnown() {
       recordItemResult(srsMode(), morphKey(row), true);
@@ -327,6 +332,7 @@ function render(content, sidebarExtra, navigate) {
       ${state.reviewWords.length ? ` ${state.reviewWords.length} marked for review.` : ""}
     `;
     container.appendChild(summaryBox);
+    appendRoundResult(container, state.deck, total ? Math.round((state.knownCount / total) * 100) : 0);
 
     const btnRow = document.createElement("div");
     btnRow.className = "button-row";

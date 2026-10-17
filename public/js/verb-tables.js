@@ -282,13 +282,13 @@ export function binyanViewHtml(verbs) {
     .map(
       (verb) =>
         `<section class="verb-tables-verb">` +
-        `<h2 class="verb-tables-title">${verbNameHtml(verb.name)}</h2>` +
+        `<h2 class="verb-tables-title" data-verb="${esc(verb.name)}">${verbNameHtml(verb.name)}</h2>` +
         verb.binyanim
           .filter((b) => b.tables.length > 0)
           .map(
             (b) =>
               `<div class="verb-tables-binyan">` +
-              `<h3 class="verb-tables-binyan-title">${esc(b.binyan)}</h3>` +
+              `<h3 class="verb-tables-binyan-title" data-verb="${esc(verb.name)}" data-binyan="${esc(b.binyan)}">${esc(b.binyan)}</h3>` +
               `<div class="binyan-grid">${b.tables.map((t) => binyanTableHtml(b.binyan, t)).join("")}</div>` +
               `</div>`
           )
@@ -397,7 +397,7 @@ export function rootViewHtml(verbs) {
     .map(
       ({ name, root }) =>
         `<section class="verb-tables-verb">` +
-        `<h2 class="verb-tables-title">${verbNameHtml(name)}</h2>` +
+        `<h2 class="verb-tables-title" data-verb="${esc(name)}">${verbNameHtml(name)}</h2>` +
         (root.compared
           ? `<p class="compare-note">Shaded columns: <b>${verbNameHtml(STRONG_VERB)}</b>, beside this verb's own column for each binyan.</p>`
           : "") +

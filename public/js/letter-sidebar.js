@@ -1,6 +1,7 @@
 import { renderCheckboxList, renderPresetControls } from "./widgets.js";
 import { freshFilters } from "./letter-sets.js";
 
+import { renderMyListFilter, setListMode } from "./personal.js";
 /**
  * Clears the sidebar's extra section and, after the page has been rebuilt,
  * puts the sidebar (and each checkbox list inside it) back at the scroll
@@ -45,9 +46,11 @@ export function renderLetterFilters(sidebarExtra, { set, state, pageKey, onChang
   resetBtn.style.marginBottom = "12px";
   resetBtn.addEventListener("click", () => {
     state.filters = freshFilters(set);
+    setListMode(set.id, "all");
     onChange();
   });
   filterWrap.appendChild(resetBtn);
+  renderMyListFilter(filterWrap, { area: set.id, onChange });
 
   const presetDiv = document.createElement("div");
   presetDiv.style.marginBottom = "16px";

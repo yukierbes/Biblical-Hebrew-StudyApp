@@ -6,6 +6,10 @@ import { wrapHebrewSpans } from "../helpers.js";
 import { sortByPriority, recordItemResult, recordStreakActivity, getMasteryStats } from "../srs.js";
 import { attachSwipeToMark } from "../swipe-card.js";
 
+import { appendRoundResult } from "../result-extras.js";
+import { renderMyListFilter, setListMode } from "../personal.js";
+import { createItemTray } from "../item-tray.js";
+import { accentSpec } from "../item-specs.js";
 const SRS_MODE = "accent-flashcards";
 
 let state = null;
@@ -100,9 +104,11 @@ function render(content, sidebarExtra, navigate) {
   resetBtn.style.marginBottom = "12px";
   resetBtn.addEventListener("click", () => {
     state.filters = { Type: null, Group: null };
+    setListMode("accents", "all");
     restartAndRender();
   });
   filterWrap.appendChild(resetBtn);
+  renderMyListFilter(filterWrap, { area: "accents", onChange: () => { restartAndRender(); } });
 
   const presetDiv = document.createElement("div");
   presetDiv.style.marginBottom = "16px";
@@ -233,6 +239,8 @@ function render(content, sidebarExtra, navigate) {
       render(content, sidebarExtra, navigate);
     });
     container.appendChild(cardBtn);
+    // Star, note and report buttons (the note shows once the card is flipped).
+    container.appendChild(createItemTray(accentSpec(row), { showNote: state.flipped }));
 
     function markKnown() {
       recordItemResult(SRS_MODE, accentRowKey(row), true);
@@ -301,6 +309,7 @@ function render(content, sidebarExtra, navigate) {
       ${state.reviewWords.length ? ` ${state.reviewWords.length} marked for review.` : ""}
     `;
     container.appendChild(summaryBox);
+    appendRoundResult(container, state.deck, total ? Math.round((state.knownCount / total) * 100) : 0);
 
     const btnRow = document.createElement("div");
     btnRow.className = "button-row";

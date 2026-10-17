@@ -38,6 +38,9 @@ import { initSidebarResize } from "./sidebar-resize.js";
 import { initSidebarCollapse } from "./sidebar-collapse.js";
 import { initPageFinder } from "./page-finder.js";
 import { initAppearance } from "./appearance.js";
+import * as reportsPage from "./pages/reports.js";
+import { fetchIsAdmin, initReportQueue } from "./reports.js";
+import { celebrate } from "./celebrate.js";
 
 const PAGES = {
   home: homePage,
@@ -66,6 +69,8 @@ const PAGES = {
   // Achievements now lives inside My Progress; the old address opens that tab.
   achievements: progressPage.achievementsRoute,
   "daily-challenge": dailyChallengePage,
+  // Owner only: the link is hidden for everyone else, and the server refuses their requests.
+  reports: reportsPage,
 };
 
 const contentEl = document.getElementById("content");
@@ -245,6 +250,7 @@ function notifyAchievementProgress() {
   }
   for (const ev of events) {
     if (ev.kind === "unlocked") {
+      celebrate("achievement");
       showToast({
         icon: ev.achievement.icon || "🏆",
         title: "Achievement Unlocked!",
@@ -650,9 +656,27 @@ function showSetPasswordGate() {
 
 let appStarted = false;
 
+let reportQueueStarted = false;
+function initReportQueueOnce() {
+  if (reportQueueStarted) return;
+  reportQueueStarted = true;
+  initReportQueue();
+}
+
+/** Shows the "Mistake Reports" link, but only to the owner (the server decides). */
+function revealOwnerLinks() {
+  fetchIsAdmin().then((isOwner) => {
+    const link = document.getElementById("nav-reports");
+    if (link) link.hidden = !isOwner;
+  });
+}
+
 function handleAuthState(user) {
   if (user) {
     cloudSyncSignedIn(user.email);
+    // Reports waiting from an offline moment go out now; the owner gets the Reports link.
+    initReportQueueOnce();
+    revealOwnerLinks();
     if (!appStarted) {
       appStarted = true;
       appEl.classList.remove("hidden");

@@ -15,6 +15,7 @@ import {
   getVowelLengthOrder,
 } from "./letter-data.js";
 
+import { applyPersonalFilter } from "./personal.js";
 export const NO_CATEGORY = "No category";
 const PLACEHOLDER = "\u25CC"; // ◌
 
@@ -200,7 +201,7 @@ export function applyLetterFilters(set, rows, filters) {
     const selected = filters[def.key];
     if (Array.isArray(selected)) out = out.filter((r) => def.match(r, selected));
   }
-  return out;
+  return applyPersonalFilter(set.id, out, set.rowKey);
 }
 
 /** What the "Show Hint" panel offers for a row shown only as a mark: the

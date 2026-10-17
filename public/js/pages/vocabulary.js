@@ -12,6 +12,9 @@ import { getRootForWord, getRootOptions, applyRootFilter } from "../vocab-roots.
 import { openRootEditor, openBulkRootEditor, openRootAdmin } from "../root-editor.js";
 import { consumeDeepLink } from "../deep-link.js";
 
+import { renderMyListFilter, setListMode } from "../personal.js";
+import { addTrayColumn } from "../item-tray.js";
+import { vocabSpec } from "../item-specs.js";
 const DISPLAY_COLUMNS = ["Lesson", "Hebrew", "English", "POS", "Category", "Root", "Frequency"];
 
 let state = null;
@@ -111,9 +114,11 @@ function render(content, sidebarExtra, navigate) {
   resetBtn.addEventListener("click", () => {
     state.filters = { Lesson: null, POS: null, Category: null, Root: null };
     state.minFrequency = "";
+    setListMode("vocab", "all");
     render(content, sidebarExtra, navigate);
   });
   filterWrap.appendChild(resetBtn);
+  renderMyListFilter(filterWrap, { area: "vocab", onChange: () => { render(content, sidebarExtra, navigate); } });
 
   const presetDiv = document.createElement("div");
   presetDiv.style.marginBottom = "16px";
@@ -405,6 +410,8 @@ function render(content, sidebarExtra, navigate) {
         },
       },
     });
+    // ☆ ✎ ⚑ for every word, plus a "My note" column.
+    addTrayColumn(tableContainer, filtered, vocabSpec);
 
     tableContainer.querySelectorAll(".vocab-row-select").forEach((cb) => {
       cb.addEventListener("change", () => {

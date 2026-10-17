@@ -18,6 +18,9 @@ import { renderHistoryPanel } from "../history-ui.js";
 import { openHebrewKeyboard } from "../hebrew-keyboard.js";
 import { pickAdaptive, recordItemResult, recordStreakActivity, getMasteryStats } from "../srs.js";
 
+import { encouragementEl } from "../result-extras.js";
+import { createItemTray } from "../item-tray.js";
+import { verbFormSpec } from "../item-specs.js";
 const DISPLAY_COLUMNS = ["Binyan", "Mode", "Person", "Gender", "Number"];
 
 let state = null;
@@ -368,6 +371,7 @@ function renderPractice(container, df) {
     cellRenderers: { Dataset: (v) => wrapHebrewSpans(v) },
   });
   container.appendChild(tableWrap);
+  container.appendChild(createItemTray(verbFormSpec(p.verb, { hideForm: true }), { showNote: false }));
 
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
@@ -565,6 +569,7 @@ function renderQuizQuestionStep(container) {
     cellRenderers: { Dataset: (v) => wrapHebrewSpans(v) },
   });
   container.appendChild(tableWrap);
+  container.appendChild(createItemTray(verbFormSpec(item, { hideForm: true }), { showNote: false }));
 
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
@@ -664,6 +669,7 @@ function renderQuizSummaryStep(container) {
   const scoreEl = document.createElement("h3");
   scoreEl.textContent = `Score: ${earned} / ${totalPoints} (${percent}%)`;
   container.appendChild(scoreEl);
+    container.appendChild(encouragementEl(percent));
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
   const columns = [

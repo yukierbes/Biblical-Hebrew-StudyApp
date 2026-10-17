@@ -17,6 +17,9 @@ import {
 } from "../letter-answer-matching.js";
 import { renderNameInput, renderRevealedName } from "../name-matching.js";
 
+import { encouragementEl } from "../result-extras.js";
+import { createItemTray } from "../item-tray.js";
+import { letterSpec } from "../item-specs.js";
 /**
  * Typing for the Consonants or Vowels set, with Practice and Quiz modes.
  *   "names" — shown the name, type the letter/vowel (with the on-screen keyboard).
@@ -189,6 +192,7 @@ export function createTypingPage(setId) {
 
     container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
     renderPrompt(container, set, p.word, state.promptWith);
+    container.appendChild(createItemTray(letterSpec(set, p.word), { showNote: !!p.checked }));
     renderHintArea(container, p.word);
     container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
@@ -370,6 +374,7 @@ export function createTypingPage(setId) {
     container.appendChild(caption);
 
     renderPrompt(container, set, item, state.promptWith);
+    container.appendChild(createItemTray(letterSpec(set, item), { showNote: false }));
     container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
     const inputsWrap = document.createElement("div");
@@ -450,6 +455,7 @@ export function createTypingPage(setId) {
     const scoreEl = document.createElement("h3");
     scoreEl.textContent = `Score: ${earned} / ${totalPoints} (${percent}%)`;
     container.appendChild(scoreEl);
+    container.appendChild(encouragementEl(percent));
     container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
     const columns = ["Name", "Form", "Prompt", "Your Answer", "Score"];

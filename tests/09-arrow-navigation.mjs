@@ -102,8 +102,12 @@ assert(
   document.activeElement.closest(".zoom-buttons") !== null,
   "ArrowUp from the first content row reaches the previous sidebar row first"
 );
-pressKey(document.activeElement, "ArrowUp"); // (the Hebrew size row sits between the zoom row and the nav)
-if (document.activeElement.closest(".zoom-buttons")) pressKey(document.activeElement, "ArrowUp");
+// Keep going up through whatever sidebar rows sit between here and the nav (the Hebrew size
+// row, the My list filter row, ...); the nav is reached within a few presses.
+for (let i = 0; i < 8; i++) {
+  pressKey(document.activeElement, "ArrowUp");
+  if ([...document.querySelectorAll("#nav-buttons .nav-btn")].includes(document.activeElement)) break;
+}
 assert(
   [...document.querySelectorAll("#nav-buttons .nav-btn")].includes(document.activeElement),
   "ArrowUp again reaches the sidebar nav itself"
