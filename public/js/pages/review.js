@@ -6,7 +6,7 @@ import { createPrintState, renderReviewTools } from "../review-tools.js";
 import { renderTable } from "../table.js";
 import { downloadCSV, downloadXLSX, downloadXLSXSheets, wrapHebrewSpans } from "../helpers.js";
 import { printFlashcards } from "../print.js";
-import { buildViewModel, viewHtml, exportSheets } from "../verb-tables.js";
+import { buildViewModel, viewHtml, exportSheets, STRONG_VERB, verbNameHtml } from "../verb-tables.js";
 import { printVerbTables } from "../print-tables.js";
 
 let state = null;
@@ -44,6 +44,11 @@ function freshState() {
     columns: null, // the column picker's state; created once we know the columns
     print: createPrintState(),
     view: loadSavedView(), // "list" | "binyan" | "root"
+    // By Verb Root only: put Strong Verb (קטל) beside every other verb. Off each visit.
+    compareStrong: false,
+    // ...and on blank worksheets, leave those Strong Verb columns empty too (otherwise
+    // they are filled in, as a model to compare against). The answer key shows everything.
+    strongBlank: false,
   };
 }
 
@@ -191,26 +196,48 @@ function render(content, sidebarExtra, navigate) {
   toolbar.appendChild(switcher);
   content.appendChild(toolbar);
 
+  // ---- By Verb Root: compare with the Strong Verb ----
+  if (state.view === "root") {
+    const shownVerbs = [...new Set(df.map((r) => r.Dataset))];
+    content.appendChild(
+      renderCompareControls({
+        hasOtherVerbs: shownVerbs.some((v) => v !== STRONG_VERB),
+        onChange: () => render(content, sidebarExtra, navigate),
+      })
+    );
+  }
+
   // ---- The two table views ----
   // (The Columns list only applies to the List view, so it isn't shown here.)
   if (state.view !== "list") {
-    const model = buildViewModel(state.view, df);
+    // The Strong Verb's rows for the comparison: always the Strong Verb (קטל), even if the
+    // verb selection hides it, but cut down by the same Binyan / Mode / Person / Gender /
+    // Number filters, so its columns line up with the verb's own.
+    const strongRows = state.view === "root" && state.compareStrong ? applyFilters(loadVerbData([STRONG_VERB]), state.filters) : null;
+    const model = buildViewModel(state.view, df, { strongRows });
+    const comparing = model.some((v) => v.root && v.root.compared);
 
     renderReviewTools(content, {
       title: "Verbs",
       print: state.print,
       customPrint: {
         description:
-          "Prints the tables below (the verbs and filters you have selected). The blank table leaves the answers empty for practice, with a diagonal line through any cell the verb doesn't use.",
-        blank: () => printVerbTables(state.view, model, { blank: true }),
+          "Prints the tables below (the verbs and filters you have selected). The blank table leaves the answers empty for practice, with a diagonal line through any cell the verb doesn't use." +
+          (comparing
+            ? ` With the Strong Verb comparison on, a wide table prints as two halves (each repeating Mode and PGN), the Strong Verb columns are shaded, and on a blank worksheet they ${state.strongBlank ? "are left empty too" : "stay filled in as a model"}. The answer key shows everything.`
+            : ""),
+        blank: () => printVerbTables(state.view, model, { blank: true, strongBlank: state.strongBlank }),
         key: () => printVerbTables(state.view, model),
       },
       downloads: [
         {
           text: "Download Excel",
-          title: "One sheet per verb, laid out like the tables below",
+          title: "One sheet per verb, laid out like the tables below (with the Strong Verb columns beside the verb's own when comparing)",
           onClick: () =>
-            downloadXLSXSheets(exportSheets(state.view, model), state.view === "binyan" ? "verbs_by_binyan.xlsx" : "verbs_by_root.xlsx"),
+            downloadXLSXSheets(
+              exportSheets(state.view, model),
+              state.view === "binyan" ? "verbs_by_binyan.xlsx" : comparing ? "verbs_by_root_with_strong_verb.xlsx" : "verbs_by_root.xlsx"
+            ),
         },
       ],
     });
@@ -262,4 +289,60 @@ function render(content, sidebarExtra, navigate) {
   });
 
   appendNavigation();
+}
+
+
+/**
+ * The "Compare with Strong Verb (קטל)" switch above the By Verb Root tables, and, once
+ * it is on, the choice of whether blank worksheets leave the Strong Verb columns empty.
+ */
+function renderCompareControls({ hasOtherVerbs, onChange }) {
+  const wrap = document.createElement("div");
+  wrap.className = "compare-controls";
+
+  const row = document.createElement("label");
+  row.className = "compare-toggle";
+  const box = document.createElement("input");
+  box.type = "checkbox";
+  box.id = "compare-strong";
+  box.checked = state.compareStrong;
+  box.addEventListener("change", () => {
+    state.compareStrong = box.checked;
+    onChange();
+  });
+  row.appendChild(box);
+  const text = document.createElement("span");
+  text.innerHTML = `Compare with ${verbNameHtml(STRONG_VERB)}`;
+  row.appendChild(text);
+  wrap.appendChild(row);
+
+  const help = document.createElement("div");
+  help.className = "caption compare-help";
+  if (!hasOtherVerbs) {
+    help.textContent = "Only the Strong Verb (קטל) is showing, so there is nothing to compare it with. Select other verbs in the sidebar.";
+  } else if (!state.compareStrong) {
+    help.textContent = "Puts the Strong Verb's column beside each verb's own, binyan by binyan (Qal קטל | Qal שחט | Niphal קטל | …). Works in printing and Excel too.";
+  } else {
+    help.textContent = "Shaded columns are the Strong Verb (קטל). It is always used, even if it isn't selected in the sidebar, and follows your Binyan / Mode / Person filters.";
+  }
+  wrap.appendChild(help);
+
+  if (state.compareStrong && hasOtherVerbs) {
+    const sub = document.createElement("label");
+    sub.className = "compare-toggle compare-sub";
+    const blankBox = document.createElement("input");
+    blankBox.type = "checkbox";
+    blankBox.id = "strong-blank";
+    blankBox.checked = state.strongBlank;
+    blankBox.addEventListener("change", () => {
+      state.strongBlank = blankBox.checked;
+      onChange();
+    });
+    sub.appendChild(blankBox);
+    const subText = document.createElement("span");
+    subText.textContent = "On blank worksheets, leave the Strong Verb columns empty too (otherwise they are filled in as a model)";
+    sub.appendChild(subText);
+    wrap.appendChild(sub);
+  }
+  return wrap;
 }

@@ -466,7 +466,29 @@ or wrong file) can be allowed by setting the environment variable
   (no browser date, title, address or page numbers — the page margin is zero and
   the app supplies its own), each verb starts on a new page, and a whole mode is
   never split across two pages (By Verb Root asks for a landscape page, By
-  Binyan for portrait). The List view has the CSV, Excel, and
+  Binyan for portrait).
+  - **Compare with Strong Verb (קטל)** (By Verb Root only; a switch above the
+    tables, off each visit): puts Strong Verb (קטל)'s column beside every other
+    verb's own, binyan by binyan — *Qal קטל | Qal שחט | Niphal קטל | Niphal שחט …*
+    — under a two-row heading (binyan over root letters), with the Strong Verb
+    columns shaded. It applies to every verb except קטל itself, including the
+    other strong verbs (פקד, כתב). A verb with only some binyanim is compared
+    only in those; Polel, Polal and Hitpolel (קום, סבב) have no Strong Verb
+    partner and just show the verb's own column. The Strong Verb (קטל) is used
+    even if it isn't ticked in Verbal Roots, and follows the Binyan / Mode /
+    Person / Gender / Number filters so its columns line up with the verb's. A
+    row the verb lacks but the Strong Verb has is still listed.
+    Printing and Excel follow it: a table too wide for a page (more than 8
+    columns) prints as **two halves** between binyanim, each repeating Mode and
+    PGN (e.g. Qal – Pual, then Hitpael – Hophal), the first half in full before
+    the second; the shading prints grey (`print-color-adjust: exact`). On a
+    **blank worksheet** the Strong Verb columns stay filled in as a model unless
+    "leave the Strong Verb columns empty too" is ticked; the answer key always
+    shows everything. The Excel sheet keeps the interleaved columns, each headed
+    like "Qal (קטל)" / "Qal (שחט)" (saved as `verbs_by_root_with_strong_verb.xlsx`).
+    The model is `buildRootTable(name, rows, strongRows)` in `verb-tables.js`
+    (`columns`, `compared`), and `splitRootColumns` decides the halves.
+  - The List view has the CSV, Excel, and
   double-sided printable-flashcard (PDF, via the browser's print dialog)
   export — Hebrew on the front, gloss + parsing on the back, laid out so
   printing double-sided and flipping the sheet lines each answer up

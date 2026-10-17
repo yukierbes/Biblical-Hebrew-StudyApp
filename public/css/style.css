@@ -2935,3 +2935,57 @@ kbd {
 .daily-match-btn.is-correct::after { content: " ✓"; color: var(--good); font-weight: 700; }
 .daily-match-btn.is-wrong::after { content: " ✗"; color: var(--bad); font-weight: 700; }
 .daily-match-glyph { font-size: 2.6rem; min-width: 2.6rem; }
+
+/* ============================================================
+   Verb Review, By Verb Root: compare with the Strong Verb (קטל)
+   ============================================================ */
+.compare-controls { margin: 0 0 14px; }
+.compare-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--ink);
+  font-weight: 500;
+}
+.compare-toggle input { width: 16px; height: 16px; accent-color: var(--ink); cursor: pointer; }
+.compare-sub { display: flex; margin-top: 8px; font-weight: 400; font-size: 0.9rem; color: var(--ink-soft); }
+.compare-help { margin: 4px 0 0; }
+.compare-note { margin: 0 0 8px; font-size: 0.85rem; color: var(--ink-soft); }
+
+/* The two-row heading of a compared table: binyan names over root letters. */
+table.compared-table th.binyan-head { border-bottom: 1px solid var(--hairline); }
+table.compared-table .th-hebrew {
+  font-family: var(--font-hebrew);
+  font-size: 1.15rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* The Strong Verb's columns are shaded so they are easy to pick out. On screen this is
+   a warm tint; in print it is a light grey that still reads in black and white (and
+   `print-color-adjust: exact` asks the browser to print it, which it otherwise might not). */
+table.verb-table th.col-strong,
+table.verb-table td.verb-table-strong,
+table.verb-table tbody tr:hover td.verb-table-strong {
+  background: var(--accent-soft);
+}
+table.verb-table th.col-strong,
+table.verb-table td.verb-table-strong {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+#print-area table.verb-table th.col-strong,
+#print-area table.verb-table td.verb-table-strong {
+  background: #e3e3e3;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+#print-area table.compared-table th.binyan-head { border-bottom: 1px solid #999; }
+#print-area table.compared-table .th-hebrew { font-size: 10pt; color: #1C2B45; }
+#print-area .pt-note {
+  font-family: var(--font-body);
+  font-size: 8.5pt;
+  color: #444;
+  margin-left: 8pt;
+}

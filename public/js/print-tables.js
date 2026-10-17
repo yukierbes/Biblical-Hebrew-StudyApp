@@ -13,7 +13,7 @@
 // mode / row of small tables in a hidden copy of the layout, then packs whole
 // ones onto pages.
 
-import { binyanTableHtml, rootTableHtml, verbNameHtml, escapeHtml } from "./verb-tables.js";
+import { binyanTableHtml, rootTableHtml, rootPartGroups, splitRootColumns, verbNameHtml, escapeHtml, STRONG_VERB } from "./verb-tables.js";
 
 export const PAGE_STYLE_ID = "table-print-page-style";
 
@@ -98,28 +98,47 @@ function measureIn(printArea, width, html, measure) {
   }
 }
 
-const titleHtml = (name, continued) =>
-  `<div class="pt-title">${verbNameHtml(name)}${continued ? '<span class="pt-continued">(continued)</span>' : ""}</div>`;
+// `note` is small print after the verb's name, e.g. "with Strong Verb (קטל) · Qal – Pual".
+const titleHtml = (name, continued, note = "") =>
+  `<div class="pt-title">${verbNameHtml(name)}` +
+  (note ? `<span class="pt-note">${verbNameHtml(note)}</span>` : "") +
+  `${continued ? '<span class="pt-continued">(continued)</span>' : ""}</div>`;
 
 const pageHtml = (inner, isLast) => `<div class="print-page${isLast ? " print-page-last" : ""}">${inner}</div>`;
 
-/** By Verb Root: each verb's table, split into pages between modes. Returns one string per page. */
-function rootPages(printArea, verbs, blank) {
+/**
+ * By Verb Root: each verb's table, split into pages between modes. A table too wide for
+ * a page (a seven-binyan verb compared with the Strong Verb has fourteen columns) is
+ * first cut into two halves between binyanim, each repeating Mode and PGN, and the first
+ * half is printed in full before the second. Returns one string per page.
+ */
+function rootPages(printArea, verbs, blank, strongBlank) {
   const { width, height } = PAGE_AREA.root;
   const pages = [];
   for (const { name, root } of verbs) {
-    // Measure the whole table once: the title, the column titles, and each mode on its own.
-    const sizes = measureIn(printArea, width, titleHtml(name, false) + rootTableHtml(root, { blank, printLayout: true }), (box) => ({
-      title: outerHeight(box.querySelector(".pt-title")),
-      head: box.querySelector("thead").offsetHeight,
-      groups: [...box.querySelectorAll("tbody.mode-group")].map((g) => g.offsetHeight),
-    }));
-    // Every page repeats the title and the column titles, so the rest is what's left for modes.
-    const capacity = height - sizes.title - sizes.head - 3;
-    paginate(sizes.groups, capacity).forEach((groupIdx, pageNo) => {
-      const table = rootTableHtml(root, { blank, printLayout: true, groups: groupIdx.map((i) => root.groups[i]) });
-      pages.push(titleHtml(name, pageNo > 0) + table);
-    });
+    const parts = splitRootColumns(root);
+    for (const part of parts) {
+      const groups = rootPartGroups(root, part.indexes);
+      if (groups.length === 0) continue;
+      const noteBits = [];
+      if (root.compared) noteBits.push(`with ${STRONG_VERB}`);
+      if (part.label) noteBits.push(part.label);
+      const note = noteBits.join(" \u00B7 ");
+      const tableOptions = { blank, strongBlank, printLayout: true, columns: part.indexes };
+
+      // Measure the whole table once: the title, the column titles, and each mode on its own.
+      const sizes = measureIn(printArea, width, titleHtml(name, false, note) + rootTableHtml(root, { ...tableOptions, groups }), (box) => ({
+        title: outerHeight(box.querySelector(".pt-title")),
+        head: box.querySelector("thead").offsetHeight,
+        groups: [...box.querySelectorAll("tbody.mode-group")].map((g) => g.offsetHeight),
+      }));
+      // Every page repeats the title and the column titles, so the rest is what's left for modes.
+      const capacity = height - sizes.title - sizes.head - 3;
+      paginate(sizes.groups, capacity).forEach((groupIdx, pageNo) => {
+        const table = rootTableHtml(root, { ...tableOptions, groups: groupIdx.map((i) => groups[i]) });
+        pages.push(titleHtml(name, pageNo > 0, note) + table);
+      });
+    }
   }
   return pages;
 }
@@ -154,8 +173,11 @@ function binyanPages(printArea, verbs, blank) {
  * Prints the tables. `blank: true` prints practice worksheets instead: the same
  * tables with the answers left empty, and any cell the verb doesn't use crossed
  * out with a diagonal line. (Printing the filled tables gives the answer key.)
+ * On a worksheet that compares verbs with the Strong Verb (קטל), the Strong Verb
+ * columns stay filled in as a model unless `strongBlank` is set, which empties
+ * them too. The answer key always shows everything.
  */
-export function printVerbTables(view, verbs, { blank = false } = {}) {
+export function printVerbTables(view, verbs, { blank = false, strongBlank = false } = {}) {
   let printArea = document.getElementById("print-area");
   if (!printArea) {
     printArea = document.createElement("div");
@@ -164,7 +186,7 @@ export function printVerbTables(view, verbs, { blank = false } = {}) {
   }
   prepareForPrint();
 
-  const pages = view === "root" ? rootPages(printArea, verbs, blank) : binyanPages(printArea, verbs, blank);
+  const pages = view === "root" ? rootPages(printArea, verbs, blank, strongBlank) : binyanPages(printArea, verbs, blank);
   printArea.innerHTML =
     `<div class="verb-tables verb-tables-print verb-tables-print-${view}${blank ? " verb-tables-print-blank" : ""}">` +
     pages.map((inner, i) => pageHtml(inner, i === pages.length - 1)).join("") +
