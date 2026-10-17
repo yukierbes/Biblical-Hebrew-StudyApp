@@ -112,10 +112,11 @@ export function getRootedWordCount() {
   return Object.keys(loadRoots()).length;
 }
 
-/** Filters `rows` down to those whose root is in `selectedRoots` (an
- * empty selection means "no Root filter" — everything passes). */
+/** Filters `rows` down to those whose root is in `selectedRoots`. null (every
+ * root ticked) means no Root filter — everything passes, rooted or not; an empty
+ * list means nothing is ticked, so nothing passes. */
 export function applyRootFilter(rows, selectedRoots) {
-  if (!selectedRoots || selectedRoots.length === 0) return rows;
+  if (!Array.isArray(selectedRoots)) return rows;
   const set = new Set(selectedRoots);
   return rows.filter((r) => set.has(getRootForWord(r)));
 }

@@ -33,7 +33,10 @@ assert(idx5AA > idx5Z && idx5BB > idx5AA, "5AA and 5BB come after 5Z (true file 
 assert(lessonTexts[0] === "1A" && lessonTexts[1] === "1B", "lesson list starts 1A, 1B in the correct sequence");
 
 // --- Filtering by Lesson ---
-const lesson1ACheckbox = [...lessonLabels].find((l) => l.textContent.trim() === "1A").querySelector("input");
+// (Every box starts ticked, so clear the Lesson box first, then tick just 1A.)
+click(sidebarExtra.querySelectorAll(".checkbox-list")[0].previousElementSibling.querySelectorAll("button")[1]);
+const lessonLabelsNow = sidebarExtra.querySelectorAll(".checkbox-list")[0].querySelectorAll("label");
+const lesson1ACheckbox = [...lessonLabelsNow].find((l) => l.textContent.trim() === "1A").querySelector("input");
 lesson1ACheckbox.checked = true;
 lesson1ACheckbox.dispatchEvent(new Event("change", { bubbles: true }));
 
@@ -45,6 +48,7 @@ click(findButtonByText(sidebarExtra, "Reset Filters"));
 rows = content.querySelectorAll("table.custom-table tbody tr");
 assert(rows.length === 1991, "Reset Filters restores the full list");
 
+click(sidebarExtra.querySelectorAll(".checkbox-list")[1].previousElementSibling.querySelectorAll("button")[1]); // clear POS first
 const posLabels = sidebarExtra.querySelectorAll(".checkbox-list")[1].querySelectorAll("label");
 const verbCheckbox = [...posLabels].find((l) => l.textContent.trim() === "Verb").querySelector("input");
 verbCheckbox.checked = true;

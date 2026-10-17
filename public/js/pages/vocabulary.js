@@ -1,4 +1,5 @@
 import { loadVocabData, getVocabRows, getLessonOrder, getPosOrder } from "../vocab-data.js";
+import { selectFiltersMessage } from "../filter-state.js";
 import { renderCheckboxList, renderPresetControls } from "../widgets.js";
 import { createColumnState, visibleColumns, renderColumnPicker } from "../review-columns.js";
 import { createPrintState, renderReviewTools } from "../review-tools.js";
@@ -17,7 +18,7 @@ let state = null;
 
 function freshState() {
   return {
-    filters: { Lesson: [], POS: [], Category: [], Root: [] },
+    filters: { Lesson: null, POS: null, Category: null, Root: null },
     minFrequency: "",
     columns: createColumnState("vocabulary-review", DISPLAY_COLUMNS),
     print: createPrintState(),
@@ -108,7 +109,7 @@ function render(content, sidebarExtra, navigate) {
   resetBtn.textContent = "Reset Filters";
   resetBtn.style.marginBottom = "12px";
   resetBtn.addEventListener("click", () => {
-    state.filters = { Lesson: [], POS: [], Category: [], Root: [] };
+    state.filters = { Lesson: null, POS: null, Category: null, Root: null };
     state.minFrequency = "";
     render(content, sidebarExtra, navigate);
   });
@@ -120,7 +121,7 @@ function render(content, sidebarExtra, navigate) {
     pageKey: "vocabulary",
     getSnapshot: () => ({ filters: state.filters, minFrequency: state.minFrequency }),
     applySnapshot: (snap) => {
-      state.filters = { Lesson: [], POS: [], Category: [], Root: [], ...snap.filters };
+      state.filters = { Lesson: null, POS: null, Category: null, Root: null, ...snap.filters };
       state.minFrequency = snap.minFrequency || "";
       render(content, sidebarExtra, navigate);
     },
@@ -277,7 +278,7 @@ function render(content, sidebarExtra, navigate) {
     if (filtered.length === 0) {
       const div = document.createElement("div");
       div.className = "alert alert-warning";
-      div.textContent = "No vocabulary matches the selected filters.";
+      div.textContent = selectFiltersMessage(state.filters, { Lesson: "Lesson", POS: "Part of Speech", Category: "Category", Root: "Root" }, "No vocabulary matches the selected filters.");
       tableSection.appendChild(div);
       return;
     }

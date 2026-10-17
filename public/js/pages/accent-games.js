@@ -1,4 +1,5 @@
 import { getAccentRows, getTypeOrder, getGroupOrder } from "../accent-data.js";
+import { selectFiltersMessage } from "../filter-state.js";
 import { renderCheckboxList, renderPresetControls } from "../widgets.js";
 import { wrapHebrewSpans, sampleN } from "../helpers.js";
 import { applyAccentFilters, accentRowKey } from "../accent-filters.js";
@@ -50,7 +51,7 @@ let rerender = null;
 
 function freshState() {
   return {
-    filters: { Type: [], Group: [] },
+    filters: { Type: null, Group: null },
     screen: "menu", // "menu" | one of GAMES' keys
     timerId: null,
     sprint: null,
@@ -224,6 +225,15 @@ function renderMenu(container, pool) {
       Use the Type and Group filters in the sidebar to choose which accents are in play, then pick a game below.
     </div>
   `;
+
+  const missingMsg = selectFiltersMessage(state.filters, { Type: "Type", Group: "Group" }, null);
+  if (missingMsg) {
+    const div = document.createElement("div");
+    div.className = "alert alert-warning";
+    div.textContent = missingMsg;
+    container.appendChild(div);
+    return;
+  }
 
   const poolCaption = document.createElement("div");
   poolCaption.className = "caption";
@@ -1268,7 +1278,7 @@ function render(content, sidebarExtra, navigate) {
     resetBtn.textContent = "Reset Filters";
     resetBtn.style.marginBottom = "12px";
     resetBtn.addEventListener("click", () => {
-      state.filters = { Type: [], Group: [] };
+      state.filters = { Type: null, Group: null };
       rerender();
     });
     filterWrap.appendChild(resetBtn);
@@ -1279,7 +1289,7 @@ function render(content, sidebarExtra, navigate) {
     pageKey: "accent-games",
     getSnapshot: () => ({ filters: state.filters }),
     applySnapshot: (snap) => {
-      state.filters = { Type: [], Group: [], ...snap.filters };
+      state.filters = { Type: null, Group: null, ...snap.filters };
       rerender();
     },
   });

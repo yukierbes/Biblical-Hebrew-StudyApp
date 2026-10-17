@@ -1,4 +1,5 @@
 import { getAccentRows, getTypeOrder, getGroupOrder } from "../accent-data.js";
+import { selectFiltersMessage } from "../filter-state.js";
 import { applyAccentFilters } from "../accent-filters.js";
 import { renderCheckboxList, renderPresetControls } from "../widgets.js";
 import { renderTable } from "../table.js";
@@ -22,7 +23,7 @@ let state = null;
 
 function freshState() {
   return {
-    filters: { Type: [], Group: [] },
+    filters: { Type: null, Group: null },
     columns: createColumnState("accent-review", DISPLAY_COLUMNS),
     // The Keyboard Key column is left out of printed tables unless it is ticked.
     print: createPrintState({ excluded: ["Keyboard"] }),
@@ -96,7 +97,7 @@ function render(content, sidebarExtra, navigate) {
   resetBtn.textContent = "Reset Filters";
   resetBtn.style.marginBottom = "12px";
   resetBtn.addEventListener("click", () => {
-    state.filters = { Type: [], Group: [] };
+    state.filters = { Type: null, Group: null };
     render(content, sidebarExtra, navigate);
   });
   filterWrap.appendChild(resetBtn);
@@ -107,7 +108,7 @@ function render(content, sidebarExtra, navigate) {
     pageKey: "accent-review",
     getSnapshot: () => ({ filters: state.filters }),
     applySnapshot: (snap) => {
-      state.filters = { Type: [], Group: [], ...snap.filters };
+      state.filters = { Type: null, Group: null, ...snap.filters };
       render(content, sidebarExtra, navigate);
     },
   });
@@ -170,7 +171,7 @@ function render(content, sidebarExtra, navigate) {
   if (filtered.length === 0) {
     const div = document.createElement("div");
     div.className = "alert alert-warning";
-    div.textContent = "No accents match the selected filters.";
+    div.textContent = selectFiltersMessage(state.filters, { Type: "Type", Group: "Group" }, "No accents match the selected filters.");
     content.appendChild(div);
     return;
   }

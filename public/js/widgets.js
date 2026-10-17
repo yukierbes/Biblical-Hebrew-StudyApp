@@ -3,6 +3,7 @@ import { orderedOptionsFromRows } from "./filters.js";
 import { wrapHebrewSpans } from "./helpers.js";
 import { listPresets, savePreset, deletePreset, getPreset } from "./filter-presets.js";
 import { readCollapsed, writeCollapsed } from "./sidebar-collapse.js";
+import { upgradeSnapshotFilters } from "./filter-state.js";
 
 let uidCounter = 0;
 function uid(prefix) {
@@ -64,7 +65,7 @@ export function renderPresetControls(container, { pageKey, getSnapshot, applySna
     deleteBtn.disabled = !select.value;
     if (!select.value) return;
     const preset = getPreset(pageKey, select.value);
-    if (preset) applySnapshot(preset.snapshot);
+    if (preset) applySnapshot(upgradeSnapshotFilters(preset.snapshot));
   });
 
   const deleteBtn = document.createElement("button");
@@ -91,7 +92,7 @@ export function renderPresetControls(container, { pageKey, getSnapshot, applySna
   saveBtn.addEventListener("click", () => {
     const name = window.prompt("Name this filter preset:", select.value || "");
     if (!name || !name.trim()) return;
-    savePreset(pageKey, name, getSnapshot());
+    savePreset(pageKey, name, { ...getSnapshot(), fv: 2 });
     refreshOptions(name.trim());
   });
   container.appendChild(saveBtn);
@@ -102,8 +103,10 @@ export function renderPresetControls(container, { pageKey, getSnapshot, applySna
 /**
  * Render a labeled scrollable checkbox list.
  * options: string[]
- * selected: string[] (current selection, mutated in place is NOT done - caller manages state)
- * onChange(newSelectedArray)
+ * selected: null/undefined = every option ticked (the default), otherwise the ticked
+ *   options; an empty array means nothing is ticked (see filter-state.js).
+ *   (Not mutated in place - the caller manages state.)
+ * onChange(next): `next` is null when every option ends up ticked, else the array.
  */
 export function renderCheckboxList(container, { label, options, selected, onChange, emptyText }) {
   container.innerHTML = "";
@@ -120,10 +123,10 @@ export function renderCheckboxList(container, { label, options, selected, onChan
     lbl.className = "sidebar-label filter-box-toggle";
     lbl.textContent = label;
 
-    const chosen = (options || []).filter((o) => (selected || []).includes(o)).length;
     const total = (options || []).length;
-    const active = chosen > 0 && chosen < total; // none or all ticked = no restriction
-    lbl.dataset.summary = active ? `${chosen} of ${total}` : "all";
+    const chosen = selected == null ? total : (options || []).filter((o) => selected.includes(o)).length;
+    const active = chosen < total; // anything but "all ticked" narrows the list (none ticked shows nothing)
+    lbl.dataset.summary = chosen === total ? "all" : chosen === 0 ? "none" : `${chosen} of ${total}`;
     lbl.dataset.filterActive = String(active);
 
     const apply = (collapsed) => {
@@ -149,8 +152,11 @@ export function renderCheckboxList(container, { label, options, selected, onChan
     return;
   }
 
-  const selectedSet = new Set(selected || []);
+  const selectedSet = new Set(selected == null ? options : selected);
   const allSelected = options.every((o) => selectedSet.has(o));
+  // Every box ticked is stored as null ("all"), so options added later (a new
+  // category, say) are included automatically.
+  const report = (next) => onChange(options.every((o) => next.includes(o)) ? null : next);
 
   // "Select all" sits at the left and "Clear all" at the right, lined up
   // with the edge of the box below, so a person can wipe out just THIS
@@ -166,7 +172,7 @@ export function renderCheckboxList(container, { label, options, selected, onChan
   selectAllBtn.textContent = "Select all";
   selectAllBtn.disabled = allSelected;
   if (label) selectAllBtn.setAttribute("aria-label", `Select all: ${label}`);
-  selectAllBtn.addEventListener("click", () => onChange([...options]));
+  selectAllBtn.addEventListener("click", () => report([...options]));
 
   const clearAllBtn = document.createElement("button");
   clearAllBtn.type = "button";
@@ -174,7 +180,7 @@ export function renderCheckboxList(container, { label, options, selected, onChan
   clearAllBtn.textContent = "Clear all";
   clearAllBtn.disabled = selectedSet.size === 0;
   if (label) clearAllBtn.setAttribute("aria-label", `Clear all: ${label}`);
-  clearAllBtn.addEventListener("click", () => onChange([]));
+  clearAllBtn.addEventListener("click", () => report([]));
 
   buttonRow.appendChild(selectAllBtn);
   buttonRow.appendChild(clearAllBtn);
@@ -197,7 +203,7 @@ export function renderCheckboxList(container, { label, options, selected, onChan
       else next.delete(opt);
       selectedSet.clear();
       for (const v of next) selectedSet.add(v);
-      onChange([...next]);
+      report([...next]);
     });
     const textSpan = document.createElement("span");
     textSpan.innerHTML = " " + wrapHebrewSpans(opt);

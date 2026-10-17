@@ -22,6 +22,14 @@
       if (theme === "dark") document.documentElement.setAttribute("data-theme", "dark");
       var zoom = localStorage.getItem("textZoom");
       if (zoom) document.documentElement.style.fontSize = zoom + "%";
+      // Color theme, background pattern and Hebrew size (see js/appearance.js)
+      var palette = localStorage.getItem("themePalette");
+      if (palette && /^[a-z]+$/.test(palette) && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
+      var pattern = localStorage.getItem("themePattern");
+      if (pattern && /^[a-z]+$/.test(pattern) && pattern !== "none") document.documentElement.setAttribute("data-pattern", pattern);
+      if (localStorage.getItem("themePatternStrength") === "bold") document.documentElement.setAttribute("data-pattern-strength", "bold");
+      var hz = parseInt(localStorage.getItem("hebrewZoom"), 10);
+      if (hz >= 80 && hz <= 160) document.documentElement.style.setProperty("--hebrew-scale", String(hz / 100));
     } catch (e) {
       /* storage unavailable — fall back to defaults */
     }
@@ -148,6 +156,19 @@
             <button id="zoom-reset" type="button" class="zoom-btn zoom-reset" aria-label="Reset text size" title="Reset text size">100%</button>
             <button id="zoom-in" type="button" class="zoom-btn" aria-label="Increase text size" title="Larger text">A+</button>
             <button id="shortcuts-toggle" type="button" class="zoom-btn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (press ? anytime)">?</button>
+          </div>
+
+          <div class="hebrew-size-row" role="group" aria-label="Hebrew text size">
+            <div class="a11y-row zoom-buttons">
+              <button id="hebrew-zoom-out" type="button" class="zoom-btn hebrew-size-btn-he" aria-label="Decrease Hebrew size" title="Smaller Hebrew (printouts are not affected)"><span lang="he">א</span>−</button>
+              <button id="hebrew-zoom-reset" type="button" class="zoom-btn zoom-reset" aria-label="Reset Hebrew size" title="Reset Hebrew size">Hebrew 100%</button>
+              <button id="hebrew-zoom-in" type="button" class="zoom-btn hebrew-size-btn-he" aria-label="Increase Hebrew size" title="Larger Hebrew (printouts are not affected)"><span lang="he">א</span>+</button>
+            </div>
+          </div>
+
+          <div class="sidebar-section sidebar-appearance" data-collapse-default="collapsed">
+            <h3 class="sidebar-title">Appearance</h3>
+            <div id="appearance-section"></div>
           </div>
 
           <div class="sidebar-section sidebar-account" data-collapse-default="collapsed">

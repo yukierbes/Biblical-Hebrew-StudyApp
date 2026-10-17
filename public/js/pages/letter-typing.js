@@ -1,4 +1,5 @@
 import { getLetterSet, freshFilters, applyLetterFilters } from "../letter-sets.js";
+import { selectFiltersMessage } from "../filter-state.js";
 import { renderLetterFilters, resetSidebarKeepingScroll } from "../letter-sidebar.js";
 import { sampleN, downloadCSV, downloadXLSX, wrapHebrewSpans } from "../helpers.js";
 import { renderTable } from "../table.js";
@@ -180,7 +181,7 @@ export function createTypingPage(setId) {
     if (p.genWarning) {
       const div = document.createElement("div");
       div.className = "alert alert-warning";
-      div.textContent = `No ${set.plural} match the selected filters.`;
+      div.textContent = selectFiltersMessage(state.filters, Object.fromEntries(set.filters.map((f) => [f.key, f.label])), `No ${set.plural} match the selected filters.`);
       container.appendChild(div);
     }
 
@@ -288,7 +289,7 @@ export function createTypingPage(setId) {
     if (q.filterWarning) {
       const div = document.createElement("div");
       div.className = "alert alert-warning";
-      div.textContent = `No ${set.plural} match the selected filters. Please adjust the filters before starting the quiz.`;
+      div.textContent = selectFiltersMessage(state.filters, Object.fromEntries(set.filters.map((f) => [f.key, f.label])), `No ${set.plural} match the selected filters. Please adjust the filters before starting the quiz.`);
       container.appendChild(div);
     }
   }
@@ -599,8 +600,17 @@ export function createTypingPage(setId) {
     const bodyWrap = document.createElement("div");
     content.appendChild(bodyWrap);
 
-    if (state.mode === "quiz") renderQuiz(bodyWrap, allRows, pool);
-    else renderPractice(bodyWrap, pool());
+    const missingMsg = quizActive ? null : selectFiltersMessage(state.filters, Object.fromEntries(set.filters.map((f) => [f.key, f.label])), null);
+    if (missingMsg) {
+      const div = document.createElement("div");
+      div.className = "alert alert-warning";
+      div.textContent = missingMsg;
+      bodyWrap.appendChild(div);
+    } else if (state.mode === "quiz") {
+      renderQuiz(bodyWrap, allRows, pool);
+    } else {
+      renderPractice(bodyWrap, pool());
+    }
 
     content.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 

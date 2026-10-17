@@ -64,6 +64,9 @@ assert(content.querySelectorAll("tbody tr").length === 34, "consonant review lis
 assert(!!findButtonByText(content, "Print Blank Table"), "consonant review has Print Blank Table");
 assert(!!findButtonByText(content, "Print Table (Answer Key)"), "consonant review has the answer-key print");
 const sidebarExtra = document.getElementById("sidebar-extra");
+// Every box starts ticked, so clear the Category box first, then tick just Final Form.
+sidebarExtra.querySelector(".clear-all-btn").click();
+await new Promise((r) => setTimeout(r, 50));
 const finalForm = [...sidebarExtra.querySelectorAll("label")].find((l) => l.textContent.trim() === "Final Form");
 assert(!!finalForm, "Category filter lists Final Form");
 finalForm.querySelector("input").click();

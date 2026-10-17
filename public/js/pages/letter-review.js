@@ -1,4 +1,5 @@
 import { getLetterSet, freshFilters, applyLetterFilters } from "../letter-sets.js";
+import { selectFiltersMessage } from "../filter-state.js";
 import { renderLetterFilters, resetSidebarKeepingScroll } from "../letter-sidebar.js";
 import { renderTable } from "../table.js";
 import { downloadCSV, downloadXLSX } from "../helpers.js";
@@ -66,7 +67,7 @@ export function createReviewPage(setId) {
     if (filtered.length === 0) {
       const div = document.createElement("div");
       div.className = "alert alert-warning";
-      div.textContent = `No ${set.plural} match the selected filters.`;
+      div.textContent = selectFiltersMessage(state.filters, Object.fromEntries(set.filters.map((f) => [f.key, f.label])), `No ${set.plural} match the selected filters.`);
       content.appendChild(div);
     } else {
       renderReviewTools(content, {

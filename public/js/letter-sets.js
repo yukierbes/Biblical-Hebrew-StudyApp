@@ -187,7 +187,7 @@ export function getLetterSet(id) {
 
 export function freshFilters(set) {
   const f = {};
-  for (const def of set.filters) f[def.key] = [];
+  for (const def of set.filters) f[def.key] = null; // null = every option ticked
   return f;
 }
 
@@ -198,7 +198,7 @@ export function applyLetterFilters(set, rows, filters) {
   let out = rows;
   for (const def of set.filters) {
     const selected = filters[def.key];
-    if (selected && selected.length) out = out.filter((r) => def.match(r, selected));
+    if (Array.isArray(selected)) out = out.filter((r) => def.match(r, selected));
   }
   return out;
 }

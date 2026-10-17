@@ -1,4 +1,5 @@
 import { getLetterSet, freshFilters, applyLetterFilters, isSharedForm } from "../letter-sets.js";
+import { selectFiltersMessage } from "../filter-state.js";
 import { renderLetterFilters, resetSidebarKeepingScroll } from "../letter-sidebar.js";
 import { wrapHebrewSpans, sampleN } from "../helpers.js";
 import { recordStreakActivity, recordItemResult } from "../srs.js";
@@ -232,6 +233,15 @@ export function createGamesPage(setId) {
         Use the ${set.filters.map((f) => f.label).join(" and ")} filter${set.filters.length > 1 ? "s" : ""} in the sidebar to choose which ${set.plural} are in play, then pick a game below.
       </div>
     `;
+
+    const missingMsg = selectFiltersMessage(state.filters, Object.fromEntries(set.filters.map((f) => [f.key, f.label])), null);
+    if (missingMsg) {
+      const div = document.createElement("div");
+      div.className = "alert alert-warning";
+      div.textContent = missingMsg;
+      container.appendChild(div);
+      return;
+    }
 
     const poolCaption = document.createElement("div");
     poolCaption.className = "caption";

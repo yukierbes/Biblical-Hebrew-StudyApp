@@ -9,11 +9,11 @@ export function accentRowKey(row) {
  * blank Categories are handled on the Vocabulary pages. */
 export function applyAccentFilters(rows, filters) {
   let out = rows;
-  if (filters.Type && filters.Type.length) {
+  if (Array.isArray(filters.Type)) { // null = all ticked; [] = none ticked
     const set = new Set(filters.Type);
     out = out.filter((r) => set.has(r.Type));
   }
-  if (filters.Group && filters.Group.length) {
+  if (Array.isArray(filters.Group)) {
     const set = new Set(filters.Group);
     out = out.filter((r) => !r.Group || set.has(r.Group));
   }

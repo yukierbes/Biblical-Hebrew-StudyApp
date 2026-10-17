@@ -54,6 +54,8 @@ const APP_SHELL = [
   "js/swipe-card.js",
   "js/sidebar-resize.js",
   "js/sidebar-collapse.js",
+  "js/appearance.js",
+  "js/filter-state.js",
   "js/page-finder.js",
   "js/verb-tables.js",
   "js/print-tables.js",

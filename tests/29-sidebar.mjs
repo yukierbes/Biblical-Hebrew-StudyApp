@@ -25,7 +25,7 @@ console.log("\nThe footer is pinned at the bottom");
   assert(!!footer && inner.lastElementChild === footer, "the footer is the last thing in the sidebar");
   assert(footer.compareDocumentPosition(extra) & win.Node.DOCUMENT_POSITION_PRECEDING, "...after the page's own filters");
   const order = [...footer.children].map((c) => c.id || c.className.split(" ")[0]);
-  assert(order.join() === "streak-display,a11y-row,sidebar-section", `footer order: streak, accessibility row, account (${order})`);
+  assert(order.join() === "streak-display,a11y-row,hebrew-size-row,sidebar-section,sidebar-section", `footer order: streak, accessibility row, Hebrew size row, appearance, account (${order})`);
   assert(footer.lastElementChild.contains(document.getElementById("account-section")), "Account is the very last item");
   assert(!document.getElementById("reset-progress") && !document.getElementById("daily-goal-input"), "the old Progress block (goal, Reset) is gone from the sidebar");
   const row = footer.querySelector(".a11y-row");
@@ -90,7 +90,7 @@ assert(boxes.every((b) => b.dataset.summary === "all" && b.dataset.filterActive 
   await wait(80);
   const again = boxToggle(label);
   assert(again.getAttribute("aria-expanded") === "true", "a redrawn box stays open");
-  assert(again.dataset.summary === `1 of ${total}` && again.dataset.filterActive === "true", `its summary now reads "1 of ${total}"`);
+  assert(again.dataset.summary === `${total - 1} of ${total}` && again.dataset.filterActive === "true", `unticking one of the (all-ticked) options makes its summary read "${total - 1} of ${total}"`);
   assert(titleBtn("Filters").dataset.summary === "1 active", "the Filters header says '1 active'");
   const reset = filters().querySelector(":scope > .sidebar-head-action");
   assert(!!reset && reset.textContent === "Reset", "and offers a Reset shortcut");

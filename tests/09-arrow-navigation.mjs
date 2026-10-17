@@ -102,7 +102,8 @@ assert(
   document.activeElement.closest(".zoom-buttons") !== null,
   "ArrowUp from the first content row reaches the previous sidebar row first"
 );
-pressKey(document.activeElement, "ArrowUp");
+pressKey(document.activeElement, "ArrowUp"); // (the Hebrew size row sits between the zoom row and the nav)
+if (document.activeElement.closest(".zoom-buttons")) pressKey(document.activeElement, "ArrowUp");
 assert(
   [...document.querySelectorAll("#nav-buttons .nav-btn")].includes(document.activeElement),
   "ArrowUp again reaches the sidebar nav itself"

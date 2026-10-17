@@ -1,4 +1,5 @@
 import { getAccentRows, getTypeOrder, getGroupOrder } from "../accent-data.js";
+import { selectFiltersMessage } from "../filter-state.js";
 import { applyAccentFilters, accentRowKey } from "../accent-filters.js";
 import { renderCheckboxList, renderPresetControls } from "../widgets.js";
 import { wrapHebrewSpans } from "../helpers.js";
@@ -11,7 +12,7 @@ let state = null;
 
 function freshState() {
   return {
-    filters: { Type: [], Group: [] },
+    filters: { Type: null, Group: null },
     started: false,
     deck: [],
     index: 0,
@@ -98,7 +99,7 @@ function render(content, sidebarExtra, navigate) {
   resetBtn.textContent = "Reset Filters";
   resetBtn.style.marginBottom = "12px";
   resetBtn.addEventListener("click", () => {
-    state.filters = { Type: [], Group: [] };
+    state.filters = { Type: null, Group: null };
     restartAndRender();
   });
   filterWrap.appendChild(resetBtn);
@@ -109,7 +110,7 @@ function render(content, sidebarExtra, navigate) {
     pageKey: "accent-flashcards",
     getSnapshot: () => ({ filters: state.filters }),
     applySnapshot: (snap) => {
-      state.filters = { Type: [], Group: [], ...snap.filters };
+      state.filters = { Type: null, Group: null, ...snap.filters };
       restartAndRender();
     },
   });
@@ -187,7 +188,7 @@ function render(content, sidebarExtra, navigate) {
   if (currentPool.length === 0) {
     const div = document.createElement("div");
     div.className = "alert alert-warning";
-    div.textContent = "No accents match the selected filters.";
+    div.textContent = selectFiltersMessage(state.filters, { Type: "Type", Group: "Group" }, "No accents match the selected filters.");
     studyArea.appendChild(div);
   } else if (state.deck.length === 0) {
     startRound(currentPool);

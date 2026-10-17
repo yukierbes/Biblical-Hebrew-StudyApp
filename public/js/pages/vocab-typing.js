@@ -1,4 +1,5 @@
 import { getVocabRows, getLessonOrder, getPosOrder } from "../vocab-data.js";
+import { selectFiltersMessage } from "../filter-state.js";
 import { renderCheckboxList, renderPresetControls } from "../widgets.js";
 import { wrapHebrewSpans, sampleN, downloadCSV, downloadXLSX } from "../helpers.js";
 import { renderTable } from "../table.js";
@@ -20,7 +21,7 @@ let rerender = null;
 
 function freshState() {
   return {
-    filters: { Lesson: [], POS: [], Category: [], Root: [] },
+    filters: { Lesson: null, POS: null, Category: null, Root: null },
     minFrequency: "",
     mode: "practice", // "practice" | "quiz"
     promptSide: "hebrew", // "hebrew" -> shown Hebrew, type English. "english" -> shown English, type Hebrew.
@@ -184,7 +185,7 @@ function renderPractice(container, pool) {
   if (p.genWarning) {
     const div = document.createElement("div");
     div.className = "alert alert-warning";
-    div.textContent = "No vocabulary matches the selected filters.";
+    div.textContent = selectFiltersMessage(state.filters, { Lesson: "Lesson", POS: "Part of Speech", Category: "Category", Root: "Root" }, "No vocabulary matches the selected filters.");
     container.appendChild(div);
   }
 
@@ -289,7 +290,7 @@ function renderQuizFilterStep(container, allRows, poolFn) {
   if (q.filterWarning) {
     const div = document.createElement("div");
     div.className = "alert alert-warning";
-    div.textContent = "No vocabulary matches the selected filters. Please adjust the filters before starting the quiz.";
+    div.textContent = selectFiltersMessage(state.filters, { Lesson: "Lesson", POS: "Part of Speech", Category: "Category", Root: "Root" }, "No vocabulary matches the selected filters. Please adjust the filters before starting the quiz.");
     container.appendChild(div);
   }
 }
@@ -652,7 +653,7 @@ function render(content, sidebarExtra, navigate) {
     resetBtn.textContent = "Reset Filters";
     resetBtn.style.marginBottom = "12px";
     resetBtn.addEventListener("click", () => {
-      state.filters = { Lesson: [], POS: [], Category: [], Root: [] };
+      state.filters = { Lesson: null, POS: null, Category: null, Root: null };
       state.minFrequency = "";
       rerender();
     });
@@ -664,7 +665,7 @@ function render(content, sidebarExtra, navigate) {
     pageKey: "vocab-typing",
     getSnapshot: () => ({ filters: state.filters, minFrequency: state.minFrequency }),
     applySnapshot: (snap) => {
-      state.filters = { Lesson: [], POS: [], Category: [], Root: [], ...snap.filters };
+      state.filters = { Lesson: null, POS: null, Category: null, Root: null, ...snap.filters };
       state.minFrequency = snap.minFrequency || "";
       rerender();
     },
@@ -755,7 +756,13 @@ function render(content, sidebarExtra, navigate) {
   const bodyWrap = document.createElement("div");
   content.appendChild(bodyWrap);
 
-  if (state.mode === "quiz") {
+  const missingMsg = quizActive ? null : selectFiltersMessage(state.filters, { Lesson: "Lesson", POS: "Part of Speech", Category: "Category", Root: "Root" }, null);
+  if (missingMsg) {
+    const div = document.createElement("div");
+    div.className = "alert alert-warning";
+    div.textContent = missingMsg;
+    bodyWrap.appendChild(div);
+  } else if (state.mode === "quiz") {
     renderQuiz(bodyWrap, allRows, pool);
   } else {
     renderPractice(bodyWrap, pool());

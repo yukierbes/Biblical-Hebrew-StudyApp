@@ -29,6 +29,10 @@
   --font-hebrew: 'SBL Hebrew', 'Cardo', serif;
 
   --radius: 4px;
+
+  /* The Hebrew size control (sidebar, Accessibility) sets this on <html>. 1 = normal.
+     Printouts always use 1: see #print-area and @media print below. */
+  --hebrew-scale: 1;
 }
 
 /* Dark theme — same "ink on paper" metaphor inverted: light ink on a
@@ -76,6 +80,7 @@ html, body {
 #app {
   display: flex;
   height: 100vh;
+  height: 100dvh; /* the visible height — on a phone 100vh is taller than the screen */
   position: relative;
   /* The sidebar's width. js/sidebar-resize.js overrides this (inline, on
      #app) when the person drags the sidebar's edge; everything that has to
@@ -110,7 +115,10 @@ h3::before,
   padding: 0; /* the padding lives on .sidebar-inner, so the footer can sit flush at the bottom */
   transition: width 0.15s ease, padding 0.15s ease;
   height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 #app.sidebar-collapsed #sidebar {
@@ -363,8 +371,8 @@ h3::before,
 
   h1.page-title { font-size: 1.6rem; }
 
-  .hebrew-display span[lang="he"] { font-size: 3.25rem; }
-  .verse { font-size: 1.5rem; line-height: 1.7rem; }
+  .hebrew-display span[lang="he"] { font-size: calc(3.25rem * var(--hebrew-scale, 1)); }
+  .verse { font-size: calc(1.5rem * var(--hebrew-scale, 1)); line-height: calc(1.7rem * var(--hebrew-scale, 1)); }
 
   .button-row { flex-direction: column; }
   .button-row .btn { width: 100%; }
@@ -382,7 +390,13 @@ h3::before,
     width: var(--sidebar-width);
     z-index: 20;
     box-shadow: 2px 0 16px rgba(0, 0, 0, 0.18);
+    height: auto; /* top + bottom decide the height, so it can never be taller than the screen */
   }
+  /* The footer (streak, accessibility buttons, appearance, account) scrolls with the
+     rest of the sidebar on a phone instead of being pinned, so it can always be
+     reached, and clears the home-indicator bar. */
+  .sidebar-footer { position: static; }
+  .sidebar-inner { padding-bottom: env(safe-area-inset-bottom, 0px); }
   #app.sidebar-collapsed #sidebar {
     width: 0;
     box-shadow: none;
@@ -569,6 +583,7 @@ select.ms-select {
   max-width: 1200px;
   margin: 0 auto;
   height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
 }
 
@@ -745,7 +760,7 @@ h2, h3 {
 .verse {
   text-align: center;
   direction: rtl;
-  font-size: 2.3rem;
+  font-size: calc(2.3rem * var(--hebrew-scale, 1)); --hebrew-inner: 1;
   color: var(--ink);
   font-family: var(--font-hebrew);
   line-height: 2.1; /* roomy, so the vowel points and accents on one line never touch the next */
@@ -784,7 +799,7 @@ h2, h3 {
 
 .hebrew-display span[lang="he"] {
   font-family: var(--font-hebrew);
-  font-size: 5.75rem;
+  font-size: calc(5.75rem * var(--hebrew-scale, 1));
   direction: rtl;
   color: var(--ink);
 }
@@ -846,13 +861,14 @@ table.custom-table td[data-col="Conjugation"],
 table.custom-table td[data-col="Correct Answers"],
 table.custom-table td[data-col="Hebrew"] {
   font-family: var(--font-hebrew);
-  font-size: 1.25em;
+  font-size: calc(1.25em * var(--hebrew-scale, 1)); --hebrew-inner: 1;
 }
 
 /* Any Hebrew-script run anywhere in the app (dataset names mixed with
    Latin labels, etc.) always renders in the Hebrew font. */
 [lang="he"] {
   font-family: var(--font-hebrew);
+  font-size: calc(1em * var(--hebrew-inner, var(--hebrew-scale, 1))); /* the Hebrew size control; --hebrew-inner is 1 inside text that is already scaled */
   direction: rtl;
   unicode-bidi: embed;
 }
@@ -980,7 +996,7 @@ td.verb-table-pgn { text-align: center; width: 1%; }
 /* Hebrew forms are right-aligned, as in the example sheets. */
 td.verb-table-form {
   font-family: var(--font-hebrew);
-  font-size: 1.25em;
+  font-size: calc(1.25em * var(--hebrew-scale, 1)); --hebrew-inner: 1;
   text-align: right;
 }
 table.verb-table tbody tr:hover td { background: var(--paper); }
@@ -1549,7 +1565,7 @@ kbd {
    exact same styles that will be printed. All of it is scoped under
    #print-area, which stays hidden on screen, so it can't affect anything
    else (the interactive flashcards use their own, separate class names). */
-#print-area { display: none; }
+#print-area { display: none; --hebrew-scale: 1; --hebrew-inner: 1; }
 
 /* No page margin from the browser. That is what makes the browser leave
    out its own header and footer text (date/time, page title, URL, page
@@ -1688,6 +1704,7 @@ kbd {
 }
 
 @media print {
+  html { --hebrew-scale: 1 !important; }
   /* The independent-scrolling layout locks html/body to a fixed,
      clipped viewport height on screen (see the base html/body rule).
      That clipping also applies to #print-area, since it's appended
@@ -1777,7 +1794,7 @@ kbd {
 
 .flashcard-interactive-hebrew {
   font-family: var(--font-hebrew);
-  font-size: 2.2rem;
+  font-size: calc(2.2rem * var(--hebrew-scale, 1)); --hebrew-inner: 1;
   direction: rtl;
 }
 .flashcard-interactive-english {
@@ -1951,7 +1968,7 @@ kbd {
 
 .memory-card-hebrew {
   font-family: var(--font-hebrew);
-  font-size: 1.7rem;
+  font-size: calc(1.7rem * var(--hebrew-scale, 1)); --hebrew-inner: 1;
   direction: rtl;
 }
 
@@ -2034,7 +2051,7 @@ kbd {
   background: var(--paper-raised);
   color: var(--ink);
   font-family: var(--font-hebrew);
-  font-size: 1.4rem;
+  font-size: calc(1.4rem * var(--hebrew-scale, 1)); --hebrew-inner: 1;
   min-height: 48px;
 }
 .hebrew-kb-preview:focus {
@@ -2057,7 +2074,7 @@ kbd {
   background: var(--paper-raised);
   color: var(--ink);
   font-family: var(--font-hebrew);
-  font-size: 1.15rem;
+  font-size: calc(1.15rem * var(--hebrew-scale, 1)); --hebrew-inner: 1;
   cursor: pointer;
   transition: border-color 0.12s ease, background 0.12s ease;
 }
@@ -2079,7 +2096,7 @@ kbd {
   height: 38px;
   padding: 0 6px;
   font-family: var(--font-hebrew);
-  font-size: 1.35rem;
+  font-size: calc(1.35rem * var(--hebrew-scale, 1)); --hebrew-inner: 1;
   direction: rtl;
   color: var(--ink);
 }
@@ -2138,7 +2155,7 @@ kbd {
   height: 44px;
   padding: 0 6px;
   font-family: var(--font-hebrew);
-  font-size: 1.7rem;
+  font-size: calc(1.7rem * var(--hebrew-scale, 1)); --hebrew-inner: 1;
   direction: rtl;
   color: var(--ink);
 }
@@ -2355,7 +2372,7 @@ kbd {
 .weak-list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
 .weak-label { font-size: 1.05rem; color: var(--ink); }
 .weak-list .caption { display: block; margin: 0; }
-.wotd-form { font-family: var(--font-hebrew); font-size: 2.6rem; text-align: center; color: var(--ink); line-height: 1.4; }
+.wotd-form { font-family: var(--font-hebrew); font-size: calc(2.6rem * var(--hebrew-scale, 1)); --hebrew-inner: 1; text-align: center; color: var(--ink); line-height: 1.4; }
 .wotd-parse { text-align: center; }
 .wotd-gloss { margin-top: 4px; color: var(--ink); }
 
@@ -2525,7 +2542,7 @@ kbd {
   color: var(--ink-soft);
   cursor: pointer;
 }
-.pm-tile-form { font-family: var(--font-hebrew); font-size: 1.7rem; line-height: 1; }
+.pm-tile-form { font-family: var(--font-hebrew); font-size: calc(1.7rem * var(--hebrew-scale, 1)); --hebrew-inner: 1; line-height: 1; }
 .pm-tile-mark { position: absolute; top: 1px; right: 4px; font-size: 0.7rem; font-weight: 700; }
 .pm-tile-learning { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
 .pm-tile-mastered { background: var(--good-soft); border-color: var(--good); color: var(--ink); }
@@ -2635,7 +2652,7 @@ kbd {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.sidebar-section.is-collapsed > :not(.sidebar-title):not(.sidebar-head-action) { display: none; }
+.sidebar-section.is-collapsed > :not(.sidebar-title):not(.sidebar-head-action) { display: none !important; } /* !important: #nav-buttons sets display:flex by id, which used to win */
 .sidebar-section.is-collapsed > .sidebar-title { margin-bottom: 0; }
 .sidebar-section.is-collapsed { margin-bottom: 14px; }
 .sidebar-head-action {
@@ -2861,7 +2878,7 @@ kbd {
   border: 1px solid var(--hairline-strong); font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft);
 }
 .daily-option-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-.daily-option-hebrew { font-family: var(--font-hebrew); font-size: 1.6rem; text-align: center; direction: rtl; }
+.daily-option-hebrew { font-family: var(--font-hebrew); font-size: calc(1.6rem * var(--hebrew-scale, 1)); --hebrew-inner: 1; text-align: center; direction: rtl; }
 .daily-option-mark { flex: 0 0 auto; width: 1.4em; font-weight: 700; font-size: 1.2rem; text-align: center; }
 .daily-option.is-correct { border-color: var(--good); background: var(--good-soft); }
 .daily-option.is-correct .daily-option-mark { color: var(--good); }
@@ -2879,7 +2896,7 @@ kbd {
   padding: 12px 14px; background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: var(--radius);
 }
 .daily-match-item { display: flex; align-items: center; gap: 10px; flex: 1 1 200px; min-width: 0; }
-.daily-match-glyph { font-family: var(--font-hebrew); font-size: 2rem; min-width: 2.2rem; text-align: center; color: var(--ink); }
+.daily-match-glyph { font-family: var(--font-hebrew); font-size: calc(2rem * var(--hebrew-scale, 1)); --hebrew-inner: 1; min-width: 2.2rem; text-align: center; color: var(--ink); }
 .daily-match-text { overflow-wrap: anywhere; }
 .daily-match-mark { font-weight: 700; font-size: 1.2rem; }
 .daily-match-mark.ok { color: var(--good); }
@@ -2957,7 +2974,7 @@ kbd {
 table.compared-table th.binyan-head { border-bottom: 1px solid var(--hairline); }
 table.compared-table .th-hebrew {
   font-family: var(--font-hebrew);
-  font-size: 1.15rem;
+  font-size: calc(1.15rem * var(--hebrew-scale, 1)); --hebrew-inner: 1;
   letter-spacing: 0;
   text-transform: none;
 }
@@ -2988,4 +3005,350 @@ table.verb-table td.verb-table-strong {
   font-size: 8.5pt;
   color: #444;
   margin-left: 8pt;
+}
+
+/* ============================================================
+   Themes and background patterns
+   Six curated palettes, each with a light and a dark version. Classic is the
+   original look (the :root and html[data-theme="dark"] rules at the top of this
+   file); the others are chosen with data-palette on <html> (js/appearance.js).
+   Every pair of text and background colors below was checked for contrast (WCAG):
+   body text 7:1 or better, secondary text 4.5:1 or better, even where a
+   background pattern is drawn behind it.
+   The same variables are also defined on .theme-swatch so each swatch in the
+   Appearance panel previews its own palette in the current light/dark mode.
+   ============================================================ */
+.theme-swatch[data-palette="classic"] {
+  --paper: #F5F5F1;
+  --paper-raised: #FFFFFF;
+  --ink: #1C2B45;
+  --ink-hover: #0F1A2E;
+  --ink-soft: #55617A;
+  --ink-faint: #8B93A4;
+  --hairline: #DBD9D1;
+  --hairline-strong: #C7C4B8;
+  --accent: #A6823C;
+  --accent-soft: #EFE6D2;
+  --accent-text: #6B5320;
+  --good: #3B6E4F;
+  --good-soft: #E4EEE7;
+  --bad: #9C4A3C;
+  --bad-soft: #F5E8E5;
+  --bad-border: #E7C7C0;
+  --warn-border: #E0D2AC;
+  --pattern-rgb: 28 43 69;
+}
+html[data-theme="dark"] .theme-swatch[data-palette="classic"] {
+  --paper: #14171F;
+  --paper-raised: #1D212B;
+  --ink: #ECE9E1;
+  --ink-hover: #D6D2C6;
+  --ink-soft: #A9AEBB;
+  --ink-faint: #6B7280;
+  --hairline: #2A2F3A;
+  --hairline-strong: #3A4150;
+  --accent: #D4A94C;
+  --accent-soft: #332B16;
+  --accent-text: #E8C87A;
+  --good: #6FBE8D;
+  --good-soft: #16261C;
+  --bad: #E08A7A;
+  --bad-soft: #2E1A17;
+  --bad-border: #5C3A34;
+  --warn-border: #5C4E2C;
+  --pattern-rgb: 236 233 225;
+}
+html[data-palette="parchment"],
+.theme-swatch[data-palette="parchment"] {
+  --paper: #F3EBDA;
+  --paper-raised: #FBF6EA;
+  --ink: #3A2A1A;
+  --ink-hover: #24180D;
+  --ink-soft: #6A5640;
+  --ink-faint: #8F7B62;
+  --hairline: #DCCFB5;
+  --hairline-strong: #C9B994;
+  --accent: #9A5B1F;
+  --accent-soft: #EBDCBC;
+  --accent-text: #6B3F12;
+  --good: #3F6B3A;
+  --good-soft: #E3EBD6;
+  --bad: #A03E2C;
+  --bad-soft: #F3DDD4;
+  --bad-border: #E3BDB0;
+  --warn-border: #DCC88F;
+  --pattern-rgb: 58 42 26;
+}
+html[data-palette="parchment"][data-theme="dark"],
+html[data-theme="dark"] .theme-swatch[data-palette="parchment"] {
+  --paper: #1E1812;
+  --paper-raised: #2A2218;
+  --ink: #EFE4CF;
+  --ink-hover: #FFF4DC;
+  --ink-soft: #BFAF93;
+  --ink-faint: #8A7B63;
+  --hairline: #3A3024;
+  --hairline-strong: #4D4030;
+  --accent: #D9A05B;
+  --accent-soft: #3A2C18;
+  --accent-text: #EBBE80;
+  --good: #8CC084;
+  --good-soft: #1D2A1B;
+  --bad: #E5917F;
+  --bad-soft: #331C16;
+  --bad-border: #6A3B31;
+  --warn-border: #66532E;
+  --pattern-rgb: 239 228 207;
+}
+html[data-palette="sky"],
+.theme-swatch[data-palette="sky"] {
+  --paper: #EEF4FA;
+  --paper-raised: #FFFFFF;
+  --ink: #12304F;
+  --ink-hover: #0A2038;
+  --ink-soft: #4B6482;
+  --ink-faint: #7388A3;
+  --hairline: #D2DEEA;
+  --hairline-strong: #B8C9DB;
+  --accent: #2A6FB0;
+  --accent-soft: #DCEAF7;
+  --accent-text: #174E80;
+  --good: #2F7048;
+  --good-soft: #E0F0E6;
+  --bad: #A34535;
+  --bad-soft: #F7E6E2;
+  --bad-border: #E8C6BF;
+  --warn-border: #E2D3A8;
+  --pattern-rgb: 18 48 79;
+}
+html[data-palette="sky"][data-theme="dark"],
+html[data-theme="dark"] .theme-swatch[data-palette="sky"] {
+  --paper: #0F1B2A;
+  --paper-raised: #17263A;
+  --ink: #E3EEF9;
+  --ink-hover: #FFFFFF;
+  --ink-soft: #A7BCD2;
+  --ink-faint: #6F859D;
+  --hairline: #243750;
+  --hairline-strong: #34506F;
+  --accent: #6FB1EA;
+  --accent-soft: #17304A;
+  --accent-text: #9BCBF3;
+  --good: #72C493;
+  --good-soft: #14281D;
+  --bad: #EA9482;
+  --bad-soft: #321C18;
+  --bad-border: #63392F;
+  --warn-border: #5C4E2C;
+  --pattern-rgb: 227 238 249;
+}
+html[data-palette="olive"],
+.theme-swatch[data-palette="olive"] {
+  --paper: #F1F2E8;
+  --paper-raised: #FBFBF4;
+  --ink: #27331F;
+  --ink-hover: #172012;
+  --ink-soft: #56634A;
+  --ink-faint: #858F78;
+  --hairline: #D8DBC6;
+  --hairline-strong: #C3C8AA;
+  --accent: #6B7F2A;
+  --accent-soft: #E3E9C8;
+  --accent-text: #465518;
+  --good: #2F6B45;
+  --good-soft: #DDEEDF;
+  --bad: #A2492F;
+  --bad-soft: #F4E4DC;
+  --bad-border: #E4C4B6;
+  --warn-border: #DDD0A0;
+  --pattern-rgb: 39 51 31;
+}
+html[data-palette="olive"][data-theme="dark"],
+html[data-theme="dark"] .theme-swatch[data-palette="olive"] {
+  --paper: #161A12;
+  --paper-raised: #1F2519;
+  --ink: #E8EBDC;
+  --ink-hover: #FFFFFF;
+  --ink-soft: #B0B8A0;
+  --ink-faint: #788068;
+  --hairline: #2D3523;
+  --hairline-strong: #3F4A31;
+  --accent: #B5C860;
+  --accent-soft: #2A3216;
+  --accent-text: #CBDB82;
+  --good: #7CCB93;
+  --good-soft: #17281B;
+  --bad: #E59580;
+  --bad-soft: #321D16;
+  --bad-border: #653D30;
+  --warn-border: #5C5330;
+  --pattern-rgb: 232 235 220;
+}
+html[data-palette="terracotta"],
+.theme-swatch[data-palette="terracotta"] {
+  --paper: #F8EFE9;
+  --paper-raised: #FFFBF8;
+  --ink: #3B241C;
+  --ink-hover: #26140E;
+  --ink-soft: #6E5046;
+  --ink-faint: #94766B;
+  --hairline: #E6D3C8;
+  --hairline-strong: #D5BBAC;
+  --accent: #B3502F;
+  --accent-soft: #F4DDD1;
+  --accent-text: #7E3319;
+  --good: #3E6B47;
+  --good-soft: #E2EDE0;
+  --bad: #9B3326;
+  --bad-soft: #F5DEDA;
+  --bad-border: #E4B9B1;
+  --warn-border: #E0CDA2;
+  --pattern-rgb: 59 36 28;
+}
+html[data-palette="terracotta"][data-theme="dark"],
+html[data-theme="dark"] .theme-swatch[data-palette="terracotta"] {
+  --paper: #1F1512;
+  --paper-raised: #2B1D18;
+  --ink: #F2E4DC;
+  --ink-hover: #FFFFFF;
+  --ink-soft: #C4A89B;
+  --ink-faint: #8D7165;
+  --hairline: #3C2A23;
+  --hairline-strong: #52392F;
+  --accent: #E58A66;
+  --accent-soft: #3C2218;
+  --accent-text: #F0A98B;
+  --good: #84C48F;
+  --good-soft: #1A2A1D;
+  --bad: #F0998A;
+  --bad-soft: #381B17;
+  --bad-border: #703A32;
+  --warn-border: #66532E;
+  --pattern-rgb: 242 228 220;
+}
+html[data-palette="midnight"],
+.theme-swatch[data-palette="midnight"] {
+  --paper: #EFEFF8;
+  --paper-raised: #FFFFFF;
+  --ink: #1F1B4D;
+  --ink-hover: #120F36;
+  --ink-soft: #55527F;
+  --ink-faint: #8584AA;
+  --hairline: #D8D7EA;
+  --hairline-strong: #C0BEDB;
+  --accent: #8A6A12;
+  --accent-soft: #F0E6C3;
+  --accent-text: #6B5008;
+  --good: #2E6B4B;
+  --good-soft: #DFEFE6;
+  --bad: #A04040;
+  --bad-soft: #F6E3E3;
+  --bad-border: #E6C4C4;
+  --warn-border: #E0D2A4;
+  --pattern-rgb: 31 27 77;
+}
+html[data-palette="midnight"][data-theme="dark"],
+html[data-theme="dark"] .theme-swatch[data-palette="midnight"] {
+  --paper: #0E0C26;
+  --paper-raised: #17143A;
+  --ink: #ECEAFB;
+  --ink-hover: #FFFFFF;
+  --ink-soft: #B3B0DA;
+  --ink-faint: #7977A8;
+  --hairline: #272357;
+  --hairline-strong: #38337A;
+  --accent: #E2B94A;
+  --accent-soft: #2D2610;
+  --accent-text: #F0CF76;
+  --good: #7ACB9B;
+  --good-soft: #14281F;
+  --bad: #EE9B9B;
+  --bad-soft: #321818;
+  --bad-border: #6B3A3A;
+  --warn-border: #66532E;
+  --pattern-rgb: 236 234 251;
+}
+:root { --pattern-rgb: 28 43 69; --pattern-alpha: 0.05; }
+html[data-theme="dark"]:not([data-palette]), html[data-theme="dark"][data-palette="classic"] { --pattern-rgb: 236 233 225; }
+html[data-pattern-strength="bold"] { --pattern-alpha: 0.10; }
+
+/* --- background patterns: drawn only on the page background and the sidebar, never
+   on cards or tables (those have their own solid color), and faint enough that no
+   text loses contrast. Printing ignores them (the print area has its own white page). --- */
+html[data-pattern="dots"] body,
+html[data-pattern="dots"] #sidebar {
+  background-image: radial-gradient(rgb(var(--pattern-rgb) / var(--pattern-alpha)) 1.2px, transparent 1.6px);
+  background-size: 18px 18px;
+}
+html[data-pattern="grid"] body,
+html[data-pattern="grid"] #sidebar {
+  background-image:
+    linear-gradient(rgb(var(--pattern-rgb) / var(--pattern-alpha)) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--pattern-rgb) / var(--pattern-alpha)) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+html[data-pattern="lines"] body,
+html[data-pattern="lines"] #sidebar {
+  background-image: repeating-linear-gradient(45deg, rgb(var(--pattern-rgb) / var(--pattern-alpha)) 0 1px, transparent 1px 12px);
+}
+html[data-pattern="weave"] body,
+html[data-pattern="weave"] #sidebar {
+  background-image:
+    repeating-linear-gradient(45deg, rgb(var(--pattern-rgb) / var(--pattern-alpha)) 0 1px, transparent 1px 14px),
+    repeating-linear-gradient(-45deg, rgb(var(--pattern-rgb) / var(--pattern-alpha)) 0 1px, transparent 1px 14px);
+}
+@media print {
+  html body, html #sidebar { background-image: none !important; }
+}
+
+/* --- the Appearance panel (sidebar footer) --- */
+.appearance-panel { display: flex; flex-direction: column; gap: 10px; }
+.appearance-panel .sidebar-label { margin-bottom: 4px; }
+.theme-swatches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.theme-swatch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 7px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-align: left;
+  min-width: 0;
+}
+.theme-swatch > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.theme-swatch:hover { border-color: var(--accent); }
+.theme-swatch:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.theme-swatch[aria-checked="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); font-weight: 600; }
+.theme-swatch-chips { display: inline-flex; flex-shrink: 0; }
+.theme-swatch-chips i { width: 11px; height: 11px; border-radius: 50%; border: 1px solid var(--hairline-strong); }
+.theme-swatch-chips i + i { margin-left: -4px; }
+.theme-swatch-chips i:nth-child(1) { background: var(--paper-raised); }
+.theme-swatch-chips i:nth-child(2) { background: var(--accent); }
+.theme-swatch-chips i:nth-child(3) { background: var(--ink); }
+.appearance-select {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  border: 1px solid var(--hairline);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+.appearance-strength[hidden] { display: none; }
+.zoom-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--ink); box-shadow: inset 0 0 0 1px var(--accent); }
+
+/* --- Hebrew size control --- */
+.hebrew-size-row { display: flex; flex-direction: column; gap: 4px; }
+.hebrew-size-row .sidebar-label { margin: 0; }
+.hebrew-size-btn-he { font-family: var(--font-hebrew); font-size: 1rem; line-height: 1; }
+
+/* --- a phone: the footer scrolls with the rest of the sidebar. (Placed last so it
+   beats the pinned-footer rule above.) --- */
+@media (max-width: 720px) {
+  .sidebar-footer { position: static; }
 }

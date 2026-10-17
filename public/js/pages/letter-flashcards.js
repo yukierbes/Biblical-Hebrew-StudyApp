@@ -1,4 +1,5 @@
 import { getLetterSet, freshFilters, applyLetterFilters } from "../letter-sets.js";
+import { selectFiltersMessage } from "../filter-state.js";
 import { renderLetterFilters, resetSidebarKeepingScroll } from "../letter-sidebar.js";
 import { renderAmbiguityHintPanel } from "../letter-answer-matching.js";
 import { sortByPriority, recordItemResult, recordStreakActivity, getMasteryStats } from "../srs.js";
@@ -104,7 +105,7 @@ export function createFlashcardsPage(setId) {
     if (currentPool.length === 0) {
       const div = document.createElement("div");
       div.className = "alert alert-warning";
-      div.textContent = `No ${set.plural} match the selected filters.`;
+      div.textContent = selectFiltersMessage(state.filters, Object.fromEntries(set.filters.map((f) => [f.key, f.label])), `No ${set.plural} match the selected filters.`);
       studyArea.appendChild(div);
     } else if (state.deck.length === 0) {
       startRound(currentPool);

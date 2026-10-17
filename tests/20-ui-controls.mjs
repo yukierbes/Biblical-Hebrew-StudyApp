@@ -25,7 +25,7 @@ console.log("Filter boxes: Select all / Clear all");
   assert(buttons()[1].disabled && !buttons()[0].disabled, "with nothing chosen, 'Clear all' is disabled and 'Select all' is available");
 
   click(buttons()[0]);
-  assert(JSON.stringify(calls.at(-1)) === '["1A","1B","1C"]', "'Select all' chooses every option");
+  assert(calls.at(-1) === null, "'Select all' chooses every option (reported as null = all ticked)");
 
   draw(["1B"]);
   assert(!buttons()[1].disabled, "once something is chosen, 'Clear all' is enabled");
@@ -50,6 +50,9 @@ console.log("Filter boxes: Select all / Clear all");
   // element.click() toggles a checkbox and fires 'change', as in a browser
   // (the shared click() helper sends a bare event, which doesn't toggle it).
   const tick = (list, n) => lists()[list].querySelectorAll("input")[n].click();
+  // Every box starts ticked, so clear Lesson and Part of Speech first.
+  click(lists()[0].previousElementSibling.querySelectorAll("button")[1]);
+  click(lists()[1].previousElementSibling.querySelectorAll("button")[1]);
   tick(0, 0);
   tick(0, 1);
   tick(1, 0);
@@ -59,7 +62,7 @@ console.log("Filter boxes: Select all / Clear all");
   assert(checkedIn(1) === 1, "...and leaves the Part-of-speech filter as it was");
   const reset = [...sidebarExtra.querySelectorAll("button")].find((b) => b.textContent === "Reset Filters");
   click(reset);
-  assert(checkedIn(1) === 0, "'Reset Filters' still resets every filter at once");
+  assert(checkedIn(1) === lists()[1].querySelectorAll("input").length, "'Reset Filters' still resets every filter at once (everything ticked again)");
 }
 
 // ======================================================================

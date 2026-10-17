@@ -1,4 +1,5 @@
 import { getVocabRows, getLessonOrder, getPosOrder } from "../vocab-data.js";
+import { selectFiltersMessage } from "../filter-state.js";
 import { renderCheckboxList, renderPresetControls } from "../widgets.js";
 import { wrapHebrewSpans } from "../helpers.js";
 import { applyVocabFilters, getCategoryOptions, vocabRowKey } from "../vocab-overrides.js";
@@ -11,7 +12,7 @@ let state = null;
 
 function freshState() {
   return {
-    filters: { Lesson: [], POS: [], Category: [], Root: [] },
+    filters: { Lesson: null, POS: null, Category: null, Root: null },
     minFrequency: "",
     startSide: "hebrew", // "hebrew" | "english" — which face a card shows first
     started: false,
@@ -111,7 +112,7 @@ function render(content, sidebarExtra, navigate) {
   resetBtn.textContent = "Reset Filters";
   resetBtn.style.marginBottom = "12px";
   resetBtn.addEventListener("click", () => {
-    state.filters = { Lesson: [], POS: [], Category: [], Root: [] };
+    state.filters = { Lesson: null, POS: null, Category: null, Root: null };
     state.minFrequency = "";
     restartAndRender();
   });
@@ -123,7 +124,7 @@ function render(content, sidebarExtra, navigate) {
     pageKey: "vocab-flashcards",
     getSnapshot: () => ({ filters: state.filters, minFrequency: state.minFrequency }),
     applySnapshot: (snap) => {
-      state.filters = { Lesson: [], POS: [], Category: [], Root: [], ...snap.filters };
+      state.filters = { Lesson: null, POS: null, Category: null, Root: null, ...snap.filters };
       state.minFrequency = snap.minFrequency || "";
       restartAndRender();
     },
@@ -286,7 +287,7 @@ function render(content, sidebarExtra, navigate) {
   if (currentPool.length === 0) {
     const div = document.createElement("div");
     div.className = "alert alert-warning";
-    div.textContent = "No vocabulary matches the selected filters.";
+    div.textContent = selectFiltersMessage(state.filters, { Lesson: "Lesson", POS: "Part of Speech", Category: "Category", Root: "Root" }, "No vocabulary matches the selected filters.");
     studyArea.appendChild(div);
   } else if (state.deck.length === 0) {
     // Guards against a stale empty deck (e.g. the filtered pool just

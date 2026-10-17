@@ -1,4 +1,5 @@
 import { getVocabRows, getLessonOrder, getPosOrder } from "../vocab-data.js";
+import { selectFiltersMessage } from "../filter-state.js";
 import { renderCheckboxList, renderPresetControls } from "../widgets.js";
 import { wrapHebrewSpans, sampleN } from "../helpers.js";
 import { applyVocabFilters, getCategoryOptions, getCategoriesForRow, vocabRowKey } from "../vocab-overrides.js";
@@ -46,7 +47,7 @@ let rerender = null;
 
 function freshState() {
   return {
-    filters: { Lesson: [], POS: [], Category: [], Root: [] },
+    filters: { Lesson: null, POS: null, Category: null, Root: null },
     minFrequency: "",
     screen: "menu", // "menu" | one of GAMES' keys
     timerId: null,
@@ -229,6 +230,15 @@ function renderMenu(container, pool) {
       Use the filters in the sidebar to choose which words are in play, then pick a game below.
     </div>
   `;
+
+  const missingMsg = selectFiltersMessage(state.filters, { Lesson: "Lesson", POS: "Part of Speech", Category: "Category", Root: "Root" }, null);
+  if (missingMsg) {
+    const div = document.createElement("div");
+    div.className = "alert alert-warning";
+    div.textContent = missingMsg;
+    container.appendChild(div);
+    return;
+  }
 
   const poolCaption = document.createElement("div");
   poolCaption.className = "caption";
@@ -1288,7 +1298,7 @@ function render(content, sidebarExtra, navigate) {
     resetBtn.textContent = "Reset Filters";
     resetBtn.style.marginBottom = "12px";
     resetBtn.addEventListener("click", () => {
-      state.filters = { Lesson: [], POS: [], Category: [], Root: [] };
+      state.filters = { Lesson: null, POS: null, Category: null, Root: null };
       state.minFrequency = "";
       rerender();
     });
@@ -1300,7 +1310,7 @@ function render(content, sidebarExtra, navigate) {
     pageKey: "vocab-games",
     getSnapshot: () => ({ filters: state.filters, minFrequency: state.minFrequency }),
     applySnapshot: (snap) => {
-      state.filters = { Lesson: [], POS: [], Category: [], Root: [], ...snap.filters };
+      state.filters = { Lesson: null, POS: null, Category: null, Root: null, ...snap.filters };
       state.minFrequency = snap.minFrequency || "";
       rerender();
     },

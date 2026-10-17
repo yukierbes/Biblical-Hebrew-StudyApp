@@ -30,7 +30,7 @@ usable on an arbitrary static file host the way earlier versions were (see
 │           ├── consonants.json
 │           └── vowels.json
 ├── public/                     # <- the ONLY folder Netlify serves publicly
-│   ├── index.html                # shell page — auth gate, manifest link, theme/zoom init
+│   ├── index.html                # shell page — auth gate, manifest link, theme/zoom/Hebrew-size init
 │   ├── manifest.webmanifest        # PWA manifest (installable, standalone display)
 │   ├── sw.js                         # service worker — caches the app shell for offline use
 │   ├── icons/                          # app icons (192/512px + apple-touch-icon)
@@ -288,6 +288,34 @@ or wrong file) can be allowed by setting the environment variable
 `ALLOW_DATA_SHRINK` to `1` in Netlify's site settings and deploying again.
 
 ## Feature overview
+
+### Appearance: themes, background patterns and Hebrew size
+
+*Sidebar footer. Code: `public/js/appearance.js`, the palettes at the end of `css/style.css`.*
+
+- **Six themes** — Classic (the original look), Parchment, Sky, Olive, Terracotta and Midnight. Each has a
+  light and a dark version, so the Dark Mode button works with every theme. The colors are checked for
+  contrast (body text 7:1 or better, secondary text 4.5:1 or better, also over the strongest pattern).
+  There is deliberately no free color picker.
+- **Background pattern** — None, Dots, Graph paper, Diagonal lines or Weave, each Subtle or Bold, usable with
+  any theme. Patterns are drawn only on the page background and sidebar, never behind cards or tables.
+- **Hebrew size** (80%–160%, five steps) scales all Hebrew on screen separately from the page text size.
+  Printouts always use the normal size (`--hebrew-scale` is forced to 1 in `#print-area` and `@media print`),
+  so printed flashcards and tables keep their layout. Hebrew typed into answer boxes is not scaled.
+- All of these are saved in this browser only (keys `themePalette`, `themePattern`, `themePatternStrength`,
+  `hebrewZoom`), applied by an inline script in `index.html` before first paint. Printing ignores themes.
+
+### Filters on Consonants, Vowels, Vocabulary and Accents
+
+*Code: `public/js/filter-state.js`, `widgets.js` (`renderCheckboxList`).*
+
+Every filter starts with all its boxes ticked (stored as `null`). Ticking everything is the same as no
+restriction (words with no category still show). **Clearing a filter completely shows nothing**, and the page
+says what to tick (e.g. "Select at least one Lesson in the sidebar filters to begin studying."), on Review,
+Flashcards, Typing and Games alike — the same idea as "Select at least one dataset" on the Verbs pages.
+Saved filter presets from before this change (which used an empty list to mean "all") are converted when
+loaded. The Verbs pages are unchanged (they default to the first Strong Verb dataset).
+
 
 - **Daily Challenge** — a short round, personal to the learner, built to be
   quick, easy and worth coming back to (`pages/daily-challenge.js`; the

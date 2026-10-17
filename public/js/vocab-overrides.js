@@ -138,12 +138,12 @@ export function applyVocabFilters(rows, filters, minFrequency) {
   let out = rows;
   for (const col of ["Lesson", "POS"]) {
     const selected = filters[col];
-    if (selected && selected.length) {
+    if (Array.isArray(selected)) { // null = every option ticked; [] = nothing ticked
       const set = new Set(selected);
       out = out.filter((r) => set.has(r[col]));
     }
   }
-  if (filters.Category && filters.Category.length) {
+  if (Array.isArray(filters.Category)) {
     const set = new Set(filters.Category);
     out = out.filter((r) => getCategoriesForRow(r).some((c) => set.has(c)));
   }

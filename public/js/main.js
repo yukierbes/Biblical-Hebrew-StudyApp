@@ -37,6 +37,7 @@ import { initCloudSyncUI, cloudSyncSignedIn, cloudSyncSignedOut, openSignIn } fr
 import { initSidebarResize } from "./sidebar-resize.js";
 import { initSidebarCollapse } from "./sidebar-collapse.js";
 import { initPageFinder } from "./page-finder.js";
+import { initAppearance } from "./appearance.js";
 
 const PAGES = {
   home: homePage,
@@ -269,6 +270,8 @@ window.addEventListener("hashchange", renderPage);
 // Collapsible sidebar headers (Navigation, Filters, Account …) and the "Go to…"
 // page finder. See sidebar-collapse.js and page-finder.js.
 initSidebarCollapse();
+// Color themes, background patterns and the Hebrew size control. See appearance.js.
+initAppearance();
 const pageFinder = initPageFinder({ navigate });
 
 // ============ Dark mode ============
