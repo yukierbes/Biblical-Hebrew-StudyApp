@@ -3469,3 +3469,66 @@ html[data-pattern="weave"] #sidebar {
 @media print {
   .item-tray-wrap, .item-tray, .tray-col, .note-col, .verb-tables-tray, #celebrate-layer, .item-dialog-backdrop { display: none !important; }
 }
+
+/* ============================================================
+   Bible in Context — Definite Article in Context (pages/bible-article.js)
+   ============================================================ */
+.bible-tabs { margin: 12px 0 18px; flex-wrap: wrap; }
+.bible-check { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer; }
+.bible-verse {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: flex-start; /* with dir="rtl" this starts at the right */
+  gap: 0 0.35em;
+  font-family: var(--font-hebrew);
+  font-size: calc(1.7rem * var(--hebrew-scale, 1));
+  line-height: 2.1;
+  --hebrew-inner: 1; /* this block is already scaled, so the Hebrew spans inside are not scaled twice */
+  color: var(--ink);
+}
+.bible-word { font: inherit; color: inherit; background: none; border: 0; padding: 0 2px; border-radius: 4px; white-space: nowrap; }
+button.bible-word { cursor: pointer; border: 1px solid transparent; }
+button.bible-word:hover { border-color: var(--hairline-strong); }
+.bible-joiner { margin-inline-start: -0.35em; padding: 0; }
+.bible-mark { background: var(--accent-soft); color: var(--accent-text); border-radius: 3px; padding: 0 2px; outline: 1px solid var(--accent); }
+.bible-inline { font-family: var(--font-hebrew); font-size: 1.15em; unicode-bidi: isolate; }
+.bible-passage { margin: 12px 0 18px; }
+.bible-verse-row { display: flex; gap: 10px; align-items: baseline; flex-direction: row-reverse; border: 1px solid var(--hairline); border-radius: var(--radius); padding: 2px 10px; margin-bottom: 6px; background: var(--paper-raised); }
+.bible-verse-row.is-current { border-color: var(--accent); }
+.bible-verse-row .bible-verse { flex: 1; }
+.bible-vn { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); }
+.bible-step, .bible-question { margin-top: 10px; }
+.bible-prompt { margin: 10px 0 8px; font-weight: 600; }
+.bible-choices { display: grid; gap: 8px; }
+.bible-choice {
+  text-align: left;
+  padding: 10px 12px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.bible-choice:hover:not(:disabled) { border-color: var(--accent); }
+.bible-choice:disabled { cursor: default; }
+.bible-choice.is-correct { border-color: var(--good); background: var(--good-soft); }
+.bible-choice.is-wrong { border-color: var(--bad); background: var(--bad-soft); }
+.bible-feedback { margin: 12px 0; padding: 10px 12px; border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--paper-raised); line-height: 1.5; }
+.bible-feedback:empty { display: none; }
+.bible-feedback.is-correct { border-color: var(--good); background: var(--good-soft); }
+.bible-feedback.is-wrong { border-color: var(--bad-border); background: var(--bad-soft); }
+.bible-word.is-picked { background: var(--accent-soft); outline: 1px solid var(--accent); }
+.bible-word.is-correct { background: var(--good-soft); outline: 2px solid var(--good); }
+.bible-word.is-missed { outline: 2px dashed var(--accent); }
+.bible-word.is-wrong { background: var(--bad-soft); outline: 2px solid var(--bad); }
+.bible-guide-card { border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--paper-raised); padding: 6px 14px 12px; margin: 10px 0; }
+.bible-guide-examples { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.bible-guide-example { white-space: nowrap; }
+.bible-guide-example .bible-word { font-family: var(--font-hebrew); font-size: calc(1.4rem * var(--hebrew-scale, 1)); --hebrew-inner: 1; }
+.bible-summary { border-collapse: collapse; width: 100%; }
+.bible-summary th, .bible-summary td { border-bottom: 1px solid var(--hairline); padding: 6px 10px; text-align: left; }
+.bible-credit-list li { margin: 6px 0; }
+@media print { .bible-verse { font-size: 1.7rem; } }

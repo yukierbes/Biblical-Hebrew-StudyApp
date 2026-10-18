@@ -380,6 +380,7 @@ export const QUIZ_HISTORY_MODES = [
   ["accent-typing", "Accents Typing"],
   ["consonant-typing", "Consonants Typing"],
   ["vowel-typing", "Vowels Typing"],
+  ["bible-article", "Definite Article in Context"],
 ];
 
 /** { lastPracticeDate, lastQuiz: { label, score, total, percent, timestamp } | null } */

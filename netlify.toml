@@ -6,7 +6,7 @@
   # site then keeps running its previous version), and (2) give the service worker
   # a new version number so browsers drop their old cached copy. See
   # scripts/build-data.mjs and scripts/stamp-sw.mjs.
-  command = "node scripts/build-data.mjs && node scripts/stamp-sw.mjs"
+  command = "node scripts/build-data.mjs && node scripts/build-bible.mjs && node scripts/stamp-sw.mjs"
 
 # Only the "public" folder is served as static content. Everything the
 # app needs to run lives inside it (index.html, css/, js/, icons/,

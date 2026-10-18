@@ -6,7 +6,9 @@
   "scripts": {
     "test": "node tests/run-all.mjs",
     "build-data": "node scripts/build-data.mjs",
-    "check-data": "node scripts/build-data.mjs --check"
+    "check-data": "node scripts/build-data.mjs --check",
+    "build-bible": "node scripts/build-bible.mjs",
+    "check-bible": "node scripts/build-bible.mjs --check"
   },
   "dependencies": {
     "@netlify/blobs": "^8.1.0"

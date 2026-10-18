@@ -29,7 +29,7 @@ const { document, window } = await setupApp();
 
 console.log("\nNavigation order");
 const sidebarOrder = [...document.querySelectorAll(".nav-section-toggle")].map((b) => b.dataset.navSection);
-assert(JSON.stringify(sidebarOrder) === JSON.stringify(["consonants", "vowels", "vocabulary", "verbs", "accents"]), "sidebar order: " + sidebarOrder.join(", "));
+assert(JSON.stringify(sidebarOrder) === JSON.stringify(["consonants", "vowels", "vocabulary", "verbs", "accents", "bible"]), "sidebar order: " + sidebarOrder.join(", "));
 for (const pre of ["consonant", "vowel"]) {
   for (const mode of ["review", "flashcards", "typing", "games"]) {
     assert(!!document.querySelector(`.nav-btn[data-page="${pre}-${mode}"]`), `sidebar has ${pre}-${mode}`);

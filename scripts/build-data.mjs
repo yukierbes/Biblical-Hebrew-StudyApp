@@ -523,7 +523,7 @@ function buildVerbs() {
 
 // ---------- files that won't be used ----------
 function warnAboutStrayFiles() {
-  const used = new Set(["vocabulary.csv", "accents.csv", "consonants.csv", "vowels.csv", "verbs"]);
+  const used = new Set(["vocabulary.csv", "accents.csv", "consonants.csv", "vowels.csv", "verbs", "bible"]);
   for (const f of existsSync(SRC) ? readdirSync(SRC) : []) {
     if (f.startsWith(".") || used.has(f)) continue;
     warnings.push(`data-source/${f} is not used by the app (it reads vocabulary.csv, accents.csv, consonants.csv, vowels.csv and the files in verbs/). If it was meant to replace one of those, rename it to match.`);

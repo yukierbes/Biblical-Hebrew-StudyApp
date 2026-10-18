@@ -348,6 +348,31 @@ newest save wins).
 
 ## Feature overview
 
+### Bible in Context — Definite Article in Context (pilot)
+
+*Page: `public/js/pages/bible-article.js`. Data: `data-source/bible/`. Rules: `scripts/lib/article-rules.mjs`.
+Build: `scripts/build-bible.mjs` (runs on every deploy after the CSV build; `npm run check-bible` checks without writing).*
+
+Real verses from Genesis used to practise the Hebrew definite article, in four tabs: **Guided passage** (steps through
+every article in a short passage, one question each), **Pattern quiz** (10 questions, balanced so the rarer patterns
+appear), **Find the article** (tap the words that carry it; the question-marker ה is a deliberate look-alike) and
+**Pattern guide**. A switch in the sidebar hides accent marks (only accents; vowels and dagesh are never altered).
+
+* **Where the article comes from.** The Open Scriptures Hebrew Bible (OSHB) tags the article as its own piece of each word.
+  The app only *finds* it there; it *sorts* it itself, from what is written, using the rule sheets in `article-rules.mjs`
+  (standard הַ + dagesh forte; compensatory lengthening before א ר ע; implicit doubling before ה ח ע; הֶ before ע or ה;
+  the SQNMLVY exception, with a vocal sheva or a short vowel before a doubled letter).
+* **What is held back.** A case that matches none of the rules is never used as an example. In Genesis there are 7:
+  הָ before ה (4), הָ before ח (1), the article before ט in Gen 40:3, and הָ before שׁ in Gen 41:24. They are listed in the data
+  (`held`) and on the audit sheet, to be decided by the owner. Every change to the rules is a change to
+  `article-rules.mjs` plus its test (`tests/32-bible-article.mjs`).
+* **Passages** are `data-source/bible/passages.csv` (Title, Start, End, Note); edit it like the other CSV files.
+* **Adding more** (other books, prefixed prepositions, dagesh lene/forte/mappiq, syllables) follows the same shape: a rules
+  module, a build step that writes a small dataset, and a page. Only the verses a page needs are shipped, never the whole Bible.
+* **Credits and licensing.** The OSHB tagging is CC BY 4.0 and its credit line is shown on the **Sources & Credits** page
+  and in `NOTICE.md`; the Hebrew text (Westminster Leningrad Codex) is public domain. `data-source/bible/Gen.xml` is the
+  unchanged OSHB file (see `data-source/bible/README.md`). No English translation is included yet.
+
 ### Appearance: themes, background patterns and Hebrew size
 
 *Sidebar footer. Code: `public/js/appearance.js`, the palettes at the end of `css/style.css`.*

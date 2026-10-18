@@ -28,6 +28,8 @@ import * as vowelGamesPage from "./pages/vowel-games.js";
 import * as progressPage from "./pages/progress.js";
 import * as achievementsPage from "./pages/achievements.js";
 import * as dailyChallengePage from "./pages/daily-challenge.js";
+import * as bibleArticlePage from "./pages/bible-article.js";
+import * as creditsPage from "./pages/credits.js";
 import { showToast } from "./toast.js";
 import { initHebrewKeyboard, isHebrewKeyboardOpen, closeHebrewKeyboard } from "./hebrew-keyboard.js";
 import { initAccentKeyboard, isAccentKeyboardOpen, closeAccentKeyboard } from "./accent-keyboard.js";
@@ -69,6 +71,8 @@ const PAGES = {
   // Achievements now lives inside My Progress; the old address opens that tab.
   achievements: progressPage.achievementsRoute,
   "daily-challenge": dailyChallengePage,
+  "bible-article": bibleArticlePage,
+  credits: creditsPage,
   // Owner only: the link is hidden for everyone else, and the server refuses their requests.
   reports: reportsPage,
 };
@@ -128,7 +132,7 @@ let currentPage = null;
 // ---- Sidebar nav sections (Consonants / Vowels / Vocabulary / Verbs / Accents): expand/collapse,
 // persisted per section, with the containing section auto-expanding
 // whenever its page becomes the active one so it's never hidden. ----
-const NAV_SECTIONS = ["consonants", "vowels", "vocabulary", "verbs", "accents"];
+const NAV_SECTIONS = ["consonants", "vowels", "vocabulary", "verbs", "accents", "bible"];
 
 function navSectionStorageKey(section) {
   return `navSectionCollapsed:${section}`;
