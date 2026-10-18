@@ -348,30 +348,36 @@ newest save wins).
 
 ## Feature overview
 
-### Bible in Context — Definite Article in Context (pilot)
+### Bible in Context — Definite Article and Dagesh (pilot pages)
 
-*Page: `public/js/pages/bible-article.js`. Data: `data-source/bible/`. Rules: `scripts/lib/article-rules.mjs`.
-Build: `scripts/build-bible.mjs` (runs on every deploy after the CSV build; `npm run check-bible` checks without writing).*
+*Pages: `public/js/pages/bible-article.js` and `bible-dagesh.js`, both built on the shared engine
+`public/js/bible-practice.js` (so they look and behave the same). Data: `data-source/bible/`. Rules:
+`scripts/lib/article-rules.mjs` and `scripts/lib/dagesh-rules.mjs`. Build: `scripts/build-bible.mjs` (runs on every
+deploy after the CSV build; `npm run check-bible` checks without writing).*
 
-Real verses from Genesis used to practise the Hebrew definite article, in four tabs: **Guided passage** (steps through
-every article in a short passage, one question each), **Pattern quiz** (10 questions, balanced so the rarer patterns
-appear), **Find the article** (tap the words that carry it; the question-marker ה is a deliberate look-alike) and
-**Pattern guide**. A switch in the sidebar hides accent marks (only accents; vowels and dagesh are never altered).
+Real verses from Genesis, in four tabs on each page: **Guided passage** (steps through every example in a short passage;
+the answer buttons show only the pattern names, and the description appears *after* an answer, so the learner recalls
+first), **Pattern quiz** (10 questions, all patterns included, then a score and a review of the missed questions, with a
+way to practise just those), **Find the …** (tap the words that have it; a dotted green border marks one that was missed)
+and **Pattern guide**. A sidebar switch hides accent marks (only accents; vowels and dagesh are never altered).
 
-* **Where the article comes from.** The Open Scriptures Hebrew Bible (OSHB) tags the article as its own piece of each word.
-  The app only *finds* it there; it *sorts* it itself, from what is written, using the rule sheets in `article-rules.mjs`
-  (standard הַ + dagesh forte; compensatory lengthening before א ר ע; implicit doubling before ה ח ע; הֶ before ע or ה;
-  the SQNMLVY exception, with a vocal sheva or a short vowel before a doubled letter).
-* **What is held back.** A case that matches none of the rules is never used as an example. In Genesis there are 7:
-  הָ before ה (4), הָ before ח (1), the article before ט in Gen 40:3, and הָ before שׁ in Gen 41:24. They are listed in the data
-  (`held`) and on the audit sheet, to be decided by the owner. Every change to the rules is a change to
-  `article-rules.mjs` plus its test (`tests/32-bible-article.mjs`).
-* **Passages** are `data-source/bible/passages.csv` (Title, Start, End, Note); edit it like the other CSV files.
-* **Adding more** (other books, prefixed prepositions, dagesh lene/forte/mappiq, syllables) follows the same shape: a rules
-  module, a build step that writes a small dataset, and a page. Only the verses a page needs are shipped, never the whole Bible.
-* **Credits and licensing.** The OSHB tagging is CC BY 4.0 and its credit line is shown on the **Sources & Credits** page
-  and in `NOTICE.md`; the Hebrew text (Westminster Leningrad Codex) is public domain. `data-source/bible/Gen.xml` is the
-  unchanged OSHB file (see `data-source/bible/README.md`). No English translation is included yet.
+* **Definite Article.** The Open Scriptures Hebrew Bible (OSHB) tags the article as its own piece of each word; the app only
+  *finds* it there and *sorts* it itself, from what is written. Answer choices: Standard Form, Compensatory Lengthening,
+  Implicit Doubling, Segol, SQNMLVY (vocal sheva, or short vowel before a doubled letter) and Pausal Lengthening (an
+  article with qameṣ in a word carrying a pause accent). Gen 40:3 הַטַּבָּחִים is Standard Form by the owner's decision
+  (`ARTICLE_OVERRIDES`, with a note shown after answering). Two cases still match no rule and are held back (Gen 19:17 and
+  41:24: qameṣ with a conjunctive accent).
+* **Dagesh.** Answer choices: Dagesh Lene, Dagesh Forte, Mappiq. The order of questions is the owner's: BeGaD KeFaT? preceded
+  by silence? A dot in a final ה is a mappiq. The dot in a vav with no vowel of its own is the šureq vowel, never counted as
+  a dagesh (the guide says so). Cases the spelling cannot settle (a sheva after a long vowel, a dot in a guttural) are held
+  back and never used as examples (33 in Genesis).
+* **Passages** are `data-source/bible/passages.csv` (article) and `passages-dagesh.csv` (dagesh): Title, Start, End, Note.
+* **Vowel names** in the app use the spelling on the Vowels page (qameṣ, pataḥ, segol, ṣere, ḥireq, šureq …).
+* **Adding more** (other books, prefixed prepositions, syllables) follows the same shape: a rules module, a build step that
+  writes a small dataset, and a page config for the shared engine. Only the verses a page needs are shipped.
+* **Credits and licensing.** The OSHB tagging is CC BY 4.0 and its credit line is on **Sources & Credits** and in `NOTICE.md`;
+  the Hebrew text (Westminster Leningrad Codex) is public domain. `data-source/bible/Gen.xml` is the unchanged OSHB file.
+  No English translation is included yet.
 
 ### Appearance: themes, background patterns and Hebrew size
 

@@ -381,6 +381,7 @@ export const QUIZ_HISTORY_MODES = [
   ["consonant-typing", "Consonants Typing"],
   ["vowel-typing", "Vowels Typing"],
   ["bible-article", "Definite Article in Context"],
+  ["bible-dagesh", "Dagesh in Context"],
 ];
 
 /** { lastPracticeDate, lastQuiz: { label, score, total, percent, timestamp } | null } */

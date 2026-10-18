@@ -3522,7 +3522,7 @@ button.bible-word:hover { border-color: var(--hairline-strong); }
 .bible-feedback.is-wrong { border-color: var(--bad-border); background: var(--bad-soft); }
 .bible-word.is-picked { background: var(--accent-soft); outline: 1px solid var(--accent); }
 .bible-word.is-correct { background: var(--good-soft); outline: 2px solid var(--good); }
-.bible-word.is-missed { outline: 2px dashed var(--accent); }
+.bible-word.is-missed { outline: 2px dashed var(--good); }
 .bible-word.is-wrong { background: var(--bad-soft); outline: 2px solid var(--bad); }
 .bible-guide-card { border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--paper-raised); padding: 6px 14px 12px; margin: 10px 0; }
 .bible-guide-examples { display: flex; flex-wrap: wrap; gap: 6px 20px; }
@@ -3532,3 +3532,6 @@ button.bible-word:hover { border-color: var(--hairline-strong); }
 .bible-summary th, .bible-summary td { border-bottom: 1px solid var(--hairline); padding: 6px 10px; text-align: left; }
 .bible-credit-list li { margin: 6px 0; }
 @media print { .bible-verse { font-size: 1.7rem; } }
+.bible-watch { border-color: var(--accent); }
+.bible-review { margin: 10px 0; }
+.bible-guide-card ol { margin: 6px 0 6px 20px; }

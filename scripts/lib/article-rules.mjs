@@ -24,51 +24,82 @@ const IMPLICIT = new Set(["ה", "ח", "ע"]);
 // The SQNMLVY consonants: sibilants (ש ס צ) and י ו ל מ נ ק.
 const SQNMLVY = new Set([..."שצסיולמנק"]);
 
-/** The six patterns, in teaching order, with the wording shown in the app. */
+/** The patterns, with the wording shown in the app (vowel names spelled as on the Vowels page). */
 export const ARTICLE_PATTERNS = [
   {
     id: "forte",
-    label: "הַ + dagesh forte",
-    plain: "Standard form: הַ and a dagesh forte in the first letter of the noun",
+    group: "standard",
+    label: "Standard Form",
     explain:
-      "This is the standard form of the article: הַ, with a dagesh forte added to the first consonant of the noun, which doubles it.",
+      "Standard form of the article: הַ with a dagesh forte in the first consonant of the noun, which doubles it.",
   },
   {
     id: "compensatory",
-    label: "הָ — compensatory lengthening",
-    plain: "הָ before א, ר or ע: the vowel lengthens",
+    group: "compensatory",
+    label: "Compensatory Lengthening",
     explain:
-      "The noun begins with a guttural that rejects the dagesh (א, ר, or sometimes ע). The article’s short vowel lengthens within its own class: הַ becomes הָ. This is compensatory lengthening.",
+      "The noun begins with a guttural that rejects the dagesh (א, ר, or sometimes ע). The article’s short vowel lengthens within its own vowel class: pataḥ becomes qameṣ, so הַ becomes הָ. This is compensatory lengthening.",
   },
   {
     id: "implicit",
-    label: "הַ — implicit doubling",
-    plain: "הַ before ה, ח or ע: the vowel stays, doubling is implied",
+    group: "implicit",
+    label: "Implicit Doubling",
     explain:
-      "The noun begins with ה, ח, or sometimes ע. The guttural rejects the dagesh, but the article’s vowel does not change: it stays הַ, and the guttural is understood to be doubled by implication. This is implicit doubling.",
+      "The noun begins with ה, ח, or sometimes ע. The guttural rejects the dagesh, but the article’s vowel does not change: it stays הַ (pataḥ), and the guttural is understood to be doubled by implication. This is implicit doubling.",
   },
   {
     id: "segol",
-    label: "הֶ — before ע or ה with unaccented qameṣ",
-    plain: "הֶ before ע or ה with an unaccented qameṣ",
+    group: "segol",
+    label: "Segol",
     explain:
-      "Exception: when the guttural is ע or ה with an unaccented qameṣ, the article’s pataḥ becomes seghol: הֶ.",
+      "Exception: when the guttural is ע or ה with an unaccented qameṣ, the article’s pataḥ becomes segol: הֶ.",
   },
   {
     id: "sqnmlvy_sheva",
-    label: "SQNMLVY — dagesh lost before a vocal sheva",
-    plain: "No dagesh before a SQNMLVY letter that has a vocal sheva",
+    group: "sqnmlvy",
+    label: "SQNMLVY: vocal sheva",
     explain:
       "SQNMLVY exception: a sibilant or one of י ו ל מ נ ק that has a vocal sheva may lose the dagesh forte, so the article is הַ with no doubling written.",
   },
   {
     id: "sqnmlvy_extended",
-    label: "SQNMLVY — dagesh lost, short vowel before a doubled letter",
-    plain: "No dagesh before a SQNMLVY letter with a short vowel, followed by a doubled letter",
+    group: "sqnmlvy",
+    label: "SQNMLVY: extended environment",
     explain:
       "SQNMLVY exception, extended environment: a SQNMLVY consonant with a short vowel, standing before another doubled consonant, may lose the dagesh forte after the article.",
   },
+  {
+    id: "pausal",
+    group: "pausal",
+    label: "Pausal Lengthening",
+    explain:
+      "In a pausal form (at the end of a verse or major clause, or before a strong disjunctive accent) a short vowel often lengthens within its own vowel class, the same change as compensatory lengthening: pataḥ becomes qameṣ. Here the article’s pataḥ has lengthened to qameṣ (הָ) in a pausal form, even though no guttural forced it.",
+  },
 ];
+
+/** The answer choices shown to the learner. SQNMLVY is one choice; the two cases inside it are told apart in the explanation. */
+export const ARTICLE_GROUPS = [
+  { id: "standard", label: "Standard Form", patterns: ["forte"] },
+  { id: "compensatory", label: "Compensatory Lengthening", patterns: ["compensatory"] },
+  { id: "implicit", label: "Implicit Doubling", patterns: ["implicit"] },
+  { id: "segol", label: "Segol", patterns: ["segol"] },
+  { id: "sqnmlvy", label: "SQNMLVY", patterns: ["sqnmlvy_sheva", "sqnmlvy_extended"] },
+  { id: "pausal", label: "Pausal Lengthening", patterns: ["pausal"] },
+];
+
+/**
+ * Cases decided by the owner rather than by the spelling rules. Key: "ref|the word's consonants only" (so the match does not depend on how the marks are ordered).
+ * Gen 40:3 הַטַּבָּחִים is Standard Form: in this digital text the dagesh in ט is not written.
+ */
+export const ARTICLE_OVERRIDES = {
+  "Gen.40.3|הטבחים": {
+    pattern: "forte",
+    note: "In this digital text the dagesh in the ט is not written, but the word is standard form: הַ + a dagesh forte in the first letter of the noun.",
+  },
+};
+
+// Disjunctive accents (U+0591–U+05A1), which mark a pause: a word carrying one is in pausal position.
+const hasDisjunctive = (text) => /[\u0591-\u05a1]/.test(text);
 
 /** Splits a written segment into [{ letter, marks }, ...] (marks = everything up to the next letter). */
 export function letters(seg) {
@@ -85,7 +116,7 @@ export function letters(seg) {
  * right after it (e.g. "שָּׁמַיִם"). Returns a pattern id, or null when the case does not
  * match the owner's rules and needs a human decision (it is then held back, never used).
  */
-export function classifyArticle(artSeg, nextSeg) {
+export function classifyArticle(artSeg, nextSeg, wordText = "") {
   const art = letters(artSeg)[0];
   const nextLetters = letters(nextSeg);
   if (!art || art.letter !== "ה" || !nextLetters.length) return null;
@@ -107,7 +138,9 @@ export function classifyArticle(artSeg, nextSeg) {
     const shortVowel = [...n.marks].some((c) => SHORT_VOWELS.has(c));
     if (shortVowel && second && second.marks.includes(DAGESH)) return "sqnmlvy_extended";
   }
-  return null; // e.g. הָ before ה, הָ before ח, the article before ט (Gen 40:3) …
+  // The article's pataḥ lengthened to qameṣ where no guttural forces it, in a word carrying a pause accent.
+  if (artVowel === "qamets" && hasDisjunctive(wordText)) return "pausal";
+  return null; // e.g. הָ in a word with no pause accent, or the article before a letter not covered by your sheets
 }
 
 /** Why a case was held back, in plain words (shown on the audit sheet). */
@@ -115,9 +148,7 @@ export function holdBackReason(artSeg, nextSeg) {
   const art = letters(artSeg)[0];
   const n = letters(nextSeg)[0];
   if (!art || !n) return "unexpected shape";
-  if (art.marks.includes(QAMETS) && n.letter === "ה") return "הָ before ה: not covered by your sheets";
-  if (art.marks.includes(QAMETS) && n.letter === "ח") return "הָ before ח: not covered by your sheets";
-  if (art.marks.includes(QAMETS)) return "הָ before a letter that can take a dagesh: not covered by your sheets";
+  if (art.marks.includes(QAMETS)) return "הָ in a word with no pause accent: not covered by your sheets";
   if (!n.marks.includes(DAGESH)) return `no dagesh before ${n.letter}, which is not in SQNMLVY`;
   return "does not match any pattern";
 }
@@ -157,7 +188,7 @@ export function morphParts(morph) {
  * Finds and sorts every tagged article in a verse list.
  * Returns [{ ref, wi, seg, pattern | null, reason? }]  (wi = word index, seg = index of the article piece).
  */
-export function findArticles(verses) {
+export function findArticles(verses, overrides = ARTICLE_OVERRIDES) {
   const out = [];
   for (const v of verses) {
     v.words.forEach((w, wi) => {
@@ -166,8 +197,14 @@ export function findArticles(verses) {
       const sp = w.text.split("/");
       const k = mp.indexOf("Td");
       if (k < 0 || mp.length !== sp.length || k + 1 >= sp.length) return;
-      const pattern = classifyArticle(sp[k], sp[k + 1]);
-      out.push({ ref: v.ref, wi, seg: k, pattern, reason: pattern ? undefined : holdBackReason(sp[k], sp[k + 1]) });
+      let pattern = classifyArticle(sp[k], sp[k + 1], w.text);
+      let note;
+      const o = overrides[`${v.ref}|${w.text.replace(/[^\u05d0-\u05ea]/g, "")}`];
+      if (o) {
+        pattern = o.pattern;
+        note = o.note;
+      }
+      out.push({ ref: v.ref, wi, seg: k, pattern, note, reason: pattern ? undefined : holdBackReason(sp[k], sp[k + 1]) });
     });
   }
   return out;

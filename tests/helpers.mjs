@@ -76,6 +76,7 @@ export async function setupApp({ mobile = false } = {}) {
         consonants: "consonants.json",
         vowels: "vowels.json",
         "bible-article": "bible-article.json",
+        "bible-dagesh": "bible-dagesh.json",
       };
       const filename = filenames[dataset];
       if (!filename) return { ok: false, status: 400 };
