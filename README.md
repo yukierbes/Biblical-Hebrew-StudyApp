@@ -348,30 +348,39 @@ newest save wins).
 
 ## Feature overview
 
-### Bible in Context — Definite Article and Dagesh (pilot pages)
+### Bible in Context — Definite Article, Dagesh and Pronominal Suffixes (pilot pages)
 
-*Pages: `public/js/pages/bible-article.js` and `bible-dagesh.js`, both built on the shared engine
+*Pages: `public/js/pages/bible-article.js`, `bible-dagesh.js` and `bible-suffix.js`, all built on the shared engine
 `public/js/bible-practice.js` (so they look and behave the same). Data: `data-source/bible/`. Rules:
-`scripts/lib/article-rules.mjs` and `scripts/lib/dagesh-rules.mjs`. Build: `scripts/build-bible.mjs` (runs on every
-deploy after the CSV build; `npm run check-bible` checks without writing).*
+`scripts/lib/article-rules.mjs`, `dagesh-rules.mjs` and `suffix-rules.mjs`. Build: `scripts/build-bible.mjs` (runs on every
+deploy after the CSV build; `npm run check-bible` checks without writing). Page titles are just the topic (Definite Article,
+Dagesh, Pronominal Suffixes); keep that pattern for new pages.*
 
 Real verses from Genesis, in four tabs on each page: **Guided passage** (steps through every example in a short passage;
 the answer buttons show only the pattern names, and the description appears *after* an answer, so the learner recalls
 first), **Pattern quiz** (10 questions, all patterns included, then a score and a review of the missed questions, with a
-way to practise just those), **Find the …** (tap the words that have it; a dotted green border marks one that was missed)
-and **Pattern guide**. A sidebar switch hides accent marks (only accents; vowels and dagesh are never altered).
+way to practise just those), **Find the …** (tap what has it; a dotted green border marks one that was missed) and
+**Pattern guide**. A sidebar switch hides accent marks (only accents; vowels and dagesh are never altered).
 
 * **Definite Article.** The Open Scriptures Hebrew Bible (OSHB) tags the article as its own piece of each word; the app only
   *finds* it there and *sorts* it itself, from what is written. Answer choices: Standard Form, Compensatory Lengthening,
-  Implicit Doubling, Segol, SQNMLVY (vocal sheva, or short vowel before a doubled letter) and Pausal Lengthening (an
-  article with qameṣ in a word carrying a pause accent). Gen 40:3 הַטַּבָּחִים is Standard Form by the owner's decision
-  (`ARTICLE_OVERRIDES`, with a note shown after answering). Two cases still match no rule and are held back (Gen 19:17 and
-  41:24: qameṣ with a conjunctive accent).
+  Implicit Doubling, Exceptional Forms (הָ before an accented qameṣ-ה, as in הָהָרָה; and הֶ before an unaccented הָ or עָ,
+  vowel dissimilation, as in הֶהָרִים), SQNMLVY (vocal sheva, or short vowel before a doubled letter) and Pausal Lengthening
+  (a qameṣ article in a word carrying a pause accent). Owner decisions that the spelling rules cannot make are in
+  `ARTICLE_OVERRIDES`: Gen 40:3 is Standard Form (with a note) and Gen 41:24 הָשִׁבֳּלִים is SQNMLVY. Nothing in Genesis is held back now.
 * **Dagesh.** Answer choices: Dagesh Lene, Dagesh Forte, Mappiq. The order of questions is the owner's: BeGaD KeFaT? preceded
   by silence? A dot in a final ה is a mappiq. The dot in a vav with no vowel of its own is the šureq vowel, never counted as
-  a dagesh (the guide says so). Cases the spelling cannot settle (a sheva after a long vowel, a dot in a guttural) are held
-  back and never used as examples (33 in Genesis).
-* **Passages** are `data-source/bible/passages.csv` (article) and `passages-dagesh.csv` (dagesh): Title, Start, End, Note.
+  a dagesh; the guide compares a vav with a dagesh forte against šureq vavs. **Find the dagesh** asks for a type (lene, forte
+  or mappiq) and the learner taps *consonants*, not words. Cases the spelling cannot settle (a sheva after a long vowel, a dot
+  in a guttural) are held back and never used as examples (33 in Genesis).
+* **Pronominal Suffixes.** Type 1 (singular nouns) and Type 2 (plural nouns) suffixes, from the owner's table (סוּס / סוּסִים,
+  ten person/gender/number rows). OSHB tags the suffix and its person/gender/number; the app checks that the written ending
+  is that row's ending in the table and takes Type 1 or Type 2 from the column that matched. Nouns and prepositions only (verbs
+  have their own object suffixes). Endings not in the table (for example לָךְ, or the connecting vowels in -ֵהוּ) are held back.
+  **Find the pronominal suffix** asks for Type 1 or Type 2.
+* **Passages** are `data-source/bible/passages.csv` (article), `passages-dagesh.csv` and `passages-suffix.csv`: Title, Start, End, Note.
+* **Spacing and hidden controls.** `.btn` sets `display`, which silently beat the `hidden` attribute, so the Next button showed
+  under the answers; `.bible-body [hidden]` now wins, and the Next buttons have their own space above them.
 * **Vowel names** in the app use the spelling on the Vowels page (qameṣ, pataḥ, segol, ṣere, ḥireq, šureq …).
 * **Adding more** (other books, prefixed prepositions, syllables) follows the same shape: a rules module, a build step that
   writes a small dataset, and a page config for the shared engine. Only the verses a page needs are shipped.

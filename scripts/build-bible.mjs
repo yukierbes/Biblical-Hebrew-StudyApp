@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Builds netlify/functions/data/bible-article.json and bible-dagesh.json — the data for the
-// "Definite Article in Context" and "Dagesh in Context" pages —
+// Builds netlify/functions/data/bible-article.json, bible-dagesh.json and bible-suffix.json — the data for the
+// "Definite Article", "Dagesh" and "Pronominal Suffixes" pages —
 // from the Open Scriptures Hebrew Bible file(s) in data-source/bible/.
 //
 // Like build-data.mjs, you normally never run this yourself: Netlify runs it on every deploy
@@ -21,6 +21,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ARTICLE_PATTERNS, ARTICLE_GROUPS, parseOsis, findArticles, morphParts } from "./lib/article-rules.mjs";
 import { DAGESH_PATTERNS, DAGESH_GROUPS, analyzeWord } from "./lib/dagesh-rules.mjs";
+import { SUFFIX_PATTERNS, SUFFIX_GROUPS, SUFFIX_TABLE, findSuffixes } from "./lib/suffix-rules.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const SRC = join(ROOT, "data-source", "bible");
@@ -71,7 +72,7 @@ if (!errors.length && found.length < 1400) errors.push(`Only ${found.length} art
 const classified = found.filter((a) => a.pattern);
 const held = found.filter((a) => !a.pattern);
 const counts = Object.fromEntries(ARTICLE_PATTERNS.map((p) => [p.id, classified.filter((a) => a.pattern === p.id).length]));
-for (const p of ARTICLE_PATTERNS) if (!errors.length && counts[p.id] < 3) warnings.push(`Pattern "${p.id}" has only ${counts[p.id]} examples in Genesis.`);
+for (const p of ARTICLE_PATTERNS) if (!errors.length && counts[p.id] < 2) warnings.push(`Pattern "${p.id}" has only ${counts[p.id]} examples in Genesis.`);
 
 // ---- passages (one CSV per page) ----
 function readPassages(file) {
@@ -95,6 +96,7 @@ function readPassages(file) {
 }
 const articlePassages = errors.length ? [] : readPassages("passages.csv");
 const dageshPassages = errors.length ? [] : readPassages("passages-dagesh.csv");
+const suffixPassages = errors.length ? [] : readPassages("passages-suffix.csv");
 const passages = articlePassages;
 const passageRefs = new Set(articlePassages.flatMap((p) => p.verses));
 
@@ -166,9 +168,9 @@ if (!errors.length) {
       if (w.seg) return { t: w.text, s: 1 };
       const res = perWord.get(`${v.ref}#${wi}`) || [];
       const d = [];
-      let u = 0;
+      const u = []; // positions of vavs whose dot is the šureq vowel (not a dagesh)
       for (const r of res) {
-        if (r.kind === "shureq") { u = 1; continue; }
+        if (r.kind === "shureq") { u.push(r.li); continue; }
         if (r.pattern) {
           d.push([r.li, r.pattern]);
           if (wordCount(v) <= DAGESH_MAX_WORDS) { dageshOut.examples.push({ ref: v.ref, wi, li: r.li, pattern: r.pattern }); counts[r.pattern]++; }
@@ -177,7 +179,7 @@ if (!errors.length) {
           dageshOut.held.push({ ref: v.ref, wi, li: r.li, reason: r.reason });
         }
       }
-      return { t: w.text, ...(d.length ? { d } : {}), ...(u ? { u: 1 } : {}) };
+      return { t: w.text, ...(d.length ? { d } : {}), ...(u.length ? { u } : {}) };
     });
     dageshOut.verses[v.ref] = words;
   }
@@ -189,6 +191,45 @@ if (!errors.length) {
   for (const p of dageshPassages) {
     const steps = p.verses.reduce((n, ref) => n + (dageshOut.verses[ref] || []).reduce((m, w) => m + (w.d ? w.d.filter((x) => x[1] !== "held").length : 0), 0), 0);
     if (steps > 25) warnings.push(`passages-dagesh.csv: "${p.title}" has ${steps} dots to step through — consider a shorter passage.`);
+  }
+}
+
+// ---- Pronominal Suffixes ----
+const SUFFIX_MAX_WORDS = 12;
+const suffixOut = { verses: {}, examples: [], held: [], counts: { type1: 0, type2: 0 }, totals: { type1: 0, type2: 0, held: 0 } };
+if (!errors.length) {
+  const found = findSuffixes(verses, morphParts);
+  const byKey = new Map(found.map((x) => [`${x.ref}#${x.wi}`, x]));
+  for (const x of found) {
+    if (x.type) suffixOut.totals[x.type]++;
+    else suffixOut.totals.held++;
+  }
+  const wordCount = (v) => v.words.filter((w) => !w.seg).length;
+  const passageRefsSuffix = new Set(suffixPassages.flatMap((p) => p.verses));
+  for (const v of verses) {
+    const short = wordCount(v) <= SUFFIX_MAX_WORDS;
+    if (!short && !passageRefsSuffix.has(v.ref)) continue;
+    const hasAny = v.words.some((w, wi) => byKey.has(`${v.ref}#${wi}`));
+    if (!hasAny && !passageRefsSuffix.has(v.ref)) continue;
+    suffixOut.verses[v.ref] = v.words.map((w, wi) => {
+      if (w.seg === "x-maqqef") return { t: w.text, m: 1 };
+      if (w.seg) return { t: w.text, s: 1 };
+      const x = byKey.get(`${v.ref}#${wi}`);
+      if (!x) return { t: w.text };
+      if (!x.type) {
+        if (short) suffixOut.held.push({ ref: v.ref, wi, reason: x.reason });
+        return { t: w.text, xh: 1 };
+      }
+      if (short) {
+        suffixOut.examples.push({ ref: v.ref, wi, pattern: x.type, pgn: x.pgn, from: x.from, stem: x.stem });
+        suffixOut.counts[x.type]++;
+      }
+      return { t: w.text, x: [x.type, x.pgn, x.from, x.stem] };
+    });
+  }
+  for (const p of suffixPassages) {
+    const steps = p.verses.reduce((n, ref) => n + (suffixOut.verses[ref] || []).filter((w) => w.x).length, 0);
+    if (steps > 14) warnings.push(`passages-suffix.csv: "${p.title}" has ${steps} suffixes to step through — consider a shorter passage.`);
   }
 }
 
@@ -210,11 +251,26 @@ const dageshData = {
   held: dageshOut.held,
 };
 const dageshJson = JSON.stringify(dageshData);
+const suffixData = {
+  source: output.source,
+  patterns: SUFFIX_PATTERNS,
+  groups: SUFFIX_GROUPS,
+  table: SUFFIX_TABLE,
+  counts: suffixOut.counts,
+  totals: suffixOut.totals,
+  passages: suffixPassages,
+  verses: suffixOut.verses,
+  examples: suffixOut.examples,
+  held: suffixOut.held,
+};
+const suffixJson = JSON.stringify(suffixData);
 const json = JSON.stringify(output);
+console.log(`bible-suffix: ${suffixData.examples.length} practice examples (${suffixData.counts.type1} Type 1, ${suffixData.counts.type2} Type 2), ${suffixData.held.length} held back, ${suffixPassages.length} passages, ${Object.keys(suffixData.verses).length} verses (${(suffixJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-dagesh: ${dageshData.examples.length} practice examples (${dageshData.counts.lene} lene, ${dageshData.counts.forte} forte, ${dageshData.counts.mappiq} mappiq), ${dageshData.held.length} held back, ${dageshPassages.length} passages, ${Object.keys(dageshData.verses).length} verses (${(dageshJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-article: ${found.length} articles found in Genesis → ${examples.length} practice examples, ${held.length} held back, ${passages.length} passages, ${Object.keys(verseOut).length} verses (${(json.length / 1024).toFixed(0)} KB)`);
 if (!CHECK_ONLY) {
   mkdirSync(OUT, { recursive: true });
   writeFileSync(join(OUT, "bible-article.json"), json);
   writeFileSync(join(OUT, "bible-dagesh.json"), dageshJson);
+  writeFileSync(join(OUT, "bible-suffix.json"), suffixJson);
 }

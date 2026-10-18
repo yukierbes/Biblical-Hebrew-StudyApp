@@ -48,11 +48,18 @@ export const ARTICLE_PATTERNS = [
       "The noun begins with ה, ח, or sometimes ע. The guttural rejects the dagesh, but the article’s vowel does not change: it stays הַ (pataḥ), and the guttural is understood to be doubled by implication. This is implicit doubling.",
   },
   {
-    id: "segol",
-    group: "segol",
-    label: "Segol",
+    id: "exceptional_qamets",
+    group: "exceptional",
+    label: "Exceptional Forms: הָ before an accented הָ",
     explain:
-      "Exception: when the guttural is ע or ה with an unaccented qameṣ, the article’s pataḥ becomes segol: הֶ.",
+      "Exceptional form (singular, e.g. הָהָרָה, “to the mountain”). Normally a ה lets the article stay short (הַ). But when that ה has a qameṣ and is accented, the implicit doubling can no longer be pronounced, and the article’s pataḥ lengthens to qameṣ to compensate: הַ becomes הָ. This is compensatory lengthening.",
+  },
+  {
+    id: "exceptional_segol",
+    group: "exceptional",
+    label: "Exceptional Forms: הֶ before an unaccented הָ or עָ",
+    explain:
+      "Exceptional form (plural, e.g. הֶהָרִים, “the mountains”). Hebrew avoids two “a” sounds in a row when the second one is unaccented. When the ה or ע has a qameṣ but no accent, the article’s pataḥ changes to segol: הַ becomes הֶ. This is vowel dissimilation.",
   },
   {
     id: "sqnmlvy_sheva",
@@ -82,7 +89,7 @@ export const ARTICLE_GROUPS = [
   { id: "standard", label: "Standard Form", patterns: ["forte"] },
   { id: "compensatory", label: "Compensatory Lengthening", patterns: ["compensatory"] },
   { id: "implicit", label: "Implicit Doubling", patterns: ["implicit"] },
-  { id: "segol", label: "Segol", patterns: ["segol"] },
+  { id: "exceptional", label: "Exceptional Forms", patterns: ["exceptional_qamets", "exceptional_segol"] },
   { id: "sqnmlvy", label: "SQNMLVY", patterns: ["sqnmlvy_sheva", "sqnmlvy_extended"] },
   { id: "pausal", label: "Pausal Lengthening", patterns: ["pausal"] },
 ];
@@ -92,6 +99,8 @@ export const ARTICLE_GROUPS = [
  * Gen 40:3 הַטַּבָּחִים is Standard Form: in this digital text the dagesh in ט is not written.
  */
 export const ARTICLE_OVERRIDES = {
+  // Gen 41:24 הָשִׁבֳּלִים: SQNMLVY, a short vowel before a doubled consonant (the שׁ is a sibilant).
+  "Gen.41.24|השבלים": { pattern: "sqnmlvy_extended" },
   "Gen.40.3|הטבחים": {
     pattern: "forte",
     note: "In this digital text the dagesh in the ט is not written, but the word is standard form: הַ + a dagesh forte in the first letter of the noun.",
@@ -130,7 +139,9 @@ export function classifyArticle(artSeg, nextSeg, wordText = "") {
 
   if (artVowel === "qamets" && COMPENSATORY.has(n.letter) && n.letter !== "ה") return "compensatory";
   if (artVowel === "patah" && IMPLICIT.has(n.letter)) return "implicit";
-  if (artVowel === "segol" && (n.letter === "ע" || n.letter === "ה")) return "segol";
+  if (artVowel === "segol" && (n.letter === "ע" || n.letter === "ה")) return "exceptional_segol";
+  // הָ before a ה that has its own qameṣ (הָהָרָה): the article lengthens because that ה is accented.
+  if (artVowel === "qamets" && n.letter === "ה" && n.marks.includes(QAMETS)) return "exceptional_qamets";
 
   if (artVowel === "patah" && SQNMLVY.has(n.letter)) {
     if (n.marks.includes(SHEVA)) return "sqnmlvy_sheva";

@@ -30,6 +30,7 @@ import * as achievementsPage from "./pages/achievements.js";
 import * as dailyChallengePage from "./pages/daily-challenge.js";
 import * as bibleArticlePage from "./pages/bible-article.js";
 import * as bibleDageshPage from "./pages/bible-dagesh.js";
+import * as bibleSuffixPage from "./pages/bible-suffix.js";
 import * as creditsPage from "./pages/credits.js";
 import { showToast } from "./toast.js";
 import { initHebrewKeyboard, isHebrewKeyboardOpen, closeHebrewKeyboard } from "./hebrew-keyboard.js";
@@ -74,6 +75,7 @@ const PAGES = {
   "daily-challenge": dailyChallengePage,
   "bible-article": bibleArticlePage,
   "bible-dagesh": bibleDageshPage,
+  "bible-suffix": bibleSuffixPage,
   credits: creditsPage,
   // Owner only: the link is hidden for everyone else, and the server refuses their requests.
   reports: reportsPage,

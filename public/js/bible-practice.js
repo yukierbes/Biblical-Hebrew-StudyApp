@@ -11,7 +11,7 @@
 // description is shown AFTER an answer is chosen, so the learner has to recall it first.
 
 import { loadBibleData } from "./bible-data.js";
-import { buildVerse, prettyRef, getShowAccents, setShowAccents, wordHtml, hebrewHtml } from "./bible-text.js";
+import { buildVerse, buildLetterVerse, prettyRef, getShowAccents, setShowAccents, wordHtml, hebrewHtml } from "./bible-text.js";
 import { recordAttempt } from "./history.js";
 import { recordStreakActivity } from "./srs.js";
 
@@ -280,13 +280,17 @@ export function createPractice(config) {
     const byGroup = {};
     for (const ex of data.examples) (byGroup[groupOf(ex.pattern).id] ||= []).push(ex);
     const order = shuffle(Object.keys(byGroup));
+    const keyOf = (e) => `${e.ref}#${e.wi}#${e.li ?? ""}`;
     const used = new Set();
     const out = [];
     for (let i = 0; i < QUIZ_LENGTH; i++) {
-      const pool = byGroup[order[i % order.length]].filter((e) => !used.has(`${e.ref}#${e.wi}#${e.li ?? ""}`));
-      if (!pool.length) continue;
+      // one pattern group per question, cycling through them so the rarer patterns appear;
+      // if a group has run out of examples, any unused example fills the place
+      let pool = byGroup[order[i % order.length]].filter((e) => !used.has(keyOf(e)));
+      if (!pool.length) pool = data.examples.filter((e) => !used.has(keyOf(e)));
+      if (!pool.length) break;
       const pick = pool[Math.floor(Math.random() * pool.length)];
-      used.add(`${pick.ref}#${pick.wi}#${pick.li ?? ""}`);
+      used.add(keyOf(pick));
       out.push(pick);
     }
     return shuffle(out);
@@ -379,40 +383,68 @@ export function createPractice(config) {
   }
 
   // ---------- Find the … ----------
+  // The page may offer a TYPE to look for (e.g. lene / forte / mappiq, or Type 1 / Type 2) and may ask for
+  // WORDS or single LETTERS (consonants).
 
   function renderFind(body, rerender) {
     const ft = config.findTab;
-    if (!state.find) state.find = { ref: null, picked: new Set(), checked: false };
+    if (!state.find) state.find = { type: ft.types ? ft.types[0].id : null, ref: null, picked: new Set(), checked: false };
     const f = state.find;
+    if (ft.types) {
+      const picker = el("div", "choice-group bible-type-picker");
+      picker.appendChild(el("span", "caption", "Find:"));
+      for (const t of ft.types) {
+        const b = el("button", "choice-btn" + (f.type === t.id ? " selected" : ""), t.label);
+        b.type = "button";
+        b.addEventListener("click", () => {
+          f.type = t.id;
+          f.ref = null;
+          rerender();
+        });
+        picker.appendChild(b);
+      }
+      body.appendChild(picker);
+    }
+    const typeLabel = ft.types ? ft.types.find((t) => t.id === f.type).label : "";
+    const letterMode = ft.level === "letter";
     if (!f.ref) {
-      const c = Object.entries(data.verses).filter(([, words]) => ft.candidate(words)).map(([ref]) => ref);
+      const c = Object.entries(data.verses).filter(([, words]) => ft.candidate(words, f.type)).map(([ref]) => ref);
       f.ref = c[Math.floor(Math.random() * c.length)];
       f.picked = new Set();
       f.checked = false;
     }
     const words = data.verses[f.ref];
-    body.appendChild(el("p", "", ft.prompt));
+    const key = (wi, li) => (letterMode ? `${wi}:${li}` : String(wi));
+    const target = (wi, li) => ft.isTarget(words[wi], f.type, li);
+    body.appendChild(el("p", "", typeof ft.prompt === "function" ? ft.prompt(typeLabel) : ft.prompt));
     body.appendChild(el("div", "caption", prettyRef(f.ref)));
-    const verse = buildVerse(words, {
-      showAccents: state.showAccents,
-      onWord: (wi, w, span) => {
-        if (f.checked) return;
-        if (f.picked.has(wi)) f.picked.delete(wi);
-        else f.picked.add(wi);
-        span.classList.toggle("is-picked", f.picked.has(wi));
-      },
-    });
-    verse.querySelectorAll(".bible-word").forEach((span) => {
-      const wi = Number(span.dataset.wi);
-      if (f.picked.has(wi)) span.classList.add("is-picked");
+
+    // every tappable thing in this verse: [key, wi, li]
+    const things = [];
+    let verse;
+    const toggle = (k, node) => {
+      if (f.checked) return;
+      if (f.picked.has(k)) f.picked.delete(k);
+      else f.picked.add(k);
+      node.classList.toggle("is-picked", f.picked.has(k));
+    };
+    if (letterMode) {
+      verse = buildLetterVerse(words, { showAccents: state.showAccents, onLetter: (wi, li, w, node) => toggle(key(wi, li), node) });
+      verse.querySelectorAll(".bible-letter").forEach((node) => things.push([key(+node.dataset.wi, +node.dataset.li), +node.dataset.wi, +node.dataset.li, node]));
+    } else {
+      verse = buildVerse(words, { showAccents: state.showAccents, onWord: (wi, w, node) => toggle(key(wi), node) });
+      verse.querySelectorAll(".bible-word").forEach((node) => things.push([key(+node.dataset.wi), +node.dataset.wi, undefined, node]));
+    }
+    for (const [k, wi, li, node] of things) {
+      if (f.picked.has(k)) node.classList.add("is-picked");
       if (f.checked) {
-        const target = ft.isTarget(words[wi]);
-        const picked = f.picked.has(wi);
-        if (target && picked) span.classList.add("is-correct");
-        else if (target && !picked) span.classList.add("is-missed");
-        else if (!target && picked) span.classList.add("is-wrong");
+        const isT = target(wi, li);
+        const picked = f.picked.has(k);
+        if (isT && picked) node.classList.add("is-correct");
+        else if (isT && !picked) node.classList.add("is-missed");
+        else if (!isT && picked) node.classList.add("is-wrong");
       }
-    });
+    }
     body.appendChild(verse);
     const row = el("div", "button-row");
     if (!f.checked) {
@@ -425,14 +457,15 @@ export function createPractice(config) {
       });
       row.appendChild(check);
     } else {
-      const total = words.filter(ft.isTarget).length;
-      const got = [...f.picked].filter((wi) => ft.isTarget(words[wi])).length;
-      const wrongPicks = [...f.picked].filter((wi) => !ft.isTarget(words[wi]));
+      const total = things.filter(([, wi, li]) => target(wi, li)).length;
+      const got = things.filter(([k, wi, li]) => target(wi, li) && f.picked.has(k)).length;
+      const wrongPicks = things.filter(([k, wi, li]) => !target(wi, li) && f.picked.has(k));
+      const unit = letterMode ? "letter" : "word";
       const msg = el("div", "bible-feedback " + (got === total && !wrongPicks.length ? "is-correct" : "is-wrong"));
-      msg.textContent = `You found ${got} of ${total}${wrongPicks.length ? `, and tapped ${wrongPicks.length} word${wrongPicks.length > 1 ? "s" : ""} that ${wrongPicks.length > 1 ? "do" : "does"} not have it` : ""}. ${ft.legend}`;
+      msg.textContent = `You found ${got} of ${total}${wrongPicks.length ? `, and tapped ${wrongPicks.length} ${unit}${wrongPicks.length > 1 ? "s" : ""} that ${wrongPicks.length > 1 ? "do" : "does"} not match` : ""}. ${typeof ft.legend === "function" ? ft.legend(typeLabel) : ft.legend}`;
       body.appendChild(msg);
-      for (const wi of wrongPicks) {
-        const trap = ft.trap && ft.trap(words[wi]);
+      for (const [, wi, li] of wrongPicks) {
+        const trap = ft.trap && ft.trap(words[wi], f.type, li);
         if (trap) {
           body.appendChild(el("div", "bible-feedback", trap));
           break;

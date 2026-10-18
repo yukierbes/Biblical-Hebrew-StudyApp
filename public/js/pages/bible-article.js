@@ -14,7 +14,7 @@ const isArticle = (w) => w.a !== undefined && w.p !== "held";
 const page = createPractice({
   dataset: "bible-article",
   historyMode: "bible-article",
-  title: "Definite Article in Context",
+  title: "Definite Article",
   intro: "Real examples from the Hebrew text of Genesis.",
   noun: "article",
   promptText: "What is happening at the article in the highlighted word?",

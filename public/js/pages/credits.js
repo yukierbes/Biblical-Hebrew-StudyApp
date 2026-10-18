@@ -40,7 +40,7 @@ export function mount({ content, sidebarExtra }) {
     ["Karl V. Kutz and Rebekah L. Josberger, Learning Biblical Hebrew", "Used to check and build verb forms and parsing."],
     ["Russell T. Fuller and Kyoungwon Choi, Invitation to Biblical Hebrew: A Beginning Grammar", "Used to check and build verb forms and parsing."],
     ["Mark D. Futato Sr., Basics of Hebrew Accents", "Accent marks."],
-    ["The author’s own class notes", "Dagesh, guttural and definite-article rules used in the Definite Article in Context practice."],
+    ["The author’s own class notes", "Dagesh, guttural and definite-article rules used in the Bible in Context practice pages (Definite Article, Dagesh, Pronominal Suffixes)."],
   ];
   const list = el("ul", "bible-credit-list");
   for (const [book, use] of refs) {

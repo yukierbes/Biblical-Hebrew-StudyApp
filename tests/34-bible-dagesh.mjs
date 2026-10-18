@@ -1,4 +1,4 @@
-// Dagesh in Context: the dagesh rules (from the owner's "Hebrew Dagesh" sheet) and the page.
+// Dagesh: the dagesh rules (from the owner's "Hebrew Dagesh" sheet) and the page.
 import { readFileSync } from "node:fs";
 import { setupApp, assert, summary, navigateTo } from "./helpers.mjs";
 import { analyzeWord, DAGESH_PATTERNS, DAGESH_GROUPS } from "../scripts/lib/dagesh-rules.mjs";
@@ -38,7 +38,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 navigateTo(document, "bible-dagesh");
 await wait(200);
 const content = document.getElementById("content");
-assert(content.querySelector(".page-title").textContent === "Dagesh in Context", "page opens");
+assert(content.querySelector(".page-title").textContent === "Dagesh", "page opens");
 assert([...content.querySelectorAll(".bible-choice")].map((b) => b.textContent).join("|") === "Dagesh Lene|Dagesh Forte|Mappiq", "answer buttons: Dagesh Lene, Dagesh Forte, Mappiq (names only)");
 assert(content.querySelectorAll(".bible-mark").length >= 1 && !content.querySelector(".bible-feedback").textContent, "one letter is highlighted and nothing is explained before answering");
 const step = data.passages[0].verses.flatMap((r) => data.verses[r].flatMap((w) => (w.d || []).filter((d) => d[1] !== "held").map((d) => d[1])))[0];
@@ -62,7 +62,15 @@ assert(missed > 0 && /Practise the missed ones/.test(document.getElementById("co
 [...document.querySelectorAll(".bible-tabs .choice-btn")][3].click();
 await wait(30);
 const guide = document.getElementById("content").textContent;
-assert(guide.includes("šureq vowel, not a dagesh"), "the pattern guide notes that the dot in a vav is a šureq vowel, not a dagesh");
+assert(guide.includes("šureq vowel, not a dagesh") && guide.includes("Dagesh forte in a vav") && guide.includes("Šureq (a vav"), "the guide notes the šureq vowel and compares a vav with a dagesh forte against šureq vavs");
+// find the dagesh: choose a type, then tap consonants
+[...document.querySelectorAll(".bible-tabs .choice-btn")][2].click();
+await wait(30);
+assert([...document.querySelectorAll(".bible-type-picker .choice-btn")].map((b) => b.textContent).join("|") === "Dagesh Lene|Dagesh Forte|Mappiq", "Find the dagesh offers lene, forte and mappiq");
+assert(document.querySelectorAll(".bible-letter").length > 5, "the verse is shown consonant by consonant");
+[...document.querySelectorAll(".bible-type-picker .choice-btn")][2].click();
+await wait(30);
+assert(document.querySelector("#content .bible-body p").textContent.includes("Mappiq"), "the prompt names the chosen type");
 assert(guide.includes("Ask in this order") || guide.includes("Lene or forte"), "the guide shows the order of questions");
 
 summary();

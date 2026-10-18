@@ -25,13 +25,15 @@ export function prettyRef(ref) {
  * (a piece index) wraps that piece in <mark>; `showAccents` false hides the accent marks.
  */
 export function wordHtml(word, { markPiece = -1, markLetter = -1, showAccents = true } = {}) {
-  if (markLetter >= 0) return letterMarkedHtml(word.t.split("/").join(""), markLetter, showAccents);
+  if (Array.isArray(markLetter) || markLetter >= 0) return letterMarkedHtml(word.t.split("/").join(""), markLetter, showAccents);
   const pieces = word.t.split("/").map((p) => (showAccents ? p : stripAccents(p)));
   return pieces.map((p, i) => (i === markPiece ? `<mark class="bible-mark">${esc(p)}</mark>` : esc(p))).join("");
 }
 
 /** One letter (and the marks written with it) wrapped in <mark>; `letterIndex` counts letters from the start of the word. */
 export function letterMarkedHtml(text, letterIndex, showAccents = true) {
+  // letterIndex: one letter, or [from, to] to highlight a run of letters (to the end if `to` is past the last letter)
+  const [from, to] = Array.isArray(letterIndex) ? letterIndex : [letterIndex, letterIndex];
   let out = "";
   let n = -1;
   let open = false;
@@ -39,14 +41,66 @@ export function letterMarkedHtml(text, letterIndex, showAccents = true) {
     const isLetter = ch >= "\u05d0" && ch <= "\u05ea";
     if (!showAccents && ch >= "\u0591" && ch <= "\u05af") continue;
     if (isLetter) {
-      if (open) { out += "</mark>"; open = false; }
       n += 1;
-      if (n === letterIndex) { out += '<mark class="bible-mark">'; open = true; }
+      if (n === from) { out += '<mark class="bible-mark">'; open = true; }
+      else if (open && n > to) { out += "</mark>"; open = false; }
     }
     out += esc(ch);
   }
   if (open) out += "</mark>";
   return out;
+}
+
+/**
+ * A verse where every LETTER (with the marks written on it) can be tapped — used when the learner must pick
+ * consonants, not words. `onLetter(wi, li, word, el)`; words keep their spacing; maqqef and sof pasuq stay attached.
+ */
+export function buildLetterVerse(words, { showAccents = true, onLetter = null } = {}) {
+  const el = document.createElement("div");
+  el.className = "bible-verse bible-letter-verse";
+  el.setAttribute("lang", "he");
+  el.setAttribute("dir", "rtl");
+  words.forEach((w, wi) => {
+    if (w.m || w.s) {
+      el.appendChild(document.createTextNode(w.t));
+      return;
+    }
+    const wordEl = document.createElement("span");
+    wordEl.className = "bible-word";
+    wordEl.dataset.wi = String(wi);
+    let current = null;
+    let li = -1;
+    for (const ch of w.t.split("/").join("")) {
+      const isLetter = ch >= "\u05d0" && ch <= "\u05ea";
+      if (!isLetter && !current) continue;
+      if (!showAccents && ch >= "\u0591" && ch <= "\u05af") continue;
+      if (isLetter) {
+        li += 1;
+        current = document.createElement("span");
+        current.className = "bible-letter";
+        current.dataset.wi = String(wi);
+        current.dataset.li = String(li);
+        const myLi = li;
+        if (onLetter) {
+          current.setAttribute("role", "button");
+          current.tabIndex = 0;
+          const fire = () => onLetter(wi, myLi, w, current);
+          current.addEventListener("click", fire);
+          current.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              fire();
+            }
+          });
+        }
+        wordEl.appendChild(current);
+      }
+      current.textContent += ch;
+    }
+    el.appendChild(wordEl);
+    if (wi < words.length - 1 && !(words[wi + 1].m || words[wi + 1].s)) el.appendChild(document.createTextNode(" "));
+  });
+  return el;
 }
 
 /** Index (among the letters) of the first vav carrying a dot and no vowel of its own — the šureq vowel — or -1. */

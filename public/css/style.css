@@ -3535,3 +3535,25 @@ button.bible-word:hover { border-color: var(--hairline-strong); }
 .bible-watch { border-color: var(--accent); }
 .bible-review { margin: 10px 0; }
 .bible-guide-card ol { margin: 6px 0 6px 20px; }
+
+/* --- Bible practice pages: spacing, hidden controls, consonant-level picking (update 12) --- */
+.bible-body [hidden] { display: none !important; } /* .btn sets display, which used to override the hidden attribute: "Next" showed under the answers before answering */
+.bible-feedback { margin: 14px 0 18px; }
+.bible-question + .btn,
+.bible-step > .btn,
+.bible-body > .btn,
+.bible-body > .button-row { margin-top: 18px; }
+.bible-body .btn + .btn { margin-left: 8px; }
+.bible-type-picker { align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+.bible-letter { display: inline-block; padding: 0 1px; margin: 0; border: 1px solid transparent; border-radius: 4px; cursor: pointer; line-height: 1.6; }
+.bible-letter:hover { border-color: var(--hairline-strong); }
+.bible-letter:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.bible-letter.is-picked { background: var(--accent-soft); border-color: var(--accent); }
+.bible-letter.is-correct { background: var(--good-soft); border-color: var(--good); }
+.bible-letter.is-missed { border: 2px dotted var(--good); }
+.bible-letter.is-wrong { background: var(--bad-soft); border-color: var(--bad); }
+.bible-letter-verse { line-height: 2.4; }
+.bible-table-scroll { overflow-x: auto; }
+table.bible-suffix-table { border-collapse: collapse; width: 100%; }
+table.bible-suffix-table th, table.bible-suffix-table td { border-bottom: 1px solid var(--hairline); padding: 6px 10px; text-align: left; vertical-align: top; }
+table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: calc(1.35rem * var(--hebrew-scale, 1)); --hebrew-inner: 1; direction: rtl; text-align: right; white-space: nowrap; }

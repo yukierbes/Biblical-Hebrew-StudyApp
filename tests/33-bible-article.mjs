@@ -1,4 +1,4 @@
-// Definite Article in Context: the article rules (from the owner's rule sheets), the
+// Definite Article: the article rules (from the owner's rule sheets), the
 // build output, and the page.
 import { readFileSync } from "node:fs";
 import { setupApp, assert, summary, navigateTo, click } from "./helpers.mjs";
@@ -14,15 +14,16 @@ assert(c("הָ", "עֵץ") === "compensatory", "הָ before ע");
 assert(c("הַ", "חֹשֶׁךְ") === "implicit", "הַ before ח = implicit doubling");
 assert(c("הַ", "הוּא") === "implicit", "הַ before ה = implicit doubling");
 assert(c("הַ", "עַרְקִי") === "implicit", "ע may show implicit doubling too");
-assert(c("הֶ", "הָרִים") === "segol" && c("הֶ", "עָרִים") === "segol", "הֶ before ה / ע");
+assert(c("הֶ", "הָרִים") === "exceptional_segol" && c("הֶ", "עָרִים") === "exceptional_segol", "הֶ before ה / ע is an Exceptional Form (vowel dissimilation)");
 assert(c("הַ", "יְבוּסִי") === "sqnmlvy_sheva", "SQNMLVY: י with vocal sheva");
 assert(c("הַ", "מְדַבֵּר") === "sqnmlvy_sheva", "SQNMLVY: מ with vocal sheva");
 assert(c("הַ", "צִפֹּר") === "sqnmlvy_extended", "SQNMLVY extended: short vowel before a doubled letter");
 assert(c("הַ", "טַבָּחִים") === null, "ט is not in SQNMLVY, so by the spelling rules alone Gen 40:3 would be held back (it is settled by an owner override)");
-assert(c("הָ", "הֵם") === null, "הָ before ה with no pause accent is held back");
+assert(c("הָ", "הָרָה") === "exceptional_qamets", "הָ before an accented qameṣ-ה (הָהָרָה) is an Exceptional Form");
+assert(c("הָ", "הֵם") === null, "הָ before ה (with a tsere) and no pause accent is held back");
 assert(c("הָ", "הֵם", "הָהֵם\u0592") === "pausal" && c("הָ", "חַי", "הָחַי\u05a0") === "pausal", "הָ in a word with a pause accent is pausal lengthening");
 assert(c("הָ", "שִׁבֳּלִים", "הָשִׁבֳּלִים\u05a3") === null, "a conjunctive accent (munaḥ) is not a pause, so it stays held back");
-assert(ARTICLE_PATTERNS.length === 7 && ARTICLE_PATTERNS.every((p) => p.label && p.explain && p.group), "seven patterns, each with wording and an answer group");
+assert(ARTICLE_PATTERNS.length === 8 && ARTICLE_PATTERNS.every((p) => p.label && p.explain && p.group), "seven patterns, each with wording and an answer group");
 assert(letters("שָּׁמַיִם")[0].marks.includes("\u05bc"), "letters() keeps the dagesh with its letter");
 
 console.log("Reading the Hebrew Bible file");
@@ -32,18 +33,18 @@ assert(verses[0].ref === "Gen.1.1" && verses[0].words.filter((w) => !w.seg).leng
 const found = findArticles(verses);
 const held = found.filter((a) => !a.pattern);
 assert(found.length === 1522, `1,522 tagged articles (${found.length})`);
-assert(held.length === 2, `2 held back (${held.length})`);
+assert(held.length === 0, `nothing is held back any more (${held.length})`);
 assert(!held.some((h) => h.ref === "Gen.40.3") && found.find((a) => a.ref === "Gen.40.3" && a.note).pattern === "forte", "Gen 40:3 הַטַּבָּחִים is Standard Form (owner decision), with a note");
 const counts = {};
 for (const a of found) counts[a.pattern || "held"] = (counts[a.pattern || "held"] || 0) + 1;
-assert(counts.forte === 847 && counts.pausal === 4 && counts.compensatory === 546 && counts.implicit === 91 && counts.segol === 8 && counts.sqnmlvy_sheva === 19 && counts.sqnmlvy_extended === 5, "counts per pattern match the audit sheet and your SQNMLVY rule");
+assert(counts.forte === 847 && counts.pausal === 2 && counts.exceptional_segol === 8 && counts.exceptional_qamets === 3 && counts.compensatory === 546 && counts.implicit === 91 && counts.sqnmlvy_sheva === 19 && counts.sqnmlvy_extended === 6, "counts per pattern match the audit sheet and your SQNMLVY rule");
 
 console.log("Built data file");
 const data = JSON.parse(readFileSync(new URL("../netlify/functions/data/bible-article.json", import.meta.url), "utf8"));
 assert(data.source.attribution.startsWith("Original work of the Open Scriptures Hebrew Bible available at https://github.com/openscriptures/morphhb"), "carries the required OSHB credit line");
 assert(data.examples.length > 1000 && data.examples.every((e) => data.patterns.some((p) => p.id === e.pattern)), "every example has a known pattern");
 assert(data.examples.every((e) => data.verses[e.ref] && data.verses[e.ref][e.wi] && data.verses[e.ref][e.wi].p === e.pattern), "every example points at a real word in a kept verse");
-assert(!data.examples.some((e) => data.verses[e.ref][e.wi].p === "held") && data.held.length === 2, "held-back words are never practice examples");
+assert(!data.examples.some((e) => data.verses[e.ref][e.wi].p === "held") && data.held.length === 0, "held-back words are never practice examples");
 assert(data.passages.length === 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "three passages, with all their verses present");
 
 console.log("Text helpers");
@@ -56,10 +57,10 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 navigateTo(document, "bible-article");
 await wait(150);
 const content = document.getElementById("content");
-assert(content.querySelector(".page-title").textContent === "Definite Article in Context", "page opens");
+assert(content.querySelector(".page-title").textContent === "Definite Article", "page opens");
 assert(content.querySelectorAll(".bible-verse-row").length === 5, "guided passage shows Genesis 1:1–5");
 assert(content.querySelectorAll(".bible-mark").length >= 1, "an article is highlighted");
-assert([...content.querySelectorAll(".bible-choice")].map((b) => b.textContent).join("|") === "Standard Form|Compensatory Lengthening|Implicit Doubling|Segol|SQNMLVY|Pausal Lengthening", "answer buttons show only the pattern names, SQNMLVY as one choice");
+assert([...content.querySelectorAll(".bible-choice")].map((b) => b.textContent).join("|") === "Standard Form|Compensatory Lengthening|Implicit Doubling|Exceptional Forms|SQNMLVY|Pausal Lengthening", "answer buttons show only the pattern names, SQNMLVY as one choice");
 assert(!content.querySelector(".bible-verse-row").parentElement.parentElement.textContent.includes("The opening of the Bible"), "no passage description above the verses");
 assert(!content.querySelector(".bible-feedback").textContent, "no explanation is shown before answering");
 const rightGroup = data.groups.findIndex((g) => g.patterns.includes(data.verses["Gen.1.1"][4].p));

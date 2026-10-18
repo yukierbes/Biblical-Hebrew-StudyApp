@@ -24,7 +24,7 @@ function letterWithMarks(text, li) {
 const page = createPractice({
   dataset: "bible-dagesh",
   historyMode: "bible-dagesh",
-  title: "Dagesh in Context",
+  title: "Dagesh",
   intro: "Real examples from the Hebrew text of Genesis.",
   noun: "dagesh",
   promptText: "What is the dot in the highlighted letter?",
@@ -41,14 +41,26 @@ const page = createPractice({
   describe: (w, ex) => hebrewHtml(`This is the dot in ${letterWithMarks(w.t.split("/").join(""), ex.li)} in the word ${w.t.split("/").join("")}.`),
   findTab: {
     label: "Find the dagesh",
-    prompt: "Tap every word that has a dagesh or a mappiq, then check.",
-    candidate: (words) => {
+    level: "letter",
+    types: [
+      { id: "lene", label: "Dagesh Lene" },
+      { id: "forte", label: "Dagesh Forte" },
+      { id: "mappiq", label: "Mappiq" },
+    ],
+    prompt: (type) => `Tap every consonant that has a ${type}, then check.`,
+    candidate: (words, type) => {
       const real = words.filter((w) => !w.m && !w.s);
-      return real.length >= 4 && real.length <= 12 && !words.some((w) => w.d && w.d.some((x) => x[1] === "held")) && words.some(isTarget);
+      const hits = words.reduce((n, w) => n + (w.d ? w.d.filter((x) => x[1] === type).length : 0), 0);
+      return real.length >= 3 && real.length <= 9 && hits >= 1 && hits <= 6 && !words.some((w) => w.d && w.d.some((x) => x[1] === "held"));
     },
-    isTarget,
-    trap: (w) => (w.u ? "A dot in a vav with no vowel of its own is a šureq vowel, not a dagesh." : null),
-    legend: "Green = correct, dotted green border = missed, red = no dagesh or mappiq in that word.",
+    isTarget: (w, type, li) => !!(w.d && w.d.some((x) => x[0] === li && x[1] === type)),
+    trap: (w, type, li) => {
+      if (w.u && w.u.includes(li)) return "The dot in a vav with no vowel of its own is a šureq vowel, not a dagesh.";
+      const other = w.d && w.d.find((x) => x[0] === li && x[1] !== "held");
+      if (other) return `That consonant has a ${other[1] === "mappiq" ? "mappiq" : "dagesh " + other[1]}, not a ${type === "mappiq" ? "mappiq" : "dagesh " + type}.`;
+      return null;
+    },
+    legend: "Green = correct, dotted green border = missed, red = not that kind of dot.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
     body.appendChild(el("p", "", "Dagesh and mappiq patterns with real word examples from Genesis."));
@@ -84,24 +96,43 @@ const page = createPractice({
 
     const shureq = el("div", "bible-guide-card bible-watch");
     shureq.appendChild(el("h3", "", "A dot in a vav is not always a dagesh"));
-    shureq.appendChild(el("p", "", "The dot in a vav with no vowel of its own (וּ) is the šureq vowel, not a dagesh."));
-    const list = el("div", "bible-guide-examples");
-    const seen = new Set();
-    for (const [ref, words] of Object.entries(data.verses)) {
-      if (list.children.length >= 4) break;
-      words.forEach((w, wi) => {
-        if (list.children.length >= 4 || !w.u || w.d) return;
-        const text = w.t.split("/").join("");
-        if (seen.has(text) || text.length > 8) return;
-        const idx = shureqIndex(text);
-        if (idx < 0) return;
-        seen.add(text);
+    shureq.appendChild(el("p", "", "A vav with a dot and no vowel of its own (וּ) is the šureq vowel, not a dagesh. A vav with a dot and a vowel of its own is a dagesh forte, and doubles the vav."));
+    const exampleRow = (title, items) => {
+      shureq.appendChild(el("p", "caption", title));
+      const list = el("div", "bible-guide-examples");
+      for (const { text, mark, ref } of items) {
         const item = el("span", "bible-guide-example");
-        item.innerHTML = `<span lang="he" dir="rtl" class="bible-word">${letterMarkedHtml(text, idx, showAccents)}</span> <span class="caption">${prettyRef(ref)}</span>`;
+        item.innerHTML = `<span lang="he" dir="rtl" class="bible-word">${letterMarkedHtml(text, mark, showAccents)}</span> <span class="caption">${prettyRef(ref)}</span>`;
         list.appendChild(item);
-      });
+      }
+      shureq.appendChild(list);
+    };
+    // vav with a dagesh forte (the vav has its own vowel)
+    const forteVav = [];
+    const seenF = new Set();
+    for (const e of data.examples) {
+      if (forteVav.length >= 4) break;
+      if (e.pattern !== "forte") continue;
+      const text = data.verses[e.ref][e.wi].t.split("/").join("");
+      const letter = [...text].filter((c) => c >= "\u05d0" && c <= "\u05ea")[e.li];
+      if (letter !== "ו" || seenF.has(text)) continue;
+      seenF.add(text);
+      forteVav.push({ text, mark: e.li, ref: e.ref });
     }
-    shureq.appendChild(list);
+    exampleRow("Dagesh forte in a vav (the vav has a vowel of its own):", forteVav);
+    const sureqVav = [];
+    const seenS = new Set();
+    for (const [ref, words] of Object.entries(data.verses)) {
+      if (sureqVav.length >= 4) break;
+      for (const w of words) {
+        if (sureqVav.length >= 4 || !w.u || w.d) continue;
+        const text = w.t.split("/").join("");
+        if (seenS.has(text) || text.length > 8) continue;
+        seenS.add(text);
+        sureqVav.push({ text, mark: w.u[0], ref });
+      }
+    }
+    exampleRow("Šureq (a vav with a dot and no vowel of its own):", sureqVav);
     body.appendChild(shureq);
   },
 });

@@ -380,8 +380,9 @@ export const QUIZ_HISTORY_MODES = [
   ["accent-typing", "Accents Typing"],
   ["consonant-typing", "Consonants Typing"],
   ["vowel-typing", "Vowels Typing"],
-  ["bible-article", "Definite Article in Context"],
-  ["bible-dagesh", "Dagesh in Context"],
+  ["bible-article", "Definite Article"],
+  ["bible-dagesh", "Dagesh"],
+  ["bible-suffix", "Pronominal Suffixes"],
 ];
 
 /** { lastPracticeDate, lastQuiz: { label, score, total, percent, timestamp } | null } */

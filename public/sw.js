@@ -60,6 +60,7 @@ const APP_SHELL = [
   "js/bible-practice.js",
   "js/pages/bible-article.js",
   "js/pages/bible-dagesh.js",
+  "js/pages/bible-suffix.js",
   "js/pages/credits.js",
   "js/profile.js",
   "js/personal.js",
