@@ -383,6 +383,8 @@ export const QUIZ_HISTORY_MODES = [
   ["bible-article", "Definite Article"],
   ["bible-dagesh", "Dagesh"],
   ["bible-suffix", "Pronominal Suffixes"],
+  ["bible-qames", "Qameṣ vs Qameṣ-ḥaṭuf"],
+  ["bible-sheva", "Shevas"],
 ];
 
 /** { lastPracticeDate, lastQuiz: { label, score, total, percent, timestamp } | null } */

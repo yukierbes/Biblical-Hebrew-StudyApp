@@ -73,4 +73,12 @@ await wait(30);
 assert(document.querySelector("#content .bible-body p").textContent.includes("Mappiq"), "the prompt names the chosen type");
 assert(guide.includes("Ask in this order") || guide.includes("Lene or forte"), "the guide shows the order of questions");
 
+// regression: the consonant that was tapped is the one that lights up (not the last letter of the word)
+[...document.querySelectorAll(".bible-type-picker .choice-btn")][0].click();
+await wait(30);
+const letters = [...document.querySelectorAll(".bible-letter")];
+letters[1].click();
+const lit = [...document.querySelectorAll(".bible-letter")].findIndex((l) => l.classList.contains("is-picked"));
+assert(lit === 1, `tapping the second consonant highlights the second consonant (highlighted: ${lit})`);
+
 summary();

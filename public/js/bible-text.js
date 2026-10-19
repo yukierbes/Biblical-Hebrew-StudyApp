@@ -81,12 +81,13 @@ export function buildLetterVerse(words, { showAccents = true, onLetter = null } 
         current.dataset.wi = String(wi);
         current.dataset.li = String(li);
         const myLi = li;
+        const node = current; // (a fixed reference: `current` itself moves on to the next letter)
         if (onLetter) {
-          current.setAttribute("role", "button");
-          current.tabIndex = 0;
-          const fire = () => onLetter(wi, myLi, w, current);
-          current.addEventListener("click", fire);
-          current.addEventListener("keydown", (e) => {
+          node.setAttribute("role", "button");
+          node.tabIndex = 0;
+          const fire = () => onLetter(wi, myLi, w, node);
+          node.addEventListener("click", fire);
+          node.addEventListener("keydown", (e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               fire();
@@ -165,4 +166,18 @@ export function setShowAccents(on) {
   } catch (e) {
     /* not critical */
   }
+}
+
+/** The letter at position `li` of a word, with the marks written on it. */
+export function letterWithMarks(text, li) {
+  let n = -1;
+  let out = "";
+  for (const ch of text) {
+    if (ch >= "\u05d0" && ch <= "\u05ea") {
+      n += 1;
+      if (n > li) break;
+    }
+    if (n === li) out += ch;
+  }
+  return out;
 }

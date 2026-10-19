@@ -31,22 +31,22 @@ export const SUFFIX_PATTERNS = [
   {
     id: "type1",
     group: "type1",
-    label: "Type 1 Suffix",
+    label: "Type 1",
     explain:
       "Type 1 suffixes are added to singular nouns (סוּס “horse” → סוּסִי “my horse”). Some prepositions and particles also take Type 1 suffixes.",
   },
   {
     id: "type2",
     group: "type2",
-    label: "Type 2 Suffix",
+    label: "Type 2",
     explain:
       "Type 2 suffixes are added to plural nouns (סוּסִים “horses” → סוּסַי “my horses”); most have a yod before the suffix. Some prepositions and particles also take Type 2 suffixes.",
   },
 ];
 
 export const SUFFIX_GROUPS = [
-  { id: "type1", label: "Type 1 Suffix", patterns: ["type1"] },
-  { id: "type2", label: "Type 2 Suffix", patterns: ["type2"] },
+  { id: "type1", label: "Type 1", patterns: ["type1"] },
+  { id: "type2", label: "Type 2", patterns: ["type2"] },
 ];
 
 const isLetter = (c) => c >= "\u05d0" && c <= "\u05ea";

@@ -14,14 +14,16 @@ const page = createPractice({
   title: "Pronominal Suffixes",
   intro: "Real examples from the Hebrew text of Genesis.",
   noun: "suffix",
-  promptText: "Which type of suffix is on the highlighted word?",
+  promptText: "Which type of suffix, and which person, gender and number, is on the highlighted word?",
+  mainPartTitle: "Type",
+  extraPart: (data) => ({ title: "PGN", choices: data.table.map((r) => ({ id: r.pgn, label: r.pgn })), answerOf: (ex) => ex.pgn }),
   markWord: (w, ex) => ({ markLetter: [ex.from, 999] }),
   steps: (data, passage) => {
     tableForDescribe = data.table;
     const steps = [];
     for (const ref of passage.verses) {
       (data.verses[ref] || []).forEach((w, wi) => {
-        if (w.x) steps.push({ ref, wi, pattern: w.x[0], from: w.x[2] });
+        if (w.x) steps.push({ ref, wi, pattern: w.x[0], pgn: w.x[1], from: w.x[2] });
       });
     }
     return steps;
@@ -35,10 +37,10 @@ const page = createPractice({
     label: "Find the pronominal suffix",
     level: "word",
     types: [
-      { id: "type1", label: "Type 1 Suffix" },
-      { id: "type2", label: "Type 2 Suffix" },
+      { id: "type1", label: "Type 1" },
+      { id: "type2", label: "Type 2" },
     ],
-    prompt: (type) => `Tap every word that has a ${type}, then check.`,
+    prompt: (type) => `Tap every word that has a ${type} suffix, then check.`,
     candidate: (words, type) => {
       const real = words.filter((w) => !w.m && !w.s);
       return real.length >= 4 && real.length <= 12 && words.some((w) => w.x && w.x[0] === type) && !words.some((w) => w.xh);

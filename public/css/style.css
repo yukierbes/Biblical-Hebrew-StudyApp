@@ -3557,3 +3557,9 @@ button.bible-word:hover { border-color: var(--hairline-strong); }
 table.bible-suffix-table { border-collapse: collapse; width: 100%; }
 table.bible-suffix-table th, table.bible-suffix-table td { border-bottom: 1px solid var(--hairline); padding: 6px 10px; text-align: left; vertical-align: top; }
 table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: calc(1.35rem * var(--hebrew-scale, 1)); --hebrew-inner: 1; direction: rtl; text-align: right; white-space: nowrap; }
+
+/* two answer boxes on one question (Pronominal Suffixes: Type, PGN) */
+.bible-part { margin-bottom: 12px; }
+.bible-part-title { margin: 8px 0 4px; }
+.bible-choices-grid { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
+.bible-choice.is-picked { border-color: var(--accent); background: var(--accent-soft); }

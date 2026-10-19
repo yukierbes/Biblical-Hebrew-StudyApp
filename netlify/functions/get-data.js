@@ -25,6 +25,8 @@ import vowelsData from "./data/vowels.json" with { type: "json" };
 import bibleArticleData from "./data/bible-article.json" with { type: "json" };
 import bibleDageshData from "./data/bible-dagesh.json" with { type: "json" };
 import bibleSuffixData from "./data/bible-suffix.json" with { type: "json" };
+import bibleQamesData from "./data/bible-qames.json" with { type: "json" };
+import bibleShevaData from "./data/bible-sheva.json" with { type: "json" };
 
 const DATASETS = {
   verbs: verbsData,
@@ -35,6 +37,8 @@ const DATASETS = {
   "bible-article": bibleArticleData,
   "bible-dagesh": bibleDageshData,
   "bible-suffix": bibleSuffixData,
+  "bible-qames": bibleQamesData,
+  "bible-sheva": bibleShevaData,
 };
 
 export const handler = async (event, context) => {
@@ -53,7 +57,7 @@ export const handler = async (event, context) => {
     return {
       statusCode: 400,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ error: `Unknown dataset "${dataset}". Expected verbs, vocabulary, accents, consonants, vowels, bible-article, bible-dagesh, or bible-suffix.` }),
+      body: JSON.stringify({ error: `Unknown dataset "${dataset}". Expected verbs, vocabulary, accents, consonants, vowels, bible-article, bible-dagesh, bible-suffix, bible-qames, or bible-sheva.` }),
     };
   }
 

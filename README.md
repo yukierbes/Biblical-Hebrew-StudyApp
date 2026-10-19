@@ -348,11 +348,11 @@ newest save wins).
 
 ## Feature overview
 
-### Bible in Context — Definite Article, Dagesh and Pronominal Suffixes (pilot pages)
+### Bible in Context — Definite Article, Dagesh, Pronominal Suffixes, Qameṣ vs Qameṣ-ḥaṭuf and Shevas (pilot pages)
 
 *Pages: `public/js/pages/bible-article.js`, `bible-dagesh.js` and `bible-suffix.js`, all built on the shared engine
 `public/js/bible-practice.js` (so they look and behave the same). Data: `data-source/bible/`. Rules:
-`scripts/lib/article-rules.mjs`, `dagesh-rules.mjs` and `suffix-rules.mjs`. Build: `scripts/build-bible.mjs` (runs on every
+`scripts/lib/article-rules.mjs`, `dagesh-rules.mjs`, `suffix-rules.mjs`, `hebrew-word.mjs` (the vowel / sheva / syllable analyzer), `qames-rules.mjs` and `sheva-rules.mjs`. Build: `scripts/build-bible.mjs` (runs on every
 deploy after the CSV build; `npm run check-bible` checks without writing). Page titles are just the topic (Definite Article,
 Dagesh, Pronominal Suffixes); keep that pattern for new pages.*
 
@@ -378,7 +378,18 @@ way to practise just those), **Find the …** (tap what has it; a dotted green b
   is that row's ending in the table and takes Type 1 or Type 2 from the column that matched. Nouns and prepositions only (verbs
   have their own object suffixes). Endings not in the table (for example לָךְ, or the connecting vowels in -ֵהוּ) are held back.
   **Find the pronominal suffix** asks for Type 1 or Type 2.
-* **Passages** are `data-source/bible/passages.csv` (article), `passages-dagesh.csv` and `passages-suffix.csv`: Title, Start, End, Note.
+* **Pronominal Suffixes — two answer boxes.** The guided passage and the quiz ask for the type (Type 1 / Type 2) AND the
+  person-gender-number (PGN); a question is judged when both boxes have an answer (the engine supports any number of boxes
+  through `config.extraPart`).
+* **Qameṣ vs Qameṣ-ḥaṭuf and Shevas.** Both read from one word analysis (`hebrew-word.mjs`): each letter's vowel, dagesh, meteg
+  and accent marks; which letters are vowels and which are vowel letters; which syllable is accented (from the accent mark; a
+  word with none that stands before a maqqef is unaccented; any other word without a usable accent has an UNKNOWN stress); then
+  the owner's rules for vocal/silent sheva and for qameṣ/qameṣ-ḥaṭuf. When a rule cannot be applied with confidence the case is
+  held back and never shown: for example an unaccented qameṣ before a sheva with no meteg (שָׁמְרוּ vs חָכְמָה look the same on
+  the page), a qameṣ before a י or ו with no vowel, or a word whose stress is unknown. The qameṣ-ḥaṭuf "before another
+  qameṣ-ḥaṭuf" rule is implemented but Genesis has no clear example of it.
+* **Find the dagesh / qameṣ / sheva** ask for a type and the learner taps consonants (each letter keeps its own vowel marks).
+* **Passages** are `data-source/bible/passages.csv` (article), `passages-dagesh.csv`, `passages-suffix.csv`, `passages-qames.csv` and `passages-sheva.csv`: Title, Start, End, Note.
 * **Spacing and hidden controls.** `.btn` sets `display`, which silently beat the `hidden` attribute, so the Next button showed
   under the answers; `.bible-body [hidden]` now wins, and the Next buttons have their own space above them.
 * **Vowel names** in the app use the spelling on the Vowels page (qameṣ, pataḥ, segol, ṣere, ḥireq, šureq …).

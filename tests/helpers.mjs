@@ -78,6 +78,8 @@ export async function setupApp({ mobile = false } = {}) {
         "bible-article": "bible-article.json",
         "bible-dagesh": "bible-dagesh.json",
         "bible-suffix": "bible-suffix.json",
+        "bible-qames": "bible-qames.json",
+        "bible-sheva": "bible-sheva.json",
       };
       const filename = filenames[dataset];
       if (!filename) return { ok: false, status: 400 };

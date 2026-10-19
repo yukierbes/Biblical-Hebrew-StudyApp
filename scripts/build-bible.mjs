@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds netlify/functions/data/bible-article.json, bible-dagesh.json and bible-suffix.json — the data for the
+// Builds netlify/functions/data/bible-article.json, bible-dagesh.json, bible-suffix.json, bible-qames.json and bible-sheva.json — the data for the
 // "Definite Article", "Dagesh" and "Pronominal Suffixes" pages —
 // from the Open Scriptures Hebrew Bible file(s) in data-source/bible/.
 //
@@ -22,6 +22,9 @@ import { fileURLToPath } from "node:url";
 import { ARTICLE_PATTERNS, ARTICLE_GROUPS, parseOsis, findArticles, morphParts } from "./lib/article-rules.mjs";
 import { DAGESH_PATTERNS, DAGESH_GROUPS, analyzeWord } from "./lib/dagesh-rules.mjs";
 import { SUFFIX_PATTERNS, SUFFIX_GROUPS, SUFFIX_TABLE, findSuffixes } from "./lib/suffix-rules.mjs";
+import { analyzeWord as analyzeHebrewWord, classifyAllQamets, classifyAllShevas } from "./lib/hebrew-word.mjs";
+import { QAMES_PATTERNS, QAMES_GROUPS } from "./lib/qames-rules.mjs";
+import { SHEVA_PATTERNS, SHEVA_GROUPS } from "./lib/sheva-rules.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const SRC = join(ROOT, "data-source", "bible");
@@ -97,6 +100,8 @@ function readPassages(file) {
 const articlePassages = errors.length ? [] : readPassages("passages.csv");
 const dageshPassages = errors.length ? [] : readPassages("passages-dagesh.csv");
 const suffixPassages = errors.length ? [] : readPassages("passages-suffix.csv");
+const qamesPassages = errors.length ? [] : readPassages("passages-qames.csv");
+const shevaPassages = errors.length ? [] : readPassages("passages-sheva.csv");
 const passages = articlePassages;
 const passageRefs = new Set(articlePassages.flatMap((p) => p.verses));
 
@@ -233,6 +238,61 @@ if (!errors.length) {
   }
 }
 
+// ---- Qameṣ vs Qameṣ-ḥaṭuf and Shevas (both read from the same word analysis) ----
+const WORD_MAX = 12;
+const PREFIX_TAG = /^(C|R|Td|Ti|Tr|Tm|Tj)$/;
+const qamesOut = { verses: {}, examples: [], held: [], counts: {}, totals: {} };
+const shevaOut = { verses: {}, examples: [], held: [], counts: {}, totals: {} };
+if (!errors.length) {
+  const wordCount = (v) => v.words.filter((w) => !w.seg).length;
+  const qPassage = new Set(qamesPassages.flatMap((p) => p.verses));
+  const sPassage = new Set(shevaPassages.flatMap((p) => p.verses));
+  const qTotals = {};
+  const sTotals = {};
+  for (const v of verses) {
+    const short = wordCount(v) <= WORD_MAX;
+    const keepQ = short || qPassage.has(v.ref);
+    const keepS = short || sPassage.has(v.ref);
+    const qWords = [];
+    const sWords = [];
+    v.words.forEach((w, wi) => {
+      if (w.seg === "x-maqqef") { qWords.push({ t: w.text, m: 1 }); sWords.push({ t: w.text, m: 1 }); return; }
+      if (w.seg) { qWords.push({ t: w.text, s: 1 }); sWords.push({ t: w.text, s: 1 }); return; }
+      const next = v.words[wi + 1];
+      const beforeMaqqef = !!(next && next.seg === "x-maqqef");
+      const lastInVerse = !v.words.slice(wi + 1).some((x) => !x.seg);
+      // where the first root letter is, after any prefixes (a conjunction, preposition or the article); a preposition
+      // that is followed by a suffix is the stem itself (לָךְ), not a prefix
+      const pieces = w.text.split("/");
+      const tags = morphParts(w.morph);
+      let k = 0, stemStart = 0;
+      while (k < pieces.length - 1 && PREFIX_TAG.test(tags[k] || "") && !/^S/.test(tags[k + 1] || "")) { stemStart += [...pieces[k]].filter((c) => c >= "א" && c <= "ת").length; k++; }
+      const an = analyzeHebrewWord(pieces.join(""), { stemStart, beforeMaqqef, lastInVerse });
+      const q = [], qh = [], sh = [], shh = [];
+      for (const r of classifyAllQamets(an)) {
+        if (r.pattern) { qTotals[r.pattern] = (qTotals[r.pattern] || 0) + 1; q.push([r.li, r.pattern]); if (short) { qamesOut.examples.push({ ref: v.ref, wi, li: r.li, pattern: r.pattern }); qamesOut.counts[r.pattern] = (qamesOut.counts[r.pattern] || 0) + 1; } }
+        else { qTotals.held = (qTotals.held || 0) + 1; qh.push(r.li); if (short) qamesOut.held.push({ ref: v.ref, wi, li: r.li, reason: r.why }); }
+      }
+      for (const r of classifyAllShevas(an)) {
+        if (r.pattern) { sTotals[r.pattern] = (sTotals[r.pattern] || 0) + 1; sh.push([r.li, r.pattern]); if (short) { shevaOut.examples.push({ ref: v.ref, wi, li: r.li, pattern: r.pattern }); shevaOut.counts[r.pattern] = (shevaOut.counts[r.pattern] || 0) + 1; } }
+        else { sTotals.held = (sTotals.held || 0) + 1; shh.push(r.li); if (short) shevaOut.held.push({ ref: v.ref, wi, li: r.li, reason: r.why }); }
+      }
+      qWords.push({ t: w.text, ...(q.length ? { q } : {}), ...(qh.length ? { qh } : {}) });
+      sWords.push({ t: w.text, ...(sh.length ? { sh } : {}), ...(shh.length ? { shh } : {}) });
+    });
+    if (keepQ) qamesOut.verses[v.ref] = qWords;
+    if (keepS) shevaOut.verses[v.ref] = sWords;
+  }
+  qamesOut.totals = qTotals;
+  shevaOut.totals = sTotals;
+  for (const [name, passages, out, key] of [["passages-qames.csv", qamesPassages, qamesOut, "q"], ["passages-sheva.csv", shevaPassages, shevaOut, "sh"]]) {
+    for (const p of passages) {
+      const steps = p.verses.reduce((n, ref) => n + (out.verses[ref] || []).reduce((m, w) => m + (w[key] ? w[key].length : 0), 0), 0);
+      if (steps > 16) warnings.push(`${name}: "${p.title}" has ${steps} items to step through — consider a shorter passage.`);
+    }
+  }
+}
+
 if (errors.length) {
   console.error("\nbible build FAILED — nothing was written:");
   for (const e of errors) console.error("  ERROR: " + e);
@@ -264,7 +324,13 @@ const suffixData = {
   held: suffixOut.held,
 };
 const suffixJson = JSON.stringify(suffixData);
+const qamesData = { source: output.source, patterns: QAMES_PATTERNS, groups: QAMES_GROUPS, counts: qamesOut.counts, totals: qamesOut.totals, passages: qamesPassages, verses: qamesOut.verses, examples: qamesOut.examples, held: qamesOut.held };
+const shevaData = { source: output.source, patterns: SHEVA_PATTERNS, groups: SHEVA_GROUPS, counts: shevaOut.counts, totals: shevaOut.totals, passages: shevaPassages, verses: shevaOut.verses, examples: shevaOut.examples, held: shevaOut.held };
+const qamesJson = JSON.stringify(qamesData);
+const shevaJson = JSON.stringify(shevaData);
 const json = JSON.stringify(output);
+console.log(`bible-qames: ${qamesData.examples.length} practice examples, ${qamesData.held.length} held back, ${qamesPassages.length} passages, ${Object.keys(qamesData.verses).length} verses (${(qamesJson.length / 1024).toFixed(0)} KB)`);
+console.log(`bible-sheva: ${shevaData.examples.length} practice examples, ${shevaData.held.length} held back, ${shevaPassages.length} passages, ${Object.keys(shevaData.verses).length} verses (${(shevaJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-suffix: ${suffixData.examples.length} practice examples (${suffixData.counts.type1} Type 1, ${suffixData.counts.type2} Type 2), ${suffixData.held.length} held back, ${suffixPassages.length} passages, ${Object.keys(suffixData.verses).length} verses (${(suffixJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-dagesh: ${dageshData.examples.length} practice examples (${dageshData.counts.lene} lene, ${dageshData.counts.forte} forte, ${dageshData.counts.mappiq} mappiq), ${dageshData.held.length} held back, ${dageshPassages.length} passages, ${Object.keys(dageshData.verses).length} verses (${(dageshJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-article: ${found.length} articles found in Genesis → ${examples.length} practice examples, ${held.length} held back, ${passages.length} passages, ${Object.keys(verseOut).length} verses (${(json.length / 1024).toFixed(0)} KB)`);
@@ -273,4 +339,6 @@ if (!CHECK_ONLY) {
   writeFileSync(join(OUT, "bible-article.json"), json);
   writeFileSync(join(OUT, "bible-dagesh.json"), dageshJson);
   writeFileSync(join(OUT, "bible-suffix.json"), suffixJson);
+  writeFileSync(join(OUT, "bible-qames.json"), qamesJson);
+  writeFileSync(join(OUT, "bible-sheva.json"), shevaJson);
 }

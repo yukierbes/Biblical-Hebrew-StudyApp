@@ -151,35 +151,76 @@ export function createPractice(config) {
     }
     host.appendChild(el("p", "bible-prompt", config.promptText));
 
-    const group = el("div", "bible-choices");
+    // The answer boxes. Most pages have one (the pattern group); a page may add a second (e.g. Pronominal
+    // Suffixes: Type 1 / Type 2, and the person-gender-number). Correctness is judged when every box has an answer.
+    const parts = answerParts(ex);
     const feedback = el("div", "bible-feedback");
-    const rightGroup = groupOf(ex.pattern);
-    let answered = false;
-    for (const g of data.groups) {
-      const b = el("button", "bible-choice", g.label);
-      b.type = "button";
-      b.dataset.group = g.id;
-      b.addEventListener("click", () => {
-        if (answered) return;
-        answered = true;
-        const correct = g.id === rightGroup.id;
-        for (const other of group.children) other.disabled = true;
-        b.classList.add(correct ? "is-correct" : "is-wrong");
-        if (!correct) [...group.children].find((x) => x.dataset.group === rightGroup.id).classList.add("is-correct");
-        const right = patternById(ex.pattern);
-        feedback.innerHTML = "";
-        feedback.className = "bible-feedback " + (correct ? "is-correct" : "is-wrong");
-        feedback.appendChild(el("strong", "", correct ? "Correct. " : `Not quite: this is ${rightGroup.label}. `));
-        const span = document.createElement("span");
-        span.innerHTML = `${config.describe(target, ex)} ${hebrewHtml(right.explain)}${target.n ? " " + hebrewHtml(target.n) : ""}`;
-        feedback.appendChild(span);
-        recordStreakActivity();
-        onAnswered(correct, g);
-      });
-      group.appendChild(b);
-    }
-    host.appendChild(group);
+    const chosen = {};
+    let done = false;
+    const rows = parts.map((part, pi) => {
+      const wrap = el("div", "bible-part");
+      if (parts.length > 1 && part.title) wrap.appendChild(el("p", "caption bible-part-title", part.title));
+      const group = el("div", "bible-choices" + (part.choices.length > 4 ? " bible-choices-grid" : ""));
+      for (const c of part.choices) {
+        const b = el("button", "bible-choice", c.label);
+        b.type = "button";
+        b.dataset.choice = c.id;
+        b.addEventListener("click", () => {
+          if (done) return;
+          chosen[pi] = c.id;
+          for (const other of group.children) other.classList.toggle("is-picked", other === b);
+          if (parts.every((_, k) => chosen[k] !== undefined)) evaluate();
+        });
+        group.appendChild(b);
+      }
+      wrap.appendChild(group);
+      host.appendChild(wrap);
+      return group;
+    });
     host.appendChild(feedback);
+
+    function evaluate() {
+      done = true;
+      let allRight = true;
+      parts.forEach((part, pi) => {
+        const right = chosen[pi] === part.answer;
+        if (!right) allRight = false;
+        for (const btn of rows[pi].children) {
+          btn.disabled = true;
+          btn.classList.remove("is-picked");
+          if (btn.dataset.choice === part.answer) btn.classList.add("is-correct");
+          else if (btn.dataset.choice === chosen[pi]) btn.classList.add("is-wrong");
+        }
+      });
+      const pattern = patternById(ex.pattern);
+      feedback.innerHTML = "";
+      feedback.className = "bible-feedback " + (allRight ? "is-correct" : "is-wrong");
+      feedback.appendChild(el("strong", "", allRight ? "Correct. " : `Not quite: this is ${answerLabel(ex)}. `));
+      const span = document.createElement("span");
+      span.innerHTML = `${config.describe(target, ex)} ${hebrewHtml(pattern.explain)}${target.n ? " " + hebrewHtml(target.n) : ""}`;
+      feedback.appendChild(span);
+      recordStreakActivity();
+      const chosenLabel = parts.map((part, pi) => part.choices.find((c) => c.id === chosen[pi]).label).join(" · ");
+      onAnswered(allRight, { label: chosenLabel });
+    }
+  }
+
+  /** The answer boxes for one example: [{ title, choices:[{id,label}], answer }]. */
+  function answerParts(ex) {
+    const main = {
+      title: config.mainPartTitle || "",
+      choices: data.groups.map((g) => ({ id: g.id, label: g.label })),
+      answer: groupOf(ex.pattern).id,
+    };
+    const extra = config.extraPart ? config.extraPart(data) : null;
+    return extra ? [main, { title: extra.title, choices: extra.choices, answer: extra.answerOf(ex) }] : [main];
+  }
+
+  /** The correct answer as words, e.g. "Type 2 · 3MS". */
+  function answerLabel(ex) {
+    return answerParts(ex)
+      .map((p) => p.choices.find((c) => c.id === p.answer).label)
+      .join(" · ");
   }
 
   // ---------- Guided passage ----------
@@ -231,7 +272,7 @@ export function createPractice(config) {
         td1.innerHTML = `<span lang="he" dir="rtl" class="bible-inline">${wordHtml(w, { ...config.markWord(w, s), showAccents: state.showAccents })}</span>`;
         tr.appendChild(td1);
         tr.appendChild(el("td", "", prettyRef(s.ref)));
-        tr.appendChild(el("td", "", `${groupOf(s.pattern).label}${g.results[i] ? "" : " (missed)"}`));
+        tr.appendChild(el("td", "", `${answerLabel(s)}${g.results[i] ? "" : " (missed)"}`));
         table.appendChild(tr);
       });
       const wrap = el("div", "table-scroll");
@@ -357,7 +398,7 @@ export function createPractice(config) {
         const right = patternById(a.ex.pattern);
         const word = data.verses[a.ex.ref][a.ex.wi];
         const p = el("p");
-        p.innerHTML = `<strong>Your answer:</strong> ${hebrewHtml(a.chosen)}<br><strong>Correct answer:</strong> ${hebrewHtml(groupOf(a.ex.pattern).label)}<br>${config.describe(word, a.ex)} ${hebrewHtml(right.explain)}${word.n ? " " + hebrewHtml(word.n) : ""}`;
+        p.innerHTML = `<strong>Your answer:</strong> ${hebrewHtml(a.chosen)}<br><strong>Correct answer:</strong> ${hebrewHtml(answerLabel(a.ex))}<br>${config.describe(word, a.ex)} ${hebrewHtml(right.explain)}${word.n ? " " + hebrewHtml(word.n) : ""}`;
         card.appendChild(p);
         body.appendChild(card);
       }
