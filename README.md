@@ -348,11 +348,11 @@ newest save wins).
 
 ## Feature overview
 
-### Bible in Context — Definite Article, Dagesh, Pronominal Suffixes, Qameṣ vs Qameṣ-ḥaṭuf and Shevas (pilot pages)
+### Bible in Context — Definite Article, Dagesh, Pronominal Suffixes, Prefixed Prepositions, Qameṣ vs Qameṣ-ḥaṭuf, Shevas and Syllables & Stress (pilot pages)
 
 *Pages: `public/js/pages/bible-article.js`, `bible-dagesh.js` and `bible-suffix.js`, all built on the shared engine
 `public/js/bible-practice.js` (so they look and behave the same). Data: `data-source/bible/`. Rules:
-`scripts/lib/article-rules.mjs`, `dagesh-rules.mjs`, `suffix-rules.mjs`, `hebrew-word.mjs` (the vowel / sheva / syllable analyzer), `qames-rules.mjs` and `sheva-rules.mjs`. Build: `scripts/build-bible.mjs` (runs on every
+`scripts/lib/article-rules.mjs`, `dagesh-rules.mjs`, `suffix-rules.mjs`, `hebrew-word.mjs` (the vowel / sheva analyzer), `qames-rules.mjs`, `sheva-rules.mjs`, `prefix-rules.mjs` and `syllables.mjs` (with `syllable-patterns.mjs`). Build: `scripts/build-bible.mjs` (runs on every
 deploy after the CSV build; `npm run check-bible` checks without writing). Page titles are just the topic (Definite Article,
 Dagesh, Pronominal Suffixes); keep that pattern for new pages.*
 
@@ -389,7 +389,20 @@ way to practise just those), **Find the …** (tap what has it; a dotted green b
   the page), a qameṣ before a י or ו with no vowel, or a word whose stress is unknown. The qameṣ-ḥaṭuf "before another
   qameṣ-ḥaṭuf" rule is implemented but Genesis has no clear example of it.
 * **Find the dagesh / qameṣ / sheva** ask for a type and the learner taps consonants (each letter keeps its own vowel marks).
-* **Passages** are `data-source/bible/passages.csv` (article), `passages-dagesh.csv`, `passages-suffix.csv`, `passages-qames.csv` and `passages-sheva.csv`: Title, Start, End, Note.
+* **Pattern guides** for Qameṣ and Shevas share one layout: "A vowel is a qameṣ if:" / "A simple sheva is vocal if:" and then bullets that start
+  with a capital "It" (each pattern has a `reason` for the bullet and an `explain` for after an answer).
+* **Definite Article** now calls the standard form "Lexical Form".
+* **Prefixed Prepositions** (ל, בּ, כּ). Answer boxes are the owner's inputs: Lexical Form, Simple Sheva, Compound Sheva, יְ, Tone Syllable,
+  Definite Article, יהוה, אֱ. The guide table (forms for ל, ב and כ with the dagesh lene, and the rules) has no answer column. A dropped
+  article is recognised from the Open Scriptures tag "Rd" (preposition with the article); a qameṣ or pataḥ on the preposition is never taken as proof of
+  the article by itself. Cases the table does not cover (for example לֵאמֹר, or SQNMLVY cases after a preposition) are held back.
+  **Find the prefixed preposition** asks for ל, בּ or כּ.
+* **Syllables & Stress.** Three answer boxes per syllable (open or closed; tonic, pretonic, propretonic, post-tonic, propost-tonic; short, long or
+  vocal sheva). A vocal sheva or ḥāṭef is its own syllable; a dagesh forte closes one syllable and opens the next. The third tab, **Divide the word**,
+  is an interactive: the learner clicks between letters to add dividing lines (a doubled letter is shown twice so the line can go between its halves) and
+  checks them. The guide lists CAPL, OPRL, CURS, OAPS and OOPPS with real examples, and notes meteg versus silluq. Only words whose stress is known and
+  whose shevas and qameṣes could all be sorted are used (a word before a maqqef has no tone syllable and is left out).
+* **Passages** are `data-source/bible/passages.csv` (article), `passages-dagesh.csv`, `passages-suffix.csv`, `passages-qames.csv`, `passages-sheva.csv`, `passages-prefix.csv` and `passages-syllable.csv`: Title, Start, End, Note.
 * **Spacing and hidden controls.** `.btn` sets `display`, which silently beat the `hidden` attribute, so the Next button showed
   under the answers; `.bible-body [hidden]` now wins, and the Next buttons have their own space above them.
 * **Vowel names** in the app use the spelling on the Vowels page (qameṣ, pataḥ, segol, ṣere, ḥireq, šureq …).

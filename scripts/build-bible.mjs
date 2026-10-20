@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds netlify/functions/data/bible-article.json, bible-dagesh.json, bible-suffix.json, bible-qames.json and bible-sheva.json — the data for the
+// Builds netlify/functions/data/bible-article.json, bible-dagesh.json, bible-suffix.json, bible-qames.json, bible-sheva.json, bible-prefix.json and bible-syllable.json — the data for the
 // "Definite Article", "Dagesh" and "Pronominal Suffixes" pages —
 // from the Open Scriptures Hebrew Bible file(s) in data-source/bible/.
 //
@@ -25,6 +25,9 @@ import { SUFFIX_PATTERNS, SUFFIX_GROUPS, SUFFIX_TABLE, findSuffixes } from "./li
 import { analyzeWord as analyzeHebrewWord, classifyAllQamets, classifyAllShevas } from "./lib/hebrew-word.mjs";
 import { QAMES_PATTERNS, QAMES_GROUPS } from "./lib/qames-rules.mjs";
 import { SHEVA_PATTERNS, SHEVA_GROUPS } from "./lib/sheva-rules.mjs";
+import { PREFIX_PATTERNS, PREFIX_GROUPS, PREFIX_TABLE, classifyPrefixed } from "./lib/prefix-rules.mjs";
+import { syllabify, syllableRule } from "./lib/syllables.mjs";
+import { SYLLABLE_PATTERNS, SYLLABLE_GROUPS } from "./lib/syllable-patterns.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const SRC = join(ROOT, "data-source", "bible");
@@ -102,6 +105,8 @@ const dageshPassages = errors.length ? [] : readPassages("passages-dagesh.csv");
 const suffixPassages = errors.length ? [] : readPassages("passages-suffix.csv");
 const qamesPassages = errors.length ? [] : readPassages("passages-qames.csv");
 const shevaPassages = errors.length ? [] : readPassages("passages-sheva.csv");
+const prefixPassages = errors.length ? [] : readPassages("passages-prefix.csv");
+const syllablePassages = errors.length ? [] : readPassages("passages-syllable.csv");
 const passages = articlePassages;
 const passageRefs = new Set(articlePassages.flatMap((p) => p.verses));
 
@@ -293,6 +298,76 @@ if (!errors.length) {
   }
 }
 
+// ---- Prefixed Prepositions ----
+const prefixOut = { verses: {}, examples: [], held: [], counts: {}, totals: {} };
+if (!errors.length) {
+  const wordCount = (v) => v.words.filter((w) => !w.seg).length;
+  const pPassage = new Set(prefixPassages.flatMap((p) => p.verses));
+  for (const v of verses) {
+    const short = wordCount(v) <= 12;
+    if (!short && !pPassage.has(v.ref)) continue;
+    const words = v.words.map((w, wi) => {
+      if (w.seg === "x-maqqef") return { t: w.text, m: 1 };
+      if (w.seg) return { t: w.text, s: 1 };
+      const next = v.words[wi + 1];
+      const r = classifyPrefixed(w, morphParts, { beforeMaqqef: !!(next && next.seg === "x-maqqef"), lastInVerse: !v.words.slice(wi + 1).some((x) => !x.seg) });
+      if (!r) return { t: w.text };
+      if (!r.pattern) { prefixOut.held.push({ ref: v.ref, wi, reason: r.why }); return { t: w.text, ph: 1 }; }
+      prefixOut.examples.push({ ref: v.ref, wi, li: 0, pattern: r.pattern, letter: r.letter });
+      prefixOut.counts[r.pattern] = (prefixOut.counts[r.pattern] || 0) + 1;
+      return { t: w.text, p: [r.pattern, r.letter] };
+    });
+    prefixOut.verses[v.ref] = words;
+  }
+  // totals over the whole book, for the guide
+  for (const v of verses) {
+    v.words.forEach((w, wi) => {
+      if (w.seg) return;
+      const next = v.words[wi + 1];
+      const r = classifyPrefixed(w, morphParts, { beforeMaqqef: !!(next && next.seg === "x-maqqef"), lastInVerse: !v.words.slice(wi + 1).some((x) => !x.seg) });
+      if (r) prefixOut.totals[r.pattern || "held"] = (prefixOut.totals[r.pattern || "held"] || 0) + 1;
+    });
+  }
+}
+
+// ---- Syllables & Stress ----
+const syllableOut = { verses: {}, examples: [], held: {}, counts: {}, totals: {}, heldWords: 0, words: 0 };
+if (!errors.length) {
+  const wordCount = (v) => v.words.filter((w) => !w.seg).length;
+  const sPassage = new Set(syllablePassages.flatMap((p) => p.verses));
+  for (const v of verses) {
+    const short = wordCount(v) <= 9;
+    const words = v.words.map((w, wi) => {
+      if (w.seg === "x-maqqef") return { t: w.text, m: 1 };
+      if (w.seg) return { t: w.text, s: 1 };
+      const next = v.words[wi + 1];
+      const pieces = w.text.split("/");
+      const tags = morphParts(w.morph);
+      let k = 0, stemStart = 0;
+      while (k < pieces.length - 1 && PREFIX_TAG.test(tags[k] || "") && !/^S/.test(tags[k + 1] || "")) { stemStart += [...pieces[k]].filter((c) => c >= "א" && c <= "ת").length; k++; }
+      const r = syllabify(pieces.join(""), { stemStart, beforeMaqqef: !!(next && next.seg === "x-maqqef"), lastInVerse: !v.words.slice(wi + 1).some((x) => !x.seg) });
+      if (r.why) { syllableOut.held[r.why] = (syllableOut.held[r.why] || 0) + 1; return { t: w.text }; }
+      const sylls = r.syllables.map((s, si) => [s.start, s.end, s.closed ? 1 : 0, s.tone, s.vowel, syllableRule(s)]);
+      r.syllables.forEach((s, si) => {
+        const rule = syllableRule(s);
+        syllableOut.totals[rule] = (syllableOut.totals[rule] || 0) + 1;
+        if ((short || sPassage.has(v.ref)) && s.tone !== "other") {
+          if (short) {
+            syllableOut.examples.push({ ref: v.ref, wi, k: si, pattern: rule, closed: s.closed ? 1 : 0, tone: s.tone, vowel: s.vowel });
+            syllableOut.counts[rule] = (syllableOut.counts[rule] || 0) + 1;
+          }
+        }
+      });
+      return { t: w.text, y: [r.slots, sylls] };
+    });
+    if (short || sPassage.has(v.ref)) syllableOut.verses[v.ref] = words;
+  }
+  for (const p of syllablePassages) {
+    const steps = p.verses.reduce((n, ref) => n + (syllableOut.verses[ref] || []).reduce((m, w) => m + (w.y ? w.y[1].filter((x) => x[3] !== "other").length : 0), 0), 0);
+    if (steps > 25) warnings.push(`passages-syllable.csv: "${p.title}" has ${steps} syllables to step through — consider a shorter passage.`);
+  }
+}
+
 if (errors.length) {
   console.error("\nbible build FAILED — nothing was written:");
   for (const e of errors) console.error("  ERROR: " + e);
@@ -326,9 +401,15 @@ const suffixData = {
 const suffixJson = JSON.stringify(suffixData);
 const qamesData = { source: output.source, patterns: QAMES_PATTERNS, groups: QAMES_GROUPS, counts: qamesOut.counts, totals: qamesOut.totals, passages: qamesPassages, verses: qamesOut.verses, examples: qamesOut.examples, held: qamesOut.held };
 const shevaData = { source: output.source, patterns: SHEVA_PATTERNS, groups: SHEVA_GROUPS, counts: shevaOut.counts, totals: shevaOut.totals, passages: shevaPassages, verses: shevaOut.verses, examples: shevaOut.examples, held: shevaOut.held };
+const prefixData = { source: output.source, patterns: PREFIX_PATTERNS, groups: PREFIX_GROUPS, table: PREFIX_TABLE, counts: prefixOut.counts, totals: prefixOut.totals, passages: prefixPassages, verses: prefixOut.verses, examples: prefixOut.examples, held: prefixOut.held };
+const prefixJson = JSON.stringify(prefixData);
+const syllableData = { source: output.source, patterns: SYLLABLE_PATTERNS, groups: SYLLABLE_GROUPS, counts: syllableOut.counts, totals: syllableOut.totals, passages: syllablePassages, verses: syllableOut.verses, examples: syllableOut.examples, held: syllableOut.held };
+const syllableJson = JSON.stringify(syllableData);
 const qamesJson = JSON.stringify(qamesData);
 const shevaJson = JSON.stringify(shevaData);
 const json = JSON.stringify(output);
+console.log(`bible-syllable: ${syllableData.examples.length} practice syllables, ${syllablePassages.length} passages, ${Object.keys(syllableData.verses).length} verses (${(syllableJson.length / 1024).toFixed(0)} KB)`);
+console.log(`bible-prefix: ${prefixData.examples.length} practice examples, ${prefixData.held.length} held back, ${prefixPassages.length} passages, ${Object.keys(prefixData.verses).length} verses (${(prefixJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-qames: ${qamesData.examples.length} practice examples, ${qamesData.held.length} held back, ${qamesPassages.length} passages, ${Object.keys(qamesData.verses).length} verses (${(qamesJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-sheva: ${shevaData.examples.length} practice examples, ${shevaData.held.length} held back, ${shevaPassages.length} passages, ${Object.keys(shevaData.verses).length} verses (${(shevaJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-suffix: ${suffixData.examples.length} practice examples (${suffixData.counts.type1} Type 1, ${suffixData.counts.type2} Type 2), ${suffixData.held.length} held back, ${suffixPassages.length} passages, ${Object.keys(suffixData.verses).length} verses (${(suffixJson.length / 1024).toFixed(0)} KB)`);
@@ -340,5 +421,7 @@ if (!CHECK_ONLY) {
   writeFileSync(join(OUT, "bible-dagesh.json"), dageshJson);
   writeFileSync(join(OUT, "bible-suffix.json"), suffixJson);
   writeFileSync(join(OUT, "bible-qames.json"), qamesJson);
+  writeFileSync(join(OUT, "bible-prefix.json"), prefixJson);
+  writeFileSync(join(OUT, "bible-syllable.json"), syllableJson);
   writeFileSync(join(OUT, "bible-sheva.json"), shevaJson);
 }

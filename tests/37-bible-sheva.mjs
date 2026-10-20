@@ -39,6 +39,7 @@ assert([...document.querySelectorAll(".bible-type-picker .choice-btn")].map((b) 
 [...document.querySelectorAll(".bible-tabs .choice-btn")][3].click();
 await wait(30);
 const guide = document.getElementById("content").textContent;
-assert(guide.includes("under the first consonant of a form") && guide.includes("in a final kaf"), "the guide lists the reasons");
+assert(guide.includes("A simple sheva is vocal if:") && guide.includes("• It is under the first consonant of a form.") && guide.includes("• It appears in a final kaf"), "the guide lists the reasons as bullets starting with It");
+assert(SHEVA_PATTERNS.every((p) => p.reason.startsWith("It ") && p.explain.startsWith("It is a ")), "every reason and explanation starts with a capital It");
 
 summary();

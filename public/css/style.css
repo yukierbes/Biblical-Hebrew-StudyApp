@@ -3561,5 +3561,18 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 /* two answer boxes on one question (Pronominal Suffixes: Type, PGN) */
 .bible-part { margin-bottom: 12px; }
 .bible-part-title { margin: 8px 0 4px; }
-.bible-choices-grid { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
+.bible-choices-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 .bible-choice.is-picked { border-color: var(--accent); background: var(--accent-soft); }
+
+/* --- Syllables: dividing a word (update 14) --- */
+.bible-sylsep { color: var(--accent); margin: 0 0.25em; font-family: var(--font-body); }
+.bible-divide { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; font-family: var(--font-hebrew); font-size: calc(2.4rem * var(--hebrew-scale, 1)); line-height: 1.8; --hebrew-inner: 1; margin: 10px 0 16px; }
+.bible-slot { padding: 0 1px; }
+.bible-gap { position: relative; width: 22px; height: 2.2em; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.bible-gap::after { content: ""; position: absolute; top: 12%; bottom: 12%; left: 50%; border-left: 2px dotted var(--hairline-strong); }
+.bible-gap:hover::after { border-left-color: var(--accent); }
+.bible-gap:focus-visible { outline: 2px solid var(--ink); }
+.bible-gap.is-cut::after { border-left: 3px solid var(--ink); }
+.bible-gap.is-correct::after { border-left: 3px solid var(--good); }
+.bible-gap.is-wrong::after { border-left: 3px solid var(--bad); }
+.bible-gap.is-missed::after { border-left: 3px dotted var(--good); }

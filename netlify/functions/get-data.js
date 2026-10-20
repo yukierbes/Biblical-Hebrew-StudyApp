@@ -26,6 +26,8 @@ import bibleArticleData from "./data/bible-article.json" with { type: "json" };
 import bibleDageshData from "./data/bible-dagesh.json" with { type: "json" };
 import bibleSuffixData from "./data/bible-suffix.json" with { type: "json" };
 import bibleQamesData from "./data/bible-qames.json" with { type: "json" };
+import biblePrefixData from "./data/bible-prefix.json" with { type: "json" };
+import bibleSyllableData from "./data/bible-syllable.json" with { type: "json" };
 import bibleShevaData from "./data/bible-sheva.json" with { type: "json" };
 
 const DATASETS = {
@@ -38,6 +40,8 @@ const DATASETS = {
   "bible-dagesh": bibleDageshData,
   "bible-suffix": bibleSuffixData,
   "bible-qames": bibleQamesData,
+  "bible-prefix": biblePrefixData,
+  "bible-syllable": bibleSyllableData,
   "bible-sheva": bibleShevaData,
 };
 
@@ -57,7 +61,7 @@ export const handler = async (event, context) => {
     return {
       statusCode: 400,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ error: `Unknown dataset "${dataset}". Expected verbs, vocabulary, accents, consonants, vowels, bible-article, bible-dagesh, bible-suffix, bible-qames, or bible-sheva.` }),
+      body: JSON.stringify({ error: `Unknown dataset "${dataset}". Expected verbs, vocabulary, accents, consonants, vowels, bible-article, bible-dagesh, bible-suffix, bible-qames, bible-sheva, bible-prefix, or bible-syllable.` }),
     };
   }
 

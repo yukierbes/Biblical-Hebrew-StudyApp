@@ -29,9 +29,9 @@ export const ARTICLE_PATTERNS = [
   {
     id: "forte",
     group: "standard",
-    label: "Standard Form",
+    label: "Lexical Form",
     explain:
-      "Standard form of the article: הַ with a dagesh forte in the first consonant of the noun, which doubles it.",
+      "Lexical form of the article: הַ with a dagesh forte in the first consonant of the noun, which doubles it.",
   },
   {
     id: "compensatory",
@@ -86,7 +86,7 @@ export const ARTICLE_PATTERNS = [
 
 /** The answer choices shown to the learner. SQNMLVY is one choice; the two cases inside it are told apart in the explanation. */
 export const ARTICLE_GROUPS = [
-  { id: "standard", label: "Standard Form", patterns: ["forte"] },
+  { id: "standard", label: "Lexical Form", patterns: ["forte"] },
   { id: "compensatory", label: "Compensatory Lengthening", patterns: ["compensatory"] },
   { id: "implicit", label: "Implicit Doubling", patterns: ["implicit"] },
   { id: "exceptional", label: "Exceptional Forms", patterns: ["exceptional_qamets", "exceptional_segol"] },
@@ -96,14 +96,14 @@ export const ARTICLE_GROUPS = [
 
 /**
  * Cases decided by the owner rather than by the spelling rules. Key: "ref|the word's consonants only" (so the match does not depend on how the marks are ordered).
- * Gen 40:3 הַטַּבָּחִים is Standard Form: in this digital text the dagesh in ט is not written.
+ * Gen 40:3 הַטַּבָּחִים is Lexical Form: in this digital text the dagesh in ט is not written.
  */
 export const ARTICLE_OVERRIDES = {
   // Gen 41:24 הָשִׁבֳּלִים: SQNMLVY, a short vowel before a doubled consonant (the שׁ is a sibilant).
   "Gen.41.24|השבלים": { pattern: "sqnmlvy_extended" },
   "Gen.40.3|הטבחים": {
     pattern: "forte",
-    note: "In this digital text the dagesh in the ט is not written, but the word is standard form: הַ + a dagesh forte in the first letter of the noun.",
+    note: "In this digital text the dagesh in the ט is not written, but the word is lexical form: הַ + a dagesh forte in the first letter of the noun.",
   },
 };
 
@@ -180,7 +180,8 @@ export function parseOsis(xml) {
     while ((it = itemRe.exec(m[2]))) {
       if (it[1] !== undefined) {
         const morph = (/morph="([^"]*)"/.exec(it[1]) || [])[1] || "";
-        words.push({ text: decode(it[2]), morph });
+        const lemma = (/lemma="([^"]*)"/.exec(it[1]) || [])[1] || "";
+        words.push({ text: decode(it[2]), morph, lemma });
       } else {
         words.push({ seg: it[3], text: decode(it[4]) });
       }

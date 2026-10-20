@@ -56,14 +56,15 @@ const page = createPractice({
       const h = el("h3", "", g.label);
       h.insertAdjacentHTML("beforeend", ` <span class="caption">(${total} in ${data.source.book})</span>`);
       card.appendChild(h);
+      card.appendChild(el("p", "", g.intro));
       for (const id of g.patterns) {
         const p = data.patterns.find((x) => x.id === id);
-        card.appendChild(el("p", "", p.explain));
+        card.appendChild(el("p", "bible-rule", `• ${p.reason}`));
         const ex = data.examples.filter((e) => e.pattern === id);
         if (!ex.length) continue;
         const picks = [];
-        const step = Math.max(1, Math.floor(ex.length / 4));
-        for (let i = 0; i < ex.length && picks.length < 4; i += step) picks.push(ex[i]);
+        const step = Math.max(1, Math.floor(ex.length / 3));
+        for (let i = 0; i < ex.length && picks.length < 3; i += step) picks.push(ex[i]);
         const list = el("div", "bible-guide-examples");
         for (const e of picks) {
           const w = data.verses[e.ref][e.wi];
@@ -75,11 +76,6 @@ const page = createPractice({
       }
       body.appendChild(card);
     }
-    const how = el("div", "bible-guide-card bible-watch");
-    how.appendChild(el("h3", "", "How to decide"));
-    how.appendChild(el("p", "", "A vowel is qameṣ-ḥaṭuf if it is in a closed unaccented syllable. A qameṣ-ḥaṭuf occurs in an open syllable if it precedes a ḥāṭef-qāmeṣ (with or without a meteg), or if it precedes another qameṣ-ḥaṭuf."));
-    how.appendChild(el("p", "", "A vowel is usually qameṣ if it stands in an open syllable. If it is followed by a simple vocal sheva, usually accompanied by a meteg, it is a qameṣ. If it is in a closed accented syllable it is a qameṣ. If it is in a closed unaccented syllable with a meteg, it is a qameṣ."));
-    body.appendChild(how);
   },
 });
 

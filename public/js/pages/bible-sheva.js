@@ -52,10 +52,10 @@ const page = createPractice({
       const h = el("h3", "", g.label);
       h.insertAdjacentHTML("beforeend", ` <span class="caption">(${total} in ${data.source.book})</span>`);
       card.appendChild(h);
-      card.appendChild(el("p", "", g.id === "vocal" ? "A simple sheva is vocal if:" : "A simple sheva is silent if:"));
+      card.appendChild(el("p", "", g.intro));
       for (const id of g.patterns) {
         const p = data.patterns.find((x) => x.id === id);
-        card.appendChild(el("p", "bible-rule", p.explain.replace(/^It is (vocal|silent): /, "• ")));
+        card.appendChild(el("p", "bible-rule", `• ${p.reason}`));
         const ex = data.examples.filter((e) => e.pattern === id);
         if (!ex.length) continue;
         const picks = [];

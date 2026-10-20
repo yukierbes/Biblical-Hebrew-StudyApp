@@ -79,6 +79,8 @@ export async function setupApp({ mobile = false } = {}) {
         "bible-dagesh": "bible-dagesh.json",
         "bible-suffix": "bible-suffix.json",
         "bible-qames": "bible-qames.json",
+        "bible-prefix": "bible-prefix.json",
+        "bible-syllable": "bible-syllable.json",
         "bible-sheva": "bible-sheva.json",
       };
       const filename = filenames[dataset];

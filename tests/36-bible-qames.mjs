@@ -38,6 +38,9 @@ assert([...document.querySelectorAll(".bible-type-picker .choice-btn")].map((b) 
 assert(document.querySelectorAll(".bible-letter").length > 3, "consonant by consonant");
 [...document.querySelectorAll(".bible-tabs .choice-btn")][3].click();
 await wait(30);
-assert(document.getElementById("content").textContent.includes("closed unaccented syllable"), "the guide states the rules");
+const g36 = document.getElementById("content").textContent;
+assert(g36.includes("A vowel is a qameṣ if:") && g36.includes("A vowel is a qameṣ-ḥaṭuf if:") && g36.includes("• It is in a closed unaccented syllable."), "the guide uses the sheva-guide structure: 'A vowel is a qameṣ if:' then bullets starting with 'It'");
+assert(!g36.includes("It is a qameṣ: it") && !g36.includes("How to decide"), "the repeated lead-in and the extra 'How to decide' card are gone");
+assert(QAMES_PATTERNS.every((p) => p.reason.startsWith("It ") && p.explain.startsWith("It is a qameṣ")), "every reason and explanation starts with a capital It");
 
 summary();

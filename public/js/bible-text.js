@@ -181,3 +181,17 @@ export function letterWithMarks(text, li) {
   }
   return out;
 }
+
+/**
+ * A word shown as its slots (see scripts/lib/syllables.mjs) with a dividing line between syllables.
+ * `markSyllable` highlights one syllable. Accent marks can be hidden.
+ */
+export function syllablesHtml(slots, syllables, { markSyllable = -1, showAccents = true } = {}) {
+  const txt = (s) => esc(showAccents ? s : stripAccents(s));
+  return syllables
+    .map((s, k) => {
+      const body = slots.slice(s[0], s[1] + 1).map(txt).join("");
+      return k === markSyllable ? `<mark class="bible-mark">${body}</mark>` : body;
+    })
+    .join('<span class="bible-sylsep">׀</span>');
+}

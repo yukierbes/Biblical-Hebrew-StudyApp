@@ -50,7 +50,7 @@ export function createPractice(config) {
   const TABS = [
     ["guided", "Guided passage"],
     ["quiz", "Pattern quiz"],
-    ["find", config.findTab.label],
+    ["find", config.thirdTab ? config.thirdTab.label : config.findTab.label],
     ["guide", "Pattern guide"],
   ];
 
@@ -117,6 +117,7 @@ export function createPractice(config) {
     const again = () => render(content, sidebarExtra);
     if (state.tab === "guided") renderGuided(body, again);
     else if (state.tab === "quiz") renderQuiz(body, again);
+    else if (state.tab === "find" && config.thirdTab) config.thirdTab.render(body, { data, el, state, rerender: again, showAccents: state.showAccents, prettyRef, hebrewHtml, recordStreakActivity });
     else if (state.tab === "find") renderFind(body, again);
     else config.renderGuide(body, { data, el, showAccents: state.showAccents, patternById, wordHtml, hebrewHtml });
   }
@@ -139,7 +140,10 @@ export function createPractice(config) {
     const words = data.verses[ex.ref];
     const target = words[ex.wi];
     host.appendChild(el("div", "caption", prettyRef(ex.ref)));
-    if (showVerse) host.appendChild(verseFor(ex));
+    if (config.questionDisplay) {
+      if (showVerse) host.appendChild(verseFor(ex));
+      host.appendChild(config.questionDisplay({ ex, target, data, showAccents: state.showAccents }));
+    } else if (showVerse) host.appendChild(verseFor(ex));
     else {
       // The guided passage above already shows the verse with this word highlighted; show just the word here.
       const one = el("div", "bible-verse bible-one-word");
@@ -207,6 +211,7 @@ export function createPractice(config) {
 
   /** The answer boxes for one example: [{ title, choices:[{id,label}], answer }]. */
   function answerParts(ex) {
+    if (config.answerParts) return config.answerParts(data).map((p) => ({ title: p.title, choices: p.choices, answer: p.answerOf(ex) }));
     const main = {
       title: config.mainPartTitle || "",
       choices: data.groups.map((g) => ({ id: g.id, label: g.label })),
