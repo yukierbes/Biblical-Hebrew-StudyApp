@@ -81,6 +81,14 @@ export async function setupApp({ mobile = false } = {}) {
         "bible-qames": "bible-qames.json",
         "bible-prefix": "bible-prefix.json",
         "bible-syllable": "bible-syllable.json",
+        "bible-noun": "bible-noun.json",
+        "bible-pronoun": "bible-pronoun.json",
+        "bible-demo": "bible-demo.json",
+        "bible-adj": "bible-adj.json",
+        "bible-verb": "bible-verb.json",
+        "bible-interrog": "bible-interrog.json",
+        "bible-vav": "bible-vav.json",
+        "bible-min": "bible-min.json",
         "bible-sheva": "bible-sheva.json",
       };
       const filename = filenames[dataset];

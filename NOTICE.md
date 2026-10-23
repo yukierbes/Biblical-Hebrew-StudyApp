@@ -13,4 +13,5 @@ Those works belong to their authors and publishers; nothing here gives anyone ri
 
 Bible text and tagging: "Original work of the Open Scriptures Hebrew Bible available at
 https://github.com/openscriptures/morphhb" (CC BY 4.0 tagging; the Westminster Leningrad Codex text is in the
-public domain). The full license is in `data-source/bible/OSHB-LICENSE.md`.
+public domain). The full license is in `data-source/bible/OSHB-LICENSE.md`. The Open Scriptures Hebrew Lexicon (`data-source/bible/HebrewStrong.xml`, CC BY 4.0)
+is used at build time to work out verb roots.

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Builds netlify/functions/data/bible-article.json, bible-dagesh.json, bible-suffix.json, bible-qames.json, bible-sheva.json, bible-prefix.json and bible-syllable.json — the data for the
-// "Definite Article", "Dagesh" and "Pronominal Suffixes" pages —
+// "Definite Article", "Dagesh" and the other Bible practice pages —
 // from the Open Scriptures Hebrew Bible file(s) in data-source/bible/.
 //
 // Like build-data.mjs, you normally never run this yourself: Netlify runs it on every deploy
@@ -27,6 +27,9 @@ import { QAMES_PATTERNS, QAMES_GROUPS } from "./lib/qames-rules.mjs";
 import { SHEVA_PATTERNS, SHEVA_GROUPS } from "./lib/sheva-rules.mjs";
 import { PREFIX_PATTERNS, PREFIX_GROUPS, PREFIX_TABLE, classifyPrefixed } from "./lib/prefix-rules.mjs";
 import { syllabify, syllableRule } from "./lib/syllables.mjs";
+import * as G from "./lib/grammar-rules.mjs";
+import * as VR from "./lib/verb-rules.mjs";
+import { buildWordDataset } from "./lib/dataset-builder.mjs";
 import { SYLLABLE_PATTERNS, SYLLABLE_GROUPS } from "./lib/syllable-patterns.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -368,6 +371,35 @@ if (!errors.length) {
   }
 }
 
+// ---- the grammar pages: Nouns, Pronouns, Demonstratives, Adjectives, Interrogative ה, Prefixed Vav, Prefixed מ, Verbs ----
+const grammarOut = {};
+if (!errors.length) {
+  const lexPath = join(SRC, "HebrewStrong.xml");
+  if (!existsSync(lexPath)) errors.push("data-source/bible/HebrewStrong.xml is missing.");
+  const lexicon = existsSync(lexPath) ? VR.parseLexicon(readFileSync(lexPath, "utf8")) : new Map();
+  const mp = morphParts;
+  const specs = [
+    { key: "noun", file: "bible-noun.json", classify: (w, c) => G.classifyNoun(w, mp, c), patterns: G.NOUN_PATTERNS, groups: G.NOUN_GROUPS, meta: { gn: G.NOUN_GN, table: G.NOUN_TABLE }, shortWords: 12 },
+    { key: "pronoun", file: "bible-pronoun.json", classify: (w, c) => G.classifyPronoun(w, mp, c), patterns: G.PRONOUN_PATTERNS, groups: G.PRONOUN_GROUPS, meta: { table: G.PRONOUN_TABLE }, shortWords: 12 },
+    { key: "demo", file: "bible-demo.json", classify: (w, c) => G.classifyDemonstrative(w, mp, c), patterns: G.DEMO_PATTERNS, groups: G.DEMO_GROUPS, meta: { table: G.DEMO_TABLE }, shortWords: 14 },
+    { key: "adj", file: "bible-adj.json", classify: (w, c) => G.classifyAdjective(w, mp, c), patterns: G.ADJ_PATTERNS, groups: G.ADJ_GROUPS, meta: { gn: G.ADJ_GN }, shortWords: 14 },
+    { key: "interrog", file: "bible-interrog.json", classify: (w, c) => G.classifyInterrogative(w, mp, c), patterns: G.INTERROG_PATTERNS, groups: G.INTERROG_GROUPS, meta: { table: G.INTERROG_TABLE }, shortWords: 14 },
+    { key: "vav", file: "bible-vav.json", classify: (w, c) => G.classifyVav(w, mp, c), patterns: G.VAV_PATTERNS, groups: G.VAV_GROUPS, meta: { table: G.VAV_TABLE }, shortWords: 10 },
+    { key: "min", file: "bible-min.json", classify: (w, c) => G.classifyMin(w, mp, c), patterns: G.MIN_PATTERNS, groups: G.MIN_GROUPS, meta: { table: G.MIN_TABLE }, shortWords: 14 },
+    { key: "verb", file: "bible-verb.json", classify: (w, c) => VR.classifyVerb(w, mp, c, lexicon), patterns: VR.VERB_PATTERNS, groups: VR.VERB_GROUPS, meta: { binyanim: VR.BINYANIM, modes: VR.MODES, pgn: VR.VERB_PGN, prefixKinds: VR.PREFIX_KINDS, suffixChoices: VR.SUFFIX_CHOICES, types: VR.VERB_TYPES }, shortWords: 9 },
+  ];
+  for (const sp of specs) {
+    const passages = readPassages(`passages-${sp.key}.csv`);
+    if (errors.length) break;
+    const d = buildWordDataset({ verses, passages, classify: sp.classify, shortWords: sp.shortWords });
+    for (const p of passages) {
+      const steps = p.verses.reduce((n, ref) => n + (d.verses[ref] || []).filter((x) => x.x).length, 0);
+      if (steps > 14) warnings.push(`passages-${sp.key}.csv: "${p.title}" has ${steps} items to step through.`);
+    }
+    grammarOut[sp.key] = { file: sp.file, data: { source: output.source, patterns: sp.patterns, groups: sp.groups, ...sp.meta, counts: d.counts, totals: d.totals, passages, verses: d.verses, examples: d.examples, held: d.held } };
+  }
+}
+
 if (errors.length) {
   console.error("\nbible build FAILED — nothing was written:");
   for (const e of errors) console.error("  ERROR: " + e);
@@ -408,6 +440,7 @@ const syllableJson = JSON.stringify(syllableData);
 const qamesJson = JSON.stringify(qamesData);
 const shevaJson = JSON.stringify(shevaData);
 const json = JSON.stringify(output);
+for (const [k, g] of Object.entries(grammarOut)) console.log(`bible-${k}: ${g.data.examples.length} practice examples, ${g.data.held.length} held back, ${g.data.passages.length} passages, ${Object.keys(g.data.verses).length} verses (${(JSON.stringify(g.data).length / 1024).toFixed(0)} KB)`);
 console.log(`bible-syllable: ${syllableData.examples.length} practice syllables, ${syllablePassages.length} passages, ${Object.keys(syllableData.verses).length} verses (${(syllableJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-prefix: ${prefixData.examples.length} practice examples, ${prefixData.held.length} held back, ${prefixPassages.length} passages, ${Object.keys(prefixData.verses).length} verses (${(prefixJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-qames: ${qamesData.examples.length} practice examples, ${qamesData.held.length} held back, ${qamesPassages.length} passages, ${Object.keys(qamesData.verses).length} verses (${(qamesJson.length / 1024).toFixed(0)} KB)`);
@@ -423,5 +456,6 @@ if (!CHECK_ONLY) {
   writeFileSync(join(OUT, "bible-qames.json"), qamesJson);
   writeFileSync(join(OUT, "bible-prefix.json"), prefixJson);
   writeFileSync(join(OUT, "bible-syllable.json"), syllableJson);
+  for (const g of Object.values(grammarOut)) writeFileSync(join(OUT, g.file), JSON.stringify(g.data));
   writeFileSync(join(OUT, "bible-sheva.json"), shevaJson);
 }

@@ -28,6 +28,14 @@ import bibleSuffixData from "./data/bible-suffix.json" with { type: "json" };
 import bibleQamesData from "./data/bible-qames.json" with { type: "json" };
 import biblePrefixData from "./data/bible-prefix.json" with { type: "json" };
 import bibleSyllableData from "./data/bible-syllable.json" with { type: "json" };
+import bibleNounData from "./data/bible-noun.json" with { type: "json" };
+import biblePronounData from "./data/bible-pronoun.json" with { type: "json" };
+import bibleDemoData from "./data/bible-demo.json" with { type: "json" };
+import bibleAdjData from "./data/bible-adj.json" with { type: "json" };
+import bibleVerbData from "./data/bible-verb.json" with { type: "json" };
+import bibleInterrogData from "./data/bible-interrog.json" with { type: "json" };
+import bibleVavData from "./data/bible-vav.json" with { type: "json" };
+import bibleMinData from "./data/bible-min.json" with { type: "json" };
 import bibleShevaData from "./data/bible-sheva.json" with { type: "json" };
 
 const DATASETS = {
@@ -42,6 +50,14 @@ const DATASETS = {
   "bible-qames": bibleQamesData,
   "bible-prefix": biblePrefixData,
   "bible-syllable": bibleSyllableData,
+  "bible-noun": bibleNounData,
+  "bible-pronoun": biblePronounData,
+  "bible-demo": bibleDemoData,
+  "bible-adj": bibleAdjData,
+  "bible-verb": bibleVerbData,
+  "bible-interrog": bibleInterrogData,
+  "bible-vav": bibleVavData,
+  "bible-min": bibleMinData,
   "bible-sheva": bibleShevaData,
 };
 
@@ -61,7 +77,7 @@ export const handler = async (event, context) => {
     return {
       statusCode: 400,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ error: `Unknown dataset "${dataset}". Expected verbs, vocabulary, accents, consonants, vowels, bible-article, bible-dagesh, bible-suffix, bible-qames, bible-sheva, bible-prefix, or bible-syllable.` }),
+      body: JSON.stringify({ error: `Unknown dataset "${dataset}". Expected verbs, vocabulary, accents, consonants, vowels, bible-article, bible-dagesh, bible-suffix, bible-qames, bible-sheva, bible-prefix, bible-syllable, or one of the other bible-… datasets.` }),
     };
   }
 

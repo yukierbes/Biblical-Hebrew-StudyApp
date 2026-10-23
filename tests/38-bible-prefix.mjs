@@ -47,4 +47,7 @@ const guide = document.getElementById("content").textContent;
 assert(guide.includes("replaces the article’s ה, but the vowels follow the pattern of the definite article"), "the guide notes how the preposition and the article combine");
 assert(document.querySelectorAll(".bible-suffix-table tr").length === 10 && !guide.includes("Answer Input") && !guide.includes("Answer input"), "the guide table has the nine rows and no answer-input column");
 
+const compound = PREFIX_TABLE[2];
+assert(compound.forms["ל"].every((f) => f.includes("\u05bd")) && compound.rule.includes("\u25cc\u05b2") && compound.rule.includes("meteg"), "the compound-sheva row shows a meteg under the preposition and writes the ḥāṭefs under a ◌");
+
 summary();

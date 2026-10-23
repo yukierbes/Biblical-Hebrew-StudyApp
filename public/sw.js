@@ -65,6 +65,7 @@ const APP_SHELL = [
   "js/pages/bible-qames.js",
   "js/pages/bible-sheva.js",
   "js/pages/bible-syllable.js",
+  "js/pages/grammar-pages.js",
   "js/pages/credits.js",
   "js/profile.js",
   "js/personal.js",

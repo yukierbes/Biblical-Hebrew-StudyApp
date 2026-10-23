@@ -348,7 +348,7 @@ newest save wins).
 
 ## Feature overview
 
-### Bible in Context — Definite Article, Dagesh, Pronominal Suffixes, Prefixed Prepositions, Qameṣ vs Qameṣ-ḥaṭuf, Shevas and Syllables & Stress (pilot pages)
+### Bible in Context — the practice pages (Definite Article, Dagesh, Pronominal Suffixes, Prefixed Prepositions, Qameṣ vs Qameṣ-ḥaṭuf, Shevas, Syllables & Stress, Nouns, Independent Personal Pronouns, Demonstratives, Adjectives, Verbs, Interrogative ה, Prefixed Vav, Prefixed מִן)
 
 *Pages: `public/js/pages/bible-article.js`, `bible-dagesh.js` and `bible-suffix.js`, all built on the shared engine
 `public/js/bible-practice.js` (so they look and behave the same). Data: `data-source/bible/`. Rules:
@@ -402,7 +402,19 @@ way to practise just those), **Find the …** (tap what has it; a dotted green b
   is an interactive: the learner clicks between letters to add dividing lines (a doubled letter is shown twice so the line can go between its halves) and
   checks them. The guide lists CAPL, OPRL, CURS, OAPS and OOPPS with real examples, and notes meteg versus silluq. Only words whose stress is known and
   whose shevas and qameṣes could all be sorted are used (a word before a maqqef has no tone syllable and is left out).
-* **Passages** are `data-source/bible/passages.csv` (article), `passages-dagesh.csv`, `passages-suffix.csv`, `passages-qames.csv`, `passages-sheva.csv`, `passages-prefix.csv` and `passages-syllable.csv`: Title, Start, End, Note.
+* **The grammar pages (update 15).** Nouns, Independent Personal Pronouns, Demonstratives, Adjectives, Interrogative ה, Prefixed Vav, Prefixed מִן and
+  Verbs are all configured in one file, `public/js/pages/grammar-pages.js`, on the shared engine; their rules are in `scripts/lib/grammar-rules.mjs` and
+  `verb-rules.mjs`, and `scripts/lib/dataset-builder.mjs` turns a classifier into a dataset. Almost everything is READ from the Open Scriptures tagging
+  (noun state and gender-number, personal pronouns, demonstratives, the "Rd" and "Ti" prefix tags, the "w" and "q" sequential verb forms, binyan and mode);
+  the app adds only the spelling checks against the owner's tables and, for adjectives, a cautious reading of the neighbouring words:
+  attributive (a definite noun and a definite adjective that agree), predicate (a definite noun with an adjective without the article, in either order),
+  substantive (a definite adjective with no noun it modifies). When both the noun and the adjective are indefinite, the case is held back.
+* **Verb types** (Find the verb) come from the ROOT: the verb's dictionary number is looked up in the Open Scriptures Hebrew lexicon
+  (`data-source/bible/HebrewStrong.xml`, CC BY 4.0, the same credit line) and the consonants decide the type (strong, or one or more of the ten weak types:
+  I-Guttural, I-Aleph, I-Nun, I-Vav/I-Yod, II-Guttural, II-Vav/II-Yod, II-Geminate, III-Guttural, III-Aleph, III-He). A root can have two types (הָיָה is I-Guttural and III-He).
+* **Demonstratives.** A far demonstrative pronoun looks exactly like a third-person personal pronoun, so only far demonstrative ADJECTIVES (with the
+  article) are used; a plural near pronoun אֵלֶּה could be masculine or feminine and is held back unless it follows a noun.
+* **Passages** are `data-source/bible/passages.csv` (article), `passages-dagesh.csv`, `passages-suffix.csv`, `passages-qames.csv`, `passages-sheva.csv`, `passages-prefix.csv`, `passages-syllable.csv` and one `passages-<page>.csv` per grammar page: Title, Start, End, Note.
 * **Spacing and hidden controls.** `.btn` sets `display`, which silently beat the `hidden` attribute, so the Next button showed
   under the answers; `.bible-body [hidden]` now wins, and the Next buttons have their own space above them.
 * **Vowel names** in the app use the spelling on the Vowels page (qameṣ, pataḥ, segol, ṣere, ḥireq, šureq …).

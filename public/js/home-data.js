@@ -387,6 +387,14 @@ export const QUIZ_HISTORY_MODES = [
   ["bible-qames", "Qameṣ vs Qameṣ-ḥaṭuf"],
   ["bible-sheva", "Shevas"],
   ["bible-syllable", "Syllables & Stress"],
+  ["bible-noun", "Nouns"],
+  ["bible-pronoun", "Independent Personal Pronouns"],
+  ["bible-demo", "Demonstratives"],
+  ["bible-adj", "Adjectives"],
+  ["bible-verb", "Verbs"],
+  ["bible-interrog", "Interrogative ה"],
+  ["bible-vav", "Prefixed Vav"],
+  ["bible-min", "Prefixed מִן"],
 ];
 
 /** { lastPracticeDate, lastQuiz: { label, score, total, percent, timestamp } | null } */

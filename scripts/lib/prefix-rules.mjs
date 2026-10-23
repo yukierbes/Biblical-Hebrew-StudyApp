@@ -42,7 +42,7 @@ export const PREFIX_GROUPS = [
 export const PREFIX_TABLE = [
   { forms: { ל: ["לְ"], ב: ["בְּ"], כ: ["כְּ"] }, rule: "Before a consonant that has a full vowel, except before a tone syllable." },
   { forms: { ל: ["לִ"], ב: ["בִּ"], כ: ["כִּ"] }, rule: "Before a consonant that has a simple vocal sheva." },
-  { forms: { ל: ["לַ", "לֶ", "לָ"], ב: ["בַּ", "בֶּ", "בָּ"], כ: ["כַּ", "כֶּ", "כָּ"] }, rule: "Before a compound sheva (ֲ ֱ ֳ). The preposition takes the short vowel that matches the ḥāṭef: pataḥ, segol or qameṣ-ḥaṭuf." },
+  { forms: { ל: ["לַֽ", "לֶֽ", "לָֽ"], ב: ["בַּֽ", "בֶּֽ", "בָּֽ"], כ: ["כַּֽ", "כֶּֽ", "כָּֽ"] }, rule: "Before a compound sheva (◌ֲ ◌ֱ ◌ֳ). The preposition takes the short vowel that matches the ḥāṭef (pataḥ, segol or qameṣ-ḥaṭuf) and usually has a meteg." },
   { forms: { ל: ["לִי"], ב: ["בִּי"], כ: ["כִּי"] }, rule: "Before a noun that begins with יְ. The yod loses its sheva." },
   { forms: { ל: ["לָ"], ב: ["בָּ"], כ: ["כָּ"] }, rule: "Before a tone syllable, or before a monosyllabic word." },
   { forms: { ל: ["לָ"], ב: ["בָּ"], כ: ["כָּ"] }, rule: "Compensatory lengthening, because of the prefixed definite article." },

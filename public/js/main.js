@@ -35,6 +35,7 @@ import * as biblePrefixPage from "./pages/bible-prefix.js";
 import * as bibleQamesPage from "./pages/bible-qames.js";
 import * as bibleShevaPage from "./pages/bible-sheva.js";
 import * as bibleSyllablePage from "./pages/bible-syllable.js";
+import * as grammarPages from "./pages/grammar-pages.js";
 import * as creditsPage from "./pages/credits.js";
 import { showToast } from "./toast.js";
 import { initHebrewKeyboard, isHebrewKeyboardOpen, closeHebrewKeyboard } from "./hebrew-keyboard.js";
@@ -84,6 +85,14 @@ const PAGES = {
   "bible-qames": bibleQamesPage,
   "bible-sheva": bibleShevaPage,
   "bible-syllable": bibleSyllablePage,
+  "bible-noun": grammarPages.nounPage,
+  "bible-pronoun": grammarPages.pronounPage,
+  "bible-demo": grammarPages.demoPage,
+  "bible-adj": grammarPages.adjPage,
+  "bible-verb": grammarPages.verbPage,
+  "bible-interrog": grammarPages.interrogPage,
+  "bible-vav": grammarPages.vavPage,
+  "bible-min": grammarPages.minPage,
   credits: creditsPage,
   // Owner only: the link is hidden for everyone else, and the server refuses their requests.
   reports: reportsPage,
