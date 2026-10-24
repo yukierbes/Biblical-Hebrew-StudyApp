@@ -28,10 +28,17 @@ export function mount({ content, sidebarExtra }) {
     el(
       "p",
       "caption",
-      "The Hebrew text is the Westminster Leningrad Codex (public domain). The word-by-word grammatical tagging is licensed CC BY 4.0 (creativecommons.org/licenses/by/4.0). The Hebrew lexicon used to work out verb roots is also from the Open Scriptures project (CC BY 4.0). The grouping into patterns is this app’s own, and is not endorsed by Open Scriptures."
+      "The Hebrew text is the Westminster Leningrad Codex (public domain). The word-by-word grammatical tagging is licensed CC BY 4.0 (creativecommons.org/licenses/by/4.0). The Hebrew lexicon (Strong’s numbers, dictionary forms and the rough meanings shown on the Reading page) is also from the Open Scriptures project (CC BY 4.0). The practice pages use Genesis; the Reading page also uses Ruth, Deuteronomy and Psalms. The grouping into patterns is this app’s own, and is not endorsed by Open Scriptures."
     )
   );
   content.appendChild(bible);
+
+  content.appendChild(el("h2", "", "English text"));
+  const english = el("div", "bible-guide-card");
+  english.appendChild(
+    el("p", "", "The English shown on the Reading page is the World English Bible (WEB), which is in the public domain. It is used only when you tap “Show English”, and is not part of the Hebrew text or its tagging.")
+  );
+  content.appendChild(english);
 
   // Study references, in APA 7 format: alphabetical by author, hanging indent, titles in italics
   // (sentence case). A short note after each says what the app uses the book for.

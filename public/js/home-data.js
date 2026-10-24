@@ -19,8 +19,8 @@ import { getLetterSet } from "./letter-sets.js";
 import { getAvailableDatasets, loadVerbData } from "./data.js";
 import { morphKey } from "./helpers.js";
 import { loadHistory } from "./history.js";
-import { BIBLE_PAGES } from "./bible-areas.js";
-import { ACHIEVEMENTS, buildContext } from "./pages/achievements.js";
+import { BIBLE_PAGES, getBibleWeakItems, getBibleDue } from "./bible-areas.js";
+import { ACHIEVEMENTS, buildContext, getNextBadgeSteps } from "./pages/achievements.js";
 import {
   getDueCount,
   getMasteredKeyCount,
@@ -174,10 +174,13 @@ export function getAllAreaStats() {
   return getAreas().map((area) => ({ area, stats: getAreaStats(area) }));
 }
 
-/** Items due across everything (what the Today card shows). */
-export function totalDue(allStats) {
-  return allStats.reduce((n, { stats }) => n + stats.due, 0);
+/** Items due across everything (what the Today card shows). Pass the Bible due summary to include Bible in Context items. */
+export function totalDue(allStats, bibleDue = null) {
+  return allStats.reduce((n, { stats }) => n + stats.due, 0) + (bibleDue ? bibleDue.total : 0);
 }
+
+/** The Bible in Context items due for review: { total, byPage, top, items } (see bible-areas.js). */
+export { getBibleDue };
 
 // ---------------------------------------------------------------------
 // "Study now"
@@ -189,10 +192,14 @@ export function totalDue(allStats) {
  *   { kind: "start", area }                — nothing due, but an area never touched: start it
  *   { kind: "daily" }                      — everything is up to date: do the Daily Challenge
  */
-export function getStudySuggestion(allStats) {
+export function getStudySuggestion(allStats, bibleDue = null) {
   let best = null;
   for (const { area, stats } of allStats) {
     if (stats.due > 0 && (!best || stats.due > best.stats.due)) best = { area, stats };
+  }
+  // Bible in Context items waiting for review count too; they win only when there are more of them than in any other area.
+  if (bibleDue && bibleDue.total > 0 && (!best || bibleDue.total > best.stats.due)) {
+    return { kind: "bible-due", count: bibleDue.total, page: bibleDue.top, byPage: bibleDue.byPage };
   }
   if (best) {
     // Within the area, the queue with the most due items.
@@ -256,7 +263,7 @@ function weakLabel(area, row) {
 }
 
 /**
- * The items missed most, across Consonants, Vowels, Vocabulary and Accents
+ * The items missed most, across Consonants, Vowels, Vocabulary, Accents and the Bible in Context pages
  * (verb forms are left out: the drill quiz has no verb questions).
  * An item counts as weak once it has been missed at least twice and is
  * right less than 80% of the time; the worst come first.
@@ -295,6 +302,7 @@ export function getWeakSpots(limit = 5) {
       out.push(item);
     }
   }
+  out.push(...getBibleWeakItems()); // Bible in Context items (saved per verse and word)
   out.sort((a, b) => b.missed - a.missed || (a.seen - a.missed) / a.seen - (b.seen - b.missed) / b.seen || a.label.localeCompare(b.label));
   return out.slice(0, limit);
 }
@@ -347,27 +355,16 @@ export function getVocabOfTheDay(now = new Date()) {
 // ---------------------------------------------------------------------
 
 /**
- * The achievements not yet unlocked that are furthest along, nearest first:
- *   [{ id, icon, title, desc, progress, target, ratio }]
- * Only ones with some progress are listed. Returns { items, allUnlocked }.
+ * The three badges closest to their next level, nearest first, each with the page that earns it:
+ *   [{ id, icon, title, desc, progress, target, ratio, unit, page }]
+ * Each badge appears once (at its next level); badges with no progress yet and secret badges are left out.
+ * Returns { items, allUnlocked }.
  */
-export function getClosestAchievements(limit = 4) {
+export function getClosestAchievements(limit = 3) {
   const ctx = buildContext();
-  const locked = ACHIEVEMENTS.map((a) => ({ a, progress: a.progress(ctx) })).filter(({ a, progress }) => progress < a.target);
-  const items = locked
-    .map(({ a, progress }) => ({
-      id: a.id,
-      icon: a.icon,
-      title: a.title,
-      desc: a.desc,
-      progress,
-      target: a.target,
-      ratio: progress / a.target,
-    }))
-    .filter((x) => x.ratio > 0)
-    .sort((x, y) => y.ratio - x.ratio)
-    .slice(0, limit);
-  return { items, allUnlocked: locked.length === 0 };
+  const items = getNextBadgeSteps(limit, ctx);
+  const allUnlocked = ACHIEVEMENTS.every((a) => a.hidden || a.progress(ctx) >= a.target);
+  return { items, allUnlocked };
 }
 
 // ---------------------------------------------------------------------

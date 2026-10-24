@@ -37,6 +37,8 @@ import bibleInterrogData from "./data/bible-interrog.json" with { type: "json" }
 import bibleVavData from "./data/bible-vav.json" with { type: "json" };
 import bibleMinData from "./data/bible-min.json" with { type: "json" };
 import bibleShevaData from "./data/bible-sheva.json" with { type: "json" };
+import bibleReadingData from "./data/bible-reading.json" with { type: "json" };
+import bibleMixedData from "./data/bible-mixed.json" with { type: "json" };
 
 const DATASETS = {
   verbs: verbsData,
@@ -59,6 +61,8 @@ const DATASETS = {
   "bible-vav": bibleVavData,
   "bible-min": bibleMinData,
   "bible-sheva": bibleShevaData,
+  "bible-reading": bibleReadingData,
+  "bible-mixed": bibleMixedData,
 };
 
 export const handler = async (event, context) => {

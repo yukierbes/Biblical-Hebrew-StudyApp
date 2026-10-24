@@ -31,7 +31,7 @@ import {
 } from "./accent-answer-matching.js";
 import { BIBLE_PAGES, bibleSrsMode, exampleKey } from "./bible-areas.js";
 import { loadBibleData, getBibleData } from "./bible-data.js";
-import { getPracticeConfig, makeBibleQuestion } from "./bible-practice.js";
+import { getPracticeConfig, makeBibleQuestion, noteBibleAnswer } from "./bible-practice.js";
 import { prettyRef } from "./bible-text.js";
 import { isAnswerCorrect as isVocabAnswerCorrect, primaryAnswerText as vocabAnswerText } from "./vocab-answer-matching.js";
 
@@ -484,12 +484,61 @@ export function buildChallenge(settings) {
 }
 
 /**
+ * Loads the data for every Bible page named in a drill ([{ areaId: "bible", page, key }]) so buildDrill can draw those
+ * questions. Pages that cannot be loaded are simply left out of the drill.
+ */
+export async function prepareDrill(items) {
+  const pages = [...new Set(items.filter((i) => i.areaId === "bible").map((i) => i.page))];
+  const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 10000));
+  await Promise.all(
+    pages.map(async (pg) => {
+      const config = getPracticeConfig(pg);
+      if (!config) return;
+      try {
+        await Promise.race([loadBibleData(config.dataset), timeout]);
+      } catch (e) {
+        /* left out */
+      }
+    })
+  );
+}
+
+/** One Bible question for a saved item (page + example key); null if its data is not loaded or the example no longer exists. */
+function drillBibleQuestion(item) {
+  const config = getPracticeConfig(item.page);
+  const data = config ? getBibleData(config.dataset) : null;
+  if (!data) return null;
+  const ex = data.examples.find((e) => exampleKey(e) === item.key);
+  if (!ex) return null;
+  try {
+    const bq = makeBibleQuestion(config, data, ex);
+    return {
+      type: "bible",
+      areaId: "bible",
+      key: bq.key,
+      page: item.page,
+      srsMode: bibleSrsMode(item.page),
+      label: `Bible in Context: ${config.title}`,
+      promptText: `${prettyRef(bq.ex.ref)} · ${config.title}`,
+      bq,
+    };
+  } catch (e) {
+    return null;
+  }
+}
+
+/**
  * A round for Home's "Drill these": one question per weak item
  * ([{ areaId, key, direction? }]), in the same formats as the daily round.
  */
 export function buildDrill(items, hard) {
   const questions = [];
   for (const item of items) {
+    if (item.areaId === "bible") {
+      const q = drillBibleQuestion(item);
+      if (q) questions.push(q);
+      continue;
+    }
     const area = areaById(item.areaId);
     if (!area || item.areaId === "verbs") continue;
     const row = getRow(item.areaId, item.key);
@@ -575,11 +624,22 @@ export function grade(q, answer) {
 }
 
 /** Records a graded question in the spaced-repetition schedule and the streak. */
-export function recordResult(q, result) {
+export function recordResult(q, result, answer) {
   if (q.type === "match") {
     for (const it of result.items) recordItemResult(q.srsMode, it.key, it.ok);
   } else {
     recordItemResult(q.srsMode, q.key, result.correct);
+  }
+  if (q.type === "bible") {
+    // Remember the word's label, any repeated mix-up, and rare-pattern successes, as on the Bible pages themselves.
+    try {
+      const config = getPracticeConfig(q.page);
+      const cached = config ? getBibleData(config.dataset) : null;
+      const data = { verses: { [q.bq.ex.ref]: q.bq.words }, examples: cached ? cached.examples : [] };
+      if (config) noteBibleAnswer(config, data, q.bq.ex, q.bq.parts, answer && typeof answer === "object" ? answer : {});
+    } catch (e) {
+      /* the extra notes are never worth interrupting a round */
+    }
   }
   recordStreakActivity();
 }

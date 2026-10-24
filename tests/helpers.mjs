@@ -76,6 +76,8 @@ export async function setupApp({ mobile = false } = {}) {
         consonants: "consonants.json",
         vowels: "vowels.json",
         "bible-article": "bible-article.json",
+        "bible-reading": "bible-reading.json",
+        "bible-mixed": "bible-mixed.json",
         "bible-dagesh": "bible-dagesh.json",
         "bible-suffix": "bible-suffix.json",
         "bible-qames": "bible-qames.json",

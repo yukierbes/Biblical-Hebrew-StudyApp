@@ -262,7 +262,7 @@ console.log("\nAchievements tab");
   click(tab("Achievements"));
   await wait();
   assert(content.querySelectorAll(".achievement-card").length >= 20, "the achievement cards are inside the tab");
-  assert(/\d+ \/ \d+ unlocked/.test(panel().textContent), "with the unlocked count");
+  assert(/\d+ \/ \d+ levels earned/.test(panel().textContent), "with the levels-earned count");
   assert(content.querySelectorAll(".page-title").length === 1, "still one page title");
   navigateTo(document, "home");
   await wait();

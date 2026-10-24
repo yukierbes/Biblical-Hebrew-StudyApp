@@ -15,6 +15,41 @@ import { buildVerse, buildLetterVerse, prettyRef, getShowAccents, setShowAccents
 import { recordAttempt } from "./history.js";
 import { recordStreakActivity, recordItemResult } from "./srs.js";
 import { bibleSrsMode, exampleKey } from "./bible-areas.js";
+import { rememberBibleWord, recordConfusion, easeConfusion, recordRareCorrect, CONFUSION_THRESHOLD } from "./bible-insights.js";
+
+/** A pattern with this many examples or fewer counts as "rare" for the hidden badges. */
+const RARE_MAX_EXAMPLES = 4;
+
+/**
+ * Everything that is saved after one answer, on the Bible pages and in the Daily Challenge alike:
+ * the word's label (so Home can name it), mix-ups for "Explain my mistake", and rare-pattern successes.
+ * `parts` is the answer boxes ([{ title, choices, answer }]), `chosen` is { [partIndex]: choiceId }.
+ * Returns the mix-ups that have now happened enough times to point out: [{ partTitle, pickedLabel, correctLabel, n, patternId }].
+ */
+export function noteBibleAnswer(config, data, ex, parts, chosen) {
+  const mode = bibleSrsMode(config.historyMode);
+  const key = exampleKey(ex);
+  const word = data && data.verses && data.verses[ex.ref] && data.verses[ex.ref][ex.wi];
+  if (word) rememberBibleWord(mode, key, word.t);
+  const repeats = [];
+  let allRight = true;
+  parts.forEach((part, pi) => {
+    const label = (id) => (part.choices.find((c) => c.id === id) || {}).label || id;
+    if (chosen[pi] === part.answer) {
+      easeConfusion(config.historyMode, part.title, part.answer);
+      return;
+    }
+    allRight = false;
+    if (chosen[pi] === undefined) return;
+    const n = recordConfusion(config.historyMode, part.title, part.answer, label(part.answer), chosen[pi], label(chosen[pi]), ex.pattern);
+    if (n >= CONFUSION_THRESHOLD) repeats.push({ partTitle: part.title, pickedLabel: label(chosen[pi]), correctLabel: label(part.answer), n, patternId: ex.pattern });
+  });
+  if (allRight && data && data.examples) {
+    const total = data.examples.filter((e) => e.pattern === ex.pattern).length;
+    if (total > 0 && total <= RARE_MAX_EXAMPLES) recordRareCorrect(config.historyMode, ex.pattern, key, total);
+  }
+  return repeats;
+}
 
 const QUIZ_LENGTH = 10;
 
@@ -177,6 +212,7 @@ export function createPractice(config) {
   }
 
   function render(content, sidebarExtra) {
+    state.rerender = () => render(content, sidebarExtra);
     sidebarExtra.innerHTML = "";
     sidebarExtra.appendChild(Object.assign(document.createElement("hr"), { className: "sidebar-divider" }));
     const sec = el("div", "sidebar-section");
@@ -219,7 +255,35 @@ export function createPractice(config) {
     else if (state.tab === "quiz") renderQuiz(body, again);
     else if (state.tab === "find" && config.thirdTab) config.thirdTab.render(body, { data, el, state, rerender: again, showAccents: state.showAccents, prettyRef, hebrewHtml, recordStreakActivity });
     else if (state.tab === "find") renderFind(body, again);
-    else config.renderGuide(body, { data, el, showAccents: state.showAccents, patternById, wordHtml, hebrewHtml });
+    else {
+      config.renderGuide(body, { data, el, showAccents: state.showAccents, patternById, wordHtml, hebrewHtml });
+      if (state.guideFocus) focusGuideCard(body, state.guideFocus);
+    }
+  }
+
+  /** After "Open that part of the Pattern guide": highlight and scroll to the card that names the pattern. */
+  function focusGuideCard(body, focus) {
+    const wanted = [focus.patternLabel, focus.label].filter(Boolean).map((t) => t.toLowerCase());
+    state.guideFocus = null;
+    const cards = [...body.querySelectorAll(".bible-guide-card")];
+    let hit = null;
+    for (const w of wanted) {
+      hit = cards.find((c) => {
+        const h = c.querySelector("h3");
+        return h && h.textContent.toLowerCase().includes(w);
+      });
+      if (hit) break;
+    }
+    if (!hit) {
+      for (const w of wanted) {
+        hit = cards.find((c) => c.textContent.toLowerCase().includes(w));
+        if (hit) break;
+      }
+    }
+    if (hit) {
+      hit.classList.add("is-focus");
+      if (hit.scrollIntoView) hit.scrollIntoView({ block: "center" });
+    }
   }
 
   // ---------- one question about one example ----------
@@ -305,9 +369,34 @@ export function createPractice(config) {
       feedback.appendChild(span);
       recordStreakActivity();
       recordItemResult(bibleSrsMode(config.historyMode), exampleKey(ex), allRight); // so Home, My Progress and the Daily Challenge know
+      const repeats = noteBibleAnswer(config, data, ex, parts, chosen);
+      if (repeats.length) feedback.appendChild(mistakeHelp(repeats[0], ex));
       const chosenLabel = parts.map((part, pi) => part.choices.find((c) => c.id === chosen[pi]).label).join(" · ");
       onAnswered(allRight, { label: chosenLabel });
     }
+  }
+
+  /**
+   * "Explain my mistake": after the same mix-up has happened a few times, say what keeps being confused,
+   * repeat the rule for the right answer, and offer to jump to that part of the Pattern guide.
+   */
+  function mistakeHelp(rep, ex) {
+    const box = el("div", "bible-confusion");
+    const pattern = patternById(rep.patternId);
+    const what = rep.partTitle ? `in “${rep.partTitle}” ` : "";
+    box.appendChild(
+      el("p", "", `You keep mixing this up: ${what}you have picked ${rep.pickedLabel} when the answer was ${rep.correctLabel}, ${rep.n} times now.`)
+    );
+    if (pattern) box.appendChild(el("p", "", `To tell them apart: ${pattern.explain}`));
+    const go = el("button", "btn btn-sm btn-outline", "Open that part of the Pattern guide");
+    go.type = "button";
+    go.addEventListener("click", () => {
+      state.tab = "guide";
+      state.guideFocus = { label: rep.correctLabel, patternLabel: pattern ? pattern.label : "" };
+      if (state && state.rerender) state.rerender();
+    });
+    box.appendChild(go);
+    return box;
   }
 
   /** The answer boxes for one example: [{ title, choices:[{id,label}], answer }]. */

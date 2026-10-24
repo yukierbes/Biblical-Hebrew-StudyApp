@@ -29,6 +29,7 @@ import * as progressPage from "./pages/progress.js";
 import * as achievementsPage from "./pages/achievements.js";
 import * as dailyChallengePage from "./pages/daily-challenge.js";
 import * as bibleArticlePage from "./pages/bible-article.js";
+import * as bibleReadingPage from "./pages/bible-reading.js";
 import * as bibleDageshPage from "./pages/bible-dagesh.js";
 import * as bibleSuffixPage from "./pages/bible-suffix.js";
 import * as biblePrefixPage from "./pages/bible-prefix.js";
@@ -78,6 +79,7 @@ const PAGES = {
   // Achievements now lives inside My Progress; the old address opens that tab.
   achievements: progressPage.achievementsRoute,
   "daily-challenge": dailyChallengePage,
+  "bible-reading": bibleReadingPage,
   "bible-article": bibleArticlePage,
   "bible-dagesh": bibleDageshPage,
   "bible-suffix": bibleSuffixPage,
@@ -287,6 +289,17 @@ function notifyAchievementProgress() {
     events = achievementsPage.checkAchievementProgress();
   } catch (e) {
     return; // data not loaded yet, or similar — skip silently
+  }
+  // Many levels at once (for example the first time the new badges are counted) become one message, not a pile.
+  const unlockedNow = events.filter((e) => e.kind === "unlocked");
+  if (unlockedNow.length > 3) {
+    celebrate("achievement");
+    showToast({
+      icon: "🏆",
+      title: `${unlockedNow.length} badge levels earned!`,
+      body: `${unlockedNow.slice(0, 3).map((e) => e.achievement.title).join(", ")} and ${unlockedNow.length - 3} more — see them in My Progress.`,
+    });
+    events = events.filter((e) => e.kind !== "unlocked");
   }
   for (const ev of events) {
     if (ev.kind === "unlocked") {

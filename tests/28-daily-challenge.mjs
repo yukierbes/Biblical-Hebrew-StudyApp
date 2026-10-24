@@ -165,7 +165,7 @@ assert(!!content.querySelector(".daily-calendar-cell.done"), "the calendar shows
 
 console.log("\nDaily Challenge achievements");
 const daily = ACHIEVEMENTS.filter((a) => a.section === "Daily Challenge");
-assert(daily.length === 8, "eight Daily Challenge badges");
+assert(new Set(daily.map((a) => a.badgeId)).size === 5, "five Daily Challenge badges, most with Bronze, Silver and Gold levels");
 const ctx = buildContext();
 assert(daily.find((a) => a.id === "daily-first").progress(ctx) >= 1, "finishing a round earns First Challenge");
 

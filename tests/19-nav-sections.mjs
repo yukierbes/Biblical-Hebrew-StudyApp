@@ -21,7 +21,8 @@ assert(pagesOf("bible-marks") === "bible-dagesh,bible-qames,bible-sheva,bible-sy
 assert(pagesOf("bible-words") === "bible-noun,bible-pronoun,bible-demo,bible-adj,bible-suffix", "Words: Nouns, Pronouns, Demonstratives, Adjectives, Pronominal Suffixes");
 assert(pagesOf("bible-prefixes") === "bible-article,bible-interrog,bible-prefix,bible-vav,bible-min", "Prefixes: Article, Interrogative ה, Prepositions, Vav, Min");
 assert(pagesOf("bible-verbs") === "bible-verb", "Verbs: Verbs");
-assert(pagesOf("bible").split(",").length === 15, "all 15 Bible pages are in the sidebar once");
+assert(pagesOf("bible").split(",").filter((p) => p !== "bible-reading").length === 15, "all 15 Bible pages are in the sidebar once");
+assert(pagesOf("bible").split(",").includes("bible-reading"), "and the Reading page sits at the top of the Bible in Context group");
 assert(document.querySelector('.nav-btn[data-page="bible-pronoun"]').textContent === "Personal Pronouns", "long label shortened: Personal Pronouns");
 assert(document.querySelector('.nav-btn[data-page="bible-qames"]').textContent === "Qameṣ / Qameṣ-ḥaṭuf", "long label shortened: Qameṣ / Qameṣ-ḥaṭuf");
 assert(["review", "verb-flashcards", "parsing", "construction"].every((p) => group("verbs").querySelector(`.nav-btn[data-page="${p}"]`)), "Verbs group keeps its four pages");

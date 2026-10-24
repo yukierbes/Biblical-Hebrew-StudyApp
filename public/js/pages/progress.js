@@ -47,7 +47,7 @@ const TABS = [
 
 const WEAK_DRILL_SIZE = 15;
 const WEAK_SHOWN = 12;
-const DRILL_AREAS = ["consonants", "vowels", "vocabulary", "accents"];
+const DRILL_AREAS = ["consonants", "vowels", "vocabulary", "accents", "bible"];
 
 // What was open last. Kept in memory so that moving between pages (or clicking a
 // filter) doesn't snap you back to the first tab; a fresh app load starts on Overview.
@@ -455,7 +455,7 @@ function renderMastery(panel, ctx) {
 
 function weakSectionHtml(allWeak) {
   const counts = Object.fromEntries(DRILL_AREAS.map((id) => [id, allWeak.filter((w) => w.areaId === id).length]));
-  const titles = Object.fromEntries(getAreas().map((a) => [a.id, a.title]));
+  const titles = { ...Object.fromEntries(getAreas().map((a) => [a.id, a.title])), bible: "Bible in Context" };
   const options = [["all", `All (${allWeak.length})`], ...DRILL_AREAS.map((id) => [id, `${titles[id]} (${counts[id]})`])];
   const filter = options.some(([id]) => id === weakFilter) ? weakFilter : "all";
   const shown = filter === "all" ? allWeak : allWeak.filter((w) => w.areaId === filter);
@@ -540,7 +540,7 @@ function renderStrengths(panel, ctx) {
       const shown = weakFilter === "all" ? allWeak : allWeak.filter((w) => w.areaId === weakFilter);
       setDeepLink({
         type: "weak-drill",
-        items: shown.slice(0, WEAK_DRILL_SIZE).map((w) => ({ areaId: w.areaId, key: w.key, direction: w.direction })),
+        items: shown.slice(0, WEAK_DRILL_SIZE).map((w) => ({ areaId: w.areaId, key: w.key, direction: w.direction, page: w.page })),
       });
       ctx.navigate("daily-challenge");
     });
@@ -664,8 +664,8 @@ function renderBible(panel, ctx) {
 // Achievements
 // ---------------------------------------------------------------------
 
-function renderAchievements(panel) {
-  renderAchievementsInto(panel);
+function renderAchievements(panel, ctx) {
+  renderAchievementsInto(panel, ctx.navigate);
 }
 
 const RENDERERS = {

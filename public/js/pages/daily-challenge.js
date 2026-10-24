@@ -11,6 +11,7 @@ import {
   buildChallenge,
   prepareChallenge,
   buildDrill,
+  prepareDrill,
   getRow,
   grade,
   parseOptions,
@@ -93,7 +94,10 @@ export function mount({ content, sidebarExtra, navigate }) {
   state = freshState();
   rerender = () => render(content, sidebarExtra, navigate);
   const link = consumeDeepLink();
-  if (link && link.type === "weak-drill" && Array.isArray(link.items) && link.items.length > 0) state.drill = link.items;
+  if (link && (link.type === "weak-drill" || link.type === "bible-due") && Array.isArray(link.items) && link.items.length > 0) {
+    state.drill = link.items;
+    state.drillKind = link.type;
+  }
 
   keyHandler = (e) => onKey(e, navigate);
   document.addEventListener("keydown", keyHandler);
@@ -138,7 +142,7 @@ function render(content, sidebarExtra, navigate) {
   content.innerHTML = "";
 
   const wrap = el("div");
-  wrap.innerHTML = `<h1 class="page-title">${state.drill ? "Weak-Spot Drill" : "Daily Challenge"}</h1><hr class="hr"/>`;
+  wrap.innerHTML = `<h1 class="page-title">${state.drill ? (state.drillKind === "bible-due" ? "Bible Review" : "Weak-Spot Drill") : "Daily Challenge"}</h1><hr class="hr"/>`;
   content.appendChild(wrap);
 
   const body = el("div", "daily");
@@ -209,15 +213,23 @@ function renderIntro(container, navigate) {
   if (state.drill) {
     container.appendChild(
       Object.assign(el("div", "info-box"), {
-        innerHTML: `<b>A short drill on the items you miss most</b><br>
+        innerHTML:
+          state.drillKind === "bible-due"
+            ? `<b>Bible in Context items due for review</b><br>
+          ${state.drill.length} verse word${state.drill.length === 1 ? "" : "s"} you have answered before and are ready to see again. Answering here counts toward each item's own schedule, so getting them right moves them forward.`
+            : `<b>A short drill on the items you miss most</b><br>
           ${state.drill.length} item${state.drill.length === 1 ? "" : "s"} from your practice history. Answering here counts toward each item's own schedule, so getting them right moves them forward.`,
       })
     );
     container.appendChild(toggleRow("Hard mode", "type your answers instead of tapping", S.hard, (v) => { S.hard = v; persist(); }));
     container.appendChild(toggleRow("Sound", "soft tones for right and wrong answers", S.sound, (v) => { S.sound = v; persist(); }));
     const startDrill = el("button", "btn btn-block daily-start", "Start Drill");
-    startDrill.addEventListener("click", () => {
+    startDrill.addEventListener("click", async () => {
+      startDrill.disabled = true;
+      await prepareDrill(state.drill);
+      if (!state) return;
       const questions = buildDrill(state.drill, S.hard);
+      startDrill.disabled = false;
       if (questions.length === 0) {
         container.appendChild(Object.assign(el("div", "alert alert-warning"), { textContent: "Those items are no longer available. Try the Daily Challenge instead." }));
         return;
@@ -727,7 +739,7 @@ function answer(q, value) {
   const g = grade(q, value);
   state.current.answer = value;
   state.current.graded = g;
-  recordResult(q, g);
+  recordResult(q, g, value);
   state.combo = g.correct ? state.combo + 1 : 0;
   state.bestCombo = Math.max(state.bestCombo, state.combo);
   state.results.push({

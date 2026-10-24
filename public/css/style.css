@@ -3625,3 +3625,34 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 .bible-home-chip { font-size: 0.75rem; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--hairline-strong); color: var(--ink-soft); }
 .bible-home-chip.is-passed { border-color: var(--accent); color: var(--ink); font-weight: 600; }
 .bible-home-chip.is-new { border-style: dashed; }
+
+/* ---------- Badges: Bronze / Silver / Gold levels, your path, the next three ---------- */
+.badge-medals { display: inline-flex; gap: 2px; font-size: 1.1rem; }
+.badge-medal { filter: grayscale(1); opacity: 0.35; }
+.badge-medal.is-earned { filter: none; opacity: 1; }
+.badge-card .badge-go, .goal-go { margin-top: 8px; }
+.badge-secret { border-style: dashed; opacity: 0.85; }
+.badge-path-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 10px; }
+.badge-chapter { padding: 10px 12px; border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--paper-raised); }
+.badge-chapter.is-current { border-color: var(--accent, currentColor); }
+.badge-chapter.is-done { border-color: var(--good); background: var(--good-soft); }
+.badge-chapter-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.badge-chapter-note { margin-top: 6px; line-height: 1.45; }
+.badge-chapter .badge-go { margin-top: 8px; }
+
+/* ---------- Bible pages: "Explain my mistake" and the reading page ---------- */
+.bible-confusion { margin-top: 10px; padding: 10px 12px; border-left: 4px solid var(--warn, #b7791f); background: var(--paper-raised); border-radius: var(--radius); }
+.bible-confusion p { margin: 0 0 8px; }
+.bible-guide-card.is-focus { outline: 3px solid var(--accent, #1c2b45); outline-offset: 2px; }
+
+/* ---------- Reading page ---------- */
+.reading-stats { margin: 8px 0; }
+.reading-passages { flex-wrap: wrap; }
+.reading-verse { margin: 12px 0; }
+.reading-verse-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.reading-translation { width: 100%; margin: 10px 0 6px; padding: 8px; border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--paper); color: inherit; font: inherit; }
+.reading-parse { margin: 10px 0; padding: 10px 12px; border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--paper-raised); }
+.reading-parse-word { font-size: 1.4rem; margin-bottom: 6px; }
+.reading-parse-table td { padding: 4px 8px; vertical-align: top; }
+.reading-parse-facts { margin: 8px 0 4px; line-height: 1.6; }
+.reading-english { margin-top: 8px; }

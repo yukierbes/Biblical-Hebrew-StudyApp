@@ -8,6 +8,7 @@
 
 import { loadHistory } from "./history.js";
 import { getScheduleEntries, getScheduleSummary } from "./srs.js";
+import { bibleWordLabel } from "./bible-insights.js";
 
 /** The groups, in the order the sidebar shows them. */
 export const BIBLE_GROUPS = [
@@ -142,3 +143,65 @@ export function getBibleSummary(all = getAllBibleStats()) {
   };
 }
 
+
+// ---------------------------------------------------------------------
+// Due items, weak items and the review forecast (no dataset needed: all of it comes from the saved schedule)
+// ---------------------------------------------------------------------
+
+/** "Gen.12.8#3#" -> "Genesis 12:8" style reference without loading anything (fallback label). */
+const BOOK_NAMES = { Gen: "Genesis", Exod: "Exodus", Ruth: "Ruth", Deut: "Deuteronomy", Ps: "Psalm" };
+function plainRef(key) {
+  const [ref, wi] = String(key).split("#");
+  const [book, c, v] = ref.split(".");
+  return `${BOOK_NAMES[book] || book} ${c}:${v}${wi !== undefined && wi !== "" ? `, word ${Number(wi) + 1}` : ""}`;
+}
+
+/** How an item is named in a list: its Hebrew word if known, else its verse. */
+export function bibleItemLabel(page, key) {
+  return bibleWordLabel(bibleSrsMode(page), key) || plainRef(key);
+}
+
+/**
+ * Bible items waiting for review: { total, byPage: { "bible-dagesh": 3, … }, top: the page with the most due (or null),
+ * items: [{ page, key, dueDate }] oldest first }.
+ */
+export function getBibleDue(now = Date.now()) {
+  const byPage = {};
+  const items = [];
+  let total = 0;
+  for (const p of BIBLE_PAGES) {
+    for (const [key, e] of Object.entries(getScheduleEntries(bibleSrsMode(p.page)))) {
+      if ((e.dueDate ?? 0) > now) continue;
+      byPage[p.page] = (byPage[p.page] || 0) + 1;
+      items.push({ page: p.page, key, dueDate: e.dueDate ?? 0 });
+      total += 1;
+    }
+  }
+  items.sort((a, b) => a.dueDate - b.dueDate);
+  const top = Object.entries(byPage).sort((a, b) => b[1] - a[1])[0];
+  return { total, byPage, top: top ? top[0] : null, items };
+}
+
+/** Every saved due date of every Bible item (for the 7-day forecast). */
+export function getBibleDueDates() {
+  const out = [];
+  for (const p of BIBLE_PAGES) for (const e of Object.values(getScheduleEntries(bibleSrsMode(p.page)))) if (typeof e.dueDate === "number") out.push(e.dueDate);
+  return out;
+}
+
+/**
+ * Bible items missed more than once and right less than 80% of the time, worst first — the same rule as the other
+ * areas' weak spots:  [{ areaId: "bible", areaTitle, page, key, label, seen, missed }]
+ */
+export function getBibleWeakItems() {
+  const out = [];
+  for (const p of BIBLE_PAGES) {
+    for (const [key, e] of Object.entries(getScheduleEntries(bibleSrsMode(p.page)))) {
+      const seen = e.timesSeen || 0;
+      const missed = seen - (e.timesCorrect || 0);
+      if (missed < 2 || (e.timesCorrect || 0) / seen >= 0.8) continue;
+      out.push({ areaId: "bible", areaTitle: `Bible in Context · ${p.label}`, page: p.page, key, label: bibleItemLabel(p.page, key), seen, missed });
+    }
+  }
+  return out;
+}

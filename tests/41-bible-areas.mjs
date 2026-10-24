@@ -15,7 +15,7 @@ const wait = (ms = 80) => new Promise((r) => setTimeout(r, ms));
 console.log("The page list");
 assert(ba.BIBLE_PAGES.length === 15, "15 Bible pages");
 assert(ba.BIBLE_GROUPS.map((g) => g.title).join() === "Marks & Syllables,Words,Prefixes,Verbs", "four groups, in sidebar order");
-const sidebarPages = [...document.querySelectorAll('#sidebar .nav-btn[data-page^="bible-"]')].map((b) => b.dataset.page);
+const sidebarPages = [...document.querySelectorAll('#sidebar .nav-btn[data-page^="bible-"]')].map((b) => b.dataset.page).filter((p) => p !== "bible-reading"); // Reading is a page of its own, not one of the 15 practice pages
 assert(JSON.stringify(sidebarPages) === JSON.stringify(ba.BIBLE_PAGES.map((p) => p.page)), "the list matches the sidebar buttons one for one");
 assert(ba.bibleSrsMode("bible-dagesh") === "bible:dagesh", "spaced-repetition mode name");
 

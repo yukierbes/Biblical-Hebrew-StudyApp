@@ -757,3 +757,15 @@ loaded. The Verbs pages are unchanged (they default to the first Strong Verb dat
   PDF") rather than a JavaScript PDF-generation library — simpler and more
   reliable for pagination, at the cost of a little less layout control.
 
+
+
+## Update 17: badges, Bible items in review, and the Reading page
+
+* **Badges** (`public/js/pages/achievements.js`): most badges now have Bronze, Silver and Gold levels; mastery and passing are
+  rewarded over volume; a four-chapter path (Letters, Vowels, Words, Reading); Bible badges per page, per group and for all 15;
+  comeback badges; four secret badges. Home shows the next three, each with a button to the page that earns it.
+* **Bible items** are now part of Home's weak spots and "Drill these", the Today card's due count, and the 7-day forecast.
+* **Explain my mistake**: after the same wrong answer three times on a Bible page, the app says what is being confused and links to the guide.
+* **Reading page** (`public/js/pages/bible-reading.js`): passages from Genesis, Ruth, Deuteronomy 6 and Psalms; tap any word for its parts; your own
+  translation; tap-to-reveal English (World English Bible, public domain); mark-as-read streak; Mixed review. Data is built by
+  `scripts/build-reading.mjs` and `scripts/build-mixed.mjs` from `data-source/bible/reading-passages.csv`.

@@ -17,6 +17,7 @@
 // reaches the top box in at least one mode, LEARNING once it has been practised at
 // all, and NEW before that.
 
+import { getBibleDueDates } from "./bible-areas.js";
 import { getAreas, getAllAreaStats, getStreakStatus, getWeakSpots, totalDue, QUIZ_HISTORY_MODES } from "./home-data.js";
 import { getScheduleEntries, getActivityLog, getDailyGoal, getStreakInfo, getMasteryStats, MASTERED_BOX } from "./srs.js";
 import { loadHistory } from "./history.js";
@@ -331,6 +332,13 @@ export function getReviewForecast(now = new Date()) {
         else counts[idx]++;
       }
     }
+  }
+  // Bible in Context items (saved per verse and word) are counted the same way.
+  for (const due of getBibleDueDates()) {
+    if (due <= now.getTime()) dueNow++;
+    const idx = Math.max(0, dayDiff(now, new Date(due)));
+    if (idx >= 7) later++;
+    else counts[idx]++;
   }
   const names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const days = counts.map((count, i) => ({

@@ -10,6 +10,7 @@ import {
   getWordOfTheDay,
   getVocabOfTheDay,
   getClosestAchievements,
+  getBibleDue,
   getRecentActivity,
   timeAgo,
   dayAgo,
@@ -18,13 +19,14 @@ import { getDisplayName, setDisplayName, isNamePromptDismissed, dismissNamePromp
 import { homeMessage, seedFromDate } from "../encourage.js";
 import { getQuizTrends } from "../progress-data.js";
 import { ymd } from "../daily-history.js";
-import { BIBLE_GROUPS, getAllBibleStats, getBibleSummary, PASS_PERCENT } from "../bible-areas.js";
+import { BIBLE_GROUPS, BIBLE_PAGES, getAllBibleStats, getBibleSummary, PASS_PERCENT } from "../bible-areas.js";
 
 // The Home page: what to do next (Today), where you left off, one tile per
 // study area with its progress, your weak spots, and a verb form of the day.
 // (My Progress, Achievements and Word Lookup are in the sidebar; Achievements
 // now lives inside My Progress.) All the numbers come from home-data.js.
 
+const BIBLE_LABELS = Object.fromEntries(BIBLE_PAGES.map((p) => [p.page, p.label]));
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const plural = (n, one, many) => (n === 1 ? one : many);
 
@@ -100,6 +102,9 @@ function todayCardHtml(due, suggestion, streak) {
   if (suggestion.kind === "due") {
     studyLabel = "Study now";
     studySub = `${suggestion.count} due in ${suggestion.area.title} · ${suggestion.dueMode.label}`;
+  } else if (suggestion.kind === "bible-due") {
+    studyLabel = "Review Bible items";
+    studySub = `${suggestion.count} due in Bible in Context · ${suggestion.page ? BIBLE_LABELS[suggestion.page] : "several pages"}`;
   } else if (suggestion.kind === "start") {
     studyLabel = "Start here";
     studySub = `${suggestion.area.title} Flashcards — you haven't practised these yet`;
@@ -301,33 +306,35 @@ function achievementsCardHtml({ items, allUnlocked }) {
           (a) => `<li>
             <span class="goal-icon" aria-hidden="true">${esc(a.icon)}</span>
             <div class="goal-main">
-              <div class="goal-title">${esc(a.title)} <span class="caption">· ${a.progress.toLocaleString()} / ${a.target.toLocaleString()}</span></div>
+              <div class="goal-title">${esc(a.title)} <span class="caption">· ${a.progress.toLocaleString()} / ${a.target.toLocaleString()}${a.unit ? " " + esc(a.unit) : ""}</span></div>
               <div class="caption goal-desc">${esc(a.desc)}</div>
               <div class="progress-bar-outer"><div class="progress-bar-inner" style="width:${Math.round(a.ratio * 100)}%"></div></div>
+              ${a.page ? `<button type="button" class="btn btn-sm btn-outline goal-go" data-goto="${esc(a.page)}">Go</button>` : ""}
             </div>
           </li>`
         )
         .join("")}</ul>`
-    : `<p class="caption">${allUnlocked ? "Every achievement is unlocked — well done!" : "Practice a little and the goals you are closest to will show up here."}</p>`;
+    : `<p class="caption">${allUnlocked ? "Every badge is earned — well done!" : "Practice a little and the badges you are closest to will show up here."}</p>`;
   return `
     <div class="home-card">
-      <h3>Closest achievements</h3>
+      <h3>Next three badges</h3>
       ${body}
       <div class="home-card-foot">
-        <button type="button" class="pm-link" data-progress-tab="achievements">See all achievements in My Progress →</button>
+        <button type="button" class="pm-link" data-progress-tab="achievements">See all badges in My Progress →</button>
       </div>
     </div>`;
 }
 
 export function mount({ content, navigate }) {
   const allStats = getAllAreaStats();
-  const due = totalDue(allStats);
-  const suggestion = getStudySuggestion(allStats);
+  const bibleDue = getBibleDue();
+  const due = totalDue(allStats, bibleDue);
+  const suggestion = getStudySuggestion(allStats, bibleDue);
   const streak = getStreakStatus();
   const weak = getWeakSpots(5);
   const wotd = getWordOfTheDay();
   const votd = getVocabOfTheDay();
-  const goals = getClosestAchievements(4);
+  const goals = getClosestAchievements(3);
   const lastVisit = getLastVisit();
   const recent = getRecentActivity();
   const bibleAll = getAllBibleStats();
@@ -400,6 +407,12 @@ export function mount({ content, navigate }) {
       if (suggestion.kind === "due") {
         if (suggestion.dueMode.link) setDeepLink(suggestion.dueMode.link);
         navigate(suggestion.dueMode.page);
+      } else if (suggestion.kind === "bible-due") {
+        setDeepLink({
+          type: "bible-due",
+          items: bibleDue.items.slice(0, 10).map((i) => ({ areaId: "bible", page: i.page, key: i.key })),
+        });
+        navigate("daily-challenge");
       } else if (suggestion.kind === "start") {
         const flash = suggestion.area.buttons.find((b) => b.label === "Flashcards") || suggestion.area.buttons[0];
         navigate(flash.page);
@@ -415,7 +428,7 @@ export function mount({ content, navigate }) {
     drillBtn.addEventListener("click", () => {
       setDeepLink({
         type: "weak-drill",
-        items: weak.map((w) => ({ areaId: w.areaId, key: w.key, direction: w.direction })),
+        items: weak.map((w) => ({ areaId: w.areaId, key: w.key, direction: w.direction, page: w.page })),
       });
       navigate("daily-challenge");
     });

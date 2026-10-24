@@ -39,8 +39,8 @@ assert(/Consonants Flashcards/.test(text(".today-card-sub")), "...Consonants Fla
 assert(/start a streak/i.test(text(".today-streak")), "no streak yet");
 assert(
   JSON.stringify([...content.querySelectorAll(".home-card h3")].map((h) => h.textContent.trim())) ===
-    JSON.stringify(["Vocabulary of the day", "Verb of the day", "Weak spots", "Closest achievements"]),
-  "four info boxes: Vocabulary of the day, Verb of the day, then Weak spots and Closest achievements below"
+    JSON.stringify(["Vocabulary of the day", "Verb of the day", "Weak spots", "Next three badges"]),
+  "four info boxes: Vocabulary of the day, Verb of the day, then Weak spots and Next three badges below"
 );
 assert(/Nothing here yet/.test(card("Weak spots").textContent), "weak spots start empty");
 const votd = card("Vocabulary of the day");
@@ -52,7 +52,7 @@ assert(/Lesson .+ · Frequency [\d,]+/.test(votd.querySelector(".votd-answer").t
 assert(votd.querySelector(".wotd-gloss").textContent.trim().length > 0, "...and the English definition");
 click(findButtonByText(votd, "Hide definition"));
 assert(votd.querySelector(".votd-answer").hasAttribute("hidden"), "Hide definition hides it again");
-assert(/Practice a little/.test(card("Closest achievements").textContent), "no goals to show before any practice");
+assert(/Practice a little/.test(card("Next three badges").textContent), "no goals to show before any practice");
 assert(!!content.querySelector(".wotd-form") && content.querySelector(".wotd-form").textContent.length > 0, "a verb of the day is shown");
 assert(content.querySelector(".wotd-parse").hasAttribute("hidden"), "its parsing starts hidden");
 click(findButtonByText(content, "Show parsing"));
@@ -103,13 +103,14 @@ click(findButtonByText(content, "Start Drill"));
 await wait();
 assert(!!content.querySelector(".hebrew-display"), "the drill asks a question");
 
-console.log("\nClosest achievements");
+console.log("\nNext three badges");
 await goHome();
-const goals = card("Closest achievements");
+const goals = card("Next three badges");
 const goalTitles = [...goals.querySelectorAll(".goal-title")];
-assert(goalTitles.length >= 1 && goalTitles.length <= 4, "achievements you are partway to are listed (at most four)");
+assert(goalTitles.length >= 1 && goalTitles.length <= 3, "badges you are partway to are listed (at most three)");
 assert(goals.querySelectorAll(".progress-bar-inner").length === goalTitles.length, "each shows a progress bar");
 assert(/\d+ \/ \d+/.test(goalTitles[0].textContent), "...and how far along it is");
+assert(goals.querySelectorAll(".goal-go").length === goalTitles.length, "each has a one-tap button to the page that earns it");
 const ratios = [...goals.querySelectorAll(".progress-bar-inner")].map((b) => parseInt(b.style.width, 10));
 assert(ratios.every((r, i) => i === 0 || ratios[i - 1] >= r), "the closest one comes first");
 
