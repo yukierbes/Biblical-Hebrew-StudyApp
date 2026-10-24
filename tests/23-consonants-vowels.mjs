@@ -29,14 +29,14 @@ const { document, window } = await setupApp();
 
 console.log("\nNavigation order");
 const sidebarOrder = [...document.querySelectorAll(".nav-section-toggle")].map((b) => b.dataset.navSection);
-assert(JSON.stringify(sidebarOrder) === JSON.stringify(["consonants", "vowels", "vocabulary", "verbs", "accents", "bible"]), "sidebar order: " + sidebarOrder.join(", "));
+assert(JSON.stringify(sidebarOrder) === JSON.stringify(["foundations", "consonants", "vowels", "vocabulary", "verbs", "accents", "bible", "bible-marks", "bible-words", "bible-prefixes", "bible-verbs"]), "sidebar order: " + sidebarOrder.join(", "));
 for (const pre of ["consonant", "vowel"]) {
   for (const mode of ["review", "flashcards", "typing", "games"]) {
     assert(!!document.querySelector(`.nav-btn[data-page="${pre}-${mode}"]`), `sidebar has ${pre}-${mode}`);
   }
 }
 const homeOrder = [...document.querySelectorAll("[data-home-section]")].map((b) => b.dataset.homeSection);
-if (homeOrder.length) assert(JSON.stringify(homeOrder) === JSON.stringify(["consonants", "vowels", "vocabulary", "verbs", "accents"]), "home order: " + homeOrder.join(", "));
+if (homeOrder.length) assert(JSON.stringify(homeOrder) === JSON.stringify(["consonants", "vowels", "vocabulary", "verbs", "accents", "bible"]), "home order: " + homeOrder.join(", "));
 
 console.log("\nEvery new page mounts");
 const content = document.getElementById("content");

@@ -33,20 +33,55 @@ export function mount({ content, sidebarExtra }) {
   );
   content.appendChild(bible);
 
+  // Study references, in APA 7 format: alphabetical by author, hanging indent, titles in italics
+  // (sentence case). A short note after each says what the app uses the book for.
   content.appendChild(el("h2", "", "Study references"));
   const refs = [
-    ["Larry A. Mitchel, A Student’s Vocabulary for Biblical Hebrew and Aramaic (Updated Edition)", "Vocabulary categories, frequencies and definitions."],
-    ["Page H. Kelley, Biblical Hebrew: An Introductory Grammar (2nd ed.)", "Used to check and build verb forms and parsing."],
-    ["Karl V. Kutz and Rebekah L. Josberger, Learning Biblical Hebrew", "Used to check and build verb forms and parsing."],
-    ["Russell T. Fuller and Kyoungwon Choi, Invitation to Biblical Hebrew: A Beginning Grammar", "Used to check and build verb forms and parsing."],
-    ["Mark D. Futato Sr., Basics of Hebrew Accents", "Accent marks."],
-    ["The author’s own class notes", "Dagesh, guttural and definite-article rules used in the Bible in Context practice pages (Definite Article, Dagesh, Pronominal Suffixes)."],
+    {
+      apa: [
+        "Fuller, R. T., & Choi, K. (2006). ",
+        ["Invitation to biblical Hebrew: A beginning grammar"],
+        ". Kregel Academic.",
+      ],
+      use: "Used to check and build verb forms and parsing.",
+    },
+    {
+      apa: ["Futato, M. D., Sr. (2020). ", ["Basics of Hebrew accents"], ". Zondervan Academic."],
+      use: "Accent marks.",
+    },
+    {
+      apa: [
+        "Kelley, P. H., & Crawford, T. G. (2018). ",
+        ["Biblical Hebrew: An introductory grammar"],
+        " (2nd ed.). Eerdmans.",
+      ],
+      use: "Used to check and build verb forms and parsing.",
+    },
+    {
+      apa: [
+        "Kutz, K. V., & Josberger, R. L. (2018). ",
+        ["Learning biblical Hebrew: Reading for comprehension: An introductory grammar"],
+        ". Lexham Press.",
+      ],
+      use: "Used to check and build verb forms and parsing.",
+    },
+    {
+      apa: [
+        "Mitchel, L. A. (2017). ",
+        ["A student’s vocabulary for biblical Hebrew and Aramaic"],
+        " (Updated ed.). Zondervan Academic.",
+      ],
+      use: "Vocabulary categories, frequencies and definitions.",
+    },
   ];
-  const list = el("ul", "bible-credit-list");
-  for (const [book, use] of refs) {
-    const li = el("li");
-    li.appendChild(el("strong", "", book));
-    li.appendChild(document.createTextNode(" — " + use));
+  const list = el("ul", "bible-credit-list apa-list");
+  for (const { apa, use } of refs) {
+    const li = el("li", "apa-ref");
+    for (const part of apa) {
+      if (Array.isArray(part)) li.appendChild(el("em", "", part[0])); // the title is italic
+      else li.appendChild(document.createTextNode(part));
+    }
+    li.appendChild(el("span", "caption apa-use", use));
     list.appendChild(li);
   }
   content.appendChild(list);

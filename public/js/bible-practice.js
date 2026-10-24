@@ -13,7 +13,8 @@
 import { loadBibleData } from "./bible-data.js";
 import { buildVerse, buildLetterVerse, prettyRef, getShowAccents, setShowAccents, wordHtml, hebrewHtml } from "./bible-text.js";
 import { recordAttempt } from "./history.js";
-import { recordStreakActivity } from "./srs.js";
+import { recordStreakActivity, recordItemResult } from "./srs.js";
+import { bibleSrsMode, exampleKey } from "./bible-areas.js";
 
 const QUIZ_LENGTH = 10;
 
@@ -32,6 +33,104 @@ const shuffle = (arr) => {
   return a;
 };
 
+// ---------------------------------------------------------------------
+// Pieces other pages can use (the Daily Challenge asks the same questions)
+// ---------------------------------------------------------------------
+
+/** Every page registers its configuration here when its module loads, keyed by its history mode ("bible-dagesh"). */
+const registry = new Map();
+export function getPracticeConfig(historyMode) {
+  return registry.get(historyMode) || null;
+}
+export function registeredPracticePages() {
+  return [...registry.keys()];
+}
+
+const patternIn = (data, id) => data.patterns.find((p) => p.id === id);
+const groupIn = (data, patternId) => data.groups.find((g) => g.patterns.includes(patternId));
+
+/** The answer boxes for one example: [{ title, choices:[{id,label}], answer }]. */
+export function answerPartsFor(config, data, ex) {
+  if (config.answerParts) return config.answerParts(data).map((p) => ({ title: p.title, choices: p.choices, answer: p.answerOf(ex) }));
+  const main = {
+    title: config.mainPartTitle || "",
+    choices: data.groups.map((g) => ({ id: g.id, label: g.label })),
+    answer: groupIn(data, ex.pattern).id,
+  };
+  const extra = config.extraPart ? config.extraPart(data) : null;
+  return extra ? [main, { title: extra.title, choices: extra.choices, answer: extra.answerOf(ex) }] : [main];
+}
+
+/**
+ * One question as plain data, so it can be saved and drawn later without the dataset:
+ *   { page, key, ex, words (the verse), parts, promptText, explainHtml }
+ */
+export function makeBibleQuestion(config, data, ex) {
+  const words = data.verses[ex.ref];
+  const target = words[ex.wi];
+  const pattern = patternIn(data, ex.pattern);
+  return {
+    page: config.historyMode,
+    key: exampleKey(ex),
+    ex,
+    words,
+    parts: answerPartsFor(config, data, ex),
+    promptText: config.promptText,
+    explainHtml: `${config.describe(target, ex)} ${hebrewHtml(pattern.explain)}${target.n ? " " + hebrewHtml(target.n) : ""}`,
+  };
+}
+
+/**
+ * Draws a question made by makeBibleQuestion: the verse (or just the word), the prompt and the answer boxes.
+ *   picked   { [partIndex]: choiceId } to show as chosen
+ *   graded   true once answered: the right choices turn green and a wrong pick red
+ *   onPick   (partIndex, choiceId) when a choice is tapped
+ */
+export function drawBibleQuestion(host, bq, { showAccents = true, picked = {}, graded = false, onPick = () => {} } = {}) {
+  const config = getPracticeConfig(bq.page);
+  const ex = bq.ex;
+  const target = bq.words[ex.wi];
+  host.appendChild(el("div", "caption", prettyRef(ex.ref)));
+  if (config && config.questionDisplay) {
+    host.appendChild(buildVerse(bq.words, { showAccents }));
+    host.appendChild(config.questionDisplay({ ex, target, data: null, showAccents }));
+  } else {
+    const m = (w) => (config ? config.markWord(w, ex) : {});
+    host.appendChild(
+      buildVerse(bq.words, {
+        showAccents,
+        mark: (wi, w) => (wi === ex.wi ? m(w).markPiece ?? -1 : -1),
+        markLetter: (wi, w) => (wi === ex.wi ? m(w).markLetter ?? -1 : -1),
+      })
+    );
+  }
+  host.appendChild(el("p", "bible-prompt", bq.promptText));
+  bq.parts.forEach((part, pi) => {
+    const wrap = el("div", "bible-part");
+    if (bq.parts.length > 1 && part.title) wrap.appendChild(el("p", "caption bible-part-title", part.title));
+    const group = el("div", "bible-choices" + (part.choices.length > 4 ? " bible-choices-grid" : ""));
+    for (const c of part.choices) {
+      const b = el("button", "bible-choice", c.label);
+      b.type = "button";
+      b.dataset.choice = c.id;
+      if (graded) {
+        b.disabled = true;
+        if (c.id === part.answer) b.classList.add("is-correct");
+        else if (c.id === picked[pi]) b.classList.add("is-wrong");
+      } else {
+        if (picked[pi] === c.id) b.classList.add("is-picked");
+        b.addEventListener("click", () => {
+          for (const other of group.children) other.classList.toggle("is-picked", other === b);
+          onPick(pi, c.id);
+        });
+      }
+      group.appendChild(b);
+    }
+    wrap.appendChild(group);
+    host.appendChild(wrap);
+  });
+}
+
 /**
  * config = {
  *   dataset, historyMode, title, intro,
@@ -45,6 +144,7 @@ const shuffle = (arr) => {
  * }
  */
 export function createPractice(config) {
+  registry.set(config.historyMode, config);
   let state = null;
   let data = null;
   const TABS = [
@@ -204,6 +304,7 @@ export function createPractice(config) {
       span.innerHTML = `${config.describe(target, ex)} ${hebrewHtml(pattern.explain)}${target.n ? " " + hebrewHtml(target.n) : ""}`;
       feedback.appendChild(span);
       recordStreakActivity();
+      recordItemResult(bibleSrsMode(config.historyMode), exampleKey(ex), allRight); // so Home, My Progress and the Daily Challenge know
       const chosenLabel = parts.map((part, pi) => part.choices.find((c) => c.id === chosen[pi]).label).join(" · ");
       onAnswered(allRight, { label: chosenLabel });
     }
@@ -211,14 +312,7 @@ export function createPractice(config) {
 
   /** The answer boxes for one example: [{ title, choices:[{id,label}], answer }]. */
   function answerParts(ex) {
-    if (config.answerParts) return config.answerParts(data).map((p) => ({ title: p.title, choices: p.choices, answer: p.answerOf(ex) }));
-    const main = {
-      title: config.mainPartTitle || "",
-      choices: data.groups.map((g) => ({ id: g.id, label: g.label })),
-      answer: groupOf(ex.pattern).id,
-    };
-    const extra = config.extraPart ? config.extraPart(data) : null;
-    return extra ? [main, { title: extra.title, choices: extra.choices, answer: extra.answerOf(ex) }] : [main];
+    return answerPartsFor(config, data, ex);
   }
 
   /** The correct answer as words, e.g. "Type 2 · 3MS". */

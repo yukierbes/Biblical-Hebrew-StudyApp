@@ -57,6 +57,7 @@ const APP_SHELL = [
   "js/appearance.js",
   "js/bible-data.js",
   "js/bible-text.js",
+  "js/bible-areas.js",
   "js/bible-practice.js",
   "js/pages/bible-article.js",
   "js/pages/bible-dagesh.js",

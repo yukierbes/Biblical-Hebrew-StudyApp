@@ -19,6 +19,7 @@ import { getLetterSet } from "./letter-sets.js";
 import { getAvailableDatasets, loadVerbData } from "./data.js";
 import { morphKey } from "./helpers.js";
 import { loadHistory } from "./history.js";
+import { BIBLE_PAGES } from "./bible-areas.js";
 import { ACHIEVEMENTS, buildContext } from "./pages/achievements.js";
 import {
   getDueCount,
@@ -380,21 +381,7 @@ export const QUIZ_HISTORY_MODES = [
   ["accent-typing", "Accents Typing"],
   ["consonant-typing", "Consonants Typing"],
   ["vowel-typing", "Vowels Typing"],
-  ["bible-article", "Definite Article"],
-  ["bible-dagesh", "Dagesh"],
-  ["bible-suffix", "Pronominal Suffixes"],
-  ["bible-prefix", "Prefixed Prepositions"],
-  ["bible-qames", "Qameṣ vs Qameṣ-ḥaṭuf"],
-  ["bible-sheva", "Shevas"],
-  ["bible-syllable", "Syllables & Stress"],
-  ["bible-noun", "Nouns"],
-  ["bible-pronoun", "Independent Personal Pronouns"],
-  ["bible-demo", "Demonstratives"],
-  ["bible-adj", "Adjectives"],
-  ["bible-verb", "Verbs"],
-  ["bible-interrog", "Interrogative ה"],
-  ["bible-vav", "Prefixed Vav"],
-  ["bible-min", "Prefixed מִן"],
+  ...BIBLE_PAGES.map((p) => [p.page, p.label]), // the 15 Bible in Context pages (see bible-areas.js)
 ];
 
 /** { lastPracticeDate, lastQuiz: { label, score, total, percent, timestamp } | null } */

@@ -515,6 +515,35 @@ h3::before,
   padding-left: 20px;
 }
 
+/* A dropdown inside a dropdown (Foundations > Consonants, Bible in Context > Words):
+   the inner header is indented and a touch quieter; its pages are indented once more. */
+.nav-section-group .nav-sub-toggle {
+  padding: 8px 10px 4px 16px;
+  font-size: 0.7rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+.nav-section-group .nav-sub-group {
+  margin-left: 10px;
+  border-left: 1px solid var(--hairline);
+}
+.nav-section-group .nav-sub-group .nav-btn {
+  padding-left: 14px;
+}
+
+/* Sources & Credits and Mistake Reports: small links under the Account dropdown. */
+.sidebar-footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-top: 1px solid var(--hairline);
+  padding-top: 6px;
+}
+.sidebar-footer-links .nav-btn {
+  font-size: 0.85rem;
+  padding: 7px 10px 7px 6px;
+}
+
 .sidebar-label {
   font-family: var(--font-mono);
   font-weight: 500;
@@ -3576,3 +3605,23 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 .bible-gap.is-correct::after { border-left: 3px solid var(--good); }
 .bible-gap.is-wrong::after { border-left: 3px solid var(--bad); }
 .bible-gap.is-missed::after { border-left: 3px dotted var(--good); }
+
+/* Sources & Credits: APA reference list, with the hanging indent APA asks for. */
+.apa-list { list-style: none; padding-left: 0; }
+.apa-ref { padding-left: 2em; text-indent: -2em; margin-bottom: 0.9em; line-height: 1.5; }
+.apa-ref .apa-use { display: block; text-indent: 0; margin-top: 2px; }
+
+/* Home: the Bible in Context tile, full width under the five study areas. */
+.bible-home-row { margin-top: 16px; }
+.bible-home-row .bible-home-tile { grid-column: 1 / -1; }
+.bible-home-group h3 { margin: 10px 0 6px; font-size: 0.8rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+.bible-home-pages { display: flex; flex-wrap: wrap; gap: 6px; }
+.bible-home-page {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 10px; border: 1px solid var(--hairline-strong); border-radius: 999px;
+  background: transparent; color: var(--ink); font: inherit; font-size: 0.9rem; cursor: pointer;
+}
+.bible-home-page:hover { background: var(--accent-soft); }
+.bible-home-chip { font-size: 0.75rem; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--hairline-strong); color: var(--ink-soft); }
+.bible-home-chip.is-passed { border-color: var(--accent); color: var(--ink); font-weight: 600; }
+.bible-home-chip.is-new { border-style: dashed; }

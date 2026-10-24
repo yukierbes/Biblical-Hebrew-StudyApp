@@ -150,10 +150,23 @@ sidebarBackdropEl.addEventListener("click", () => setSidebarCollapsed(true));
 
 let currentPage = null;
 
-// ---- Sidebar nav sections (Consonants / Vowels / Vocabulary / Verbs / Accents): expand/collapse,
-// persisted per section, with the containing section auto-expanding
-// whenever its page becomes the active one so it's never hidden. ----
-const NAV_SECTIONS = ["consonants", "vowels", "vocabulary", "verbs", "accents", "bible"];
+// ---- Sidebar nav sections: expand/collapse, persisted per section, with every containing
+// section auto-expanding whenever its page becomes the active one so it's never hidden.
+// "Foundations" holds Consonants / Vowels / Vocabulary / Verbs / Accents; "Bible in Context"
+// holds four subgroups (Marks & Syllables, Words, Prefixes, Verbs). ----
+const NAV_SECTIONS = [
+  "foundations",
+  "consonants",
+  "vowels",
+  "vocabulary",
+  "verbs",
+  "accents",
+  "bible",
+  "bible-marks",
+  "bible-words",
+  "bible-prefixes",
+  "bible-verbs",
+];
 
 function navSectionStorageKey(section) {
   return `navSectionCollapsed:${section}`;
@@ -209,9 +222,11 @@ function setActiveNav(rawPageName) {
     btn.classList.toggle("active", btn.dataset.page === pageName);
   });
   const activeBtn = [...navButtons].find((btn) => btn.dataset.page === pageName);
-  const containingGroup = activeBtn ? activeBtn.closest(".nav-section-group") : null;
-  if (containingGroup) {
+  // Open the group the page is in, and the group that group is in (and so on up).
+  let containingGroup = activeBtn ? activeBtn.closest(".nav-section-group") : null;
+  while (containingGroup) {
     setNavSectionCollapsed(containingGroup.dataset.navSectionGroup, false);
+    containingGroup = containingGroup.parentElement ? containingGroup.parentElement.closest(".nav-section-group") : null;
   }
 }
 
@@ -406,7 +421,7 @@ function isTypingContext(target) {
 // sidebar nav, "column") of buttons. #nav-buttons is the one vertical
 // case; everything else here reads as a horizontal row of choices.
 const ARROW_KEYS = new Set(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
-const GROUP_SELECTOR = "#nav-buttons, .choice-group, .button-row, .zoom-buttons, .mode-cards";
+const GROUP_SELECTOR = "#nav-buttons, .sidebar-footer-links, .choice-group, .button-row, .zoom-buttons, .mode-cards";
 
 function getFocusableItems(container) {
   return [...container.querySelectorAll("button, input, a[href]")].filter(

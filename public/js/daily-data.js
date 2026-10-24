@@ -8,6 +8,7 @@
 //   typed  the same questions typed in              (Hard mode)
 //   parse  a verb form: tap its binyan, mode, person, gender, number
 //   match  match 3-4 items to their categories (consonant category, vowel class, ...)
+//   bible  a verse of Genesis with one word marked and the same answer boxes as its Bible in Context page
 //
 // Which items come up is personal: due and weak items first, never-seen items
 // next, plus a few already-mastered ones slipped in for review. The person
@@ -28,6 +29,10 @@ import {
   primaryAccentAnswerText,
   sameSymbolAccents,
 } from "./accent-answer-matching.js";
+import { BIBLE_PAGES, bibleSrsMode, exampleKey } from "./bible-areas.js";
+import { loadBibleData, getBibleData } from "./bible-data.js";
+import { getPracticeConfig, makeBibleQuestion } from "./bible-practice.js";
+import { prettyRef } from "./bible-text.js";
 import { isAnswerCorrect as isVocabAnswerCorrect, primaryAnswerText as vocabAnswerText } from "./vocab-answer-matching.js";
 
 export const PARSE_FIELDS = ["Binyan", "Mode", "Person", "Gender", "Number"];
@@ -93,9 +98,79 @@ export function parseOptions() {
 
 /** Areas that have something to ask about right now. */
 export function availableAreaIds() {
-  return getAreas()
+  const ids = getAreas()
     .filter((a) => poolOf(a).length > 0)
     .map((a) => a.id);
+  // Bible in Context is offered once the Bible pages are loaded in the app.
+  if (BIBLE_PAGES.some((p) => getPracticeConfig(p.page))) ids.push("bible");
+  return ids;
+}
+
+// ---------------------------------------------------------------------
+// Bible in Context questions
+// ---------------------------------------------------------------------
+
+let biblePlan = []; // the pages whose data is loaded for the round being built
+
+/**
+ * Call (and wait for) this before buildChallenge when "bible" is ticked: it loads the data for a few
+ * random Bible pages. Returns the settings to build with — without "bible" if the data could not load.
+ */
+export async function prepareChallenge(settings) {
+  const s = { ...settings, areas: [...settings.areas] };
+  biblePlan = [];
+  if (!s.areas.includes("bible")) return s;
+  const want = Math.min(4, Math.max(1, Math.ceil(s.length / s.areas.length)));
+  const pages = shuffle(BIBLE_PAGES.filter((p) => getPracticeConfig(p.page))).slice(0, want);
+  const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 10000));
+  await Promise.all(
+    pages.map(async (p) => {
+      try {
+        await Promise.race([loadBibleData(getPracticeConfig(p.page).dataset), timeout]);
+        biblePlan.push(p.page);
+      } catch (e) {
+        /* that page is left out */
+      }
+    })
+  );
+  if (biblePlan.length === 0) s.areas = s.areas.filter((a) => a !== "bible");
+  return s;
+}
+
+/** `k` Bible questions spread over the loaded pages, due and unseen verse-words first. */
+function bibleQuestions(k) {
+  const pages = shuffle(biblePlan.filter((pg) => getPracticeConfig(pg) && getBibleData(getPracticeConfig(pg).dataset)));
+  if (k <= 0 || pages.length === 0) return [];
+  const lists = new Map(
+    pages.map((pg) => [pg, sortByPriority(bibleSrsMode(pg), getBibleData(getPracticeConfig(pg).dataset).examples, exampleKey)])
+  );
+  const next = new Map(pages.map((pg) => [pg, 0]));
+  const out = [];
+  let guard = 0;
+  while (out.length < k && guard++ < k * pages.length * 4) {
+    const pg = pages[guard % pages.length];
+    const i = next.get(pg);
+    const list = lists.get(pg);
+    if (i >= list.length) continue;
+    next.set(pg, i + 1);
+    const config = getPracticeConfig(pg);
+    try {
+      const bq = makeBibleQuestion(config, getBibleData(config.dataset), list[i]);
+      out.push({
+        type: "bible",
+        areaId: "bible",
+        key: bq.key,
+        page: pg,
+        srsMode: bibleSrsMode(pg),
+        label: `Bible in Context: ${config.title}`,
+        promptText: `${prettyRef(bq.ex.ref)} · ${config.title}`,
+        bq,
+      });
+    } catch (e) {
+      /* an odd example is skipped */
+    }
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------------
@@ -190,7 +265,7 @@ const dirLabel = {
   accents: { name: "Name → Accent", form: "Accent → Name" },
   vocabulary: { hebrew: "Hebrew → English", english: "English → Hebrew" },
 };
-const areaTitle = { consonants: "Consonants", vowels: "Vowels", vocabulary: "Vocabulary", accents: "Accents", verbs: "Verbs" };
+const areaTitle = { consonants: "Consonants", vowels: "Vowels", vocabulary: "Vocabulary", accents: "Accents", verbs: "Verbs", bible: "Bible in Context" };
 
 function randomDirection(areaId) {
   if (areaId === "vocabulary") return Math.random() < 0.5 ? "hebrew" : "english";
@@ -378,7 +453,7 @@ export function buildChallenge(settings) {
 
   // Longer rounds get a match-to-category round (one at 10, two at 15).
   const wantMatches = N >= 15 ? 2 : N >= 10 ? 1 : 0;
-  const matchAreas = shuffle(areaIds.filter((a) => a !== "verbs"));
+  const matchAreas = shuffle(areaIds.filter((a) => a !== "verbs" && a !== "bible"));
   const matches = [];
   for (const a of matchAreas) {
     if (matches.length >= wantMatches) break;
@@ -389,6 +464,10 @@ export function buildChallenge(settings) {
   const counts = allocate(areaIds, N - matches.length);
   const questions = [];
   for (const id of areaIds) {
+    if (id === "bible") {
+      questions.push(...bibleQuestions(counts[id]));
+      continue;
+    }
     const area = areaById(id);
     for (const row of pickItems(area, counts[id])) {
       const q = makeQuestion(area, row, settings.hard);
@@ -445,6 +524,16 @@ export function grade(q, answer) {
   if (q.type === "mc") {
     const mine = typeof answer === "string" ? answer : "";
     return { correct: mine === q.answer, correctText: q.answer, yourText: mine || "—" };
+  }
+  if (q.type === "bible") {
+    const mine = answer && typeof answer === "object" ? answer : {};
+    const parts = q.bq.parts;
+    const label = (p, id) => (p.choices.find((c) => c.id === id) || {}).label || "—";
+    return {
+      correct: parts.every((p, i) => mine[i] === p.answer),
+      correctText: parts.map((p) => label(p, p.answer)).join(" · "),
+      yourText: parts.map((p, i) => label(p, mine[i])).join(" · "),
+    };
   }
   if (q.type === "typed") {
     const row = getRow(q.areaId, q.key);

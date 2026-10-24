@@ -92,78 +92,101 @@
             <button class="nav-btn" data-page="daily-challenge">Daily Challenge</button>
             <button class="nav-btn" data-page="progress">My Progress</button>
             <button class="nav-btn" data-page="search">Word Lookup</button>
-            <button class="nav-btn" data-page="credits">Sources &amp; Credits</button>
-            <button class="nav-btn" id="nav-reports" data-page="reports" hidden>Mistake Reports</button>
 
-            <button class="nav-section-toggle" type="button" data-nav-section="consonants" aria-expanded="false" aria-controls="nav-section-consonants">
-              <span class="nav-section-caret">▾</span><span>Consonants</span>
+            <button class="nav-section-toggle" type="button" data-nav-section="foundations" aria-expanded="false" aria-controls="nav-section-foundations">
+              <span class="nav-section-caret">▾</span><span>Foundations</span>
             </button>
-            <div class="nav-section-group" id="nav-section-consonants" data-nav-section-group="consonants" hidden>
-              <button class="nav-btn" data-page="consonant-review">Consonants Review</button>
-              <button class="nav-btn" data-page="consonant-flashcards">Consonants Flashcards</button>
-              <button class="nav-btn" data-page="consonant-typing">Consonants Typing</button>
-              <button class="nav-btn" data-page="consonant-games">Consonants Games</button>
-            </div>
+            <div class="nav-section-group" id="nav-section-foundations" data-nav-section-group="foundations" hidden>
+                <button class="nav-section-toggle nav-sub-toggle" type="button" data-nav-section="consonants" aria-expanded="false" aria-controls="nav-section-consonants">
+                  <span class="nav-section-caret">▾</span><span>Consonants</span>
+                </button>
+                <div class="nav-section-group nav-sub-group" id="nav-section-consonants" data-nav-section-group="consonants" hidden>
+                  <button class="nav-btn" data-page="consonant-review">Consonants Review</button>
+                  <button class="nav-btn" data-page="consonant-flashcards">Consonants Flashcards</button>
+                  <button class="nav-btn" data-page="consonant-typing">Consonants Typing</button>
+                  <button class="nav-btn" data-page="consonant-games">Consonants Games</button>
+                </div>
 
-            <button class="nav-section-toggle" type="button" data-nav-section="vowels" aria-expanded="false" aria-controls="nav-section-vowels">
-              <span class="nav-section-caret">▾</span><span>Vowels</span>
-            </button>
-            <div class="nav-section-group" id="nav-section-vowels" data-nav-section-group="vowels" hidden>
-              <button class="nav-btn" data-page="vowel-review">Vowels Review</button>
-              <button class="nav-btn" data-page="vowel-flashcards">Vowels Flashcards</button>
-              <button class="nav-btn" data-page="vowel-typing">Vowels Typing</button>
-              <button class="nav-btn" data-page="vowel-games">Vowels Games</button>
-            </div>
+                <button class="nav-section-toggle nav-sub-toggle" type="button" data-nav-section="vowels" aria-expanded="false" aria-controls="nav-section-vowels">
+                  <span class="nav-section-caret">▾</span><span>Vowels</span>
+                </button>
+                <div class="nav-section-group nav-sub-group" id="nav-section-vowels" data-nav-section-group="vowels" hidden>
+                  <button class="nav-btn" data-page="vowel-review">Vowels Review</button>
+                  <button class="nav-btn" data-page="vowel-flashcards">Vowels Flashcards</button>
+                  <button class="nav-btn" data-page="vowel-typing">Vowels Typing</button>
+                  <button class="nav-btn" data-page="vowel-games">Vowels Games</button>
+                </div>
 
-            <button class="nav-section-toggle" type="button" data-nav-section="vocabulary" aria-expanded="false" aria-controls="nav-section-vocabulary">
-              <span class="nav-section-caret">▾</span><span>Vocabulary</span>
-            </button>
-            <div class="nav-section-group" id="nav-section-vocabulary" data-nav-section-group="vocabulary" hidden>
-              <button class="nav-btn" data-page="vocabulary">Vocabulary Review</button>
-              <button class="nav-btn" data-page="vocab-flashcards">Vocabulary Flashcards</button>
-              <button class="nav-btn" data-page="vocab-typing">Vocabulary Typing</button>
-              <button class="nav-btn" data-page="vocab-games">Vocabulary Games</button>
-            </div>
+                <button class="nav-section-toggle nav-sub-toggle" type="button" data-nav-section="vocabulary" aria-expanded="false" aria-controls="nav-section-vocabulary">
+                  <span class="nav-section-caret">▾</span><span>Vocabulary</span>
+                </button>
+                <div class="nav-section-group nav-sub-group" id="nav-section-vocabulary" data-nav-section-group="vocabulary" hidden>
+                  <button class="nav-btn" data-page="vocabulary">Vocabulary Review</button>
+                  <button class="nav-btn" data-page="vocab-flashcards">Vocabulary Flashcards</button>
+                  <button class="nav-btn" data-page="vocab-typing">Vocabulary Typing</button>
+                  <button class="nav-btn" data-page="vocab-games">Vocabulary Games</button>
+                </div>
 
-            <button class="nav-section-toggle" type="button" data-nav-section="verbs" aria-expanded="false" aria-controls="nav-section-verbs">
-              <span class="nav-section-caret">▾</span><span>Verbs</span>
-            </button>
-            <div class="nav-section-group" id="nav-section-verbs" data-nav-section-group="verbs" hidden>
-              <button class="nav-btn" data-page="review">Verb Review</button>
-              <button class="nav-btn" data-page="verb-flashcards">Verb Flashcards</button>
-              <button class="nav-btn" data-page="parsing">Verb Parsing</button>
-              <button class="nav-btn" data-page="construction">Verb Construction</button>
-            </div>
+                <button class="nav-section-toggle nav-sub-toggle" type="button" data-nav-section="verbs" aria-expanded="false" aria-controls="nav-section-verbs">
+                  <span class="nav-section-caret">▾</span><span>Verbs</span>
+                </button>
+                <div class="nav-section-group nav-sub-group" id="nav-section-verbs" data-nav-section-group="verbs" hidden>
+                  <button class="nav-btn" data-page="review">Verb Review</button>
+                  <button class="nav-btn" data-page="verb-flashcards">Verb Flashcards</button>
+                  <button class="nav-btn" data-page="parsing">Verb Parsing</button>
+                  <button class="nav-btn" data-page="construction">Verb Construction</button>
+                </div>
 
-            <button class="nav-section-toggle" type="button" data-nav-section="accents" aria-expanded="false" aria-controls="nav-section-accents">
-              <span class="nav-section-caret">▾</span><span>Accents</span>
-            </button>
-            <div class="nav-section-group" id="nav-section-accents" data-nav-section-group="accents" hidden>
-              <button class="nav-btn" data-page="accent-review">Accents Review</button>
-              <button class="nav-btn" data-page="accent-flashcards">Accents Flashcards</button>
-              <button class="nav-btn" data-page="accent-typing">Accents Typing</button>
-              <button class="nav-btn" data-page="accent-games">Accents Games</button>
+                <button class="nav-section-toggle nav-sub-toggle" type="button" data-nav-section="accents" aria-expanded="false" aria-controls="nav-section-accents">
+                  <span class="nav-section-caret">▾</span><span>Accents</span>
+                </button>
+                <div class="nav-section-group nav-sub-group" id="nav-section-accents" data-nav-section-group="accents" hidden>
+                  <button class="nav-btn" data-page="accent-review">Accents Review</button>
+                  <button class="nav-btn" data-page="accent-flashcards">Accents Flashcards</button>
+                  <button class="nav-btn" data-page="accent-typing">Accents Typing</button>
+                  <button class="nav-btn" data-page="accent-games">Accents Games</button>
+                </div>
             </div>
 
             <button class="nav-section-toggle" type="button" data-nav-section="bible" aria-expanded="false" aria-controls="nav-section-bible">
               <span class="nav-section-caret">▾</span><span>Bible in Context</span>
             </button>
             <div class="nav-section-group" id="nav-section-bible" data-nav-section-group="bible" hidden>
-              <button class="nav-btn" data-page="bible-article">Definite Article</button>
-              <button class="nav-btn" data-page="bible-dagesh">Dagesh</button>
-              <button class="nav-btn" data-page="bible-suffix">Pronominal Suffixes</button>
-              <button class="nav-btn" data-page="bible-prefix">Prefixed Prepositions</button>
-              <button class="nav-btn" data-page="bible-qames">Qameṣ vs Qameṣ-ḥaṭuf</button>
-              <button class="nav-btn" data-page="bible-sheva">Shevas</button>
-              <button class="nav-btn" data-page="bible-syllable">Syllables &amp; Stress</button>
-              <button class="nav-btn" data-page="bible-noun">Nouns</button>
-              <button class="nav-btn" data-page="bible-pronoun">Independent Personal Pronouns</button>
-              <button class="nav-btn" data-page="bible-demo">Demonstratives</button>
-              <button class="nav-btn" data-page="bible-adj">Adjectives</button>
-              <button class="nav-btn" data-page="bible-verb">Verbs</button>
-              <button class="nav-btn" data-page="bible-interrog">Interrogative ה</button>
-              <button class="nav-btn" data-page="bible-vav">Prefixed Vav</button>
-              <button class="nav-btn" data-page="bible-min">Prefixed מִן</button>
+              <button class="nav-section-toggle nav-sub-toggle" type="button" data-nav-section="bible-marks" aria-expanded="false" aria-controls="nav-section-bible-marks">
+                <span class="nav-section-caret">▾</span><span>Marks &amp; Syllables</span>
+              </button>
+              <div class="nav-section-group nav-sub-group" id="nav-section-bible-marks" data-nav-section-group="bible-marks" hidden>
+                <button class="nav-btn" data-page="bible-dagesh">Dagesh</button>
+                <button class="nav-btn" data-page="bible-qames">Qameṣ / Qameṣ-ḥaṭuf</button>
+                <button class="nav-btn" data-page="bible-sheva">Shevas</button>
+                <button class="nav-btn" data-page="bible-syllable">Syllables &amp; Stress</button>
+              </div>
+              <button class="nav-section-toggle nav-sub-toggle" type="button" data-nav-section="bible-words" aria-expanded="false" aria-controls="nav-section-bible-words">
+                <span class="nav-section-caret">▾</span><span>Words</span>
+              </button>
+              <div class="nav-section-group nav-sub-group" id="nav-section-bible-words" data-nav-section-group="bible-words" hidden>
+                <button class="nav-btn" data-page="bible-noun">Nouns</button>
+                <button class="nav-btn" data-page="bible-pronoun">Personal Pronouns</button>
+                <button class="nav-btn" data-page="bible-demo">Demonstratives</button>
+                <button class="nav-btn" data-page="bible-adj">Adjectives</button>
+                <button class="nav-btn" data-page="bible-suffix">Pronominal Suffixes</button>
+              </div>
+              <button class="nav-section-toggle nav-sub-toggle" type="button" data-nav-section="bible-prefixes" aria-expanded="false" aria-controls="nav-section-bible-prefixes">
+                <span class="nav-section-caret">▾</span><span>Prefixes</span>
+              </button>
+              <div class="nav-section-group nav-sub-group" id="nav-section-bible-prefixes" data-nav-section-group="bible-prefixes" hidden>
+                <button class="nav-btn" data-page="bible-article">Definite Article</button>
+                <button class="nav-btn" data-page="bible-interrog">Interrogative ה</button>
+                <button class="nav-btn" data-page="bible-prefix">Prefixed Prepositions</button>
+                <button class="nav-btn" data-page="bible-vav">Prefixed Vav</button>
+                <button class="nav-btn" data-page="bible-min">Prefixed מִן</button>
+              </div>
+              <button class="nav-section-toggle nav-sub-toggle" type="button" data-nav-section="bible-verbs" aria-expanded="false" aria-controls="nav-section-bible-verbs">
+                <span class="nav-section-caret">▾</span><span>Verbs</span>
+              </button>
+              <div class="nav-section-group nav-sub-group" id="nav-section-bible-verbs" data-nav-section-group="bible-verbs" hidden>
+                <button class="nav-btn" data-page="bible-verb">Verbs</button>
+              </div>
             </div>
           </nav>
         </div>
@@ -198,6 +221,12 @@
             <h3 class="sidebar-title">Account</h3>
             <div id="account-section"></div>
           </div>
+
+          <!-- Below the Account: Sources & Credits for everyone; Mistake Reports for the owner only. -->
+          <nav class="sidebar-footer-links" aria-label="More">
+            <button class="nav-btn" data-page="credits">Sources &amp; Credits</button>
+            <button class="nav-btn" id="nav-reports" data-page="reports" hidden>Mistake Reports</button>
+          </nav>
         </div>
       </div>
     </aside>

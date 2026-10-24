@@ -9,6 +9,7 @@ import {
   PARSE_FIELDS,
   availableAreaIds,
   buildChallenge,
+  prepareChallenge,
   buildDrill,
   getRow,
   grade,
@@ -34,6 +35,8 @@ import {
 import { playCorrect, playFinish, playWrong } from "../daily-sound.js";
 
 import { celebrate } from "../celebrate.js";
+import { drawBibleQuestion } from "../bible-practice.js";
+import { getShowAccents } from "../bible-text.js";
 import { celebrationForPercent, resultMessage } from "../encourage.js";
 // The Daily Challenge: a short round (5, 10 or 15 questions) that is personal to
 // the learner, answered by tapping (typing is the optional Hard mode), with
@@ -47,6 +50,7 @@ const AREA_LABELS = {
   vocabulary: "Vocabulary",
   verbs: "Verbs",
   accents: "Accents",
+  bible: "Bible in Context",
 };
 const LENGTH_HINT = { 5: "about 2 min", 10: "about 4 min", 15: "about 6 min" };
 
@@ -299,7 +303,7 @@ function renderIntro(container, navigate) {
     )
   );
   settingsBox.appendChild(
-    toggleRow("Hard mode", "type your answers instead of tapping (verbs are always tap-to-select)", S.hard, (v) => {
+    toggleRow("Hard mode", "type your answers instead of tapping (verbs and Bible questions are always tap-to-select)", S.hard, (v) => {
       S.hard = v;
       persist();
     })
@@ -310,6 +314,23 @@ function renderIntro(container, navigate) {
   const startBtn = el("button", "btn btn-block daily-start", entry ? "Play Another Round" : "Start Daily Challenge");
   startBtn.addEventListener("click", () => {
     clearInProgress();
+    if (S.areas.includes("bible")) {
+      // The Bible pages' data has to be fetched first.
+      startBtn.disabled = true;
+      startBtn.textContent = "Getting your questions…";
+      prepareChallenge(S).then((settings) => {
+        if (!state) return; // left the page meanwhile
+        const qs = buildChallenge(settings);
+        if (qs.length === 0) {
+          startBtn.disabled = false;
+          startBtn.textContent = "Start Daily Challenge";
+          container.appendChild(Object.assign(el("div", "alert alert-warning"), { textContent: "Not enough study data to build a round right now." }));
+          return;
+        }
+        startRound(qs);
+      });
+      return;
+    }
     const questions = buildChallenge(S);
     if (questions.length === 0) {
       container.appendChild(Object.assign(el("div", "alert alert-warning"), { textContent: "Not enough study data to build a round right now." }));
@@ -412,6 +433,7 @@ function renderQuestion(container, navigate) {
 
   // ---- The prompt ----
   if (q.type === "match") renderMatchBody(container, q);
+  else if (q.type === "bible") renderBibleBody(container, q);
   else {
     renderPromptFor(container, q);
     container.appendChild(el("hr", "hr"));
@@ -422,6 +444,24 @@ function renderQuestion(container, navigate) {
 
   // ---- Instant feedback ----
   if (cur.graded) renderFeedback(container, q);
+}
+
+// ---- A Bible in Context question: the verse with a word marked, and the page's answer boxes ----
+
+function renderBibleBody(container, q) {
+  const cur = state.current;
+  const host = el("div", "daily-bible");
+  const picked = cur.graded ? cur.answer || {} : (cur.picked ||= {});
+  drawBibleQuestion(host, q.bq, {
+    showAccents: getShowAccents(),
+    picked,
+    graded: !!cur.graded,
+    onPick: (pi, id) => {
+      picked[pi] = id;
+      if (q.bq.parts.every((_, k) => picked[k] !== undefined)) answer(q, { ...picked });
+    },
+  });
+  container.appendChild(host);
 }
 
 function renderPromptFor(container, q) {
@@ -665,6 +705,11 @@ function renderFeedback(container, q) {
     box.appendChild(line);
   } else if (q.type === "parse" && q.tuples.length > 1) {
     box.appendChild(Object.assign(el("div", "caption"), { textContent: `This form can also be: ${g.correctText}` }));
+  }
+  if (q.type === "bible") {
+    const why = el("div", "daily-feedback-answer");
+    why.innerHTML = q.bq.explainHtml;
+    box.appendChild(why);
   }
   container.appendChild(box);
 

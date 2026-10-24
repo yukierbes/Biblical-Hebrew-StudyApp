@@ -2,54 +2,59 @@ import { setupApp, assert, summary, navigateTo, click } from "./helpers.mjs";
 
 const { document, localStorage } = await setupApp();
 
-console.log("Sidebar nav sections (Verbs / Vocabulary)");
+console.log("Sidebar nav sections: Foundations, and Bible in Context with four subgroups");
 
-const verbsToggle = document.querySelector('.nav-section-toggle[data-nav-section="verbs"]');
-const verbsGroup = document.querySelector('.nav-section-group[data-nav-section-group="verbs"]');
-const vocabToggle = document.querySelector('.nav-section-toggle[data-nav-section="vocabulary"]');
-const vocabGroup = document.querySelector('.nav-section-group[data-nav-section-group="vocabulary"]');
+const toggle = (k) => document.querySelector(`.nav-section-toggle[data-nav-section="${k}"]`);
+const group = (k) => document.querySelector(`.nav-section-group[data-nav-section-group="${k}"]`);
+const wait = (ms = 30) => new Promise((r) => setTimeout(r, ms));
 
-assert(!!verbsToggle && !!verbsGroup, "Verbs section toggle + group exist");
-assert(!!vocabToggle && !!vocabGroup, "Vocabulary section toggle + group exist");
-
-// --- Default state: both expanded ---
-assert(verbsToggle.getAttribute("aria-expanded") === "true", "Verbs section starts expanded");
-assert(!verbsGroup.hasAttribute("hidden"), "Verbs group is visible by default");
-assert(vocabToggle.getAttribute("aria-expanded") === "true", "Vocabulary section starts expanded");
-assert(!vocabGroup.hasAttribute("hidden"), "Vocabulary group is visible by default");
-
-for (const page of ["review", "verb-flashcards", "parsing", "construction"]) {
-  assert(!!verbsGroup.querySelector(`.nav-btn[data-page="${page}"]`), `Verbs group contains ${page}`);
+// --- structure ---
+for (const k of ["foundations", "consonants", "vowels", "vocabulary", "verbs", "accents", "bible", "bible-marks", "bible-words", "bible-prefixes", "bible-verbs"]) {
+  assert(!!toggle(k) && !!group(k), `${k}: toggle and group exist`);
 }
-for (const page of ["vocabulary", "vocab-flashcards", "vocab-typing", "vocab-games"]) {
-  assert(!!vocabGroup.querySelector(`.nav-btn[data-page="${page}"]`), `Vocabulary group contains ${page}`);
-}
+const inside = (k, parent) => group(parent).contains(toggle(k));
+for (const k of ["consonants", "vowels", "vocabulary", "verbs", "accents"]) assert(inside(k, "foundations"), `${k} sits inside Foundations`);
+for (const k of ["bible-marks", "bible-words", "bible-prefixes", "bible-verbs"]) assert(inside(k, "bible"), `${k} sits inside Bible in Context`);
 
-// --- Collapsing ---
-click(verbsToggle);
-assert(verbsToggle.getAttribute("aria-expanded") === "false", "clicking the toggle collapses Verbs");
-assert(verbsGroup.hasAttribute("hidden"), "Verbs group is hidden once collapsed");
-assert(vocabToggle.getAttribute("aria-expanded") === "true", "Vocabulary section is unaffected by collapsing Verbs");
-assert(localStorage.getItem("navSectionCollapsed:verbs") === "1", "collapsed state is persisted to storage");
+const pagesOf = (k) => [...group(k).querySelectorAll(".nav-btn")].map((b) => b.dataset.page).join();
+assert(pagesOf("bible-marks") === "bible-dagesh,bible-qames,bible-sheva,bible-syllable", "Marks & Syllables: Dagesh, Qameṣ, Shevas, Syllables & Stress");
+assert(pagesOf("bible-words") === "bible-noun,bible-pronoun,bible-demo,bible-adj,bible-suffix", "Words: Nouns, Pronouns, Demonstratives, Adjectives, Pronominal Suffixes");
+assert(pagesOf("bible-prefixes") === "bible-article,bible-interrog,bible-prefix,bible-vav,bible-min", "Prefixes: Article, Interrogative ה, Prepositions, Vav, Min");
+assert(pagesOf("bible-verbs") === "bible-verb", "Verbs: Verbs");
+assert(pagesOf("bible").split(",").length === 15, "all 15 Bible pages are in the sidebar once");
+assert(document.querySelector('.nav-btn[data-page="bible-pronoun"]').textContent === "Personal Pronouns", "long label shortened: Personal Pronouns");
+assert(document.querySelector('.nav-btn[data-page="bible-qames"]').textContent === "Qameṣ / Qameṣ-ḥaṭuf", "long label shortened: Qameṣ / Qameṣ-ḥaṭuf");
+assert(["review", "verb-flashcards", "parsing", "construction"].every((p) => group("verbs").querySelector(`.nav-btn[data-page="${p}"]`)), "Verbs group keeps its four pages");
 
-// --- Re-expanding ---
-click(verbsToggle);
-assert(verbsToggle.getAttribute("aria-expanded") === "true", "clicking again re-expands Verbs");
-assert(!verbsGroup.hasAttribute("hidden"), "Verbs group is visible again");
-assert(localStorage.getItem("navSectionCollapsed:verbs") === "0", "expanded state is persisted to storage");
+// --- Credits and Reports are below Account, outside the dropdowns ---
+const credits = document.querySelector('.nav-btn[data-page="credits"]');
+const reports = document.getElementById("nav-reports");
+assert(!!credits && credits.closest(".sidebar-footer-links") && !credits.closest(".nav-section-group"), "Sources & Credits is in the footer links");
+assert(!!reports && reports.closest(".sidebar-footer-links") && reports.hidden, "Mistake Reports is in the footer links (hidden unless owner)");
+assert((document.querySelector(".sidebar-account").compareDocumentPosition(credits) & 4) !== 0, "...below the Account dropdown");
 
-// --- Navigating to a page inside a collapsed section auto-expands it ---
-click(verbsToggle); // collapse again
-assert(verbsGroup.hasAttribute("hidden"), "Verbs collapsed again ahead of the navigation check");
+// --- everything starts collapsed; clicking opens and closes; state is remembered ---
+assert(toggle("foundations").getAttribute("aria-expanded") === "false" && group("foundations").hasAttribute("hidden"), "Foundations starts collapsed");
+click(toggle("foundations"));
+assert(!group("foundations").hasAttribute("hidden") && localStorage.getItem("navSectionCollapsed:foundations") === "0", "clicking opens Foundations and remembers it");
+click(toggle("verbs"));
+assert(!group("verbs").hasAttribute("hidden"), "a dropdown inside Foundations opens");
+click(toggle("verbs"));
+assert(group("verbs").hasAttribute("hidden") && localStorage.getItem("navSectionCollapsed:verbs") === "1", "...and closes again");
+click(toggle("foundations"));
+assert(group("foundations").hasAttribute("hidden"), "Foundations closes");
 
+// --- going to a page opens every dropdown above it ---
 navigateTo(document, "parsing");
-await new Promise((r) => setTimeout(r, 30));
-
-assert(!verbsGroup.hasAttribute("hidden"), "navigating to a page inside a collapsed section auto-expands it");
-assert(verbsToggle.getAttribute("aria-expanded") === "true", "the toggle's aria-expanded reflects the auto-expand");
-assert(
-  document.querySelector('.nav-btn[data-page="parsing"]').classList.contains("active"),
-  "the active page is correctly highlighted once visible"
-);
+await wait();
+assert(!group("verbs").hasAttribute("hidden") && !group("foundations").hasAttribute("hidden"), "Verb Parsing opens Verbs and Foundations");
+navigateTo(document, "bible-interrog");
+await wait();
+assert(!group("bible-prefixes").hasAttribute("hidden") && !group("bible").hasAttribute("hidden"), "Interrogative ה opens Prefixes and Bible in Context");
+assert(group("bible-words").hasAttribute("hidden"), "...and leaves the other subgroups closed");
+assert(document.querySelector('.nav-btn[data-page="bible-interrog"]').classList.contains("active"), "the page is highlighted");
+navigateTo(document, "credits");
+await wait();
+assert(credits.classList.contains("active"), "Sources & Credits highlights in the footer");
 
 summary();

@@ -25,7 +25,7 @@ const ck = (i) => consonants.rowKey(consonants.rows()[i]);
 
 console.log("\nA brand-new learner");
 await goHome();
-const tiles = [...content.querySelectorAll(".area-tile")];
+const tiles = [...content.querySelectorAll(".area-tile:not(.bible-home-tile)")]; // the Bible in Context tile is tested in test 41
 assert(
   JSON.stringify(tiles.map((t) => t.dataset.homeSection)) === JSON.stringify(["consonants", "vowels", "vocabulary", "verbs", "accents"]),
   "five area tiles in the order Consonants, Vowels, Vocabulary, Verbs, Accents"

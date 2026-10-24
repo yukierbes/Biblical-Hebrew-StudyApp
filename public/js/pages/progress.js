@@ -4,6 +4,8 @@ import { getAreas, getAllAreaStats } from "../home-data.js";
 import { renderHistoryPanel } from "../history-ui.js";
 import { getDailyGoal, setDailyGoal, resetAllProgress } from "../srs.js";
 import { renderAchievementsInto } from "./achievements.js";
+import { BIBLE_GROUPS, getAllBibleStats, getBibleSummary, PASS_PERCENT } from "../bible-areas.js";
+import { timeAgo } from "../home-data.js";
 import {
   MIN_ANSWERS,
   GROUPINGS,
@@ -25,11 +27,12 @@ import { esc, stackedBar, stackLegend, accuracyRow, barChartSvg, lineChartSvg, h
 import { getDisplayName, setDisplayName, getCelebrationStyle, setCelebrationStyle, CELEBRATION_STYLES, MAX_NAME_LENGTH } from "../profile.js";
 import { celebrate } from "../celebrate.js";
 // My Progress: how you are doing over time. (The Home page is for "what should I
-// do now"; this page is for looking back.) Five tabs:
+// do now"; this page is for looking back.) Six tabs:
 //   Overview      streak, mastery by area, reviews coming up, practice calendar
 //   Mastery       one area at a time: a map of every item, or mastery by lesson/binyan
 //   Strengths     weak spots (with a drill) and accuracy by category
 //   Quizzes       quiz scores over time
+//   Bible in Context   all 15 Bible pages: quiz scores, words mastered, what to do next
 //   Achievements  badges and goals
 // Every number comes from progress-data.js and home-data.js.
 
@@ -38,6 +41,7 @@ const TABS = [
   ["mastery", "Mastery"],
   ["strengths", "Strengths"],
   ["quizzes", "Quizzes"],
+  ["bible", "Bible in Context"],
   ["achievements", "Achievements"],
 ];
 
@@ -249,7 +253,7 @@ function renderOverview(panel, ctx) {
     ${stats}
     <h3>Mastery by area</h3>
     ${stackLegend()}
-    <div class="pm-area-rows">${areaRows}</div>
+    <div class="pm-area-rows">${areaRows}${bibleOverviewRow()}</div>
     <h3>Reviews coming up</h3>
     <div class="pm-card">${forecast}</div>
     <h3>Activity</h3>
@@ -319,6 +323,9 @@ function renderOverview(panel, ctx) {
 
   panel.querySelectorAll("[data-open-mastery]").forEach((btn) => {
     btn.addEventListener("click", () => ctx.openTab("mastery", { area: btn.dataset.openMastery }));
+  });
+  panel.querySelectorAll("[data-open-tab]").forEach((btn) => {
+    btn.addEventListener("click", () => ctx.openTab(btn.dataset.openTab));
   });
 }
 
@@ -551,12 +558,12 @@ const TREND_PILL = {
 };
 
 function renderQuizzes(panel, ctx) {
-  const trends = getQuizTrends();
+  const trends = getQuizTrends().filter((t) => !t.mode.startsWith("bible-")); // the Bible pages have their own tab
   if (trends.length === 0) {
-    panel.innerHTML = `<p class="caption">No quiz attempts recorded yet. Take a quiz in Parsing, Construction or any Typing page and your scores will chart here.</p>`;
+    panel.innerHTML = `<p class="caption">No quiz attempts recorded yet. Take a quiz in Parsing, Construction or any Typing page and your scores will chart here. (Bible in Context quizzes have their own tab.)</p>`;
     return;
   }
-  panel.innerHTML = `<p class="caption">Your last 20 attempts at each quiz, oldest on the left.</p>
+  panel.innerHTML = `<p class="caption">Your last 20 attempts at each quiz, oldest on the left. Bible in Context quizzes are on their own tab.</p>
     <div class="pm-quizzes">${trends
       .map(
         (t) => `
@@ -575,6 +582,85 @@ function renderQuizzes(panel, ctx) {
 }
 
 // ---------------------------------------------------------------------
+// Bible in Context
+// ---------------------------------------------------------------------
+
+/** The Overview row for the Bible pages: pages passed / practised / new, as the same kind of bar the areas use. */
+function bibleOverviewRow() {
+  const all = getAllBibleStats();
+  const b = getBibleSummary(all);
+  const split = { mastered: b.passed, learning: b.practised - b.passed, new: b.pages - b.practised, total: b.pages };
+  return `
+      <div class="pm-area-row" data-area="bible">
+        <div class="pm-area-head"><b>Bible in Context</b>
+          <span class="caption">${b.passed} of ${b.pages} pages passed (${b.pct}%)</span></div>
+        ${stackedBar(split, "Bible in Context pages")}
+        <div class="pm-area-foot caption">${split.learning} practised, not yet passed · ${split.new} not started · ${fmt(b.mastered)} ${plural(b.mastered, "word", "words")} mastered
+          <button type="button" class="pm-link" data-open-tab="bible">Details →</button></div>
+      </div>`;
+}
+
+const hasShown = (p) => p.attempts > 0 || p.tracked > 0;
+
+function renderBible(panel, ctx) {
+  const all = getAllBibleStats();
+  const b = getBibleSummary(all);
+
+  const stats = `
+    <div class="pm-stats">
+      ${statCard(`${b.passed}<span class="pm-stat-of"> / ${b.pages}</span>`, "pages passed", `<div class="caption">A quiz score of ${PASS_PERCENT}% or more</div>`)}
+      ${statCard(fmt(b.practised), plural(b.practised, "page practised", "pages practised"), `<div class="caption">${b.pages - b.practised} not started</div>`)}
+      ${statCard(fmt(b.mastered), plural(b.mastered, "word mastered", "words mastered"), `<div class="caption">${fmt(b.learning)} still learning</div>`)}
+      ${statCard(fmt(b.answered), plural(b.answered, "answer given", "answers given"), `<div class="caption">on the Bible pages</div>`)}
+    </div>`;
+
+  const next = b.next
+    ? `<p class="caption">${hasShown(b.next) ? "Suggested next:" : "Not tried yet:"} <button type="button" class="pm-link" data-open-page="${b.next.page}">${esc(b.next.label)} →</button></p>`
+    : "";
+
+  const groups = BIBLE_GROUPS.map((g) => {
+    const rows = g.pages
+      .map((gp) => all.find((a) => a.page === gp.page))
+      .filter(Boolean)
+      .map((p) => {
+        if (!hasShown(p)) {
+          return `<div class="pm-card pm-quiz" data-bible-page="${p.page}">
+            <div class="pm-quiz-head"><b>${esc(p.label)}</b><span class="pill">Not started</span></div>
+            <div class="caption">No answers yet. <button type="button" class="pm-link" data-open-page="${p.page}">Open this page →</button></div>
+          </div>`;
+        }
+        const chart = p.scores.length >= 2 ? lineChartSvg(p.scores, `${p.label} scores, oldest to newest: ${p.scores.map((x) => x + "%").join(", ")}`) : "";
+        const quizLine =
+          p.attempts > 0
+            ? `Latest ${p.latest}% · Average ${p.average}% · Best ${p.best}% · ${p.attempts} ${plural(p.attempts, "attempt", "attempts")}${p.lastTimestamp ? " · " + timeAgo(p.lastTimestamp) : ""}`
+            : "No quiz taken yet";
+        const itemLine = `${fmt(p.mastered)} mastered · ${fmt(p.learning)} learning · ${fmt(p.answered)} ${plural(p.answered, "answer", "answers")}${p.answered ? ` (${Math.round(((p.answered - p.missed) / p.answered) * 100)}% right)` : ""}`;
+        return `<div class="pm-card pm-quiz" data-quiz="${p.page}">
+            <div class="pm-quiz-head"><b>${esc(p.label)}</b>${p.passed ? `<span class="pill pill-good">Passed</span>` : ""}${p.trend ? TREND_PILL[p.trend] : ""}</div>
+            ${chart}
+            <div class="caption">${quizLine}</div>
+            <div class="caption">${itemLine}</div>
+            ${p.attempts > 0 ? `<details class="pm-details"><summary>Recent attempts</summary><div data-history></div></details>` : ""}
+            <button type="button" class="pm-link" data-open-page="${p.page}">Practise →</button>
+          </div>`;
+      })
+      .join("");
+    return `<h3>${esc(g.title)}</h3><div class="pm-quizzes">${rows}</div>`;
+  }).join("");
+
+  panel.innerHTML = `<p class="caption">Every answer on a Bible in Context page counts here, in the guided passage or the quiz. Quiz scores show your last 20 attempts, oldest on the left.</p>
+    ${stats}${next}${groups}`;
+
+  panel.querySelectorAll(".pm-quiz[data-quiz]").forEach((card) => {
+    const host = card.querySelector("[data-history]");
+    if (host) renderHistoryPanel(host, card.dataset.quiz, { onClear: () => ctx.rerender() });
+  });
+  panel.querySelectorAll("[data-open-page]").forEach((btn) => {
+    btn.addEventListener("click", () => ctx.navigate(btn.dataset.openPage));
+  });
+}
+
+// ---------------------------------------------------------------------
 // Achievements
 // ---------------------------------------------------------------------
 
@@ -587,5 +673,6 @@ const RENDERERS = {
   mastery: renderMastery,
   strengths: renderStrengths,
   quizzes: renderQuizzes,
+  bible: renderBible,
   achievements: renderAchievements,
 };

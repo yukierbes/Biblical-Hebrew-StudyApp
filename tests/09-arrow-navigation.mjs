@@ -99,7 +99,7 @@ assert(document.activeElement === allGroups[0].querySelectorAll(".choice-btn")[2
 allGroups[0].querySelectorAll(".choice-btn")[0].focus();
 pressKey(document.activeElement, "ArrowUp");
 assert(
-  document.activeElement.closest(".zoom-buttons") !== null,
+  document.activeElement.closest(".zoom-buttons, .sidebar-footer-links") !== null,
   "ArrowUp from the first content row reaches the previous sidebar row first"
 );
 // Keep going up through whatever sidebar rows sit between here and the nav (the Hebrew size

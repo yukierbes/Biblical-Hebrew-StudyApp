@@ -18,6 +18,7 @@ import { getDisplayName, setDisplayName, isNamePromptDismissed, dismissNamePromp
 import { homeMessage, seedFromDate } from "../encourage.js";
 import { getQuizTrends } from "../progress-data.js";
 import { ymd } from "../daily-history.js";
+import { BIBLE_GROUPS, getAllBibleStats, getBibleSummary, PASS_PERCENT } from "../bible-areas.js";
 
 // The Home page: what to do next (Today), where you left off, one tile per
 // study area with its progress, your weak spots, and a verb form of the day.
@@ -185,6 +186,46 @@ function tileHtml({ area, stats }) {
   `;
 }
 
+// ---------------- Bible in Context ----------------
+
+/** One page's button in the Bible tile: its name, and its latest quiz score (or "New"). */
+function bibleButtonHtml(p) {
+  const chip =
+    p.attempts > 0
+      ? `<span class="bible-home-chip${p.passed ? " is-passed" : ""}" title="Latest quiz score${p.passed ? " · best " + p.best + "%, passed" : ""}">${p.latest}%</span>`
+      : p.tracked > 0
+        ? `<span class="bible-home-chip" title="Practised, no quiz taken yet">started</span>`
+        : `<span class="bible-home-chip is-new">New</span>`;
+  return `<button class="bible-home-page" data-goto="${p.page}" type="button"><span class="bible-home-name">${esc(p.label)}</span>${chip}</button>`;
+}
+
+/** The Bible in Context tile: how many of the 15 pages are passed, and every page grouped like the sidebar. */
+function bibleTileHtml(all, summary) {
+  const fresh = summary.practised === 0;
+  const status = fresh
+    ? `<span class="area-tile-flag">Start here</span>`
+    : `<span class="pill ${summary.passed === summary.pages ? "pill-good" : "pill-warn"} area-tile-due">${summary.passed} of ${summary.pages} passed</span>`;
+  const caption = fresh
+    ? `Nothing practised yet — ${summary.pages} pages that use real verses of Genesis`
+    : `${summary.practised} of ${summary.pages} pages practised · ${summary.mastered.toLocaleString()} ${plural(summary.mastered, "word", "words")} mastered · ${summary.learning.toLocaleString()} still learning`;
+  const groups = BIBLE_GROUPS.map((g) => {
+    const pages = g.pages.map((gp) => all.find((a) => a.page === gp.page)).filter(Boolean);
+    return `<div class="bible-home-group"><h3>${esc(g.title)}</h3><div class="bible-home-pages">${pages.map(bibleButtonHtml).join("")}</div></div>`;
+  }).join("");
+  const next = summary.next
+    ? `<button class="btn btn-sm" data-goto="${summary.next.page}" title="${summary.next.attempts === 0 && summary.next.tracked === 0 ? "A page you have not tried yet" : "The page with the lowest recent score"}">${fresh ? "Start with" : "Next up:"} ${esc(summary.next.label)}</button>`
+    : "";
+  return `
+    <div class="area-tile bible-home-tile${fresh ? " area-tile-new" : ""}" data-home-section="bible">
+      <div class="area-tile-head"><h2>Bible in Context</h2>${status}</div>
+      <div class="area-tile-pct">${summary.pct}%<span> of pages passed (quiz score ${PASS_PERCENT}% or more)</span></div>
+      <div class="daily-goal-bar" role="img" aria-label="${summary.passed} of ${summary.pages} Bible pages passed"><div class="daily-goal-fill" style="width:${summary.pct}%"></div></div>
+      <div class="caption area-tile-caption">${caption}</div>
+      ${groups}
+      <div class="area-tile-actions">${next}<button class="btn btn-sm btn-outline" data-progress-tab="bible" type="button">See details in My Progress</button></div>
+    </div>`;
+}
+
 // ---------------- Weak spots and word of the day ----------------
 
 function weakCardHtml(weak) {
@@ -289,6 +330,8 @@ export function mount({ content, navigate }) {
   const goals = getClosestAchievements(4);
   const lastVisit = getLastVisit();
   const recent = getRecentActivity();
+  const bibleAll = getAllBibleStats();
+  const bibleSummary = getBibleSummary(bibleAll);
 
   const wrap = document.createElement("div");
   wrap.id = "home-page";
@@ -306,6 +349,7 @@ export function mount({ content, navigate }) {
     ${resumeHtml(lastVisit, recent)}
 
     <div class="area-tiles">${allStats.map(tileHtml).join("")}</div>
+    <div class="area-tiles bible-home-row">${bibleTileHtml(bibleAll, bibleSummary)}</div>
 
     <div class="home-duo">
       ${votdCardHtml(votd)}

@@ -20,6 +20,23 @@ const EXTRA_WORDS = {
   parsing: "parse analyze",
   construction: "build construct conjugate",
   achievements: "badges goals unlocked",
+  credits: "sources references bibliography citations apa",
+  // Bible in Context: the group each page sits in, and the longer names behind shortened labels.
+  "bible-dagesh": "bible marks syllables lene forte mappiq",
+  "bible-qames": "bible marks syllables qamets qames hatuf vs",
+  "bible-sheva": "bible marks syllables shewa vocal silent",
+  "bible-syllable": "bible marks syllables stress tone",
+  "bible-noun": "bible words absolute construct",
+  "bible-pronoun": "bible words independent personal pronouns",
+  "bible-demo": "bible words demonstrative this that",
+  "bible-adj": "bible words adjective attributive predicate",
+  "bible-suffix": "bible words pronominal suffixes",
+  "bible-article": "bible prefixes the he",
+  "bible-interrog": "bible prefixes interrogative he question",
+  "bible-prefix": "bible prefixes preposition lamed bet kaf",
+  "bible-vav": "bible prefixes vav waw conjunction consecutive",
+  "bible-min": "bible prefixes min from",
+  "bible-verb": "bible verbs binyan parsing",
 };
 // The generic words in "<Area> Review / Flashcards / Typing / Games".
 const MODE_WORDS = { review: "table browse", flashcards: "cards", typing: "type", games: "play game" };
@@ -27,7 +44,7 @@ const MODE_WORDS = { review: "table browse", flashcards: "cards", typing: "type"
 /** Every page the finder can offer: [{ page, label, haystack }]. */
 function collectPages(root) {
   const pages = [];
-  root.querySelectorAll("#nav-buttons .nav-btn[data-page]:not([hidden])").forEach((btn) => {
+  root.querySelectorAll("#sidebar .nav-btn[data-page]:not([hidden])").forEach((btn) => {
     const page = btn.dataset.page;
     const label = btn.textContent.trim();
     const mode = Object.keys(MODE_WORDS).find((m) => page.endsWith(m) || label.toLowerCase().endsWith(m));

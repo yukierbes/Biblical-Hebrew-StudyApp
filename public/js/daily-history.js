@@ -15,7 +15,8 @@ const SETTINGS_KEY = "hebrewVerbApp:dailySettings";
 const PROGRESS_KEY = "hebrewApp.dailyInProgress";
 
 export const LENGTHS = [5, 10, 15];
-export const AREA_IDS = ["consonants", "vowels", "vocabulary", "verbs", "accents"];
+export const AREA_IDS = ["consonants", "vowels", "vocabulary", "verbs", "accents", "bible"];
+const LEGACY_AREA_IDS = ["consonants", "vowels", "vocabulary", "verbs", "accents"];
 
 function read(key, fallback) {
   try {
@@ -55,7 +56,9 @@ export function loadSettings() {
   if (!saved || typeof saved !== "object") return s;
   if (LENGTHS.includes(saved.length)) s.length = saved.length;
   if (Array.isArray(saved.areas)) {
-    const areas = AREA_IDS.filter((a) => saved.areas.includes(a));
+    let areas = AREA_IDS.filter((a) => saved.areas.includes(a));
+    // Someone who had every older area ticked gets Bible in Context too (it did not exist when they chose).
+    if (!saved.areas.includes("bible") && LEGACY_AREA_IDS.every((a) => saved.areas.includes(a))) areas = [...areas, "bible"];
     if (areas.length) s.areas = areas;
   }
   s.hard = saved.hard === true;

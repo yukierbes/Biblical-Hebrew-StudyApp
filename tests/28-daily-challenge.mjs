@@ -108,7 +108,7 @@ const loaded = dh.loadSettings();
 assert(loaded.length === 15 && loaded.hard && loaded.sound && loaded.areas.join() === "vowels,verbs", "settings are remembered");
 dh.saveSettings({ length: 7, areas: ["nope"], hard: "yes", sound: 1 });
 const sane = dh.loadSettings();
-assert(sane.length === 10 && sane.areas.length === 5 && sane.hard === false, "nonsense saved settings fall back to the defaults");
+assert(sane.length === 10 && sane.areas.length === 6 && sane.hard === false, "nonsense saved settings fall back to the defaults");
 dh.saveInProgress({ questions: [{ type: "mc" }, { type: "mc" }], index: 1, results: [] }, day(5));
 assert(dh.loadInProgress(day(5)) && dh.loadInProgress(day(5)).index === 1, "an unfinished round is found the same day");
 dh.saveInProgress({ questions: [{ type: "mc" }, { type: "mc" }], index: 1, results: [] }, day(5));
@@ -121,7 +121,7 @@ localStorage.removeItem("hebrewVerbApp:dailyLog");
 navigateTo(document, "daily-challenge");
 await wait();
 assert(!!content.querySelector(".daily-calendar"), "the intro shows the calendar");
-assert(content.querySelectorAll(".daily-chip").length === 8, "length and content choices are on the intro");
+assert(content.querySelectorAll(".daily-chip").length === 9, "length and content choices are on the intro");
 const vowelChip = [...content.querySelectorAll(".daily-chip")].find((b) => b.textContent.trim() === "Vowels");
 for (const label of ["Consonants", "Vocabulary", "Verbs", "Accents"]) {
   click([...content.querySelectorAll(".daily-chip")].find((b) => b.textContent.trim() === label));
@@ -131,17 +131,29 @@ assert([...content.querySelectorAll(".daily-chip.selected")].map((b) => b.textCo
 click([...content.querySelectorAll(".daily-chip")].find((b) => b.textContent.trim().startsWith("5")));
 await wait(20);
 click(findButtonByText(content, "Start Daily Challenge"));
-await wait();
+await wait(500); // Bible in Context is ticked by default: its data is requested first
+let sawBible = 0;
 for (let i = 0; i < 5; i++) {
-  const opts = [...content.querySelectorAll(".daily-option")];
-  assert(opts.length >= 3, `question ${i + 1}: tap-to-answer choices shown`);
-  click(opts[0]);
-  await wait(20);
-  assert(!!content.querySelector(".daily-feedback"), `question ${i + 1}: instant feedback after the tap`);
-  assert([...content.querySelectorAll(".daily-option")].every((b) => b.disabled), `question ${i + 1}: choices lock once answered`);
+  const bibleBoxes = [...content.querySelectorAll(".daily-bible .bible-choices")];
+  if (bibleBoxes.length) {
+    // A Bible in Context question: one tap in each answer box.
+    sawBible++;
+    for (const box of bibleBoxes) click(box.querySelector(".bible-choice"));
+    await wait(20);
+    assert(!!content.querySelector(".daily-feedback"), `question ${i + 1}: Bible question gives instant feedback once every box is answered`);
+    assert([...content.querySelectorAll(".bible-choice")].every((b) => b.disabled), `question ${i + 1}: Bible choices lock once answered`);
+  } else {
+    const opts = [...content.querySelectorAll(".daily-option")];
+    assert(opts.length >= 3, `question ${i + 1}: tap-to-answer choices shown`);
+    click(opts[0]);
+    await wait(20);
+    assert(!!content.querySelector(".daily-feedback"), `question ${i + 1}: instant feedback after the tap`);
+    assert([...content.querySelectorAll(".daily-option")].every((b) => b.disabled), `question ${i + 1}: choices lock once answered`);
+  }
   click(content.querySelector(".daily-next"));
   await wait(20);
 }
+console.log(`  (${sawBible} of the 5 questions were Bible in Context)`);
 assert(!!content.querySelector(".daily-hero"), "the summary appears after the last question");
 assert(content.querySelectorAll(".daily-review-item").length === 5, "every answer is listed");
 assert(content.querySelectorAll(".daily-review-item.bad .daily-review-answers").length === content.querySelectorAll(".daily-review-item.bad").length, "each miss shows the correct answer");

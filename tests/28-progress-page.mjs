@@ -176,7 +176,7 @@ await wait();
 navigateTo(document, "progress");
 await wait(120);
 assert(content.querySelector(".page-title").textContent === "My Progress", "title");
-assert(tabs().map((t) => t.textContent.trim()).join() === "Overview,Mastery,Strengths,Quizzes,Achievements", "five tabs");
+assert(tabs().map((t) => t.textContent.trim()).join() === "Overview,Mastery,Strengths,Quizzes,Bible in Context,Achievements", "six tabs");
 assert(tab("Overview").getAttribute("aria-selected") === "true" && panel().getAttribute("aria-labelledby") === "pm-tab-overview", "opens on Overview");
 assert(!/stored in your browser only/i.test(content.textContent), "no stale 'browser only' note");
 assert(!document.querySelector('.nav-btn[data-page="achievements"]'), "Achievements has no sidebar button of its own");
@@ -185,7 +185,7 @@ console.log("\nOverview tab");
 {
   const t = panel().textContent;
   assert(content.querySelectorAll(".pm-stat").length === 4, "four headline numbers");
-  assert(content.querySelectorAll(".pm-area-row").length === 5, "a mastery bar for each of the five areas");
+  assert(content.querySelectorAll(".pm-area-row").length === 6, "a mastery bar for each of the five areas and Bible in Context");
   assert(/1 of 16 mastered/.test(content.querySelector('[data-area="vowels"]').textContent), "the Vowels bar says 1 of 16 mastered");
   assert(!!content.querySelector(".pm-chart") && /Reviews coming up/.test(t), "the review forecast chart");
   assert(!!content.querySelector(".pm-heatmap") && content.querySelectorAll(".pm-heatmap rect").length >= 26 * 7 - 6, "the calendar draws a square per day");
@@ -291,7 +291,7 @@ console.log("\nHome page");
   for (const label of ["My Progress", "Achievements", "Word Lookup"]) assert(!findButtonByText(home, label), `no ${label} card button on Home`);
   assert(!!document.querySelector('.nav-btn[data-page="progress"]') && !!document.querySelector('.nav-btn[data-page="search"]'), "My Progress and Word Lookup are still in the sidebar");
   assert(!!home.querySelector(".verse") && !!home.querySelector(".feedback-line"), "the verse and feedback line remain");
-  click(home.querySelector("[data-progress-tab]"));
+  click(home.querySelector('[data-progress-tab="strengths"]'));
   await wait(120);
   assert(tab("Strengths").getAttribute("aria-selected") === "true", "'See all weak spots' opens My Progress on Strengths");
 }
