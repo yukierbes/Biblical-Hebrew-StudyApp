@@ -10,6 +10,7 @@ import {
   deleteRoot,
 } from "./vocab-roots.js";
 import { wrapHebrewSpans } from "./helpers.js";
+import { sameRoot } from "./root-search.js";
 
 let openBackdrop = null;
 let escHandler = null;
@@ -151,18 +152,24 @@ export function openRootEditor(row, onSave) {
 }
 
 /**
- * Opens a modal to assign one root to every word in `rows` at once
- * (replacing whatever root, if any, each word already had), or clear
- * the root from all of them.
+ * Opens a modal to assign one root to every word in `rows` at once, or clear the root from all of them.
+ *
+ * Words that already have a DIFFERENT root are listed as conflicts, and you choose what happens to them:
+ * keep their root (skip) or replace it. "Show conflicts only" narrows the preview list to just those words.
+ * Every change here can be undone afterwards (see undoLastRootChange in vocab-roots.js).
+ *
+ *   onSave(result)   called after a change: { assigned, skipped, root, cleared }
+ *   options.prefill          text to start the root box with (e.g. the letters just searched)
+ *   options.conflictDefault  "replace" (the Vocabulary page's long-standing behaviour) or "skip" (Word Lookup)
  */
-export function openBulkRootEditor(rows, onSave) {
+export function openBulkRootEditor(rows, onSave, { prefill = "", conflictDefault = "replace" } = {}) {
   closeModal();
   const { backdrop, box } = makeModalShell(`Set Root (${rows.length} word${rows.length === 1 ? "" : "s"})`);
 
   const note = document.createElement("div");
   note.className = "caption";
   note.style.marginBottom = "12px";
-  note.textContent = "This replaces any root these words already have — each word belongs to one root at a time.";
+  note.textContent = "Each word belongs to one root at a time.";
   box.appendChild(note);
 
   const datalistId = "vocab-root-options-bulk";
@@ -173,45 +180,141 @@ export function openBulkRootEditor(rows, onSave) {
   input.setAttribute("dir", "rtl");
   input.setAttribute("list", datalistId);
   input.placeholder = "e.g. שׁמר";
+  input.value = prefill || "";
   input.style.width = "100%";
   input.style.padding = "8px 10px";
   input.style.borderRadius = "var(--radius)";
   input.style.border = "1px solid var(--hairline)";
-  input.style.marginBottom = "16px";
+  input.style.marginBottom = "12px";
   input.style.fontFamily = "var(--font-hebrew)";
   input.style.fontSize = "1.1rem";
   box.appendChild(input);
 
+  // --- conflicts: words that already have a different root ---
+  const conflictBox = document.createElement("div");
+  conflictBox.className = "root-conflicts";
+  conflictBox.style.marginBottom = "12px";
+  box.appendChild(conflictBox);
+  const state = { choice: conflictDefault === "skip" ? "skip" : "replace", conflictsOnly: false };
+
   const btnRow = document.createElement("div");
   btnRow.className = "button-row";
-
   const applyBtn = document.createElement("button");
   applyBtn.className = "btn";
-  applyBtn.textContent = `Set Root for ${rows.length} Word${rows.length === 1 ? "" : "s"}`;
-  applyBtn.addEventListener("click", () => {
-    if (!input.value.trim()) return;
-    setRootForRows(rows, input.value);
-    closeModal();
-    onSave();
-  });
-
   const clearBtn = document.createElement("button");
   clearBtn.className = "btn btn-secondary";
   clearBtn.textContent = "Clear Root From These";
-  clearBtn.addEventListener("click", () => {
-    removeRootFromRows(rows);
-    closeModal();
-    onSave();
-  });
-
   const cancelBtn = document.createElement("button");
   cancelBtn.className = "btn btn-secondary";
   cancelBtn.textContent = "Cancel";
   cancelBtn.addEventListener("click", closeModal);
+  btnRow.append(applyBtn, clearBtn, cancelBtn);
 
-  btnRow.appendChild(applyBtn);
-  btnRow.appendChild(clearBtn);
-  btnRow.appendChild(cancelBtn);
+  /** Which rows already hold a different root than the one typed. */
+  const conflictsFor = (value) => {
+    const v = value.trim();
+    if (!v) return [];
+    return rows.filter((r) => {
+      const cur = getRootForWord(r);
+      return cur && cur !== v && !sameRoot(cur, v);
+    });
+  };
+
+  function refresh() {
+    const value = input.value.trim();
+    const conflicts = conflictsFor(value);
+    const conflictSet = new Set(conflicts);
+    conflictBox.innerHTML = "";
+    if (conflicts.length) {
+      const msg = document.createElement("div");
+      msg.innerHTML = `<b>${conflicts.length} of these ${conflicts.length === 1 ? "word already has" : "words already have"} a different root.</b>`;
+      conflictBox.appendChild(msg);
+      for (const [id, label] of [
+        ["skip", "Skip them — keep the root they have"],
+        ["replace", "Replace their root"],
+      ]) {
+        const lab = document.createElement("label");
+        lab.style.display = "block";
+        const rb = document.createElement("input");
+        rb.type = "radio";
+        rb.name = "root-conflict-choice";
+        rb.value = id;
+        rb.checked = state.choice === id;
+        rb.addEventListener("change", () => {
+          state.choice = id;
+          refresh();
+        });
+        lab.append(rb, document.createTextNode(" " + label));
+        conflictBox.appendChild(lab);
+      }
+      const only = document.createElement("label");
+      only.style.display = "block";
+      only.style.marginTop = "6px";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = state.conflictsOnly;
+      cb.addEventListener("change", () => {
+        state.conflictsOnly = cb.checked;
+        refresh();
+      });
+      only.append(cb, document.createTextNode(" Show conflicts only"));
+      conflictBox.appendChild(only);
+    }
+    // the preview: every word with what it has now and what it will have
+    if (value || conflicts.length) {
+      const list = document.createElement("div");
+      list.className = "root-preview";
+      list.style.maxHeight = "190px";
+      list.style.overflowY = "auto";
+      list.style.marginTop = "8px";
+      list.style.border = "1px solid var(--hairline)";
+      list.style.borderRadius = "var(--radius)";
+      const shown = state.conflictsOnly ? conflicts : rows;
+      for (const r of shown) {
+        const cur = getRootForWord(r);
+        const isConflict = conflictSet.has(r);
+        const willChange = value && (!isConflict || state.choice === "replace");
+        const line = document.createElement("div");
+        line.className = "root-preview-row";
+        line.style.padding = "4px 8px";
+        line.style.borderBottom = "1px solid var(--hairline)";
+        const status = !value ? "" : willChange ? (cur && !sameRoot(cur, value) ? `${wrapHebrewSpans(cur)} → ${wrapHebrewSpans(value)}` : `→ ${wrapHebrewSpans(value)}`) : `keeps ${wrapHebrewSpans(cur)}`;
+        line.innerHTML = `${wrapHebrewSpans(r.Hebrew || "")} <span class="caption">${(r.English || "").replace(/</g, "&lt;")}</span> <span class="caption">${status}</span>`;
+        if (isConflict) line.dataset.conflict = "1";
+        list.appendChild(line);
+      }
+      if (!shown.length) list.textContent = "No conflicts.";
+      conflictBox.appendChild(list);
+    }
+    const toSet = value ? (state.choice === "skip" ? rows.filter((r) => !conflictSet.has(r)) : rows) : [];
+    applyBtn.textContent = `Set Root for ${toSet.length} Word${toSet.length === 1 ? "" : "s"}`;
+    applyBtn.disabled = toSet.length === 0;
+    applyBtn._toSet = toSet;
+    applyBtn._skipped = value ? rows.length - toSet.length : 0;
+  }
+
+  applyBtn.addEventListener("click", () => {
+    const value = input.value.trim();
+    if (!value || !applyBtn._toSet.length) return;
+    const toSet = applyBtn._toSet;
+    const skipped = applyBtn._skipped;
+    setRootForRows(toSet, value);
+    closeModal();
+    onSave({ assigned: toSet.length, skipped, root: value, cleared: false });
+  });
+  clearBtn.addEventListener("click", () => {
+    removeRootFromRows(rows);
+    closeModal();
+    onSave({ assigned: 0, skipped: 0, root: "", cleared: true, count: rows.length });
+  });
+  input.addEventListener("input", refresh);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      applyBtn.click();
+    }
+  });
+  refresh();
   box.appendChild(btnRow);
 
   openModal(backdrop, input);

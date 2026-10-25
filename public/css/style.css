@@ -3668,3 +3668,10 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 .reading-parse-table td { padding: 4px 8px; vertical-align: top; }
 .reading-parse-facts { margin: 8px 0 4px; line-height: 1.6; }
 .reading-english { margin-top: 8px; }
+
+/* ---------- Word Lookup: collapsible results, recent searches, bulk bar ---------- */
+.lookup-section-toggle { cursor: pointer; }
+.lookup-bulkbar { flex-wrap: wrap; align-items: center; }
+.lookup-banner { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.lookup-sections label, .lookup-root-options label { margin: 0 6px; }
+.root-preview-row { font-size: 0.95rem; }
