@@ -10,6 +10,11 @@ import {
   availableAreaIds,
   buildChallenge,
   prepareChallenge,
+  prepareStudySession,
+  buildStudySession,
+  getStudyNeeds,
+  STUDY_MINUTES,
+  studyQuestionCount,
   buildDrill,
   prepareDrill,
   getRow,
@@ -21,6 +26,9 @@ import {
 import {
   LENGTHS,
   clearInProgress,
+  saveStudyInProgress,
+  loadStudyInProgress,
+  clearStudyInProgress,
   getEntry,
   getStats,
   getYesterday,
@@ -37,6 +45,8 @@ import { playCorrect, playFinish, playWrong } from "../daily-sound.js";
 
 import { celebrate } from "../celebrate.js";
 import { drawBibleQuestion } from "../bible-practice.js";
+import { createConfidenceAsk } from "../confidence.js";
+import { saveResumePoint, clearResumePoint } from "../resume.js";
 import { getShowAccents } from "../bible-text.js";
 import { celebrationForPercent, resultMessage } from "../encourage.js";
 // The Daily Challenge: a short round (5, 10 or 15 questions) that is personal to
@@ -90,8 +100,10 @@ function freshState() {
   };
 }
 
-export function mount({ content, sidebarExtra, navigate }) {
+export function mount({ content, sidebarExtra, navigate }, options = {}) {
   state = freshState();
+  state.study = !!options.study; // the Study session page: a longer, interleaved round (not the day's challenge)
+  state.minutes = 15;
   rerender = () => render(content, sidebarExtra, navigate);
   const link = consumeDeepLink();
   if (link && (link.type === "weak-drill" || link.type === "bible-due") && Array.isArray(link.items) && link.items.length > 0) {
@@ -99,6 +111,7 @@ export function mount({ content, sidebarExtra, navigate }) {
     state.drillKind = link.type;
   }
 
+  if (link && link.type === "resume") state.autoResume = true; // Home's Resume: go straight back into the round
   keyHandler = (e) => onKey(e, navigate);
   document.addEventListener("keydown", keyHandler);
   rerender();
@@ -142,7 +155,7 @@ function render(content, sidebarExtra, navigate) {
   content.innerHTML = "";
 
   const wrap = el("div");
-  wrap.innerHTML = `<h1 class="page-title">${state.drill ? (state.drillKind === "bible-due" ? "Bible Review" : "Weak-Spot Drill") : "Daily Challenge"}</h1><hr class="hr"/>`;
+  wrap.innerHTML = `<h1 class="page-title">${state.study ? "Study Session" : state.drill ? (state.drillKind === "bible-due" ? "Bible Review" : "Weak-Spot Drill") : "Daily Challenge"}</h1><hr class="hr"/>`;
   content.appendChild(wrap);
 
   const body = el("div", "daily");
@@ -206,7 +219,91 @@ function startRound(questions) {
   rerender();
 }
 
+function renderStudyIntro(container) {
+  const S = state.settings;
+  const persist = () => saveSettings(S);
+  container.appendChild(
+    Object.assign(el("div", "info-box"), {
+      innerHTML: `<b>One long round that picks itself.</b><br>
+        Vocabulary, verb forms and Bible in Context questions mixed together, chosen by what is due for review and what you find hard.
+        Answering here counts toward each item's own review schedule. It does not count as the Daily Challenge.`,
+    })
+  );
+
+  const saved = loadStudyInProgress();
+  if (saved) {
+    const card = el("div", "daily-resume");
+    card.innerHTML = `<div><b>You have a session in progress</b><div class="caption">Question ${saved.index + 1} of ${saved.questions.length}</div></div>`;
+    const buttons = el("div", "daily-resume-buttons");
+    const resume = el("button", "btn", "Resume");
+    resume.addEventListener("click", () => {
+      state.settings = { ...state.settings, ...(saved.settings || {}) };
+      state.questions = saved.questions;
+      state.index = saved.index;
+      state.results = saved.results || [];
+      state.combo = saved.combo || 0;
+      state.bestCombo = saved.bestCombo || 0;
+      state.current = freshCurrent();
+      state.step = "question";
+      rerender();
+    });
+    const discard = el("button", "btn btn-outline", "Start over");
+    discard.addEventListener("click", () => {
+      clearStudyInProgress();
+      rerender();
+    });
+    buttons.append(resume, discard);
+    card.appendChild(buttons);
+    container.appendChild(card);
+    if (state.autoResume) {
+      state.autoResume = false;
+      setTimeout(() => state && state.step === "intro" && resume.click(), 0);
+    }
+  }
+
+  // What the session will lean on right now.
+  const needs = getStudyNeeds();
+  const table = el("table", "bible-summary study-needs");
+  table.setAttribute("aria-label", "What is due and weak in each area");
+  table.innerHTML = `<thead><tr><th scope="col">Area</th><th scope="col">Due for review</th><th scope="col">Weak spots</th></tr></thead>`;
+  const tb = el("tbody");
+  for (const n of needs) tb.insertAdjacentHTML("beforeend", `<tr><th scope="row">${esc(n.label)}</th><td>${n.due}</td><td>${n.weak}</td></tr>`);
+  table.appendChild(tb);
+  container.appendChild(table);
+  container.appendChild(el("p", "caption", "Vocabulary, verb forms and Bible questions are always included. Consonants, vowels and accents join when something in them is due or weak."));
+
+  const box = el("div", "daily-settings");
+  box.appendChild(
+    chipGroup("Length", STUDY_MINUTES.map((m) => [m, `${m} min`, `about ${studyQuestionCount(m)} questions`]), (v) => state.minutes === v, (v) => {
+      state.minutes = v;
+      rerender();
+    })
+  );
+  box.appendChild(toggleRow("Hard mode", "type vocabulary answers instead of tapping (verbs and Bible questions are always tap-to-select)", S.hard, (v) => { S.hard = v; persist(); }));
+  box.appendChild(toggleRow("Sound", "soft tones for right and wrong answers", S.sound, (v) => { S.sound = v; persist(); }));
+  container.appendChild(box);
+
+  const start = el("button", "btn btn-block daily-start", "Start Study Session");
+  start.addEventListener("click", async () => {
+    start.disabled = true;
+    start.textContent = "Getting your questions…";
+    clearStudyInProgress();
+    await prepareStudySession({ minutes: state.minutes });
+    if (!state) return;
+    const questions = buildStudySession({ hard: S.hard });
+    if (questions.length === 0) {
+      start.disabled = false;
+      start.textContent = "Start Study Session";
+      container.appendChild(Object.assign(el("div", "alert alert-warning"), { textContent: "Not enough study data to build a session right now." }));
+      return;
+    }
+    startRound(questions);
+  });
+  container.appendChild(start);
+}
+
 function renderIntro(container, navigate) {
+  if (state.study) return renderStudyIntro(container);
   const S = state.settings;
   const persist = () => saveSettings(S);
 
@@ -287,6 +384,10 @@ function renderIntro(container, navigate) {
     buttons.append(resume, discard);
     card.appendChild(buttons);
     container.appendChild(card);
+    if (state.autoResume) {
+      state.autoResume = false;
+      setTimeout(() => state && state.step === "intro" && resume.click(), 0);
+    }
   }
 
   // ---- Settings ----
@@ -723,6 +824,10 @@ function renderFeedback(container, q) {
     why.innerHTML = q.bq.explainHtml;
     box.appendChild(why);
   }
+  if (g.correct && q.type !== "match") {
+    const ask = createConfidenceAsk(q.srsMode, q.key);
+    if (ask) box.appendChild(ask);
+  }
   container.appendChild(box);
 
   const row = el("div", "button-row");
@@ -756,7 +861,18 @@ function answer(q, value) {
   // feedback screen can't lose the day); earlier answers save the place.
   if (state.index === state.questions.length - 1) {
     completeRound();
+  } else if (state.study) {
+    saveResumePoint("study-session", {}, `Study session · question ${state.index + 2} of ${state.questions.length}`);
+    saveStudyInProgress({
+      settings: state.settings,
+      questions: state.questions,
+      index: state.index + 1,
+      results: state.results,
+      combo: state.combo,
+      bestCombo: state.bestCombo,
+    });
   } else if (!state.drill) {
+    saveResumePoint("daily-challenge", {}, `Daily Challenge · question ${state.index + 2} of ${state.questions.length}`);
     saveInProgress({
       settings: state.settings,
       questions: state.questions,
@@ -792,9 +908,15 @@ function completeRound() {
     const kind = celebrationForPercent(done ? Math.round((right / done) * 100) : 0);
     if (kind) celebrate(kind);
   }
+  if (state.study) {
+    clearStudyInProgress();
+    clearResumePoint("study-session");
+    return;
+  }
   if (state.drill) return;
   const score = state.results.filter((r) => r.correct).length;
   state.yesterday = getYesterday();
+  clearResumePoint("daily-challenge");
   state.completion = recordCompletion({ score, total: state.results.length, hard: state.settings.hard, length: state.questions.length });
   clearInProgress();
 }
@@ -824,7 +946,7 @@ function renderSummary(container, navigate) {
   container.appendChild(hero);
 
   // ---- Compared with yesterday, and the run ----
-  if (!state.drill) {
+  if (!state.drill && !state.study) {
     const y = state.yesterday;
     const lines = [];
     if (y) {
@@ -870,16 +992,20 @@ function renderSummary(container, navigate) {
   container.appendChild(list);
 
   container.appendChild(el("hr", "hr"));
-  const again = el("button", "btn btn-block", state.drill ? "Start a Daily Challenge" : "Play Another Round");
+  const again = el("button", "btn btn-block", state.study ? "Start Another Session" : state.drill ? "Start a Daily Challenge" : "Play Another Round");
   again.addEventListener("click", () => {
     const keep = state.settings;
+    const study = state.study;
+    const minutes = state.minutes;
     state = freshState();
     state.settings = keep;
+    state.study = study;
+    state.minutes = minutes;
     rerender();
   });
   container.appendChild(again);
 
-  if (!state.drill) {
+  if (!state.drill && !state.study) {
     container.appendChild(el("hr", "hr"));
     renderCalendar(container, loadLog());
   }

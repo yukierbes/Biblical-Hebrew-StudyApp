@@ -17,7 +17,7 @@
 import { getAreas } from "./home-data.js";
 import { getLetterSet } from "./letter-sets.js";
 import { sampleN, groupByConjugation, morphKey } from "./helpers.js";
-import { sortByPriority, getMasteredKeys, recordItemResult, recordStreakActivity } from "./srs.js";
+import { sortByPriority, getMasteredKeys, recordItemResult, recordStreakActivity, getDueCount, getScheduleEntries } from "./srs.js";
 import { getAvailableDatasets, loadVerbData } from "./data.js";
 import { orderedOptionsFromRows } from "./filters.js";
 import { MODE_ORDER, PERSON_OPTIONS_NA, GENDER_OPTIONS_NA, NUMBER_OPTIONS_NA } from "./constants.js";
@@ -29,7 +29,7 @@ import {
   primaryAccentAnswerText,
   sameSymbolAccents,
 } from "./accent-answer-matching.js";
-import { BIBLE_PAGES, bibleSrsMode, exampleKey } from "./bible-areas.js";
+import { BIBLE_PAGES, bibleSrsMode, exampleKey, readBibleSchedules } from "./bible-areas.js";
 import { loadBibleData, getBibleData } from "./bible-data.js";
 import { getPracticeConfig, makeBibleQuestion, noteBibleAnswer } from "./bible-practice.js";
 import { prettyRef } from "./bible-text.js";
@@ -547,6 +547,195 @@ export function buildDrill(items, hard) {
     if (q) questions.push(q);
   }
   return shuffle(questions);
+}
+
+// ---------------------------------------------------------------------
+// Study session: a long, interleaved round chosen by what is due and what is weak
+// ---------------------------------------------------------------------
+
+/** The session lengths on offer, in minutes. */
+export const STUDY_MINUTES = [10, 15, 20];
+const SECONDS_PER_QUESTION = 24;
+/** How many questions a session of `minutes` holds (about 24 seconds each, as in the Daily Challenge's own hints). */
+export const studyQuestionCount = (minutes) => Math.max(5, Math.round((minutes * 60) / SECONDS_PER_QUESTION));
+/** Areas that are always part of a session; the others join only when they have something due or weak. */
+const STUDY_CORE_AREAS = ["vocabulary", "verbs", "bible"];
+const STUDY_VERB_SHARE = 0.35;
+
+const isWeakEntry = (e) => e && (e.box <= 2 || (e.timesSeen >= 2 && e.timesCorrect / e.timesSeen < 0.6));
+
+/** { areaId, label, due, weak } for each area a session could draw on. Bible counts come from the saved Bible schedules. */
+export function getStudyNeeds(now = Date.now()) {
+  const needs = [];
+  for (const id of availableAreaIds()) {
+    if (id === "bible") {
+      let due = 0;
+      let weak = 0;
+      for (const entries of Object.values(readBibleSchedules())) {
+        for (const e of Object.values(entries)) {
+          if (e.dueDate <= now) due += 1;
+          else if (isWeakEntry(e)) weak += 1;
+        }
+      }
+      needs.push({ areaId: id, label: areaTitle[id], due, weak });
+      continue;
+    }
+    const area = areaById(id);
+    if (!area) continue;
+    const pool = poolOf(area);
+    const mode = primaryMode(area);
+    const entries = getScheduleEntries(mode);
+    const due = getDueCount(mode, pool, area.key);
+    let weak = 0;
+    for (const row of pool) {
+      const e = entries[area.key(row)];
+      if (e && e.dueDate > now && isWeakEntry(e)) weak += 1;
+    }
+    needs.push({ areaId: id, label: areaTitle[id], due, weak });
+  }
+  return needs;
+}
+
+/**
+ * How many of `total` questions each area gets: the core areas (vocabulary, verb forms, Bible) always take part;
+ * foundation areas (consonants, vowels, accents) join when they have something due or weak. Within that, the
+ * share follows need (due items count most, then weak ones), with verb forms held to about a third.
+ */
+export function planStudyCounts(needs, total) {
+  const chosen = needs.filter((n) => STUDY_CORE_AREAS.includes(n.areaId) || n.due + n.weak > 0);
+  if (chosen.length === 0 || total <= 0) return {};
+  const weight = (n) => 2 + n.due + 0.5 * n.weak;
+  const counts = Object.fromEntries(chosen.map((n) => [n.areaId, 0]));
+  // Each area gets a floor of 2 (or 1 when the session is tiny), then the rest follows the weights.
+  const floor = total >= chosen.length * 2 ? 2 : 1;
+  let left = total;
+  for (const n of chosen) {
+    const give = Math.min(floor, left);
+    counts[n.areaId] += give;
+    left -= give;
+  }
+  const verbCap = Math.max(floor, Math.round(total * STUDY_VERB_SHARE));
+  let guard = 0;
+  while (left > 0 && guard++ < 10000) {
+    // the area with the most unmet weight per question already given
+    let best = null;
+    let bestScore = -1;
+    for (const n of chosen) {
+      if (n.areaId === "verbs" && counts.verbs >= verbCap && chosen.some((c) => c.areaId !== "verbs")) continue;
+      const sc = weight(n) / (counts[n.areaId] + 1);
+      if (sc > bestScore) {
+        bestScore = sc;
+        best = n;
+      }
+    }
+    if (!best) break;
+    counts[best.areaId] += 1;
+    left -= 1;
+  }
+  return counts;
+}
+
+/** Bible items that are due or weak, most urgent first: [{ areaId: "bible", page, key }]. */
+export function studyBibleItems(k, now = Date.now()) {
+  const found = [];
+  for (const [page, entries] of Object.entries(readBibleSchedules())) {
+    for (const [key, e] of Object.entries(entries)) {
+      const due = e.dueDate <= now;
+      if (due || isWeakEntry(e)) found.push({ areaId: "bible", page, key, due, box: e.box, dueDate: e.dueDate });
+    }
+  }
+  found.sort((a, b) => Number(b.due) - Number(a.due) || a.box - b.box || a.dueDate - b.dueDate);
+  // Keep to a handful of pages so only a few datasets need loading.
+  const pages = [];
+  const out = [];
+  for (const it of found) {
+    if (!pages.includes(it.page)) {
+      if (pages.length >= 5) continue;
+      pages.push(it.page);
+    }
+    out.push({ areaId: "bible", page: it.page, key: it.key });
+    if (out.length >= k) break;
+  }
+  return out;
+}
+
+let studyPlan = null;
+
+/**
+ * Gets a session ready: works out how many questions each area gets and loads the Bible data it needs (the
+ * pages of the due and weak items, plus a couple of pages for fresh material). Returns the plan; pass it to
+ * buildStudySession. Areas whose data cannot load are left out.
+ */
+export async function prepareStudySession({ minutes = 15 } = {}) {
+  const total = studyQuestionCount(minutes);
+  const needs = getStudyNeeds();
+  let counts = planStudyCounts(needs, total);
+  const wanted = counts.bible || 0;
+  const items = wanted ? studyBibleItems(wanted) : [];
+  biblePlan = [];
+  if (wanted) {
+    await prepareDrill(items);
+    // a couple of pages for new questions when there are fewer due or weak items than slots
+    if (items.length < wanted) {
+      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 10000));
+      const extra = shuffle(BIBLE_PAGES.filter((p) => getPracticeConfig(p.page))).slice(0, 2);
+      await Promise.all(
+        extra.map(async (p) => {
+          try {
+            await Promise.race([loadBibleData(getPracticeConfig(p.page).dataset), timeout]);
+            biblePlan.push(p.page);
+          } catch (e) {
+            /* left out */
+          }
+        })
+      );
+    }
+  }
+  studyPlan = { total, minutes, counts, needs, bibleItems: items };
+  return studyPlan;
+}
+
+/** Puts the questions in an order that avoids the same area twice in a row where it can. */
+function spreadByArea(questions) {
+  const left = shuffle(questions);
+  const out = [];
+  while (left.length) {
+    const last = out.length ? out[out.length - 1].areaId : null;
+    let i = left.findIndex((q) => q.areaId !== last);
+    if (i < 0) i = 0;
+    out.push(left.splice(i, 1)[0]);
+  }
+  return out;
+}
+
+/** The session's questions, in the same formats as the Daily Challenge. Call prepareStudySession first. */
+export function buildStudySession({ hard = false } = {}) {
+  if (!studyPlan) return [];
+  const { counts, bibleItems } = studyPlan;
+  const questions = [];
+  for (const [id, n] of Object.entries(counts)) {
+    if (id === "bible") {
+      const fromDue = [];
+      for (const item of bibleItems.slice(0, n)) {
+        const q = drillBibleQuestion(item);
+        if (q) fromDue.push(q);
+      }
+      questions.push(...fromDue);
+      if (fromDue.length < n) {
+        const have = new Set(fromDue.map((q) => q.key));
+        const more = bibleQuestions(n - fromDue.length + 4).filter((q) => !have.has(q.key));
+        questions.push(...more.slice(0, n - fromDue.length));
+      }
+      continue;
+    }
+    const area = areaById(id);
+    if (!area) continue;
+    for (const row of pickItems(area, n)) {
+      const q = makeQuestion(area, row, hard);
+      if (q) questions.push(q);
+    }
+  }
+  return spreadByArea(questions);
 }
 
 // ---------------------------------------------------------------------

@@ -183,3 +183,31 @@ export function clearInProgress() {
     /* ignore */
   }
 }
+
+// ---------------- A study session left half-finished ----------------
+// Kept on this device only, like the daily round, but for up to a day (a session is long, so people stop and come back).
+
+const STUDY_PROGRESS_KEY = "hebrewApp.studyInProgress";
+const STUDY_KEEP_MS = 24 * 60 * 60 * 1000;
+
+export function saveStudyInProgress(round, now = Date.now()) {
+  write(STUDY_PROGRESS_KEY, { ...round, savedAt: now });
+}
+
+/** The unfinished study session, or null (one older than a day is discarded). */
+export function loadStudyInProgress(now = Date.now()) {
+  const r = read(STUDY_PROGRESS_KEY, null);
+  if (!r || !Array.isArray(r.questions) || r.index >= r.questions.length || now - (r.savedAt || 0) > STUDY_KEEP_MS) {
+    if (r) clearStudyInProgress();
+    return null;
+  }
+  return r;
+}
+
+export function clearStudyInProgress() {
+  try {
+    localStorage.removeItem(STUDY_PROGRESS_KEY);
+  } catch (e) {
+    /* ignore */
+  }
+}

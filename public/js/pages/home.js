@@ -1,6 +1,7 @@
 import { setDeepLink } from "../deep-link.js";
 import { wrapHebrewSpans } from "../helpers.js";
 import { getLastVisit } from "../session.js";
+import { getResumePoint } from "../resume.js";
 import {
   getAllAreaStats,
   totalDue,
@@ -127,6 +128,7 @@ function todayCardHtml(due, suggestion, streak) {
         <button class="btn" data-study-now>${esc(studyLabel)}</button>
         <div class="caption today-card-sub">${esc(studySub)}</div>
         ${suggestion.kind === "daily" ? "" : `<button class="btn btn-outline" data-goto="daily-challenge">Daily Challenge</button>`}
+        <button class="btn btn-outline" data-goto="study-session" title="A longer mixed round of what is due and weak">Study Session</button>
       </div>
     </div>
   `;
@@ -136,6 +138,9 @@ function todayCardHtml(due, suggestion, streak) {
 
 function resumeHtml(lastVisit, recent) {
   const label = lastVisit ? pageLabel(lastVisit.page) : null;
+  // The exact place within the page, when the page told us: "Pattern quiz · question 4 of 10".
+  const point = getResumePoint();
+  const exact = point && lastVisit && point.page === lastVisit.page && point.label ? point : null;
   const bits = [];
   const practised = dayAgo(recent.lastPracticeDate);
   if (practised) bits.push(`Last practised ${practised}`);
@@ -150,9 +155,9 @@ function resumeHtml(lastVisit, recent) {
         label
           ? `<div class="resume-main">
                <div class="resume-title">Pick up where you left off</div>
-               <div class="resume-page">${esc(label)} <span class="caption">· ${timeAgo(lastVisit.ts)}</span></div>
+               <div class="resume-page">${esc(label)}${exact ? ` <span class="resume-where">— ${esc(exact.label)}</span>` : ""} <span class="caption">· ${timeAgo(lastVisit.ts)}</span></div>
              </div>
-             <button class="btn btn-outline" data-goto="${esc(lastVisit.page)}">Resume</button>`
+             <button class="btn btn-outline" ${exact ? `data-resume="${esc(lastVisit.page)}"` : `data-goto="${esc(lastVisit.page)}"`}>Resume</button>`
           : ""
       }
       ${bits.length ? `<div class="resume-activity caption">${bits.join(" · ")}</div>` : ""}
@@ -398,6 +403,15 @@ export function mount({ content, navigate }) {
 
   wrap.querySelectorAll("[data-goto]").forEach((btn) => {
     btn.addEventListener("click", () => navigate(btn.dataset.goto));
+  });
+  // Resume: back to the page and the exact place in it (the tab, the quiz question, the round in progress).
+  wrap.querySelectorAll("[data-resume]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const point = getResumePoint();
+      const page = btn.dataset.resume;
+      if (point && point.page === page) setDeepLink({ type: "resume", page, detail: point.detail });
+      navigate(page);
+    });
   });
 
   // "Study now": straight to the right page, already set to the right mode.

@@ -62,6 +62,11 @@ export async function setupApp({ mobile = false } = {}) {
     removeItem: (k) => {
       delete storageData[k];
     },
+    // like the real Storage, so code that lists every saved key (backup, sync) works here too
+    get length() {
+      return Object.keys(storageData).length;
+    },
+    key: (i) => Object.keys(storageData)[i] ?? null,
   };
   global.localStorage = localStorageMock;
 

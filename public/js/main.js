@@ -28,6 +28,7 @@ import * as vowelGamesPage from "./pages/vowel-games.js";
 import * as progressPage from "./pages/progress.js";
 import * as achievementsPage from "./pages/achievements.js";
 import * as dailyChallengePage from "./pages/daily-challenge.js";
+import * as studySessionPage from "./pages/study-session.js";
 import * as bibleArticlePage from "./pages/bible-article.js";
 import * as bibleReadingPage from "./pages/bible-reading.js";
 import * as bibleDageshPage from "./pages/bible-dagesh.js";
@@ -79,6 +80,7 @@ const PAGES = {
   // Achievements now lives inside My Progress; the old address opens that tab.
   achievements: progressPage.achievementsRoute,
   "daily-challenge": dailyChallengePage,
+  "study-session": studySessionPage,
   "bible-reading": bibleReadingPage,
   "bible-article": bibleArticlePage,
   "bible-dagesh": bibleDageshPage,

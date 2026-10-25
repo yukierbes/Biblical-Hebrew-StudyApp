@@ -13,6 +13,7 @@ const MAX_RESULTS = 8;
 // Words people might type that aren't in a page's button text.
 const EXTRA_WORDS = {
   "daily-challenge": "challenge quiz today",
+  "study-session": "long mixed interleaved review due weak 15 minutes",
   progress: "stats streak goal mastery weak spots calendar settings reset",
   search: "lookup find dictionary",
   review: "table tables paradigm paradigms",

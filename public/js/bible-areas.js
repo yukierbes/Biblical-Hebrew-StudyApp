@@ -205,3 +205,65 @@ export function getBibleWeakItems() {
   }
   return out;
 }
+
+// ---------------------------------------------------------------------
+// Choosing a verse for Reading's mixed review by what you need
+// ---------------------------------------------------------------------
+
+/**
+ * How much a verse's questions are worth practising right now. `verse` is one entry of the mixed-review
+ * index ({ ref, picks: [{ page, ex }] }) and `entriesByPage` the saved schedules ({ page: { itemKey: entry } }).
+ * Each question counts as: due for review (3), weak - still in a low box or often missed (2),
+ * never answered (1), or already solid and not due (0).
+ */
+export function scoreMixedVerse(verse, entriesByPage, now = Date.now()) {
+  let due = 0;
+  let weak = 0;
+  let fresh = 0;
+  for (const p of verse.picks || []) {
+    const e = (entriesByPage[p.page] || {})[exampleKey(p.ex)];
+    if (!e) fresh += 1;
+    else if (e.dueDate <= now) due += 1;
+    else if (e.box <= 2 || (e.timesSeen >= 2 && e.timesCorrect / e.timesSeen < 0.6)) weak += 1;
+  }
+  return { due, weak, fresh, score: due * 3 + weak * 2 + fresh };
+}
+
+/** Every page's saved schedule, read once: { "bible-dagesh": { key: entry } }. */
+export function readBibleSchedules() {
+  const out = {};
+  for (const p of BIBLE_PAGES) out[p.page] = getScheduleEntries(bibleSrsMode(p.page));
+  return out;
+}
+
+/** A sentence saying why a verse was chosen ("2 due for review, 1 weak spot, 1 new"), or "" if nothing stands out. */
+export function describeNeed({ due, weak, fresh }) {
+  const bits = [];
+  if (due) bits.push(`${due} due for review`);
+  if (weak) bits.push(`${weak} ${weak === 1 ? "weak spot" : "weak spots"}`);
+  if (fresh) bits.push(`${fresh} new`);
+  return bits.join(", ");
+}
+
+/**
+ * Picks a verse favouring due and weak questions. Takes the 25 highest-scoring verses (other than `avoid`)
+ * and chooses among them at random, weighted by score, so the same verse is not served every time.
+ * With no practice history every verse scores alike, which makes it an ordinary random pick.
+ * Returns { verse, due, weak, fresh, score } or null.
+ */
+export function pickAdaptiveVerse(verses, { avoid = null, schedules = readBibleSchedules(), now = Date.now(), rng = Math.random } = {}) {
+  const scored = verses
+    .filter((v) => v.ref !== avoid)
+    .map((v) => ({ verse: v, ...scoreMixedVerse(v, schedules, now) }));
+  if (scored.length === 0) return null;
+  scored.sort((a, b) => b.score - a.score);
+  const pool = scored.slice(0, 25).filter((x) => x.score > 0);
+  if (pool.length === 0) return scored[Math.floor(rng() * scored.length)];
+  const total = pool.reduce((n, x) => n + x.score, 0);
+  let r = rng() * total;
+  for (const x of pool) {
+    r -= x.score;
+    if (r <= 0) return x;
+  }
+  return pool[pool.length - 1];
+}

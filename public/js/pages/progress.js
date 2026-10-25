@@ -6,6 +6,9 @@ import { getDailyGoal, setDailyGoal, resetAllProgress } from "../srs.js";
 import { renderAchievementsInto } from "./achievements.js";
 import { BIBLE_GROUPS, getAllBibleStats, getBibleSummary, PASS_PERCENT } from "../bible-areas.js";
 import { timeAgo } from "../home-data.js";
+import { createBackup, backupFileName, parseBackup, restoreBackup, collectProgress } from "../backup.js";
+import { isConfidencePromptOn, setConfidencePromptOn } from "../confidence.js";
+import { syncNow } from "../cloud-sync.js";
 import {
   MIN_ANSWERS,
   GROUPINGS,
@@ -43,6 +46,7 @@ const TABS = [
   ["quizzes", "Quizzes"],
   ["bible", "Bible in Context"],
   ["achievements", "Achievements"],
+  ["backup", "Backup & settings"],
 ];
 
 const WEAK_DRILL_SIZE = 15;
@@ -661,6 +665,135 @@ function renderBible(panel, ctx) {
 }
 
 // ---------------------------------------------------------------------
+// Backup & settings
+// ---------------------------------------------------------------------
+
+function renderBackup(panel, ctx) {
+  panel.innerHTML = "";
+  const intro = document.createElement("p");
+  intro.className = "caption";
+  intro.textContent =
+    "Your progress is saved in this browser and synced to your account. A backup file is a copy you keep yourself: use it to move to a new device, or as a safety net.";
+  panel.appendChild(intro);
+
+  // ---- Back up ----
+  const count = Object.keys(collectProgress()).length;
+  const sec1 = document.createElement("section");
+  sec1.className = "pm-card backup-card";
+  sec1.innerHTML = `<h3>Back up</h3>
+    <p>One file with all of your progress: review schedules, quiz history, streaks, stars and notes, roots and categories, saved filters, and your Bible answers and reading log. (${count} saved ${count === 1 ? "item" : "items"} on this device.)</p>
+    <p class="caption">Display settings that belong to one device (theme, pattern, Hebrew size) are not included.</p>`;
+  const dl = document.createElement("button");
+  dl.type = "button";
+  dl.className = "btn";
+  dl.textContent = "Download backup";
+  dl.addEventListener("click", () => {
+    const backup = createBackup();
+    const blob = new Blob([JSON.stringify(backup)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = backupFileName();
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    status.textContent = `Backup downloaded (${backup.keyCount} saved items).`;
+  });
+  sec1.appendChild(dl);
+  const status = document.createElement("p");
+  status.className = "caption backup-status";
+  status.setAttribute("role", "status");
+  sec1.appendChild(status);
+  panel.appendChild(sec1);
+
+  // ---- Restore ----
+  const sec2 = document.createElement("section");
+  sec2.className = "pm-card backup-card";
+  sec2.innerHTML = `<h3>Restore from a backup</h3>
+    <p>Choose a backup file you downloaded earlier. You will see what it contains before anything changes.</p>`;
+  const fileLabel = document.createElement("label");
+  fileLabel.className = "caption";
+  fileLabel.textContent = "Backup file ";
+  const file = document.createElement("input");
+  file.type = "file";
+  file.accept = ".json,application/json";
+  file.id = "backup-file";
+  fileLabel.appendChild(file);
+  sec2.appendChild(fileLabel);
+  const result = document.createElement("div");
+  result.className = "backup-result";
+  result.setAttribute("aria-live", "polite");
+  sec2.appendChild(result);
+  file.addEventListener("change", async () => {
+    result.innerHTML = "";
+    const f = file.files && file.files[0];
+    if (!f) return;
+    const parsed = parseBackup(await f.text());
+    if (!parsed.ok) {
+      const bad = document.createElement("div");
+      bad.className = "alert alert-warning";
+      bad.textContent = parsed.error;
+      result.appendChild(bad);
+      return;
+    }
+    const when = parsed.createdAt ? new Date(parsed.createdAt).toLocaleString() : "an unknown date";
+    const info = document.createElement("p");
+    info.innerHTML = `<b>This backup has ${parsed.keyCount} saved ${parsed.keyCount === 1 ? "item" : "items"}</b>, made ${esc(when)}.`;
+    result.appendChild(info);
+    const modes = document.createElement("div");
+    modes.className = "backup-modes";
+    modes.innerHTML = `
+      <label class="bible-check"><input type="radio" name="backup-mode" value="overwrite" checked> Restore everything in the file (replaces what is here for those items; anything not in the file is kept)</label>
+      <label class="bible-check"><input type="radio" name="backup-mode" value="fill"> Only add what is missing on this device (nothing here is replaced)</label>`;
+    result.appendChild(modes);
+    const go = document.createElement("button");
+    go.type = "button";
+    go.className = "btn";
+    go.textContent = "Restore";
+    go.addEventListener("click", async () => {
+      const mode = modes.querySelector("input:checked").value;
+      if (mode === "overwrite" && !window.confirm("Replace the progress on this device with the backup? This cannot be undone.")) return;
+      const { written, skipped } = restoreBackup(parsed.backup, { mode });
+      result.innerHTML = "";
+      const done = document.createElement("div");
+      done.className = "alert alert-success";
+      done.setAttribute("role", "status");
+      done.textContent = `Restored ${written} ${written === 1 ? "item" : "items"}${skipped ? ` (${skipped} left as they were)` : ""}. Refreshing your progress…`;
+      result.appendChild(done);
+      try {
+        await syncNow();
+      } catch (e) {
+        /* the sync will catch up on its own */
+      }
+      ctx.rerender();
+    });
+    result.appendChild(go);
+  });
+  panel.appendChild(sec2);
+
+  // ---- Settings ----
+  const sec3 = document.createElement("section");
+  sec3.className = "pm-card backup-card";
+  sec3.innerHTML = `<h3>Settings</h3>`;
+  const label = document.createElement("label");
+  label.className = "bible-check";
+  const cb = document.createElement("input");
+  cb.type = "checkbox";
+  cb.checked = isConfidencePromptOn();
+  cb.id = "confidence-setting";
+  cb.addEventListener("change", () => setConfidencePromptOn(cb.checked));
+  label.appendChild(cb);
+  label.appendChild(document.createTextNode(" After a right answer, ask “How sure were you?”"));
+  sec3.appendChild(label);
+  const note = document.createElement("p");
+  note.className = "caption";
+  note.textContent = "An answer you were unsure of comes back sooner than one you were sure of. It appears on the Bible pages, the Daily Challenge and the Study Session.";
+  sec3.appendChild(note);
+  panel.appendChild(sec3);
+}
+
+// ---------------------------------------------------------------------
 // Achievements
 // ---------------------------------------------------------------------
 
@@ -675,4 +808,5 @@ const RENDERERS = {
   quizzes: renderQuizzes,
   bible: renderBible,
   achievements: renderAchievements,
+  backup: renderBackup,
 };

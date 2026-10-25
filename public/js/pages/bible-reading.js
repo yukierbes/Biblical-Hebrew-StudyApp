@@ -12,7 +12,10 @@ import { buildVerse, prettyRef, getShowAccents, setShowAccents, hebrewHtml, stri
 import { getPracticeConfig, makeBibleQuestion, drawBibleQuestion, noteBibleAnswer } from "../bible-practice.js";
 import { markVerseRead, unmarkVerseRead, getReadLog, getReadingStats } from "../bible-insights.js";
 import { recordStreakActivity, recordItemResult } from "../srs.js";
-import { bibleSrsMode, exampleKey } from "../bible-areas.js";
+import { bibleSrsMode, exampleKey, pickAdaptiveVerse, describeNeed } from "../bible-areas.js";
+import { createConfidenceAsk } from "../confidence.js";
+import { saveResumePoint } from "../resume.js";
+import { consumeDeepLink } from "../deep-link.js";
 
 const el = (tag, className, html) => {
   const e = document.createElement(tag);
@@ -40,7 +43,7 @@ let data = null;
 let mixedIndex = null;
 
 export async function mount({ content, sidebarExtra }) {
-  state = { tab: "read", passage: 0, showAccents: getShowAccents(), tapped: {}, english: {}, notes: {}, mixed: null, alive: true };
+  state = { mixedMode: "need", lastMixedRef: null, tab: "read", passage: 0, showAccents: getShowAccents(), tapped: {}, english: {}, notes: {}, mixed: null, alive: true };
   content.innerHTML = '<div class="loading">Loading the reading passages…</div>';
   try {
     data = await loadBibleData("bible-reading");
@@ -50,6 +53,11 @@ export async function mount({ content, sidebarExtra }) {
     return;
   }
   if (!state || !state.alive) return;
+  const link = consumeDeepLink();
+  if (link && link.type === "resume" && link.page === "bible-reading" && link.detail) {
+    if (["read", "mixed"].includes(link.detail.tab)) state.tab = link.detail.tab;
+    if (Number.isInteger(link.detail.passage) && data.passages[link.detail.passage]) state.passage = link.detail.passage;
+  }
   render(content, sidebarExtra);
 }
 
@@ -102,6 +110,8 @@ function render(content, sidebarExtra) {
   content.appendChild(body);
   if (state.tab === "read") renderRead(body, again);
   else renderMixed(body, again);
+  const where = state.tab === "read" ? `Read & translate · ${(data.passages[state.passage] || {}).title || ""}` : "Mixed review";
+  saveResumePoint("bible-reading", { tab: state.tab, passage: state.passage }, where);
 }
 
 function readingStatsBar() {
@@ -254,7 +264,17 @@ async function startMixed(body, rerender) {
   body.innerHTML = '<div class="loading">Choosing a verse…</div>';
   try {
     const verses = await loadMixed();
-    const pick = verses[Math.floor(Math.random() * verses.length)];
+    // "What I need" favours verses whose questions are due for review or weak; "Random" ignores your history.
+    let pick;
+    let need = null;
+    if (state.mixedMode === "random") {
+      pick = verses[Math.floor(Math.random() * verses.length)];
+    } else {
+      const chosen = pickAdaptiveVerse(verses, { avoid: state.lastMixedRef });
+      pick = chosen.verse;
+      need = describeNeed(chosen);
+    }
+    state.lastMixedRef = pick.ref;
     const questions = [];
     for (const p of pick.picks) {
       const config = getPracticeConfig(p.page);
@@ -263,7 +283,7 @@ async function startMixed(body, rerender) {
       questions.push(makeBibleQuestion(config, pageData, p.ex));
     }
     if (!state || !state.alive) return;
-    state.mixed = { ref: pick.ref, questions, i: 0, results: [], picked: {}, graded: false };
+    state.mixed = { ref: pick.ref, questions, i: 0, results: [], picked: {}, graded: false, need };
   } catch (e) {
     if (!state || !state.alive) return;
     body.innerHTML = "";
@@ -279,6 +299,33 @@ function renderMixed(body, rerender) {
     body.appendChild(
       el("p", "", "One verse, several questions: the same kinds of question as the practice pages — the article, a prefixed preposition, the vav, the verb, a noun and more — but all in the same verse, the way they meet you when you read.")
     );
+    const modes = el("div", "choice-group reading-mixed-mode");
+    modes.setAttribute("role", "group");
+    modes.setAttribute("aria-label", "How the verse is chosen");
+    for (const [id, text] of [
+      ["need", "What I need (due and weak first)"],
+      ["random", "Random"],
+    ]) {
+      const b = el("button", "choice-btn" + (state.mixedMode === id ? " selected" : ""), esc(text));
+      b.type = "button";
+      b.setAttribute("aria-pressed", String(state.mixedMode === id));
+      b.addEventListener("click", () => {
+        state.mixedMode = id;
+        rerender();
+      });
+      modes.appendChild(b);
+    }
+    body.appendChild(el("p", "caption", "Choose the verse by:"));
+    body.appendChild(modes);
+    body.appendChild(
+      el(
+        "p",
+        "caption",
+        state.mixedMode === "need"
+          ? "Verses whose questions are due for review, or that you often miss, come up first. Your answers here count toward the same review schedule as the practice pages."
+          : "Any verse, whatever your history."
+      )
+    );
     const start = el("button", "btn", "Start a verse");
     start.type = "button";
     start.addEventListener("click", () => startMixed(body, rerender));
@@ -290,6 +337,7 @@ function renderMixed(body, rerender) {
   const bq = m.questions[m.i];
   const config = getPracticeConfig(bq.page);
   body.appendChild(el("div", "caption", `Question ${m.i + 1} of ${m.questions.length} · ${esc(config ? config.title : "")}`));
+  if (m.need && m.i === 0) body.appendChild(el("p", "caption reading-mixed-why", `Chosen for you: ${esc(m.need)}.`));
   const bar = el("div", "progress-bar-outer");
   bar.appendChild(Object.assign(el("div", "progress-bar-inner"), {}));
   bar.firstChild.style.width = `${(m.i / m.questions.length) * 100}%`;
@@ -335,6 +383,10 @@ function renderMixed(body, rerender) {
     draw();
     feedback.className = "bible-feedback " + (right ? "is-correct" : "is-wrong");
     feedback.innerHTML = `<strong>${right ? "Correct. " : "Not quite. "}</strong>${bq.explainHtml}`;
+    if (right) {
+      const ask = createConfidenceAsk(bibleSrsMode(bq.page), bq.key);
+      if (ask) feedback.appendChild(ask);
+    }
     next.hidden = false;
   }
   draw();

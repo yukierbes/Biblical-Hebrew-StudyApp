@@ -15,6 +15,9 @@ import { buildVerse, buildLetterVerse, prettyRef, getShowAccents, setShowAccents
 import { recordAttempt } from "./history.js";
 import { recordStreakActivity, recordItemResult } from "./srs.js";
 import { bibleSrsMode, exampleKey } from "./bible-areas.js";
+import { createConfidenceAsk } from "./confidence.js";
+import { saveResumePoint, clearResumePoint } from "./resume.js";
+import { consumeDeepLink } from "./deep-link.js";
 import { rememberBibleWord, recordConfusion, easeConfusion, recordRareCorrect, CONFUSION_THRESHOLD } from "./bible-insights.js";
 
 /** A pattern with this many examples or fewer counts as "rare" for the hidden badges. */
@@ -203,7 +206,52 @@ export function createPractice(config) {
       return;
     }
     if (!state || !state.alive) return;
+    const link = consumeDeepLink();
+    if (link && link.type === "resume" && link.page === config.historyMode) restoreResume(link.detail || {});
     render(content, sidebarExtra);
+  }
+
+  /** Puts the page back where it was left: the tab, the passage and step, or the quiz question. */
+  function restoreResume(d) {
+    if (["guided", "quiz", "find", "guide"].includes(d.tab)) state.tab = d.tab;
+    if (Number.isInteger(d.passage) && data.passages[d.passage]) state.passage = d.passage;
+    if (d.guided && d.guided.passage === state.passage && Number.isInteger(d.guided.step)) {
+      state.guided = { passage: state.passage, step: d.guided.step, results: [] };
+    }
+    if (d.quiz && Array.isArray(d.quiz.keys)) {
+      const byKey = new Map(data.examples.map((e) => [exampleKey(e), e]));
+      const questions = d.quiz.keys.map((k) => byKey.get(k));
+      if (questions.length && questions.every(Boolean)) {
+        const answers = (d.quiz.answers || []).map((a) => (a && byKey.get(a.key) ? { ex: byKey.get(a.key), correct: a.correct, chosen: a.chosen } : undefined));
+        state.quiz = { questions, i: Math.min(d.quiz.i || 0, questions.length - 1), score: d.quiz.score || 0, answers, recorded: false, retry: !!d.quiz.retry };
+      }
+    }
+  }
+
+  /** Tells Home exactly where this page is, for "Pick up where you left off". */
+  function publishResume() {
+    if (!state) return;
+    const detail = { tab: state.tab, passage: state.passage };
+    const tabLabel = (TABS.find((t) => t[0] === state.tab) || [])[1] || "";
+    let label = tabLabel;
+    const quiz = state.quiz;
+    if (state.tab === "quiz" && quiz && quiz.i < quiz.questions.length) {
+      detail.quiz = {
+        keys: quiz.questions.map(exampleKey),
+        i: quiz.i,
+        score: quiz.score,
+        retry: quiz.retry,
+        answers: quiz.answers.map((a) => (a ? { key: exampleKey(a.ex), correct: a.correct, chosen: a.chosen } : null)),
+      };
+      label = `Pattern quiz · question ${quiz.i + 1} of ${quiz.questions.length}`;
+    } else if (state.tab === "guided") {
+      const passage = data.passages[state.passage];
+      if (state.guided && passage) {
+        detail.guided = { passage: state.passage, step: state.guided.step };
+        label = `Guided passage · ${passage.title}`;
+      }
+    }
+    saveResumePoint(config.historyMode, detail, label);
   }
 
   function unmount() {
@@ -213,6 +261,7 @@ export function createPractice(config) {
 
   function render(content, sidebarExtra) {
     state.rerender = () => render(content, sidebarExtra);
+    // (the resume point is saved once the page body below has been drawn)
     sidebarExtra.innerHTML = "";
     sidebarExtra.appendChild(Object.assign(document.createElement("hr"), { className: "sidebar-divider" }));
     const sec = el("div", "sidebar-section");
@@ -259,6 +308,7 @@ export function createPractice(config) {
       config.renderGuide(body, { data, el, showAccents: state.showAccents, patternById, wordHtml, hebrewHtml });
       if (state.guideFocus) focusGuideCard(body, state.guideFocus);
     }
+    publishResume();
   }
 
   /** After "Open that part of the Pattern guide": highlight and scroll to the card that names the pattern. */
@@ -371,6 +421,10 @@ export function createPractice(config) {
       recordItemResult(bibleSrsMode(config.historyMode), exampleKey(ex), allRight); // so Home, My Progress and the Daily Challenge know
       const repeats = noteBibleAnswer(config, data, ex, parts, chosen);
       if (repeats.length) feedback.appendChild(mistakeHelp(repeats[0], ex));
+      if (allRight) {
+        const ask = createConfidenceAsk(bibleSrsMode(config.historyMode), exampleKey(ex));
+        if (ask) feedback.appendChild(ask);
+      }
       const chosenLabel = parts.map((part, pi) => part.choices.find((c) => c.id === chosen[pi]).label).join(" · ");
       onAnswered(allRight, { label: chosenLabel });
     }

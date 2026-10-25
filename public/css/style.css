@@ -3675,3 +3675,22 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 .lookup-banner { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .lookup-sections label, .lookup-root-options label { margin: 0 6px; }
 .root-preview-row { font-size: 0.95rem; }
+
+/* "How sure were you?" under a right answer. */
+.confidence-ask { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.confidence-ask .confidence-label { margin-right: 4px; }
+.confidence-ask .confidence-btn { min-height: 36px; }
+
+/* Home: the exact place within the page to resume. */
+.resume-where { font-weight: 500; }
+
+/* Study Session intro: what is due and weak, per area. */
+.study-needs { width: 100%; max-width: 520px; margin: 12px 0 4px; border-collapse: collapse; }
+.study-needs th, .study-needs td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--hairline); }
+.study-needs thead th { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); }
+
+/* My Progress > Backup & settings */
+.backup-card { margin: 14px 0; padding: 14px 16px; }
+.backup-card h3 { margin-top: 0; }
+.backup-modes { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 12px; }
+.reading-mixed-mode { margin: 6px 0 8px; }

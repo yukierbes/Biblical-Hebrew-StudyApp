@@ -209,8 +209,35 @@ export function recordItemResult(mode, itemKey, correct) {
     dueDate: Date.now() + intervalDays * 86400000,
     timesSeen: (existing?.timesSeen || 0) + 1,
     timesCorrect: (existing?.timesCorrect || 0) + (correct ? 1 : 0),
+    // Kept so a "right, but unsure" rating given a moment later can take the promotion back.
+    prevBox,
+    lastCorrect: !!correct,
+    ...(existing?.timesUnsure ? { timesUnsure: existing.timesUnsure } : {}),
   };
   saveSchedule(mode, schedule);
+}
+
+/**
+ * The learner got the item right but says they were not sure. It still counts as correct, but it is not
+ * promoted as far as a confident answer would be, so it comes back sooner: one box lower than a confident
+ * answer would have put it (or, if the item was already in the top box, one box down from it).
+ * Does nothing unless the item's last answer was a correct one, or if it was already marked unsure.
+ */
+export function markItemUnsure(mode, itemKey) {
+  const schedule = loadSchedule(mode);
+  const e = schedule[itemKey];
+  if (!e || !e.lastCorrect || e.unsure) return false;
+  const was = e.prevBox ?? Math.max(1, e.box - 1);
+  const box = e.box > was ? was : Math.max(1, e.box - 1);
+  schedule[itemKey] = {
+    ...e,
+    box,
+    dueDate: Date.now() + (INTERVAL_DAYS[box] ?? 0) * 86400000,
+    timesUnsure: (e.timesUnsure || 0) + 1,
+    unsure: true,
+  };
+  saveSchedule(mode, schedule);
+  return true;
 }
 
 function categorize(mode, pool, keyFn) {
