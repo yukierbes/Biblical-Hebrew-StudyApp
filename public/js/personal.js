@@ -181,6 +181,7 @@ export function renderMyListFilter(container, { area, onChange }) {
   const current = getListMode(area);
   const wrap = document.createElement("div");
   wrap.className = "mylist-filter";
+  wrap.dataset.filterActive = String(current !== "all"); // starred / noted only narrows the list, so it counts as an active filter
   wrap.style.marginBottom = "14px";
 
   const label = document.createElement("div");

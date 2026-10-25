@@ -1,5 +1,12 @@
 import { setupApp, assert, summary, navigateTo, click, findButtonByText } from "./helpers.mjs";
 
+
+// Let the page's timers run between actions, as a real browser does. (Without this, jsdom keeps every
+// old 1,991-row table alive and the test runs out of memory.)
+const tick = () => new Promise((r) => setTimeout(r, 25));
+// The page has two captions now: the spaced-repetition counts above the card, and "Card N of M · K known · R to review".
+const roundComplete = () => [...content.querySelectorAll(".info-box")].some((b) => b.textContent.includes("Round Complete"));
+const cardCaption = () => [...content.querySelectorAll(".caption")].map((c) => c.textContent).find((t) => t.startsWith("Card ")) || "";
 const { document } = await setupApp();
 const content = document.getElementById("content");
 const sidebarExtra = document.getElementById("sidebar-extra");
@@ -23,12 +30,13 @@ assert(!!card, "a flashcard is rendered");
 assert(!!card.querySelector(".flashcard-interactive-hebrew"), "card starts showing the Hebrew face by default");
 assert(!card.querySelector(".flashcard-interactive-english"), "English face is not shown before flipping");
 
-let caption = content.querySelector(".caption")?.textContent || "";
+let caption = cardCaption();
 assert(/Card 1 of \d+/.test(caption), `caption shows card position (got "${caption}")`);
 assert(caption.includes("0 known") && caption.includes("0 to review"), "counts start at zero");
 
 // --- Flipping shows the English face ---
 click(card);
+await tick();
 card = content.querySelector(".flashcard-interactive");
 assert(!!card.querySelector(".flashcard-interactive-english"), "flipping reveals the English face");
 assert(!card.querySelector(".flashcard-interactive-hebrew"), "Hebrew face is hidden once flipped");
@@ -36,53 +44,64 @@ assert(!card.querySelector(".flashcard-interactive-hebrew"), "Hebrew face is hid
 // --- Switching start side to English shows English first on a fresh card ---
 const englishChoiceBtn = findButtonByText(content, "English");
 click(englishChoiceBtn);
+await tick();
 card = content.querySelector(".flashcard-interactive");
 assert(!!card.querySelector(".flashcard-interactive-english"), "after choosing English-first, the unflipped card shows English");
 assert(!card.querySelector(".flashcard-interactive-hebrew"), "Hebrew is on the back when English-first is chosen");
 
 // --- Marking "I Know It" advances the card and increments the count ---
 click(findButtonByText(content, "I Know It"));
-caption = content.querySelector(".caption")?.textContent || "";
+await tick();
+caption = cardCaption();
 assert(/Card 2 of \d+/.test(caption), `advances to card 2 after marking known (got "${caption}")`);
 assert(caption.includes("1 known"), `known count increments (got "${caption}")`);
 
 // --- Marking "Review Later" advances the card and increments that count ---
 click(findButtonByText(content, "Review Later"));
-caption = content.querySelector(".caption")?.textContent || "";
+await tick();
+caption = cardCaption();
 assert(/Card 3 of \d+/.test(caption), `advances to card 3 after marking for review (got "${caption}")`);
 assert(caption.includes("1 to review"), `review count increments (got "${caption}")`);
 
 // --- Filtering to a single lesson narrows the deck ---
 const lessonLabels = sidebarExtra.querySelectorAll(".checkbox-list")[0].querySelectorAll("label");
-const lesson1ACheckbox = [...lessonLabels].find((l) => l.textContent.trim() === "1A").querySelector("input");
+click(sidebarExtra.querySelectorAll(".checkbox-list")[0].previousElementSibling.querySelectorAll("button")[1]); // every filter starts fully ticked: clear Lesson, then tick 1A
+await tick();
+const lessonLabels2 = sidebarExtra.querySelectorAll(".checkbox-list")[0].querySelectorAll("label");
+const lesson1ACheckbox = [...lessonLabels2].find((l) => l.textContent.trim() === "1A").querySelector("input");
 lesson1ACheckbox.checked = true;
 lesson1ACheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+await tick();
 
-caption = content.querySelector(".caption")?.textContent || "";
+caption = cardCaption();
 const totalMatch = caption.match(/Card 1 of (\d+)/);
 assert(!!totalMatch, `filtering restarts the round at card 1 (got "${caption}")`);
 assert(caption.includes("0 known") && caption.includes("0 to review"), "changing filters starts a fresh round (counts reset)");
 
 click(findButtonByText(sidebarExtra, "Reset Filters"));
+await tick();
 
 // --- Run the (now-full, reshuffled) deck all the way to the summary screen ---
 let guard = 0;
-while (!content.querySelector(".info-box")?.textContent.includes("Round Complete") && guard < 3000) {
+while (!roundComplete() && guard < 3000) {
   const knowBtn = findButtonByText(content, "I Know It");
   if (!knowBtn) break;
   click(knowBtn);
   guard++;
+  if (guard % 20 === 0) await tick(); // let timers run now and then, as a browser would
 }
 assert(guard < 3000, "finishing the deck reaches the summary screen in a bounded number of steps");
-assert(content.querySelector(".info-box")?.textContent.includes("Round Complete"), "summary screen shows once every card is marked");
+assert(roundComplete(), "summary screen shows once every card is marked");
 assert(!content.querySelector(".flashcard-interactive"), "no flashcard renders on the summary screen");
 
 click(findButtonByText(content, "Restart Full Round"));
-caption = content.querySelector(".caption")?.textContent || "";
+await tick();
+caption = cardCaption();
 assert(/Card 1 of \d+/.test(caption), "Restart Full Round begins a new round at card 1");
 
 // --- Return to Home ---
 click(findButtonByText(content, "Return to Home Page"));
+await tick();
 await new Promise((r) => setTimeout(r, 30));
 assert(document.querySelector(".nav-btn.active")?.dataset.page === "home", "Return to Home Page navigates correctly");
 

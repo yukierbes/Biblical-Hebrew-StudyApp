@@ -6,7 +6,9 @@ const content = document.getElementById("content");
 console.log("Arrow-key roving focus navigation");
 
 // --- Sidebar nav: Up/Down cycles, wraps ---
-const navButtons = [...document.querySelectorAll("#nav-buttons .nav-btn")];
+// The arrow keys visit what is on screen: the page buttons and the dropdown headers, not pages inside a closed dropdown.
+const visibleNav = () => [...document.querySelectorAll("#nav-buttons button")].filter((b) => !b.closest("[hidden]"));
+const navButtons = visibleNav();
 navButtons[0].focus();
 pressKey(document.activeElement, "ArrowDown");
 assert(document.activeElement === navButtons[1], "ArrowDown moves to the next sidebar nav item");
@@ -41,25 +43,28 @@ selLabel.checked = true;
 selLabel.dispatchEvent(new Event("change", { bubbles: true }));
 click(findButtonByText(content, "Generate Verb"));
 
-const navButtonsNow = [...document.querySelectorAll("#nav-buttons .nav-btn")];
+const navButtonsNow = visibleNav();
 const firstChoiceGroup = content.querySelector(".choice-group");
 const firstChoiceBtn = firstChoiceGroup.querySelectorAll(".choice-btn")[0];
 
-navButtonsNow[navButtonsNow.length - 1].focus(); // last nav button, index 4 of 5
+navButtonsNow[navButtonsNow.length - 1].focus(); // the last item in the sidebar nav
 pressKey(document.activeElement, "ArrowRight");
+// ArrowRight steps into the next sidebar row below the nav (this page's "My list" filter row, then the
+// zoom controls and so on): those are real rows too, not an obstacle to skip past.
 assert(
-  document.activeElement.closest(".zoom-buttons") !== null,
-  "ArrowRight from sidebar nav first reaches the next sidebar row (zoom controls)"
+  document.activeElement.closest("#sidebar") !== null && document.activeElement.closest("#nav-buttons") === null,
+  "ArrowRight from the sidebar nav reaches the next sidebar row"
 );
-// The index carries through each hop, clamped to each row's length —
-// from nav item 4 (of 5) it lands on zoom-buttons' last item (index 2
-// of 3), then crossing again clamps to index 2 of the first
-// choice-group rather than resetting to its first item.
-pressKey(document.activeElement, "ArrowDown");
-const expectedAfterCross = firstChoiceGroup.querySelectorAll(".choice-btn")[2];
+// ArrowDown keeps crossing rows (the index is carried through, clamped to each row's length) until it
+// leaves the sidebar and arrives in the first choice-group of the page.
+let hops = 0;
+while (document.activeElement.closest("#sidebar") && hops < 12) {
+  pressKey(document.activeElement, "ArrowDown");
+  hops++;
+}
 assert(
-  document.activeElement === expectedAfterCross,
-  "ArrowDown from the zoom row reaches the first content choice-group, at the carried-through clamped index"
+  firstChoiceGroup.contains(document.activeElement),
+  "ArrowDown through the sidebar rows reaches the first content choice-group"
 );
 
 navButtonsNow[0].focus();

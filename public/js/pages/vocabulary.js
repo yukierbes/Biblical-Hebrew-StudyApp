@@ -230,6 +230,7 @@ function render(content, sidebarExtra, navigate) {
   const freqLabel = document.createElement("div");
   freqLabel.className = "sidebar-label";
   freqLabel.textContent = "Minimum Frequency";
+  freqLabel.dataset.filterActive = String(Number(state.minFrequency) > 0); // counts toward "N active" in the Filters header
   const freqInput = document.createElement("input");
   freqInput.type = "number";
   freqInput.min = "0";
@@ -240,6 +241,7 @@ function render(content, sidebarExtra, navigate) {
   freqInput.style.borderRadius = "var(--radius)";
   freqInput.style.border = "1px solid var(--hairline)";
   freqInput.addEventListener("input", () => {
+    freqLabel.dataset.filterActive = String(Number(freqInput.value) > 0);
     state.minFrequency = freqInput.value;
     renderMainTable();
   });
@@ -371,13 +373,13 @@ function render(content, sidebarExtra, navigate) {
     bulkEditBtn.addEventListener("click", () => {
       const selectedRows = allRows.filter((r) => state.selectedKeys.has(vocabRowKey(r)));
       if (selectedRows.length === 0) return;
-      openBulkCategoryEditor(selectedRows, renderMainTable);
+      openBulkCategoryEditor(selectedRows, () => render(content, sidebarExtra, navigate));
     });
 
     bulkRootBtn.addEventListener("click", () => {
       const selectedRows = allRows.filter((r) => state.selectedKeys.has(vocabRowKey(r)));
       if (selectedRows.length === 0) return;
-      openBulkRootEditor(selectedRows, renderMainTable);
+      openBulkRootEditor(selectedRows, () => render(content, sidebarExtra, navigate));
     });
 
     bulkBar.appendChild(selectAllBtn);
@@ -426,7 +428,7 @@ function render(content, sidebarExtra, navigate) {
       btn.addEventListener("click", () => {
         const key = decodeURIComponent(btn.dataset.key);
         const row = filtered.find((r) => vocabRowKey(r) === key);
-        if (row) openCategoryEditor(row, renderMainTable);
+        if (row) openCategoryEditor(row, () => render(content, sidebarExtra, navigate));
       });
     });
 
@@ -434,7 +436,7 @@ function render(content, sidebarExtra, navigate) {
       btn.addEventListener("click", () => {
         const key = decodeURIComponent(btn.dataset.key);
         const row = filtered.find((r) => vocabRowKey(r) === key);
-        if (row) openRootEditor(row, renderMainTable);
+        if (row) openRootEditor(row, () => render(content, sidebarExtra, navigate));
       });
     });
   }

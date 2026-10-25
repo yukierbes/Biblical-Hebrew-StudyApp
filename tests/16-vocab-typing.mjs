@@ -3,6 +3,10 @@ import { fileURLToPath } from "url";
 import path from "path";
 import { setupApp, assert, summary, navigateTo, click, findButtonByText } from "./helpers.mjs";
 
+
+// Let the page's timers run between actions, as a real browser does. (Without this, jsdom keeps every
+// old 1,991-row table alive and the test runs out of memory.)
+const tick = () => new Promise((r) => setTimeout(r, 25));
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const vocab = JSON.parse(readFileSync(path.join(ROOT, "netlify/functions/data/vocabulary.json"), "utf-8"));
@@ -52,29 +56,25 @@ if (!multiAnswerWord) {
 
   // --- Narrow the sidebar filter to our single deterministic word via
   // Lesson + Part of Speech + Category together ---
-  const [lessonListEl, posListEl, categoryListEl] = sidebarExtra.querySelectorAll(".checkbox-list");
-
-  const lessonCheckbox = [...lessonListEl.querySelectorAll("label")]
-    .find((l) => l.textContent.trim() === multiAnswerWord.Lesson)
-    .querySelector("input");
-  lessonCheckbox.checked = true;
-  lessonCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
-
-  const posCheckbox = [...sidebarExtra.querySelectorAll(".checkbox-list")[1].querySelectorAll("label")]
-    .find((l) => l.textContent.trim() === multiAnswerWord.POS)
-    .querySelector("input");
-  posCheckbox.checked = true;
-  posCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
-
-  const categoryCheckbox = [...sidebarExtra.querySelectorAll(".checkbox-list")[2].querySelectorAll("label")]
-    .find((l) => l.textContent.trim() === multiAnswerWord.Category)
-    .querySelector("input");
-  categoryCheckbox.checked = true;
-  categoryCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+  // Every filter starts fully ticked, so for each list: clear it, then tick just the one we want.
+  const onlyTick = async (listIndex, text) => {
+    const list = () => sidebarExtra.querySelectorAll(".checkbox-list")[listIndex];
+    click(list().previousElementSibling.querySelectorAll("button")[1]); // "Clear all"
+    await new Promise((r) => setTimeout(r, 25));
+    const box = [...list().querySelectorAll("label")].find((l) => l.textContent.trim() === text).querySelector("input");
+    box.checked = true;
+    box.dispatchEvent(new Event("change", { bubbles: true }));
+    await new Promise((r) => setTimeout(r, 25));
+  };
+  await onlyTick(0, multiAnswerWord.Lesson);
+  await onlyTick(1, multiAnswerWord.POS);
+  await onlyTick(2, multiAnswerWord.Category);
 
   // --- Direction: Hebrew shown, type English ---
   click(findButtonByText(content, "Hebrew → type English"));
+  await new Promise((r) => setTimeout(r, 25));
   click(findButtonByText(content, "Generate a Word"));
+  await new Promise((r) => setTimeout(r, 25));
 
   assert(!!content.querySelector(".hebrew-display span[lang='he']"), "Hebrew prompt renders when direction is Hebrew→English");
 
@@ -87,6 +87,7 @@ if (!multiAnswerWord) {
   answerInput.value = acceptedEnglish;
   answerInput.dispatchEvent(new Event("input", { bubbles: true }));
   click(findButtonByText(content, "Check Answer"));
+  await new Promise((r) => setTimeout(r, 25));
 
   assert(
     !!content.querySelector(".field-label.pill-good"),
@@ -97,9 +98,11 @@ if (!multiAnswerWord) {
   answerInput.value = "definitely not a real answer";
   answerInput.dispatchEvent(new Event("input", { bubbles: true }));
   click(findButtonByText(content, "Check Answer"));
+  await new Promise((r) => setTimeout(r, 25));
   assert(!!content.querySelector(".field-label.pill-warn"), "a wrong English answer is marked incorrect, not silently accepted");
 
   click(findButtonByText(content, "Show Answer"));
+  await new Promise((r) => setTimeout(r, 25));
   assert(content.querySelectorAll(".hebrew-display").length >= 2, "Show Answer reveals the correct answer alongside the prompt");
 
   // --- Get Hint: Lesson, then Part of Speech, then Category (3rd click) ---
@@ -108,11 +111,13 @@ if (!multiAnswerWord) {
   assert(!content.textContent.includes("Lesson:"), "no hint is shown before Get Hint is clicked");
 
   click(findButtonByText(content, "Get Hint"));
+  await new Promise((r) => setTimeout(r, 25));
   assert(content.textContent.includes(`Lesson: ${multiAnswerWord.Lesson}`), "first Get Hint click reveals the Lesson");
   assert(!content.textContent.includes("Part of Speech:"), "Part of Speech is not revealed by the first hint click");
   assert(!content.textContent.includes("Category:"), "Category is not revealed by the first hint click");
 
   click(findButtonByText(content, "Get Hint"));
+  await new Promise((r) => setTimeout(r, 25));
   assert(
     content.textContent.includes(`Part of Speech: ${multiAnswerWord.POS}`),
     "second Get Hint click additionally reveals the Part of Speech"
@@ -121,6 +126,7 @@ if (!multiAnswerWord) {
   assert(!findButtonByText(content, "No More Hints"), "hint button still has a Category hint left for this word");
 
   click(findButtonByText(content, "Get Hint"));
+  await new Promise((r) => setTimeout(r, 25));
   assert(
     content.textContent.includes(`Category: ${multiAnswerWord.Category}`),
     "third Get Hint click additionally reveals the Category, since this word has one"
@@ -130,7 +136,9 @@ if (!multiAnswerWord) {
   // --- Direction: English shown, type Hebrew — exercises the Hebrew
   // keyboard button and "either accepted spelling" matching ---
   click(findButtonByText(content, "English → type Hebrew"));
+  await new Promise((r) => setTimeout(r, 25));
   click(findButtonByText(content, "Generate a Word"));
+  await new Promise((r) => setTimeout(r, 25));
 
   assert(!!findButtonByText(content, "Hebrew Keyboard"), "Hebrew Keyboard button is available when typing Hebrew");
 
@@ -141,6 +149,7 @@ if (!multiAnswerWord) {
   hebInput.value = acceptedHebrew;
   hebInput.dispatchEvent(new Event("input", { bubbles: true }));
   click(findButtonByText(content, "Check Answer"));
+  await new Promise((r) => setTimeout(r, 25));
 
   assert(
     !!content.querySelector(".field-label.pill-good"),
@@ -151,19 +160,23 @@ if (!multiAnswerWord) {
 
   // --- Switch to Quiz mode: Check/Show Answer buttons are gone ---
   const quizRadio = [...content.querySelectorAll('input[name="vocab-typing-mode"]')].find((r) => r.value === "Quiz");
-  click(quizRadio);
+  quizRadio.checked = true;
+  quizRadio.dispatchEvent(new Event("change", { bubbles: true })); // the page listens for "change" on the radio
+  await new Promise((r) => setTimeout(r, 25));
 
   assert(!findButtonByText(content, "Check Answer"), "Quiz mode has no Check Answer button");
   assert(!findButtonByText(content, "Show Answer"), "Quiz mode has no Show Answer button");
   assert(content.innerHTML.includes("Vocabulary Typing Quiz"), "quiz filter step renders");
 
   click(findButtonByText(content, "No, use all vocabulary"));
+  await new Promise((r) => setTimeout(r, 25));
   assert(content.innerHTML.includes("How many questions"), "quiz proceeds to the length step");
 
   const lengthInput = content.querySelector('input[type="number"]');
   lengthInput.value = "2";
   lengthInput.dispatchEvent(new Event("input", { bubbles: true }));
   click(findButtonByText(content, "Start Quiz"));
+  await new Promise((r) => setTimeout(r, 25));
 
   assert(!!content.querySelector(".progress-bar-outer"), "quiz question step shows a progress bar");
   assert(!findButtonByText(content, "Check Answer"), "no Check Answer button during quiz questions");
@@ -173,11 +186,13 @@ if (!multiAnswerWord) {
   assert(!!findButtonByText(content, "End Quiz"), "End Quiz button is present");
 
   click(findButtonByText(content, "End Quiz"));
+  await new Promise((r) => setTimeout(r, 25));
   assert(content.innerHTML.includes("Quiz Summary"), "End Quiz jumps straight to the summary screen");
   assert(!!findButtonByText(content, "Start a New Quiz"), "summary offers Start a New Quiz");
 
   // --- Return to Home ---
   click(findButtonByText(content, "Return to Home Page"));
+  await new Promise((r) => setTimeout(r, 25));
   await new Promise((r) => setTimeout(r, 30));
   assert(document.querySelector(".nav-btn.active")?.dataset.page === "home", "Return to Home Page navigates correctly");
 

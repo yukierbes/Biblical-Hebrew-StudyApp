@@ -1,5 +1,9 @@
 import { setupApp, assert, summary, navigateTo, click, findButtonByText } from "./helpers.mjs";
 
+
+// Let the page's timers run between actions, as a real browser does. (Without this, jsdom keeps every
+// old 1,991-row table alive and the test runs out of memory.)
+const tick = () => new Promise((r) => setTimeout(r, 25));
 const { document } = await setupApp();
 const content = document.getElementById("content");
 const sidebarExtra = document.getElementById("sidebar-extra");
@@ -14,13 +18,13 @@ assert(content.innerHTML.includes("Vocabulary Review"), "page renders its title"
 let rows = content.querySelectorAll("table.custom-table tbody tr");
 assert(rows.length === 1991, `all 1991 words show with no filters applied (got ${rows.length})`);
 
-const captionText = content.querySelector(".caption")?.textContent || "";
+const captionText = [...content.querySelectorAll(".caption")].map((c) => c.textContent).find((t) => t.includes("1991 of 1991")) || "";
 assert(captionText.includes("1991 of 1991"), `caption reports the full unfiltered count (got "${captionText}")`);
 
 // --- Lesson ordering must be the TRUE pedagogical sequence, not
 // alphabetical (5AA/5BB come after 5Z, not between 5A/5B) ---
 const checklists = sidebarExtra.querySelectorAll(".checkbox-list");
-assert(checklists.length === 4, `sidebar has 4 checkbox lists: Lesson, POS, Category, Visible Columns (got ${checklists.length})`);
+assert(checklists.length === 3, `sidebar has 3 checkbox lists: Lesson, POS, Category (Root has none until roots are defined; columns use their own picker) (got ${checklists.length})`);
 
 const lessonLabels = checklists[0].querySelectorAll("label");
 const lessonTexts = [...lessonLabels].map((l) => l.textContent.trim());
@@ -35,6 +39,7 @@ assert(lessonTexts[0] === "1A" && lessonTexts[1] === "1B", "lesson list starts 1
 // --- Filtering by Lesson ---
 // (Every box starts ticked, so clear the Lesson box first, then tick just 1A.)
 click(sidebarExtra.querySelectorAll(".checkbox-list")[0].previousElementSibling.querySelectorAll("button")[1]);
+await tick();
 const lessonLabelsNow = sidebarExtra.querySelectorAll(".checkbox-list")[0].querySelectorAll("label");
 const lesson1ACheckbox = [...lessonLabelsNow].find((l) => l.textContent.trim() === "1A").querySelector("input");
 lesson1ACheckbox.checked = true;
@@ -45,6 +50,7 @@ assert(rows.length > 0 && rows.length < 1991, `filtering to Lesson 1A narrows th
 
 // Reset and try POS filtering instead.
 click(findButtonByText(sidebarExtra, "Reset Filters"));
+await tick();
 rows = content.querySelectorAll("table.custom-table tbody tr");
 assert(rows.length === 1991, "Reset Filters restores the full list");
 
@@ -53,6 +59,7 @@ const posLabels = sidebarExtra.querySelectorAll(".checkbox-list")[1].querySelect
 const verbCheckbox = [...posLabels].find((l) => l.textContent.trim() === "Verb").querySelector("input");
 verbCheckbox.checked = true;
 verbCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+await tick();
 rows = content.querySelectorAll("table.custom-table tbody tr");
 const verbRowCount = rows.length;
 assert(verbRowCount > 0 && verbRowCount < 1991, `filtering to POS=Verb narrows the table (got ${verbRowCount} rows)`);
@@ -65,6 +72,7 @@ const allVerb = [...rows].every((tr) => tr.children[posCellIndex].textContent.tr
 assert(allVerb, "every visible row after filtering actually has POS = Verb");
 
 click(findButtonByText(sidebarExtra, "Reset Filters"));
+await tick();
 
 // --- Category filter: blank categories are NOT offered as a checkbox
 // option (per "leave blank categories blank"), but rows without a
@@ -92,6 +100,7 @@ assert(
 const freqInput = sidebarExtra.querySelector('input[type="number"]');
 freqInput.value = "1000";
 freqInput.dispatchEvent(new Event("input", { bubbles: true }));
+await tick();
 rows = content.querySelectorAll("table.custom-table tbody tr");
 assert(rows.length > 0 && rows.length < 1991, `minimum frequency filter narrows the table (got ${rows.length} rows)`);
 
@@ -103,14 +112,16 @@ assert(allAboveMin, "every visible row has Frequency >= the minimum entered");
 
 freqInput.value = "";
 freqInput.dispatchEvent(new Event("input", { bubbles: true }));
+await tick();
 
 // --- Visible columns selector ---
-const columnList = sidebarExtra.querySelectorAll(".checkbox-list")[3];
+const columnList = sidebarExtra.querySelector(".column-picker"); // the Columns picker (tick to show, arrows to reorder)
 const hebrewColCheckbox = [...columnList.querySelectorAll("label")]
   .find((l) => l.textContent.trim() === "Hebrew")
   .querySelector("input");
 hebrewColCheckbox.checked = false;
 hebrewColCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+await tick();
 const headers = [...content.querySelectorAll("table.custom-table thead th")].map((th) => th.textContent.trim());
 assert(!headers.includes("Hebrew"), "unchecking Hebrew in Visible Columns removes it from the table");
 
@@ -119,6 +130,7 @@ assert(!headers.includes("Hebrew"), "unchecking Hebrew in Visible Columns remove
 // Restore the Hebrew column (unchecked by the Visible Columns test above).
 hebrewColCheckbox.checked = true;
 hebrewColCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+await tick();
 
 const firstRow = content.querySelector("table.custom-table tbody tr");
 const firstRowHebrew = firstRow.children[[...content.querySelectorAll("table.custom-table thead th")].findIndex(
@@ -126,6 +138,7 @@ const firstRowHebrew = firstRow.children[[...content.querySelectorAll("table.cus
 )].textContent.trim();
 
 click(firstRow.querySelector(".vocab-cat-edit-btn"));
+await tick();
 
 let modal = document.getElementById("vocab-category-editor-modal");
 assert(!!modal, "clicking Edit opens the category editor modal");
@@ -134,7 +147,9 @@ assert(modal.textContent.includes(firstRowHebrew), "modal title references the c
 const addCatInput = modal.querySelector('input[type="text"]');
 addCatInput.value = "Test Custom Category";
 addCatInput.dispatchEvent(new Event("input", { bubbles: true }));
+await tick();
 click(findButtonByText(modal, "Add Category"));
+await tick();
 
 const newCatLabels = [...modal.querySelectorAll("label")].map((l) => l.textContent.trim());
 assert(newCatLabels.includes("Test Custom Category"), "newly added category appears in the modal's checklist");
@@ -145,6 +160,7 @@ const newCatCheckbox = [...modal.querySelectorAll("label")]
 assert(newCatCheckbox.checked, "the newly added category is automatically checked for this word");
 
 click(findButtonByText(modal, "Save"));
+await tick();
 assert(!document.getElementById("vocab-category-editor-modal"), "modal closes after Save");
 
 rows = content.querySelectorAll("table.custom-table tbody tr");
@@ -167,16 +183,21 @@ const categoryTextsAfter = [...sidebarExtra.querySelectorAll(".checkbox-list")[2
 );
 assert(categoryTextsAfter.includes("Test Custom Category"), "new category shows up as a sidebar filter option");
 
-// Filtering by the new category should isolate just that one word.
+// Filtering by the new category should isolate just that one word. (Every filter starts fully ticked,
+// so clear the Category list first, then tick only the new category.)
+click(sidebarExtra.querySelectorAll(".checkbox-list")[2].previousElementSibling.querySelectorAll("button")[1]);
+await tick();
 const testCatCheckbox = [...sidebarExtra.querySelectorAll(".checkbox-list")[2].querySelectorAll("label")]
   .find((l) => l.textContent.trim() === "Test Custom Category")
   .querySelector("input");
 testCatCheckbox.checked = true;
 testCatCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+await tick();
 rows = content.querySelectorAll("table.custom-table tbody tr");
 assert(rows.length === 1, `filtering by the new category isolates exactly the reassigned word (got ${rows.length} rows)`);
 
 click(findButtonByText(sidebarExtra, "Reset Filters"));
+await tick();
 
 // --- Reset a word's category override back to its original ---
 const editedRow = [...content.querySelectorAll("table.custom-table tbody tr")].find((tr) =>
@@ -184,9 +205,11 @@ const editedRow = [...content.querySelectorAll("table.custom-table tbody tr")].f
     .textContent.trim() === firstRowHebrew
 );
 click(editedRow.querySelector(".vocab-cat-edit-btn"));
+await tick();
 modal = document.getElementById("vocab-category-editor-modal");
 assert(!!findButtonByText(modal, "Reset to Original Category"), "modal offers a reset option once a word has an override");
 click(findButtonByText(modal, "Reset to Original Category"));
+await tick();
 assert(!document.getElementById("vocab-category-editor-modal"), "modal closes after reset");
 
 const categoryCellIndexFinal = [...content.querySelectorAll("table.custom-table thead th")].findIndex(
@@ -202,10 +225,13 @@ assert(
 );
 
 click(findButtonByText(content, "Download CSV"));
+await tick();
 click(findButtonByText(content, "Download Excel"));
+await tick();
 
 // --- Return to Home ---
 click(findButtonByText(content, "Return to Home Page"));
+await tick();
 await new Promise((r) => setTimeout(r, 30));
 assert(document.querySelector(".nav-btn.active")?.dataset.page === "home", "Return to Home Page navigates correctly");
 

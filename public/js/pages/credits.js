@@ -41,7 +41,7 @@ export function mount({ content, sidebarExtra }) {
   content.appendChild(english);
 
   // Study references, in APA 7 format: alphabetical by author, hanging indent, titles in italics
-  // (sentence case). A short note after each says what the app uses the book for.
+  // (sentence case).
   content.appendChild(el("h2", "", "Study references"));
   const refs = [
     {
@@ -50,11 +50,9 @@ export function mount({ content, sidebarExtra }) {
         ["Invitation to biblical Hebrew: A beginning grammar"],
         ". Kregel Academic.",
       ],
-      use: "Used to check and build verb forms and parsing.",
     },
     {
       apa: ["Futato, M. D., Sr. (2020). ", ["Basics of Hebrew accents"], ". Zondervan Academic."],
-      use: "Accent marks.",
     },
     {
       apa: [
@@ -62,7 +60,6 @@ export function mount({ content, sidebarExtra }) {
         ["Biblical Hebrew: An introductory grammar"],
         " (2nd ed.). Eerdmans.",
       ],
-      use: "Used to check and build verb forms and parsing.",
     },
     {
       apa: [
@@ -70,7 +67,6 @@ export function mount({ content, sidebarExtra }) {
         ["Learning biblical Hebrew: Reading for comprehension: An introductory grammar"],
         ". Lexham Press.",
       ],
-      use: "Used to check and build verb forms and parsing.",
     },
     {
       apa: [
@@ -78,17 +74,15 @@ export function mount({ content, sidebarExtra }) {
         ["A student’s vocabulary for biblical Hebrew and Aramaic"],
         " (Updated ed.). Zondervan Academic.",
       ],
-      use: "Vocabulary categories, frequencies and definitions.",
     },
   ];
   const list = el("ul", "bible-credit-list apa-list");
-  for (const { apa, use } of refs) {
+  for (const { apa } of refs) {
     const li = el("li", "apa-ref");
     for (const part of apa) {
       if (Array.isArray(part)) li.appendChild(el("em", "", part[0])); // the title is italic
       else li.appendChild(document.createTextNode(part));
     }
-    li.appendChild(el("span", "caption apa-use", use));
     list.appendChild(li);
   }
   content.appendChild(list);

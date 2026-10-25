@@ -1386,6 +1386,7 @@ function render(content, sidebarExtra, navigate) {
     const freqLabel = document.createElement("div");
     freqLabel.className = "sidebar-label";
     freqLabel.textContent = "Minimum Frequency";
+    freqLabel.dataset.filterActive = String(Number(state.minFrequency) > 0); // counts toward "N active" in the Filters header
     const freqInput = document.createElement("input");
     freqInput.type = "number";
     freqInput.min = "0";
@@ -1396,6 +1397,7 @@ function render(content, sidebarExtra, navigate) {
     freqInput.style.borderRadius = "var(--radius)";
     freqInput.style.border = "1px solid var(--hairline)";
     freqInput.addEventListener("input", () => {
+      freqLabel.dataset.filterActive = String(Number(freqInput.value) > 0);
       state.minFrequency = freqInput.value;
     });
     freqInput.addEventListener("change", () => rerender());

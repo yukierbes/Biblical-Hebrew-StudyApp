@@ -4,6 +4,14 @@
    mark as the page's signature device.
    ============================================================ */
 
+/* SBL Hebrew (when installed), used only for Hebrew letters and Hebrew punctuation, so it can sit in the
+   text font stacks below without taking over any other character. */
+@font-face {
+  font-family: 'Hebrew Text';
+  src: local('SBL Hebrew'), local('SBLHebrew');
+  unicode-range: U+0590-05FF, U+FB1D-FB4F;
+}
+
 :root {
   --paper: #F5F5F1;
   --paper-raised: #FFFFFF;
@@ -23,9 +31,13 @@
   --bad-border: #E7C7C0;
   --warn-border: #E0D2AC;
 
-  --font-display: 'Fraunces', 'Iowan Old Style', serif;
-  --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  /* Every text font lists the Hebrew fonts right after its Latin font. The Latin fonts have no Hebrew
+     letters, so the browser moves on to 'Hebrew Text' (SBL Hebrew) and then Cardo for just those letters
+     and nothing else changes. This makes Hebrew inside English text (a title like "Interrogative ה", a
+     definition, an instruction box) use the Hebrew font even when it is not wrapped in lang="he". */
+  --font-display: 'Fraunces', 'Hebrew Text', 'Cardo', 'Iowan Old Style', serif;
+  --font-body: 'IBM Plex Sans', 'Hebrew Text', 'Cardo', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Hebrew Text', 'Cardo', ui-monospace, monospace;
   --font-hebrew: 'SBL Hebrew', 'Cardo', serif;
 
   --radius: 4px;
@@ -3608,8 +3620,8 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 
 /* Sources & Credits: APA reference list, with the hanging indent APA asks for. */
 .apa-list { list-style: none; padding-left: 0; }
-.apa-ref { padding-left: 2em; text-indent: -2em; margin-bottom: 0.9em; line-height: 1.5; }
-.apa-ref .apa-use { display: block; text-indent: 0; margin-top: 2px; }
+/* The gap between entries is the same as when each had a short note under it (about 35px). */
+.bible-credit-list .apa-ref { padding-left: 2em; text-indent: -2em; margin: 0 0 34.7px; line-height: 1.5; }
 
 /* Home: the Bible in Context tile, full width under the five study areas. */
 .bible-home-row { margin-top: 16px; }
