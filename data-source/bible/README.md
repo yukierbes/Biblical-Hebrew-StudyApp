@@ -8,7 +8,7 @@ downloaded 17 October 2026; the file's own history says "Release of full morphol
 * The word-by-word grammatical tagging is CC BY 4.0. Required credit:
   "Original work of the Open Scriptures Hebrew Bible available at https://github.com/openscriptures/morphhb".
   The full license text is in `OSHB-LICENSE.md`. The credit is also shown inside the app (Sources & Credits).
-* `Ruth.xml`, `Deut.xml` and `Ps.xml` are the same kind of file for Ruth, Deuteronomy and Psalms (same source, unchanged). They are used by the Reading page.
+* `Ruth.xml`, `Deut.xml`, `Ps.xml`, `Jonah.xml` and `Exod.xml` are the same kind of file for Ruth, Deuteronomy, Psalms, Jonah and Exodus (same source, unchanged; Jonah and Exodus downloaded 25 October 2026). They are used by the Reading page.
 * Do not edit `Gen.xml`. To add a book, download its file from the same folder and put it here unchanged,
   then add it in `scripts/build-bible.mjs`.
 * `passages.csv` is yours to edit: the guided passages on the Definite Article in Context page.
@@ -25,7 +25,7 @@ Please re-check the license in that repository before sharing this project beyon
 ## The Reading page
 
 * `reading-passages.csv` is yours to edit: the passages on the Reading page. Columns: Title, Book, Start, End, Note.
-  Book is `Gen`, `Ruth`, `Deut` or `Ps`; Start and End are `chapter:verse`. Keep passages short (a dozen verses at most).
+  Book is `Gen`, `Exod`, `Ruth`, `Deut`, `Ps` or `Jonah`; Start and End are `chapter:verse`. Keep passages short (a dozen verses at most).
 * `english/` holds the public-domain World English Bible used for "Show English" (see `english/README.md`).
 * The lexicon's Strong's text is now shown, in short form, as a "rough meaning" for each tapped word.
 * `scripts/build-reading.mjs` turns all of this into `bible-reading.json`; `scripts/build-mixed.mjs` builds the index for the Mixed review.

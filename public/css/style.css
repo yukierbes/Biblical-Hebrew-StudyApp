@@ -3694,3 +3694,35 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 .backup-card h3 { margin-top: 0; }
 .backup-modes { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 12px; }
 .reading-mixed-mode { margin: 6px 0 8px; }
+
+/* Reading: passages by book, with how much of each you know. */
+.reading-book { margin: 10px 0 14px; }
+.reading-book-title { margin: 0 0 6px; font-size: 0.8rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+.reading-sort { margin: 4px 0 8px; }
+.reading-know { font-size: 0.75rem; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--hairline-strong); color: var(--ink); white-space: nowrap; }
+.reading-know-high { border-color: var(--accent); font-weight: 600; }
+.reading-know-low { border-style: dashed; }
+.reading-knowledge, .reading-offline { margin: 10px 0; }
+.reading-unknown summary { cursor: pointer; margin-top: 6px; }
+.reading-unknown-list { margin: 6px 0 0; padding-left: 20px; }
+.reading-unknown-list li { margin: 3px 0; }
+
+/* Reading: self-check after the English. */
+.reading-selfcheck { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--hairline); }
+.reading-selfcheck-title { margin: 0 0 4px; }
+.reading-selfcheck-list { list-style: none; padding: 0; margin: 8px 0; }
+.reading-selfcheck-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--hairline); }
+.reading-selfcheck-word { flex: 1 1 200px; }
+.reading-selfcheck-buttons { display: inline-flex; gap: 6px; }
+.reading-selfcheck-buttons .btn.is-picked { background: var(--accent-soft); border-color: var(--accent); font-weight: 600; }
+
+/* Reading: accent divisions. A number under a word says how strong its pause is (1 strongest). Shown with a
+   line style as well as a number, so it never relies on colour alone. */
+.bible-word.accent-pause { position: relative; padding-bottom: 14px; }
+.bible-word.accent-pause::after { content: attr(data-accent-label); position: absolute; left: 0; right: 0; bottom: 0; text-align: center; font: 600 0.7rem/1 var(--font-mono); color: var(--ink); direction: ltr; }
+.bible-word.accent-g1 { border-bottom: 4px solid var(--ink); }
+.bible-word.accent-g2 { border-bottom: 3px solid var(--ink-soft); }
+.bible-word.accent-g3 { border-bottom: 2px dashed var(--ink-soft); }
+.bible-word.accent-g4 { border-bottom: 1px dotted var(--ink-soft); }
+.bible-word.accent-main { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+.reading-divisions { margin: 6px 0 4px; }

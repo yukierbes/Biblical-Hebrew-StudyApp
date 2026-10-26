@@ -24,6 +24,8 @@ export const BOOKS = {
   Ruth: { file: "Ruth.xml", web: "web-ruth.json", name: "Ruth" },
   Deut: { file: "Deut.xml", web: "web-deuteronomy.json", name: "Deuteronomy" },
   Ps: { file: "Ps.xml", web: "web-psalms.json", name: "Psalm" },
+  Jonah: { file: "Jonah.xml", web: "web-jonah.json", name: "Jonah" },
+  Exod: { file: "Exod.xml", web: "web-exodus.json", name: "Exodus" },
 };
 
 const STEMS = { q: "Qal", N: "Niphal", p: "Piel", P: "Pual", h: "Hiphil", H: "Hophal", t: "Hithpael", o: "Polel", O: "Polal", r: "Hithpolel", m: "Poel", M: "Poal", k: "Palel", K: "Pulal", Q: "Qal passive", l: "Pilpel", L: "Polpal", f: "Hithpalpel", D: "Nithpael", j: "Pealal", i: "Pilel", u: "Hothpaal", c: "Tiphil", v: "Hishtaphel", w: "Nithpalel", y: "Nithpoel", z: "Hithpoel" };
@@ -143,7 +145,7 @@ if (!errors.length) {
   const book = (b) => {
     if (cache[b]) return cache[b];
     const def = BOOKS[b];
-    if (!def) { errors.push(`reading-passages.csv: unknown book "${b}" (use Gen, Ruth, Deut or Ps).`); return null; }
+    if (!def) { errors.push(`reading-passages.csv: unknown book "${b}" (use Gen, Exod, Ruth, Deut, Ps or Jonah).`); return null; }
     const xml = readFileSync(join(SRC, def.file), "utf8");
     const verses = parseOsis(xml);
     const kjv = {};

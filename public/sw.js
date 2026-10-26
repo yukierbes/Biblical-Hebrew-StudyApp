@@ -4,6 +4,9 @@
 // (The value below is only what runs when the site is served some other way.)
 const CACHE_VERSION = "hebrew-verb-app-v39";
 
+// Saved datasets (see the fetch handler). Not tied to the release version, so it survives updates.
+const DATA_CACHE = "hebrew-app-data-v1";
+
 const APP_SHELL = [
   "./",
   "index.html",
@@ -31,6 +34,9 @@ const APP_SHELL = [
   "js/daily-data.js",
   "js/confidence.js",
   "js/resume.js",
+  "js/reading-vocab.js",
+  "js/reading-accents.js",
+  "js/reading-offline.js",
   "js/backup.js",
   "js/pages/study-session.js",
   "js/daily-sound.js",
@@ -133,7 +139,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE_VERSION).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE_VERSION && k !== DATA_CACHE).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -150,6 +156,28 @@ self.addEventListener("fetch", (event) => {
   // offline, and caching opaque cross-origin responses adds
   // complexity with little benefit here.
   if (url.origin !== self.location.origin) return;
+
+  // Datasets (vocabulary, verbs, the Bible text and so on): network first, and the last copy that arrived is kept
+  // so the app, and Reading in particular, still works with no connection. A copy is only kept for a successful
+  // answer, and the copy lives in its own cache so a new release of the app does not throw it away.
+  if (url.pathname === "/.netlify/functions/get-data") {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(DATA_CACHE).then((cache) => cache.put(url.pathname + url.search, copy));
+          }
+          return response;
+        })
+        .catch(() =>
+          caches.open(DATA_CACHE).then((cache) =>
+            cache.match(url.pathname + url.search).then((saved) => saved || new Response("{}", { status: 503, headers: { "Content-Type": "application/json" } }))
+          )
+        )
+    );
+    return;
+  }
 
   // Never cache calls to the sync API — it must always hit the network
   // fresh, or a stale cached response could silently overwrite newer

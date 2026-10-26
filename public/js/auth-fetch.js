@@ -9,10 +9,17 @@
 export async function authFetch(path, opts = {}) {
   const user = window.netlifyIdentity && window.netlifyIdentity.currentUser();
   if (!user) throw new Error("Not signed in");
-  const token = await user.jwt();
+  let token = null;
+  try {
+    token = await user.jwt();
+  } catch (e) {
+    // Offline, an expired token cannot be refreshed. Still make the request: the service worker answers
+    // data requests from its saved copy (see sw.js). Online, a failure to get a token is a real error.
+    if (typeof navigator === "undefined" || navigator.onLine !== false) throw e;
+  }
   return fetch(path, {
     ...opts,
-    headers: { ...(opts.headers || {}), Authorization: `Bearer ${token}` },
+    headers: token ? { ...(opts.headers || {}), Authorization: `Bearer ${token}` } : opts.headers || {},
   });
 }
 
