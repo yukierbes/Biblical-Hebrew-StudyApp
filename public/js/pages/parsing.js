@@ -1,3 +1,4 @@
+import { createRootStep, rootSummaryLine, rootFromParadigm, isWeakParadigm } from "../root-step.js";
 import { getAvailableDatasets, loadVerbData } from "../data.js";
 import { applyFilters, orderedOptionsFromRows, GENERATOR_COLUMNS } from "../filters.js";
 import { renderDatasetSelector, renderFilterSidebar } from "../widgets.js";
@@ -25,6 +26,62 @@ const QUIZ_FIELD_MAP = { Stem: "Mode" };
 
 let state = null;
 let rerender = null;
+
+// "Type the root first" (on by default; the learner can turn it off).
+const ASK_ROOT_KEY = "hebrewApp.parsingAskRoot";
+const askRoot = () => {
+  try {
+    return localStorage.getItem(ASK_ROOT_KEY) !== "0";
+  } catch (e) {
+    return true;
+  }
+};
+
+function rootToggle() {
+  const label = document.createElement("label");
+  label.className = "bible-check parsing-root-toggle";
+  const cb = document.createElement("input");
+  cb.type = "checkbox";
+  cb.checked = askRoot();
+  cb.addEventListener("change", () => {
+    try {
+      localStorage.setItem(ASK_ROOT_KEY, cb.checked ? "1" : "0");
+    } catch (e) {
+      /* not critical */
+    }
+    rerender();
+  });
+  label.appendChild(cb);
+  label.appendChild(document.createTextNode(" Ask me to type the root first (three consonants, or two in a weak verb)"));
+  return label;
+}
+
+/**
+ * The root step for the verb on screen. `holder` is the practice or quiz state; it remembers the result for this row so
+ * the step is not asked again when the page redraws. Returns true when the parsing fields may be shown.
+ */
+function rootGate(container, holder, row, onResult) {
+  const root = rootFromParadigm(row.Dataset);
+  if (!askRoot() || !root) return true;
+  if (holder.rootRow === row && holder.rootResult) {
+    container.appendChild(rootSummaryLine(root, holder.rootResult));
+    return true;
+  }
+  holder.rootRow = row;
+  holder.rootResult = null;
+  container.appendChild(
+    createRootStep({
+      root,
+      weak: isWeakParadigm(row.Dataset),
+      onDone: (res) => {
+        holder.rootResult = res;
+        if (onResult) onResult(res);
+        rerender();
+      },
+    })
+  );
+  return false;
+}
 
 function freshState() {
   const available = getAvailableDatasets();
@@ -292,6 +349,7 @@ function renderPractice(container, df) {
     inputModeWrap.appendChild(label);
   }
   container.appendChild(inputModeWrap);
+  container.appendChild(rootToggle());
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 
   const stats = getMasteryStats("parsing", grouped, morphKey);
@@ -344,6 +402,8 @@ function renderPractice(container, df) {
   heb.innerHTML = `<span lang="he" dir="rtl">${row.Conjugation}</span>`;
   container.appendChild(heb);
   container.appendChild(createItemTray(verbFormSpec(row), { showNote: !!p.checked }));
+
+  if (!rootGate(container, p, row)) return; // the root comes first; the parsing fields follow it
 
   const matchingRows = df.filter((r) => r.Conjugation === row.Conjugation);
   const ambiguityHints = computeAmbiguityHints(row, matchingRows);
@@ -621,6 +681,7 @@ function renderQuizInputModeStep(container) {
     radioRow.appendChild(label);
   }
   container.appendChild(radioRow);
+  container.appendChild(rootToggle());
 
   const startBtn = document.createElement("button");
   startBtn.className = "btn btn-block";
@@ -666,6 +727,12 @@ function renderQuizQuestionStep(container, df, navigate) {
   heb.innerHTML = `<span lang="he" dir="rtl">${row.Conjugation}</span>`;
   container.appendChild(heb);
   container.appendChild(createItemTray(verbFormSpec(row), { showNote: false }));
+
+  const rootOk = rootGate(container, q, row, (res) => {
+    q.rootAsked = (q.rootAsked || 0) + 1;
+    if (res.ok) q.rootRight = (q.rootRight || 0) + 1;
+  });
+  if (!rootOk) return;
 
   const matchingRows = df.filter((r) => r.Conjugation === row.Conjugation);
   const ambiguityHints = computeAmbiguityHints(row, matchingRows);
@@ -817,6 +884,12 @@ function renderQuizSummaryStep(container, navigate) {
   const scoreEl = document.createElement("h3");
   scoreEl.textContent = `Score: ${earned} / ${totalPoints} (${percent}%)`;
   container.appendChild(scoreEl);
+  if (q.rootAsked) {
+    const rootLine = document.createElement("p");
+    rootLine.className = "caption";
+    rootLine.textContent = `Roots typed correctly: ${q.rootRight || 0} of ${q.rootAsked} (not part of the score above).`;
+    container.appendChild(rootLine);
+  }
     container.appendChild(encouragementEl(percent));
   container.appendChild(Object.assign(document.createElement("hr"), { className: "hr" }));
 

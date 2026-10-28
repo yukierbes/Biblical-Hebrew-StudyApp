@@ -102,9 +102,14 @@ const allKeys = () => Array.from({ length: localStorage.length }, (_, i) => loca
 const dailyLogText = () => JSON.stringify(allKeys().filter((k) => k.includes("dailyLog")).map((k) => localStorage.getItem(k)));
 const before = dailyLogText();
 // answer the first question
+// the first question can be any type the session mixes: tap-to-choose, a Bible question, or a verb to parse
 const opt = content.querySelector(".daily-option");
 if (opt) click(opt);
-else for (const b of content.querySelectorAll(".daily-bible .bible-choices")) click(b.querySelector(".bible-choice"));
+else if (content.querySelector(".daily-bible")) for (const b of content.querySelectorAll(".daily-bible .bible-choices")) click(b.querySelector(".bible-choice"));
+else {
+  for (const g of content.querySelectorAll(".field-group .choice-group")) click(g.querySelector(".daily-parse-btn"));
+  click([...content.querySelectorAll("button")].find((b) => b.textContent === "Check Answer"));
+}
 await wait(60);
 assert(!!content.querySelector(".daily-feedback"), "answering gives feedback");
 assert(!!localStorage.getItem("hebrewApp.studyInProgress"), "the session is saved so it can be resumed");

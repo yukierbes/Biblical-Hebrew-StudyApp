@@ -361,7 +361,9 @@ const verbPage = createPractice({
     { title: "Pronominal suffix", choices: choicesOf(data.suffixChoices), answerOf: (ex) => ex.suffix },
   ],
   markWord: (w, ex) => ({ markLetter: [ex.from, ex.to] }),
-  steps: stepsOf((x) => ({ mode: x[1], pgn: x[2], prefix: x[3], suffix: x[4], types: x[5], from: x[6], to: x[7] })),
+  steps: stepsOf((x) => ({ mode: x[1], pgn: x[2], prefix: x[3], suffix: x[4], types: x[5], from: x[6], to: x[7], root: x[8] })),
+  // Before the parsing boxes, the learner types the root (three consonants; two when a weak letter drops out).
+  rootStep: (ex) => (ex.root ? { root: ex.root, weak: ex.types.length > 0 } : null),
   describe: (w, ex) => hebrewHtml(`This is a ${ex.pattern} ${ex.mode.toLowerCase()}${ex.pgn === "None" ? "" : ", " + ex.pgn}${ex.prefix === "none" ? "" : ", with a " + ex.prefix + " prefix"}${ex.suffix === "None" ? "" : ", with a " + ex.suffix + " pronominal suffix"}.`),
   findTab: {
     label: "Find the verb",

@@ -387,6 +387,7 @@ function setZoom(pct) {
   currentZoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, pct));
   document.documentElement.style.fontSize = currentZoom + "%";
   zoomResetEl.textContent = currentZoom + "%";
+  zoomResetEl.setAttribute("aria-label", `${currentZoom}%, reset text size`); // the spoken name keeps the visible text
   zoomOutEl.disabled = currentZoom <= ZOOM_MIN;
   zoomInEl.disabled = currentZoom >= ZOOM_MAX;
   try {

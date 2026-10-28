@@ -1,6 +1,7 @@
 import { setupApp, assert, summary, navigateTo, click, findButtonByText } from "./helpers.mjs";
 
-const { document } = await setupApp();
+const { document, localStorage } = await setupApp();
+localStorage.setItem("hebrewApp.parsingAskRoot", "0"); // these tests are about parsing; the root step has its own test (49)
 const content = document.getElementById("content");
 
 console.log("Ambiguity hints in Parsing practice");

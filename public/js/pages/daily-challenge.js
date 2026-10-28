@@ -484,8 +484,14 @@ function renderCalendar(container, log) {
   box.appendChild(head);
 
   const grid = el("div", "daily-calendar-grid");
-  grid.setAttribute("role", "grid");
-  for (const d of ["S", "M", "T", "W", "T", "F", "S"]) grid.appendChild(el("div", "daily-calendar-dow", d));
+  // A month of days, each read out as its own sentence ("2026-10-25: completed, 8 of 10"). It is not a data grid.
+  grid.setAttribute("role", "group");
+  grid.setAttribute("aria-label", "Days of the month");
+  for (const d of ["S", "M", "T", "W", "T", "F", "S"]) {
+    const h = el("div", "daily-calendar-dow", d);
+    h.setAttribute("aria-hidden", "true");
+    grid.appendChild(h);
+  }
   for (const week of monthGrid(y, m, now, log)) {
     for (const cell of week) {
       if (!cell) {
@@ -496,6 +502,7 @@ function renderCalendar(container, log) {
       const label = cell.entry
         ? `${cell.date}: completed, ${cell.entry.score} of ${cell.entry.total}, ${cell.entry.stars} stars`
         : `${cell.date}${cell.isFuture ? "" : ": not completed"}`;
+      c.setAttribute("role", "img");
       c.setAttribute("aria-label", label);
       c.title = cell.entry ? `${cell.entry.score}/${cell.entry.total} · ${"★".repeat(cell.entry.stars)}` : "";
       c.innerHTML = `<span class="daily-calendar-day">${cell.day}</span>${cell.entry ? `<span class="daily-calendar-stars" aria-hidden="true">${"★".repeat(cell.entry.stars)}</span>` : ""}`;

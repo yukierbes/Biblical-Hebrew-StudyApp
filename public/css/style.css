@@ -18,7 +18,7 @@
   --ink: #1C2B45;
   --ink-hover: #0F1A2E;
   --ink-soft: #55617A;
-  --ink-faint: #8B93A4;
+  --ink-faint: #5B667B;
   --hairline: #DBD9D1;
   --hairline-strong: #C7C4B8;
   --accent: #A6823C;
@@ -57,7 +57,7 @@ html[data-theme="dark"] {
   --ink: #ECE9E1;
   --ink-hover: #D6D2C6;
   --ink-soft: #A9AEBB;
-  --ink-faint: #6B7280;
+  --ink-faint: #92969D;
   --hairline: #2A2F3A;
   --hairline-strong: #3A4150;
   --accent: #D4A94C;
@@ -111,7 +111,7 @@ h2::before,
 h3::before,
 .sidebar-title::before {
   content: "▪";
-  color: var(--accent);
+  color: var(--accent-text);
   margin-right: 0.5em;
   font-size: 0.7em;
   vertical-align: middle;
@@ -278,7 +278,7 @@ h3::before,
   font-family: var(--font-display);
   font-size: 2.1rem;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--accent-text);
   line-height: 1;
 }
 
@@ -478,7 +478,7 @@ h3::before,
 
 .nav-btn.active {
   color: var(--ink);
-  border-left-color: var(--accent);
+  border-left-color: var(--accent-text);
   background: var(--accent-soft);
   font-weight: 600;
 }
@@ -783,7 +783,7 @@ h2, h3 {
 
 .mode-card h2::before {
   content: "▪";
-  color: var(--accent);
+  color: var(--accent-text);
   margin-right: 0.5em;
   font-size: 0.65em;
   vertical-align: middle;
@@ -974,7 +974,7 @@ table.custom-table tr:hover { background-color: var(--paper); }
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
   margin: 22px 0 10px;
 }
 
@@ -1363,7 +1363,7 @@ select:focus-visible,
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--accent);
+  color: var(--accent-text);
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -1374,7 +1374,7 @@ select:focus-visible,
   cursor: default;
   text-decoration: none;
 }
-.select-all-btn:disabled:hover { color: var(--accent); }
+.select-all-btn:disabled:hover { color: var(--accent-text); }
 
 /* "Select all" on the left, "Clear all" on the right, flush with the
    edges of the checkbox list underneath. */
@@ -1822,7 +1822,7 @@ kbd {
   -webkit-user-select: none;
 }
 
-.flashcard-interactive:hover { border-color: var(--accent); }
+.flashcard-interactive:hover { border-color: var(--accent-text); }
 .flashcard-interactive:active { transform: scale(0.99); }
 
 .flashcard-interactive-back {
@@ -1886,7 +1886,7 @@ kbd {
 .btn.btn-review {
   background: transparent;
   color: var(--accent-text);
-  border-color: var(--accent);
+  border-color: var(--accent-text);
 }
 .btn.btn-review:hover { background: var(--accent-soft); }
 
@@ -1918,7 +1918,7 @@ kbd {
 }
 
 .game-option-btn:hover:not(:disabled) {
-  border-color: var(--accent);
+  border-color: var(--accent-text);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
@@ -1987,7 +1987,7 @@ kbd {
 }
 
 .memory-card:not(:disabled):hover .memory-card-face {
-  border-color: var(--accent);
+  border-color: var(--accent-text);
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -2375,7 +2375,7 @@ kbd {
   flex-direction: column;
   gap: 8px;
 }
-.area-tile-new { border-color: var(--accent); }
+.area-tile-new { border-color: var(--accent-text); }
 .area-tile-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .area-tile-head h2 { margin: 0; font-size: 1.25rem; }
 .area-tile-flag {
@@ -2383,7 +2383,7 @@ kbd {
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
   border: 1px solid var(--accent);
   border-radius: var(--radius);
   padding: 2px 8px;
@@ -2461,7 +2461,7 @@ kbd {
 }
 .pm-tab:hover { color: var(--ink); }
 .pm-tab:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
-.pm-tab-on { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+.pm-tab-on { color: var(--ink); border-bottom-color: var(--accent-text); font-weight: 600; }
 
 .pm-panel h3 { margin: 26px 0 10px; }
 .pm-panel h3:first-child { margin-top: 4px; }
@@ -2585,7 +2585,7 @@ kbd {
 }
 .pm-tile-form { font-family: var(--font-hebrew); font-size: calc(1.7rem * var(--hebrew-scale, 1)); --hebrew-inner: 1; line-height: 1; }
 .pm-tile-mark { position: absolute; top: 1px; right: 4px; font-size: 0.7rem; font-weight: 700; }
-.pm-tile-learning { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+.pm-tile-learning { background: var(--accent-soft); border-color: var(--accent-text); color: var(--ink); }
 .pm-tile-mastered { background: var(--good-soft); border-color: var(--good); color: var(--ink); }
 .pm-tile-mastered .pm-tile-mark, .pm-key.pm-tile-mastered { color: var(--good); }
 .pm-tile-weak { border-color: var(--bad); box-shadow: inset 0 0 0 1px var(--bad); }
@@ -2756,7 +2756,7 @@ kbd {
   font-size: 0.88rem;
 }
 .page-finder-input::placeholder { color: var(--ink-faint); }
-.page-finder-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.page-finder-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent-text); }
 .page-finder-list {
   position: absolute;
   left: 0;
@@ -2807,7 +2807,7 @@ kbd {
   color: inherit;
   text-decoration: none;
 }
-.streak-chip:hover { border-color: var(--accent); }
+.streak-chip:hover { border-color: var(--accent-text); }
 .streak-chip:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .streak-chip-top { flex: 1 1 100%; display: flex; align-items: baseline; gap: 8px; }
 .streak-chip .streak-count { font-size: 1.35rem; }
@@ -2850,7 +2850,7 @@ kbd {
 .daily-status { text-align: center; margin-bottom: 18px; }
 .daily-status-main { font-size: 1.25rem; font-weight: 600; color: var(--ink); }
 .daily-facts { margin-top: 6px; }
-.daily-stars-inline { color: var(--accent); letter-spacing: 2px; }
+.daily-stars-inline { color: var(--accent-text); letter-spacing: 2px; }
 
 .daily-resume {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;
@@ -2888,7 +2888,7 @@ kbd {
 .daily-calendar-cell.future { opacity: 0.45; }
 .daily-calendar-cell.today { border: 2px solid var(--accent); }
 .daily-calendar-cell.done { background: var(--good-soft); border-color: var(--good); }
-.daily-calendar-stars { font-size: 0.6rem; color: var(--accent); letter-spacing: 1px; line-height: 1; }
+.daily-calendar-stars { font-size: 0.6rem; color: var(--accent-text); letter-spacing: 1px; line-height: 1; }
 
 /* Playing */
 .daily-topbar { margin-bottom: 10px; }
@@ -2910,7 +2910,7 @@ kbd {
   font: inherit; font-size: 1.1rem; line-height: 1.3; cursor: pointer;
   transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
 }
-.daily-option:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-1px); }
+.daily-option:hover:not(:disabled) { border-color: var(--accent-text); transform: translateY(-1px); }
 .daily-option:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .daily-option:disabled { cursor: default; opacity: 1; }
 .daily-option-num {
@@ -2961,7 +2961,7 @@ kbd {
 /* The finish */
 .daily-hero { text-align: center; padding: 8px 0 14px; }
 .daily-stars { font-size: 3rem; letter-spacing: 6px; line-height: 1; }
-.daily-star.on { color: var(--accent); }
+.daily-star.on { color: var(--accent-text); }
 .daily-star.off { color: var(--hairline-strong); }
 .daily-star.on { animation: dailyStarPop 0.5s ease-out both; animation-delay: calc(var(--i) * 0.18s); }
 @keyframes dailyStarPop { 0% { transform: scale(0.2) rotate(-25deg); opacity: 0; } 70% { transform: scale(1.25) rotate(6deg); opacity: 1; } 100% { transform: scale(1) rotate(0); } }
@@ -3106,7 +3106,7 @@ html[data-palette="parchment"],
   --ink: #3A2A1A;
   --ink-hover: #24180D;
   --ink-soft: #6A5640;
-  --ink-faint: #8F7B62;
+  --ink-faint: #6F5C47;
   --hairline: #DCCFB5;
   --hairline-strong: #C9B994;
   --accent: #9A5B1F;
@@ -3127,7 +3127,7 @@ html[data-theme="dark"] .theme-swatch[data-palette="parchment"] {
   --ink: #EFE4CF;
   --ink-hover: #FFF4DC;
   --ink-soft: #BFAF93;
-  --ink-faint: #8A7B63;
+  --ink-faint: #A4967F;
   --hairline: #3A3024;
   --hairline-strong: #4D4030;
   --accent: #D9A05B;
@@ -3148,7 +3148,7 @@ html[data-palette="sky"],
   --ink: #12304F;
   --ink-hover: #0A2038;
   --ink-soft: #4B6482;
-  --ink-faint: #7388A3;
+  --ink-faint: #506885;
   --hairline: #D2DEEA;
   --hairline-strong: #B8C9DB;
   --accent: #2A6FB0;
@@ -3169,7 +3169,7 @@ html[data-theme="dark"] .theme-swatch[data-palette="sky"] {
   --ink: #E3EEF9;
   --ink-hover: #FFFFFF;
   --ink-soft: #A7BCD2;
-  --ink-faint: #6F859D;
+  --ink-faint: #869AAF;
   --hairline: #243750;
   --hairline-strong: #34506F;
   --accent: #6FB1EA;
@@ -3190,7 +3190,7 @@ html[data-palette="olive"],
   --ink: #27331F;
   --ink-hover: #172012;
   --ink-soft: #56634A;
-  --ink-faint: #858F78;
+  --ink-faint: #5E6853;
   --hairline: #D8DBC6;
   --hairline-strong: #C3C8AA;
   --accent: #6B7F2A;
@@ -3211,7 +3211,7 @@ html[data-theme="dark"] .theme-swatch[data-palette="olive"] {
   --ink: #E8EBDC;
   --ink-hover: #FFFFFF;
   --ink-soft: #B0B8A0;
-  --ink-faint: #788068;
+  --ink-faint: #949B85;
   --hairline: #2D3523;
   --hairline-strong: #3F4A31;
   --accent: #B5C860;
@@ -3232,7 +3232,7 @@ html[data-palette="terracotta"],
   --ink: #3B241C;
   --ink-hover: #26140E;
   --ink-soft: #6E5046;
-  --ink-faint: #94766B;
+  --ink-faint: #785C52;
   --hairline: #E6D3C8;
   --hairline-strong: #D5BBAC;
   --accent: #B3502F;
@@ -3253,7 +3253,7 @@ html[data-theme="dark"] .theme-swatch[data-palette="terracotta"] {
   --ink: #F2E4DC;
   --ink-hover: #FFFFFF;
   --ink-soft: #C4A89B;
-  --ink-faint: #8D7165;
+  --ink-faint: #A58D82;
   --hairline: #3C2A23;
   --hairline-strong: #52392F;
   --accent: #E58A66;
@@ -3274,7 +3274,7 @@ html[data-palette="midnight"],
   --ink: #1F1B4D;
   --ink-hover: #120F36;
   --ink-soft: #55527F;
-  --ink-faint: #8584AA;
+  --ink-faint: #63618B;
   --hairline: #D8D7EA;
   --hairline-strong: #C0BEDB;
   --accent: #8A6A12;
@@ -3295,7 +3295,7 @@ html[data-theme="dark"] .theme-swatch[data-palette="midnight"] {
   --ink: #ECEAFB;
   --ink-hover: #FFFFFF;
   --ink-soft: #B3B0DA;
-  --ink-faint: #7977A8;
+  --ink-faint: #8D8BB6;
   --hairline: #272357;
   --hairline-strong: #38337A;
   --accent: #E2B94A;
@@ -3362,9 +3362,9 @@ html[data-pattern="weave"] #sidebar {
   min-width: 0;
 }
 .theme-swatch > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.theme-swatch:hover { border-color: var(--accent); }
+.theme-swatch:hover { border-color: var(--accent-text); }
 .theme-swatch:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-.theme-swatch[aria-checked="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); font-weight: 600; }
+.theme-swatch[aria-checked="true"] { border-color: var(--accent-text); box-shadow: 0 0 0 2px var(--accent); font-weight: 600; }
 .theme-swatch-chips { display: inline-flex; flex-shrink: 0; }
 .theme-swatch-chips i { width: 11px; height: 11px; border-radius: 50%; border: 1px solid var(--hairline-strong); }
 .theme-swatch-chips i + i { margin-left: -4px; }
@@ -3381,7 +3381,7 @@ html[data-pattern="weave"] #sidebar {
   font-family: var(--font-body);
 }
 .appearance-strength[hidden] { display: none; }
-.zoom-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--ink); box-shadow: inset 0 0 0 1px var(--accent); }
+.zoom-btn[aria-pressed="true"] { border-color: var(--accent-text); color: var(--ink); box-shadow: inset 0 0 0 1px var(--accent); }
 
 /* --- Hebrew size control --- */
 .hebrew-size-row { display: flex; flex-direction: column; gap: 4px; }
@@ -3415,8 +3415,8 @@ html[data-pattern="weave"] #sidebar {
 }
 .item-btn:hover { background: var(--accent-soft); color: var(--ink); }
 .item-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.item-btn.is-on { color: var(--accent); }
-.item-star.is-on { color: var(--accent); }
+.item-btn.is-on { color: var(--accent-text); }
+.item-star.is-on { color: var(--accent-text); }
 .item-report { font-size: 0.85rem; }
 .item-note-line {
   max-width: 460px; text-align: center; font-style: italic; font-size: 0.95rem;
@@ -3484,7 +3484,7 @@ html[data-pattern="weave"] #sidebar {
 .celebrate-glow.celebrate-calm { animation-duration: 1.4s; }
 @keyframes celebrate-glow { 0% { opacity: 0; } 25% { opacity: 0.35; } 100% { opacity: 0; } }
 .celebrate-star {
-  position: absolute; color: var(--accent); opacity: 0; transform: scale(0.3);
+  position: absolute; color: var(--accent-text); opacity: 0; transform: scale(0.3);
   animation: celebrate-twinkle 1.6s ease-in-out forwards;
 }
 @keyframes celebrate-twinkle { 0% { opacity: 0; transform: scale(0.3) rotate(0); } 40% { opacity: 1; transform: scale(1) rotate(25deg); } 100% { opacity: 0; transform: scale(0.6) rotate(60deg) translateY(-14px); } }
@@ -3536,7 +3536,7 @@ button.bible-word:hover { border-color: var(--hairline-strong); }
 .bible-inline { font-family: var(--font-hebrew); font-size: 1.15em; unicode-bidi: isolate; }
 .bible-passage { margin: 12px 0 18px; }
 .bible-verse-row { display: flex; gap: 10px; align-items: baseline; flex-direction: row-reverse; border: 1px solid var(--hairline); border-radius: var(--radius); padding: 2px 10px; margin-bottom: 6px; background: var(--paper-raised); }
-.bible-verse-row.is-current { border-color: var(--accent); }
+.bible-verse-row.is-current { border-color: var(--accent-text); }
 .bible-verse-row .bible-verse { flex: 1; }
 .bible-vn { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); }
 .bible-step, .bible-question { margin-top: 10px; }
@@ -3553,7 +3553,7 @@ button.bible-word:hover { border-color: var(--hairline-strong); }
   font-size: 0.95rem;
   cursor: pointer;
 }
-.bible-choice:hover:not(:disabled) { border-color: var(--accent); }
+.bible-choice:hover:not(:disabled) { border-color: var(--accent-text); }
 .bible-choice:disabled { cursor: default; }
 .bible-choice.is-correct { border-color: var(--good); background: var(--good-soft); }
 .bible-choice.is-wrong { border-color: var(--bad); background: var(--bad-soft); }
@@ -3573,7 +3573,7 @@ button.bible-word:hover { border-color: var(--hairline-strong); }
 .bible-summary th, .bible-summary td { border-bottom: 1px solid var(--hairline); padding: 6px 10px; text-align: left; }
 .bible-credit-list li { margin: 6px 0; }
 @media print { .bible-verse { font-size: 1.7rem; } }
-.bible-watch { border-color: var(--accent); }
+.bible-watch { border-color: var(--accent-text); }
 .bible-review { margin: 10px 0; }
 .bible-guide-card ol { margin: 6px 0 6px 20px; }
 
@@ -3589,7 +3589,7 @@ button.bible-word:hover { border-color: var(--hairline-strong); }
 .bible-letter { display: inline-block; padding: 0 1px; margin: 0; border: 1px solid transparent; border-radius: 4px; cursor: pointer; line-height: 1.6; }
 .bible-letter:hover { border-color: var(--hairline-strong); }
 .bible-letter:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
-.bible-letter.is-picked { background: var(--accent-soft); border-color: var(--accent); }
+.bible-letter.is-picked { background: var(--accent-soft); border-color: var(--accent-text); }
 .bible-letter.is-correct { background: var(--good-soft); border-color: var(--good); }
 .bible-letter.is-missed { border: 2px dotted var(--good); }
 .bible-letter.is-wrong { background: var(--bad-soft); border-color: var(--bad); }
@@ -3603,15 +3603,15 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 .bible-part { margin-bottom: 12px; }
 .bible-part-title { margin: 8px 0 4px; }
 .bible-choices-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
-.bible-choice.is-picked { border-color: var(--accent); background: var(--accent-soft); }
+.bible-choice.is-picked { border-color: var(--accent-text); background: var(--accent-soft); }
 
 /* --- Syllables: dividing a word (update 14) --- */
-.bible-sylsep { color: var(--accent); margin: 0 0.25em; font-family: var(--font-body); }
+.bible-sylsep { color: var(--accent-text); margin: 0 0.25em; font-family: var(--font-body); }
 .bible-divide { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; font-family: var(--font-hebrew); font-size: calc(2.4rem * var(--hebrew-scale, 1)); line-height: 1.8; --hebrew-inner: 1; margin: 10px 0 16px; }
 .bible-slot { padding: 0 1px; }
 .bible-gap { position: relative; width: 22px; height: 2.2em; padding: 0; border: 0; background: transparent; cursor: pointer; }
 .bible-gap::after { content: ""; position: absolute; top: 12%; bottom: 12%; left: 50%; border-left: 2px dotted var(--hairline-strong); }
-.bible-gap:hover::after { border-left-color: var(--accent); }
+.bible-gap:hover::after { border-left-color: var(--accent-text); }
 .bible-gap:focus-visible { outline: 2px solid var(--ink); }
 .bible-gap.is-cut::after { border-left: 3px solid var(--ink); }
 .bible-gap.is-correct::after { border-left: 3px solid var(--good); }
@@ -3635,7 +3635,7 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 }
 .bible-home-page:hover { background: var(--accent-soft); }
 .bible-home-chip { font-size: 0.75rem; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--hairline-strong); color: var(--ink-soft); }
-.bible-home-chip.is-passed { border-color: var(--accent); color: var(--ink); font-weight: 600; }
+.bible-home-chip.is-passed { border-color: var(--accent-text); color: var(--ink); font-weight: 600; }
 .bible-home-chip.is-new { border-style: dashed; }
 
 /* ---------- Badges: Bronze / Silver / Gold levels, your path, the next three ---------- */
@@ -3700,7 +3700,7 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 .reading-book-title { margin: 0 0 6px; font-size: 0.8rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
 .reading-sort { margin: 4px 0 8px; }
 .reading-know { font-size: 0.75rem; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--hairline-strong); color: var(--ink); white-space: nowrap; }
-.reading-know-high { border-color: var(--accent); font-weight: 600; }
+.reading-know-high { border-color: var(--accent-text); font-weight: 600; }
 .reading-know-low { border-style: dashed; }
 .reading-knowledge, .reading-offline { margin: 10px 0; }
 .reading-unknown summary { cursor: pointer; margin-top: 6px; }
@@ -3714,7 +3714,7 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 .reading-selfcheck-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--hairline); }
 .reading-selfcheck-word { flex: 1 1 200px; }
 .reading-selfcheck-buttons { display: inline-flex; gap: 6px; }
-.reading-selfcheck-buttons .btn.is-picked { background: var(--accent-soft); border-color: var(--accent); font-weight: 600; }
+.reading-selfcheck-buttons .btn.is-picked { background: var(--accent-soft); border-color: var(--accent-text); font-weight: 600; }
 
 /* Reading: accent divisions. A number under a word says how strong its pause is (1 strongest). Shown with a
    line style as well as a number, so it never relies on colour alone. */
@@ -3726,3 +3726,82 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 .bible-word.accent-g4 { border-bottom: 1px dotted var(--ink-soft); }
 .bible-word.accent-main { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
 .reading-divisions { margin: 6px 0 4px; }
+
+/* Type the root first. */
+.root-step { margin: 12px 0; padding: 12px 14px; border: 1px solid var(--hairline-strong); border-radius: var(--radius); background: var(--paper); }
+.root-step-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.root-input { font-family: var(--font-hebrew); font-size: 1.4rem; width: 9em; max-width: 100%; padding: 6px 10px; }
+.root-step-msg { margin-top: 8px; min-height: 1.2em; }
+.root-step-msg.is-good { color: var(--good); }
+.root-step-msg.is-bad { color: var(--bad); }
+.root-heb { font-family: var(--font-hebrew); font-size: 1.15em; }
+.root-summary { margin: 4px 0 8px; }
+.parsing-root-toggle { display: block; margin: 8px 0; }
+
+/* ---- Bible in Context: the Print tab and the printed sheets ---- */
+.bp-form { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; max-width: 520px; }
+.bp-field { display: flex; flex-direction: column; gap: 4px; }
+.bp-fieldset { border: 1px solid var(--hairline-strong); border-radius: var(--radius); padding: 8px 12px; }
+.bp-fieldset legend { padding: 0 6px; }
+.bp-preview { border: 1px dashed var(--hairline-strong); border-radius: var(--radius); background: #fff; color: #1C2B45; padding: 8px; overflow-x: auto; }
+
+/* The sheet itself. Fixed dark ink on white, on screen (in the preview) and on paper. */
+/* The sheet is paper: whatever the app's theme, everything inside it uses the light-theme ink. */
+.bible-sheet { --ink: #1C2B45; --ink-soft: #3F4B63; --ink-faint: #4A5568; --paper: #FFFFFF; --paper-raised: #FFFFFF; --hairline: #BBBBBB; --hairline-strong: #999999; --accent: #1C2B45; --accent-text: #1C2B45; --accent-soft: #E6E6E6; }
+.bible-sheet, .bible-sheet h1, .bible-sheet h2, .bible-sheet h3, .bible-sheet .bible-word, .bible-sheet .bible-verse { color: #1C2B45; }
+.bible-sheet { color: #1C2B45; background: #fff; font-family: var(--font-body); font-size: 11pt; line-height: 1.4; padding: 0.55in; box-sizing: border-box; }
+.bible-sheet h1 { font-size: 16pt; margin: 0 0 4px; }
+.bible-sheet h2 { font-size: 12pt; margin: 10px 0 4px; }
+.bible-sheet .bp-meta { margin: 0 0 10px; font-size: 10pt; }
+.bible-sheet .bp-passage { border-top: 1px solid #999; border-bottom: 1px solid #999; padding: 8px 0; margin: 6px 0 10px; }
+.bible-sheet .bp-verse { margin: 0 0 6px; display: flex; flex-direction: row-reverse; justify-content: flex-end; align-items: baseline; gap: 8px; }
+.bible-sheet .bp-ref { font: 9pt var(--font-mono); color: #444; }
+.bible-sheet .bible-verse { font-family: var(--font-hebrew); font-size: 17pt; line-height: 1.9; margin: 0; }
+.bible-sheet .bible-word { position: relative; }
+.bible-sheet mark.bible-mark { background: #E6E6E6; color: inherit; border-bottom: 2px solid #1C2B45; }
+.bible-sheet .bp-num { font: 700 8.5pt var(--font-body); margin-left: 1px; vertical-align: super; }
+.bible-sheet .bp-instructions { margin: 6px 0; }
+.bible-sheet .bp-note { font-style: italic; margin: 6px 0; }
+.bible-sheet .bp-bank { border: 1px solid #999; padding: 6px 10px; margin: 6px 0 8px; font-size: 10pt; }
+.bible-sheet .bp-bank-title { font-weight: 600; }
+.bible-sheet .bp-questions, .bible-sheet .bp-key-list { padding-left: 1.6em; margin: 6px 0; }
+.bible-sheet .bp-q { margin: 0 0 12px; break-inside: avoid; page-break-inside: avoid; }
+.bible-sheet .bp-q-word, .bible-sheet .bp-key-word { display: inline-block; font-family: var(--font-hebrew); font-size: 15pt; margin-right: 8px; vertical-align: middle; }
+.bible-sheet .bp-part { margin: 3px 0 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; }
+.bible-sheet .bp-part-title { font: 600 9pt var(--font-mono); text-transform: uppercase; min-width: 7em; }
+.bible-sheet .bp-choices { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.bible-sheet .bp-opt { padding: 1px 8px; border: 1px solid transparent; }
+.bible-sheet .bp-line { flex: 1 1 180px; border-bottom: 1px solid #1C2B45; min-height: 1.4em; }
+.bible-sheet .bp-key-list li { margin-bottom: 8px; break-inside: avoid; }
+.bible-sheet .bp-key-why { font-size: 9.5pt; color: #333; margin-top: 2px; }
+.bible-sheet .bp-guide .bible-guide-card { border: 1px solid #bbb; padding: 8px 12px; margin: 8px 0; break-inside: avoid; }
+.bible-sheet .bp-guide table { border-collapse: collapse; width: 100%; font-size: 10pt; }
+.bible-sheet .bp-guide th, .bible-sheet .bp-guide td { border: 1px solid #bbb; padding: 3px 6px; text-align: left; }
+@media print {
+  #print-area .bible-sheet { padding: 0.55in; }
+  .bible-sheet .bp-q { break-inside: avoid; }
+}
+
+/* ---- Welcome and tour ---- */
+.onb-backdrop { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(20, 24, 33, 0.55); }
+.onb-backdrop.onb-tour { align-items: flex-end; justify-content: center; background: transparent; pointer-events: none; }
+.onb-backdrop.onb-tour .onb-dialog { pointer-events: auto; margin-bottom: 24px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35); }
+.onb-dialog { max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 22px 24px; border-radius: 8px; border: 1px solid var(--hairline-strong); background: var(--paper); color: var(--ink); }
+.onb-dialog:focus { outline: none; }
+.onb-title { margin: 0 0 10px; font-family: var(--font-display); }
+.onb-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.onb-levels { display: flex; flex-direction: column; gap: 8px; }
+.onb-level { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--hairline-strong); border-radius: var(--radius); cursor: pointer; }
+.onb-level:has(input:checked) { border-color: var(--accent-text); background: var(--accent-soft); }
+.onb-level input { margin-top: 4px; }
+.onb-hebrew { font-family: var(--font-hebrew); font-size: 2.4rem; text-align: center; margin: 8px 0 12px; }
+.onb-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.onb-options .choice-btn.is-correct { background: var(--good-soft); border-color: var(--good); }
+.onb-options .choice-btn.is-wrong { background: var(--bad-soft); border-color: var(--bad); }
+.onb-feedback { min-height: 1.4em; margin-top: 8px; }
+.onb-plan { padding-left: 1.3em; }
+.onb-plan li { margin: 6px 0; }
+.tour-highlight { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; position: relative; z-index: 5; }
+.plan-card { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin: 12px 0; padding: 12px 16px; border: 1px solid var(--accent); border-radius: var(--radius); background: var(--accent-soft); }
+.plan-card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.home-guide-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0; }

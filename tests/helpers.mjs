@@ -69,6 +69,10 @@ export async function setupApp({ mobile = false } = {}) {
     key: (i) => Object.keys(storageData)[i] ?? null,
   };
   global.localStorage = localStorageMock;
+  // Tests behave like a returning user: the first-run welcome has its own test (51).
+  storageData["hebrewVerbApp:onboarding"] = JSON.stringify({ done: true });
+  // The Verb Parsing root step is off unless a test is about it (49): older tests drive the parsing fields directly.
+  storageData["hebrewApp.parsingAskRoot"] = "0";
 
   global.fetch = async (url, opts) => {
     const u = String(url);

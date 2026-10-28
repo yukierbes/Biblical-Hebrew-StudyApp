@@ -129,5 +129,7 @@ export function classifyVerb(w, mp, ctx, lexicon) {
 
   const from = info.starts[vi];
   const to = info.ends[vi];
-  return { pattern: binyan, extra: [mode, pgn, prefix, suffix, types, from, to], example: { mode, pgn, prefix, suffix, types, from, to } };
+  // the root's consonants (the lexicon word without vowels), so the page can ask the learner to type it first
+  const root = parseLetters(lex).map((l) => l.ch).join("");
+  return { pattern: binyan, extra: [mode, pgn, prefix, suffix, types, from, to, root], example: { mode, pgn, prefix, suffix, types, from, to, root } };
 }

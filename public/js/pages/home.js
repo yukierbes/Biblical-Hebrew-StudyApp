@@ -2,6 +2,7 @@ import { setDeepLink } from "../deep-link.js";
 import { wrapHebrewSpans } from "../helpers.js";
 import { getLastVisit } from "../session.js";
 import { getResumePoint } from "../resume.js";
+import { getPlanToday, hidePlan, maybeStartOnboarding, startTour, startWelcome } from "../onboarding.js";
 import {
   getAllAreaStats,
   totalDue,
@@ -135,6 +136,22 @@ function todayCardHtml(due, suggestion, streak) {
 }
 
 // ---------------- Pick up where you left off ----------------
+
+/** "Your first week · Day 3": today's step of the plan from the welcome, until the week is over. */
+function planCardHtml(plan) {
+  if (!plan) return "";
+  return `
+    <section class="plan-card" aria-label="Your first week">
+      <div class="plan-card-text">
+        <div class="caption">Your first week · day ${plan.day} of ${plan.of}</div>
+        <div class="plan-card-title"><b>${esc(plan.title)}</b> — ${esc(plan.text)}</div>
+      </div>
+      <div class="plan-card-actions">
+        <button class="btn" data-goto="${esc(plan.page)}">${esc(plan.label)}</button>
+        <button class="btn btn-sm btn-outline" data-hide-plan type="button">Hide the plan</button>
+      </div>
+    </section>`;
+}
 
 function resumeHtml(lastVisit, recent) {
   const label = lastVisit ? pageLabel(lastVisit.page) : null;
@@ -357,8 +374,12 @@ export function mount({ content, navigate }) {
   wrap.innerHTML = `
     <h1 class="page-title">Biblical Hebrew Study App</h1>
     <div id="home-greeting-slot">${greetingHtml(displayName, message, showNamePrompt)}</div>
+    ${planCardHtml(getPlanToday())}
     ${todayCardHtml(due, suggestion, streak)}
     ${resumeHtml(lastVisit, recent)}
+    <div class="home-guide-row"><span class="caption">Welcome guide:</span>
+      <button class="btn btn-sm btn-outline" data-tour type="button">Take the app tour</button>
+      <button class="btn btn-sm btn-outline" data-welcome type="button">Set up a first week</button></div>
 
     <div class="area-tiles">${allStats.map(tileHtml).join("")}</div>
     <div class="area-tiles bible-home-row">${bibleTileHtml(bibleAll, bibleSummary)}</div>
@@ -404,6 +425,18 @@ export function mount({ content, navigate }) {
   wrap.querySelectorAll("[data-goto]").forEach((btn) => {
     btn.addEventListener("click", () => navigate(btn.dataset.goto));
   });
+  const hidePlanBtn = wrap.querySelector("[data-hide-plan]");
+  if (hidePlanBtn) {
+    hidePlanBtn.addEventListener("click", () => {
+      hidePlan();
+      hidePlanBtn.closest(".plan-card").remove();
+    });
+  }
+  // The welcome guide: the tour and the first-week setup can be opened again at any time.
+  wrap.querySelector("[data-tour]").addEventListener("click", () => startTour(navigate));
+  wrap.querySelector("[data-welcome]").addEventListener("click", () => startWelcome(navigate));
+  // A brand-new person is welcomed once, after sync has had the chance to bring their progress down.
+  maybeStartOnboarding(navigate);
   // Resume: back to the page and the exact place in it (the tab, the quiz question, the round in progress).
   wrap.querySelectorAll("[data-resume]").forEach((btn) => {
     btn.addEventListener("click", () => {

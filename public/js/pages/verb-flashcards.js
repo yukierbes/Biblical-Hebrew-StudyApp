@@ -236,7 +236,8 @@ function render(content, sidebarExtra, navigate) {
     const cardBtn = document.createElement("button");
     cardBtn.type = "button";
     cardBtn.className = "flashcard-interactive" + (showingHebrewFace ? "" : " flashcard-interactive-back");
-    cardBtn.setAttribute("aria-label", state.flipped ? "Flip card back" : "Flip card to reveal the answer");
+    // The card's own text is its name (what is on the card); the tooltip says what a tap does.
+    cardBtn.setAttribute("title", state.flipped ? "Flip card back" : "Flip card to reveal the answer");
 
     if (showingHebrewFace) {
       cardBtn.innerHTML = `

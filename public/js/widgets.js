@@ -38,6 +38,7 @@ export function renderPresetControls(container, { pageKey, getSnapshot, applySna
   row.style.marginBottom = "8px";
 
   const select = document.createElement("select");
+  select.setAttribute("aria-label", "Saved filters");
   select.style.flex = "1";
   select.style.padding = "6px 8px";
   select.style.borderRadius = "var(--radius)";

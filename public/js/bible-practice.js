@@ -16,6 +16,8 @@ import { recordAttempt } from "./history.js";
 import { recordStreakActivity, recordItemResult } from "./srs.js";
 import { bibleSrsMode, exampleKey } from "./bible-areas.js";
 import { createConfidenceAsk } from "./confidence.js";
+import { createRootStep, rootSummaryLine } from "./root-step.js";
+import { renderPrintTab } from "./bible-print.js";
 import { saveResumePoint, clearResumePoint } from "./resume.js";
 import { consumeDeepLink } from "./deep-link.js";
 import { rememberBibleWord, recordConfusion, easeConfusion, recordRareCorrect, CONFUSION_THRESHOLD } from "./bible-insights.js";
@@ -190,6 +192,7 @@ export function createPractice(config) {
     ["quiz", "Pattern quiz"],
     ["find", config.thirdTab ? config.thirdTab.label : config.findTab.label],
     ["guide", "Pattern guide"],
+    ["print", "Print"],
   ];
 
   const patternById = (id) => data.patterns.find((p) => p.id === id);
@@ -213,7 +216,7 @@ export function createPractice(config) {
 
   /** Puts the page back where it was left: the tab, the passage and step, or the quiz question. */
   function restoreResume(d) {
-    if (["guided", "quiz", "find", "guide"].includes(d.tab)) state.tab = d.tab;
+    if (["guided", "quiz", "find", "guide", "print"].includes(d.tab)) state.tab = d.tab;
     if (Number.isInteger(d.passage) && data.passages[d.passage]) state.passage = d.passage;
     if (d.guided && d.guided.passage === state.passage && Number.isInteger(d.guided.step)) {
       state.guided = { passage: state.passage, step: d.guided.step, results: [] };
@@ -304,6 +307,9 @@ export function createPractice(config) {
     else if (state.tab === "quiz") renderQuiz(body, again);
     else if (state.tab === "find" && config.thirdTab) config.thirdTab.render(body, { data, el, state, rerender: again, showAccents: state.showAccents, prettyRef, hebrewHtml, recordStreakActivity });
     else if (state.tab === "find") renderFind(body, again);
+    else if (state.tab === "print") {
+      renderPrintTab(body, { config, data, el, state, rerender: again, patternById, makeQuestion: (ex) => makeBibleQuestion(config, data, ex) });
+    }
     else {
       config.renderGuide(body, { data, el, showAccents: state.showAccents, patternById, wordHtml, hebrewHtml });
       if (state.guideFocus) focusGuideCard(body, state.guideFocus);
@@ -368,6 +374,34 @@ export function createPractice(config) {
       host.appendChild(one);
     }
     host.appendChild(el("p", "bible-prompt", config.promptText));
+
+    // Verbs: the root is typed first, and the parsing boxes appear once it has been checked (or skipped).
+    const rs = config.rootStep ? config.rootStep(ex) : null;
+    if (rs) {
+      const done = (state.rootResults ||= new Map());
+      const rkey = exampleKey(ex);
+      const rest = el("div", "bible-rest");
+      if (done.has(rkey)) host.appendChild(rootSummaryLine(rs.root, done.get(rkey)));
+      else {
+        rest.hidden = true;
+        host.appendChild(
+          createRootStep({
+            root: rs.root,
+            weak: rs.weak,
+            onDone: (res) => {
+              done.set(rkey, res);
+              state.rootAsked = (state.rootAsked || 0) + 1;
+              if (res.ok) state.rootRight = (state.rootRight || 0) + 1;
+              rest.hidden = false;
+              const first = rest.querySelector("button");
+              if (first) first.focus();
+            },
+          })
+        );
+      }
+      host.appendChild(rest);
+      host = rest;
+    }
 
     // The answer boxes. Most pages have one (the pattern group); a page may add a second (e.g. Pronominal
     // Suffixes: Type 1 / Type 2, and the person-gender-number). Correctness is judged when every box has an answer.

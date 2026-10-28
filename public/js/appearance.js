@@ -98,7 +98,10 @@ export function initAppearance() {
   const inn = document.getElementById("hebrew-zoom-in");
   const reset = document.getElementById("hebrew-zoom-reset");
   const paintHebrew = () => {
-    if (reset) reset.textContent = `Hebrew ${hebrew}%`;
+    if (reset) {
+      reset.textContent = `Hebrew ${hebrew}%`;
+      reset.setAttribute("aria-label", `Hebrew ${hebrew}%, reset Hebrew size`); // the spoken name keeps the visible text
+    }
     if (out) out.disabled = hebrew <= HEBREW_SIZES[0];
     if (inn) inn.disabled = hebrew >= HEBREW_SIZES[HEBREW_SIZES.length - 1];
   };
