@@ -36,7 +36,7 @@ for (const pre of ["consonant", "vowel"]) {
   }
 }
 const homeOrder = [...document.querySelectorAll("[data-home-section]")].map((b) => b.dataset.homeSection);
-if (homeOrder.length) assert(JSON.stringify(homeOrder) === JSON.stringify(["consonants", "vowels", "vocabulary", "verbs", "accents", "bible"]), "home order: " + homeOrder.join(", "));
+if (homeOrder.length) assert(JSON.stringify(homeOrder) === JSON.stringify(["foundations", "consonants", "vowels", "vocabulary", "verbs", "accents", "bible"]), "home order: " + homeOrder.join(", "));
 
 console.log("\nEvery new page mounts");
 const content = document.getElementById("content");

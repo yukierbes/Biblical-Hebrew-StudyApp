@@ -46,7 +46,7 @@ const TABS = [
   ["quizzes", "Quizzes"],
   ["bible", "Bible in Context"],
   ["achievements", "Achievements"],
-  ["backup", "Backup & settings"],
+  ["backup", "Backup & Settings"],
 ];
 
 const WEAK_DRILL_SIZE = 15;
@@ -265,60 +265,7 @@ function renderOverview(panel, ctx) {
       <div class="pm-scroll">${heatmapSvg(grid)}</div>
       ${heatLegend(grid.goal)}
       <div class="caption">${fmt(grid.activeDays)} active ${plural(grid.activeDays, "day", "days")} · ${fmt(grid.answers)} ${plural(grid.answers, "answer", "answers")} in the last ${grid.weeks} weeks. ${calNote}</div>
-    </div>
-    <h3>Settings</h3>
-    <div class="pm-card pm-settings">
-      <div class="pm-setting-row">
-        <div><label for="pm-daily-goal"><b>Daily goal</b></label>
-          <div class="caption">Practice answers per day. Fills the bar on the Home page and in the sidebar.</div></div>
-        <input id="pm-daily-goal" type="number" min="1" max="200" class="daily-goal-input" value="${getDailyGoal()}" />
-      </div>
-      <div class="pm-setting-row">
-        <div><label for="pm-name"><b>Display name</b></label>
-          <div class="caption">Shown in the greeting on the Home page. Leave it empty if you'd rather not.</div></div>
-        <input id="pm-name" type="text" maxlength="${MAX_NAME_LENGTH}" class="pm-name-input" autocomplete="given-name" value="${esc(getDisplayName())}" />
-      </div>
-      <div class="pm-setting-row pm-celebrate-row">
-        <div><b>Celebration style</b>
-          <div class="caption">How the app marks reaching your daily goal, a streak milestone, an achievement or a strong score.</div></div>
-        <div class="pm-celebrate-controls">
-          <div class="choice-group" id="pm-celebrate" role="group" aria-label="Celebration style">
-            ${CELEBRATION_STYLES.map((st) => `<button type="button" class="choice-btn${getCelebrationStyle() === st.id ? " selected" : ""}" data-style="${st.id}" aria-pressed="${getCelebrationStyle() === st.id}" title="${esc(st.desc)}">${esc(st.label)}</button>`).join("")}
-          </div>
-          <button type="button" id="pm-celebrate-preview" class="btn btn-outline btn-sm">Preview</button>
-        </div>
-      </div>
-      <div class="pm-setting-row">
-        <div><b>Reset progress</b>
-          <div class="caption">Clears your streak, daily goal, activity calendar and every review schedule. This can't be undone.</div></div>
-        <button type="button" id="pm-reset" class="btn btn-outline btn-sm pm-danger">Reset progress…</button>
-      </div>
     </div>`;
-
-  const goalInput = panel.querySelector("#pm-daily-goal");
-  goalInput.addEventListener("change", () => {
-    const n = parseInt(goalInput.value, 10);
-    if (Number.isFinite(n) && n > 0) setDailyGoal(n);
-    ctx.rerender();
-  });
-  const nameInput = panel.querySelector("#pm-name");
-  nameInput.addEventListener("change", () => {
-    nameInput.value = setDisplayName(nameInput.value);
-  });
-  panel.querySelectorAll("#pm-celebrate [data-style]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      setCelebrationStyle(btn.dataset.style);
-      ctx.rerender();
-      celebrate("goal", { force: true }); // show the choice straight away
-    });
-  });
-  panel.querySelector("#pm-celebrate-preview").addEventListener("click", () => celebrate("goal", { force: true }));
-  panel.querySelector("#pm-reset").addEventListener("click", () => {
-    if (window.confirm("Reset your streak and spaced-repetition progress? This can't be undone.")) {
-      resetAllProgress();
-      ctx.rerender();
-    }
-  });
 
   // On a narrow screen the calendar scrolls sideways; start at the newest weeks.
   panel.querySelectorAll(".pm-scroll").forEach((el) => {
@@ -665,7 +612,78 @@ function renderBible(panel, ctx) {
 }
 
 // ---------------------------------------------------------------------
-// Backup & settings
+// Settings (on the Backup & Settings tab)
+// ---------------------------------------------------------------------
+
+/** The Settings box: daily goal, display name, celebration style, the "how sure" question, and reset. */
+function buildSettingsCard(ctx) {
+  const card = document.createElement("div");
+  card.className = "pm-settings-wrap";
+  card.innerHTML = `
+    <h3>Settings</h3>
+    <div class="pm-card pm-settings">
+      <div class="pm-setting-row">
+        <div><label for="pm-daily-goal"><b>Daily goal</b></label>
+          <div class="caption">Practice answers per day. Fills the bar on the Home page and in the sidebar.</div></div>
+        <input id="pm-daily-goal" type="number" min="1" max="200" class="daily-goal-input" value="${getDailyGoal()}" />
+      </div>
+      <div class="pm-setting-row">
+        <div><label for="pm-name"><b>Display name</b></label>
+          <div class="caption">Shown in the greeting on the Home page. Leave it empty if you'd rather not.</div></div>
+        <input id="pm-name" type="text" maxlength="${MAX_NAME_LENGTH}" class="pm-name-input" autocomplete="given-name" value="${esc(getDisplayName())}" />
+      </div>
+      <div class="pm-setting-row pm-celebrate-row">
+        <div><b>Celebration style</b>
+          <div class="caption">How the app marks reaching your daily goal, a streak milestone, an achievement or a strong score.</div></div>
+        <div class="pm-celebrate-controls">
+          <div class="choice-group" id="pm-celebrate" role="group" aria-label="Celebration style">
+            ${CELEBRATION_STYLES.map((st) => `<button type="button" class="choice-btn${getCelebrationStyle() === st.id ? " selected" : ""}" data-style="${st.id}" aria-pressed="${getCelebrationStyle() === st.id}" title="${esc(st.desc)}">${esc(st.label)}</button>`).join("")}
+          </div>
+          <button type="button" id="pm-celebrate-preview" class="btn btn-outline btn-sm">Preview</button>
+        </div>
+      </div>
+      <div class="pm-setting-row">
+        <div><label for="confidence-setting"><b>“How sure were you?”</b></label>
+          <div class="caption">After a right answer, ask how sure you were. An answer you were unsure of comes back sooner. It appears on the Bible pages, the Daily Challenge and the Study Session.</div></div>
+        <input id="confidence-setting" type="checkbox" ${isConfidencePromptOn() ? "checked" : ""} />
+      </div>
+      <div class="pm-setting-row">
+        <div><b>Reset progress</b>
+          <div class="caption">Clears your streak, daily goal, activity calendar and every review schedule. This can't be undone.</div></div>
+        <button type="button" id="pm-reset" class="btn btn-outline btn-sm pm-danger">Reset progress…</button>
+      </div>
+    </div>`;
+  const goalInput = card.querySelector("#pm-daily-goal");
+  goalInput.addEventListener("change", () => {
+    const n = parseInt(goalInput.value, 10);
+    if (Number.isFinite(n) && n > 0) setDailyGoal(n);
+    ctx.rerender();
+  });
+  const nameInput = card.querySelector("#pm-name");
+  nameInput.addEventListener("change", () => {
+    nameInput.value = setDisplayName(nameInput.value);
+  });
+  card.querySelectorAll("#pm-celebrate [data-style]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      setCelebrationStyle(btn.dataset.style);
+      ctx.rerender();
+      celebrate("goal", { force: true }); // show the choice straight away
+    });
+  });
+  card.querySelector("#pm-celebrate-preview").addEventListener("click", () => celebrate("goal", { force: true }));
+  card.querySelector("#pm-reset").addEventListener("click", () => {
+    if (window.confirm("Reset your streak and spaced-repetition progress? This can't be undone.")) {
+      resetAllProgress();
+      ctx.rerender();
+    }
+  });
+
+  card.querySelector("#confidence-setting").addEventListener("change", (e) => setConfidencePromptOn(e.target.checked));
+  return card;
+}
+
+// ---------------------------------------------------------------------
+// Backup & Settings
 // ---------------------------------------------------------------------
 
 function renderBackup(panel, ctx) {
@@ -675,6 +693,9 @@ function renderBackup(panel, ctx) {
   intro.textContent =
     "Your progress is saved in this browser and synced to your account. A backup file is a copy you keep yourself: use it to move to a new device, or as a safety net.";
   panel.appendChild(intro);
+
+  // ---- Settings ----
+  panel.appendChild(buildSettingsCard(ctx));
 
   // ---- Back up ----
   const count = Object.keys(collectProgress()).length;
@@ -772,25 +793,6 @@ function renderBackup(panel, ctx) {
   });
   panel.appendChild(sec2);
 
-  // ---- Settings ----
-  const sec3 = document.createElement("section");
-  sec3.className = "pm-card backup-card";
-  sec3.innerHTML = `<h3>Settings</h3>`;
-  const label = document.createElement("label");
-  label.className = "bible-check";
-  const cb = document.createElement("input");
-  cb.type = "checkbox";
-  cb.checked = isConfidencePromptOn();
-  cb.id = "confidence-setting";
-  cb.addEventListener("change", () => setConfidencePromptOn(cb.checked));
-  label.appendChild(cb);
-  label.appendChild(document.createTextNode(" After a right answer, ask “How sure were you?”"));
-  sec3.appendChild(label);
-  const note = document.createElement("p");
-  note.className = "caption";
-  note.textContent = "An answer you were unsure of comes back sooner than one you were sure of. It appears on the Bible pages, the Daily Challenge and the Study Session.";
-  sec3.appendChild(note);
-  panel.appendChild(sec3);
 }
 
 // ---------------------------------------------------------------------

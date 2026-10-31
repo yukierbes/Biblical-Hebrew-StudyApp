@@ -267,7 +267,7 @@ assert(content.querySelector("#home-encourage").textContent.length > 10, "there 
 assert(content.querySelector(".page-title").textContent === "Biblical Hebrew Study App", "the page title is unchanged");
 
 await goto("progress");
-const settingsTab = findButtonByText(content, "Settings");
+const settingsTab = [...content.querySelectorAll(".pm-tab")].find((t) => /Settings/.test(t.textContent)); // the Settings box is on the Backup & Settings tab
 if (settingsTab) click(settingsTab);
 await wait();
 const nameInput = content.querySelector("#pm-name");

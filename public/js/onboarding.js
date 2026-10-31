@@ -188,7 +188,7 @@ export const TOUR_STEPS = [
   { target: '.nav-section-toggle[data-nav-section="foundations"]', title: "Foundations", text: "Consonants, Vowels, Vocabulary, Verbs and Accents. Each has Review, Flashcards, Typing and Games, so you can meet an item, recall it and be tested on it." },
   { target: '.nav-section-toggle[data-nav-section="bible"]', title: "Bible in Context", text: "Practice on real verses of Genesis: Marks & Syllables, Words, Prefixes and Verbs. Each page has a guided passage, a pattern quiz, a find-it exercise, a guide, and a Print tab for worksheets." },
   { target: '#sidebar [data-page="bible-reading"]', title: "Reading", text: "Passages from Genesis, Exodus, Deuteronomy, Psalms, Ruth and Jonah. Tap words to see their parts, check your translation word by word, see accent divisions, and save passages for offline use." },
-  { target: '#sidebar [data-page="progress"]', title: "My Progress", text: "Your mastery by area, quiz history, Bible pages, badges, and Backup & settings, where you can download a copy of everything." },
+  { target: '#sidebar [data-page="progress"]', title: "My Progress", text: "Your mastery by area, quiz history, Bible pages, badges, and Backup & Settings, where you can download a copy of everything." },
   { target: '#sidebar [data-page="search"]', title: "Word Lookup", text: "Search Hebrew (with or without vowels) or English across vocabulary, verbs and accents." },
   { target: ".sidebar-footer", title: "Make it comfortable", text: "Text size and Hebrew size, themes and patterns under Appearance, and your Account. Press ? for keyboard shortcuts." },
   { target: null, title: "That is the tour", text: "You can take it again whenever you like from Home, under Welcome guide." },

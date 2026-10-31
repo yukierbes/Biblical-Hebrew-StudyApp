@@ -201,37 +201,44 @@
         <div class="sidebar-footer">
           <div id="streak-display"></div>
 
-          <div class="a11y-row zoom-buttons" role="group" aria-label="Accessibility: theme, text size, shortcuts">
-            <button id="theme-toggle" type="button" class="zoom-btn a11y-theme">Dark Mode</button>
-            <button id="zoom-out" type="button" class="zoom-btn" aria-label="A−, decrease text size" title="Smaller text">A−</button>
-            <button id="zoom-reset" type="button" class="zoom-btn zoom-reset" aria-label="100%, reset text size" title="Reset text size">100%</button>
-            <button id="zoom-in" type="button" class="zoom-btn" aria-label="A+, increase text size" title="Larger text">A+</button>
-            <button id="shortcuts-toggle" type="button" class="zoom-btn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (press ? anytime)">?</button>
-          </div>
+          <!-- Only the streak stays on show. Everything else lives behind one gear button. -->
+          <button id="settings-toggle" type="button" class="settings-gear" aria-expanded="false" aria-controls="settings-popover" aria-haspopup="dialog">
+            <span class="settings-gear-icon" aria-hidden="true">⚙</span><span>Settings</span>
+          </button>
 
-          <div class="hebrew-size-row" role="group" aria-label="Hebrew text size">
-            <div class="a11y-row zoom-buttons">
-              <button id="hebrew-zoom-out" type="button" class="zoom-btn hebrew-size-btn-he" aria-label="א−, decrease Hebrew size" title="Smaller Hebrew (printouts are not affected)"><span lang="he">א</span>−</button>
-              <button id="hebrew-zoom-reset" type="button" class="zoom-btn zoom-reset" aria-label="Hebrew 100%, reset Hebrew size" title="Reset Hebrew size">Hebrew 100%</button>
-              <button id="hebrew-zoom-in" type="button" class="zoom-btn hebrew-size-btn-he" aria-label="א+, increase Hebrew size" title="Larger Hebrew (printouts are not affected)"><span lang="he">א</span>+</button>
+          <div id="settings-popover" class="settings-popover" role="dialog" aria-label="Settings" hidden>
+            <div class="a11y-row zoom-buttons" role="group" aria-label="Accessibility: theme, text size, shortcuts">
+              <button id="theme-toggle" type="button" class="zoom-btn a11y-theme">Dark Mode</button>
+              <button id="zoom-out" type="button" class="zoom-btn" aria-label="A−, decrease text size" title="Smaller text">A−</button>
+              <button id="zoom-reset" type="button" class="zoom-btn zoom-reset" aria-label="100%, reset text size" title="Reset text size">100%</button>
+              <button id="zoom-in" type="button" class="zoom-btn" aria-label="A+, increase text size" title="Larger text">A+</button>
+              <button id="shortcuts-toggle" type="button" class="zoom-btn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (press ? anytime)">?</button>
             </div>
-          </div>
 
-          <div class="sidebar-section sidebar-appearance" data-collapse-default="collapsed">
-            <h3 class="sidebar-title">Appearance</h3>
-            <div id="appearance-section"></div>
-          </div>
+            <div class="hebrew-size-row" role="group" aria-label="Hebrew text size">
+              <div class="a11y-row zoom-buttons">
+                <button id="hebrew-zoom-out" type="button" class="zoom-btn hebrew-size-btn-he" aria-label="א−, decrease Hebrew size" title="Smaller Hebrew (printouts are not affected)"><span lang="he">א</span>−</button>
+                <button id="hebrew-zoom-reset" type="button" class="zoom-btn zoom-reset" aria-label="Hebrew 100%, reset Hebrew size" title="Reset Hebrew size">Hebrew 100%</button>
+                <button id="hebrew-zoom-in" type="button" class="zoom-btn hebrew-size-btn-he" aria-label="א+, increase Hebrew size" title="Larger Hebrew (printouts are not affected)"><span lang="he">א</span>+</button>
+              </div>
+            </div>
 
-          <div class="sidebar-section sidebar-account" data-collapse-default="collapsed">
-            <h3 class="sidebar-title">Account</h3>
-            <div id="account-section"></div>
-          </div>
+            <div class="sidebar-section sidebar-appearance" data-collapse-default="collapsed">
+              <h3 class="sidebar-title">Appearance</h3>
+              <div id="appearance-section"></div>
+            </div>
 
-          <!-- Below the Account: Sources & Credits for everyone; Mistake Reports for the owner only. -->
-          <nav class="sidebar-footer-links" aria-label="More">
-            <button class="nav-btn" data-page="credits">Sources &amp; Credits</button>
-            <button class="nav-btn" id="nav-reports" data-page="reports" hidden>Mistake Reports</button>
-          </nav>
+            <div class="sidebar-section sidebar-account" data-collapse-default="collapsed">
+              <h3 class="sidebar-title">Account</h3>
+              <div id="account-section"></div>
+            </div>
+
+            <!-- Below the Account: Sources & Credits for everyone; Mistake Reports for the owner only. -->
+            <nav class="sidebar-footer-links" aria-label="More">
+              <button class="nav-btn" data-page="credits">Sources &amp; Credits</button>
+              <button class="nav-btn" id="nav-reports" data-page="reports" hidden>Mistake Reports</button>
+            </nav>
+          </div>
         </div>
       </div>
     </aside>

@@ -50,7 +50,7 @@ function freshState() {
     // person narrows it down themselves.
     datasets: { selected: [...available] },
     query: "",
-    mode: "words",
+    mode: "words", // Word Lookup is one search bar now; the root-letter modes were taken off the page
     searchHebrew: true,
     searchGloss: true,
     ignoreNiqqud: true,
@@ -100,7 +100,7 @@ function rememberSearch() {
 
 function applyRecent(r) {
   state.query = r.q;
-  state.mode = r.mode || "words";
+  state.mode = "words"; // searches saved from the old root modes open as an ordinary search
   state.searchHebrew = r.hebrew !== false;
   state.searchGloss = r.gloss !== false;
   state.ignoreNiqqud = r.niqqud !== false;
@@ -178,55 +178,29 @@ function render(content, sidebarExtra, navigate) {
     <h1 class="page-title">Word Lookup</h1>
     <div class="info-box">
       <b>Instructions</b><br>
-      Type a Hebrew word (or part of one) to find every verb parsing and vocabulary word that matches it,<br>
-      or type an English word to search the glosses and vocabulary translations instead.<br>
-      With <i>Ignore Niqqud</i> on (the default), a search without vowel points matches words that have them — e.g. "קטל" finds "קָטַל".<br>
-      To gather a root family, choose <i>Root letters</i>: type the consonants (e.g. שמר), tick the words that really belong, then <i>Set root</i>.
+      Type a Hebrew word (or part of one) to find every verb parsing and vocabulary word that matches it, or an English word to search the glosses and translations instead.<br>
+      With <i>Ignore vowel points</i> on (the default), a search without vowels matches words that have them: “קטל” finds “קָטַל”.
     </div>
   `;
   content.appendChild(wrap);
 
   const searchBox = el("div", "lookup-searchbox");
-  searchBox.style.maxWidth = "560px";
-  searchBox.style.margin = "0 auto 20px auto";
 
-  // ---- what kind of search ----
-  const modeRow = el("div", "radio-row lookup-modes");
-  modeRow.style.justifyContent = "center";
-  modeRow.style.marginBottom = "10px";
-  for (const [id, label] of MODES) {
-    const lab = el("label");
-    const rb = document.createElement("input");
-    rb.type = "radio";
-    rb.name = "lookup-mode";
-    rb.value = id;
-    rb.checked = state.mode === id;
-    rb.addEventListener("change", () => {
-      state.mode = id;
-      state.selectedKeys.clear();
-      state.banner = null;
-      again();
-    });
-    lab.append(rb, document.createTextNode(" " + label));
-    modeRow.appendChild(lab);
-  }
-  searchBox.appendChild(modeRow);
-
-  const searchRow = el("div");
-  searchRow.style.display = "flex";
-  searchRow.style.gap = "8px";
+  // ---- the one search bar ----
+  const searchLabel = el("label", "lookup-search-label", "Search");
+  searchLabel.htmlFor = "lookup-input";
+  searchBox.appendChild(searchLabel);
+  const searchRow = el("div", "lookup-search-row");
 
   const input = document.createElement("input");
   input.type = "text";
-  input.placeholder = state.mode === "words" ? 'e.g. קָטַל or "he killed"' : state.mode === "root" ? "root letters, e.g. שמר" : "an assigned root, e.g. שמר";
+  input.id = "lookup-input";
+  input.className = "lookup-input";
+  input.placeholder = 'Type a Hebrew word or an English word, e.g. קָטַל or "he killed"';
+  input.autocomplete = "off";
+  input.spellcheck = false;
   input.value = state.query;
   input.setAttribute("dir", "auto");
-  input.style.flex = "1";
-  input.style.padding = "10px 12px";
-  input.style.fontSize = "1.1rem";
-  input.style.borderRadius = "var(--radius)";
-  input.style.border = "1px solid var(--hairline)";
-  input.style.fontFamily = "var(--font-hebrew), var(--font-body)";
   input.addEventListener("input", () => {
     state.query = input.value;
     state.selectedKeys.clear();
@@ -246,77 +220,60 @@ function render(content, sidebarExtra, navigate) {
   });
   searchRow.appendChild(input);
 
-  const kbBtn = el("button", "btn btn-outline btn-sm", "Hebrew Keyboard");
+  const kbBtn = el("button", "btn btn-outline lookup-kb-btn", "Hebrew Keyboard");
   kbBtn.type = "button";
-  kbBtn.style.flexShrink = "0";
   kbBtn.addEventListener("click", () => openHebrewKeyboard(input));
   searchRow.appendChild(kbBtn);
   searchBox.appendChild(searchRow);
 
-  // ---- options for this kind of search ----
-  const optionsRow = el("div", "radio-row");
-  optionsRow.style.marginTop = "10px";
-  optionsRow.style.justifyContent = "center";
-  const checkbox = (labelText, checked, onChange) => {
-    const lab = el("label");
-    const cb = document.createElement("input");
-    cb.type = "checkbox";
-    cb.checked = checked;
-    cb.addEventListener("change", () => onChange(cb.checked));
-    lab.append(cb, document.createTextNode(" " + labelText));
-    return lab;
-  };
-  if (state.mode === "words") {
-    optionsRow.appendChild(checkbox("Search Hebrew", state.searchHebrew, (v) => { state.searchHebrew = v; renderResults(); }));
-    optionsRow.appendChild(checkbox("Search Gloss / English", state.searchGloss, (v) => { state.searchGloss = v; renderResults(); }));
-    optionsRow.appendChild(checkbox("Ignore Niqqud (vowel points)", state.ignoreNiqqud, (v) => { state.ignoreNiqqud = v; renderResults(); }));
-  }
-  searchBox.appendChild(optionsRow);
-
-  if (state.mode === "root") {
-    const rootOpts = el("div", "radio-row lookup-root-options");
-    rootOpts.style.justifyContent = "center";
-    rootOpts.style.marginTop = "8px";
-    for (const [id, label] of [
-      ["ordered", "Consonants in order (not necessarily together)"],
-      ["adjacent", "Letters together"],
-      ["starts", "Starts with the root"],
-    ]) {
-      const lab = el("label");
-      const rb = document.createElement("input");
-      rb.type = "radio";
-      rb.name = "lookup-root-match";
-      rb.checked = state.rootMatch === id;
-      rb.addEventListener("change", () => {
-        state.rootMatch = id;
-        state.selectedKeys.clear();
-        renderResults();
-      });
-      lab.append(rb, document.createTextNode(" " + label));
-      rootOpts.appendChild(lab);
-    }
-    rootOpts.appendChild(checkbox("Also words missing a weak letter (י ו ה א נ)", state.rootWeak, (v) => { state.rootWeak = v; state.selectedKeys.clear(); renderResults(); }));
-    searchBox.appendChild(rootOpts);
-    searchBox.appendChild(
-      el("div", "caption", "Vowel points are ignored, and final and regular letters count as the same (ך/כ, ם/מ, ן/נ, ף/פ, ץ/צ) however you type them. Tick the words that really share the root — the preview matters more than the search.")
-    ).style.textAlign = "center";
-  }
-
-  // ---- which parts of the app to look in ----
-  const lookIn = el("div", "radio-row lookup-sections");
-  lookIn.style.justifyContent = "center";
-  lookIn.style.marginTop = "10px";
-  lookIn.appendChild(el("span", "caption", "Look in:"));
-  for (const s of SECTIONS) {
-    const lab = checkbox(s.title, state.sections.has(s.id), (v) => {
-      if (v) state.sections.add(s.id);
-      else state.sections.delete(s.id);
-      renderResults();
+  // ---- options, as boxes you select (like the Daily Challenge's) ----
+  const chip = (labelText, pressed, onToggle, extra = {}) => {
+    const b = el("button", "choice-btn daily-chip lookup-chip" + (pressed ? " selected" : ""), escapeHtml(labelText));
+    b.type = "button";
+    b.setAttribute("aria-pressed", String(pressed));
+    Object.assign(b.dataset, extra);
+    b.addEventListener("click", () => {
+      const now = b.getAttribute("aria-pressed") !== "true";
+      b.setAttribute("aria-pressed", String(now));
+      b.classList.toggle("selected", now);
+      onToggle(now);
     });
-    lab.dataset.section = s.id;
-    lookIn.appendChild(lab);
-  }
-  searchBox.appendChild(lookIn);
+    return b;
+  };
+  const chipRow = (label, chips) => {
+    const row = el("div", "lookup-option-row");
+    row.appendChild(el("span", "sidebar-label lookup-option-label", label));
+    const group = el("div", "choice-group lookup-chips");
+    group.setAttribute("role", "group");
+    group.setAttribute("aria-label", label);
+    chips.forEach((c) => group.appendChild(c));
+    row.appendChild(group);
+    return row;
+  };
+  searchBox.appendChild(
+    chipRow("Match", [
+      chip("Hebrew", state.searchHebrew, (v) => { state.searchHebrew = v; renderResults(); }, { option: "hebrew" }),
+      chip("English meaning", state.searchGloss, (v) => { state.searchGloss = v; renderResults(); }, { option: "gloss" }),
+      chip("Ignore vowel points", state.ignoreNiqqud, (v) => { state.ignoreNiqqud = v; renderResults(); }, { option: "niqqud" }),
+    ])
+  );
+  searchBox.appendChild(
+    chipRow(
+      "Look in",
+      SECTIONS.map((sec) =>
+        chip(
+          sec.title,
+          state.sections.has(sec.id),
+          (v) => {
+            if (v) state.sections.add(sec.id);
+            else state.sections.delete(sec.id);
+            renderResults();
+          },
+          { section: sec.id }
+        )
+      )
+    )
+  );
 
   // ---- recent searches ----
   const recentWrap = el("div", "lookup-recent");
@@ -396,16 +353,16 @@ function render(content, sidebarExtra, navigate) {
 
     const query = state.query.trim();
     if (!query) {
-      message("alert alert-info", "Start typing to search.");
+      resultsSection.appendChild(el("p", "lookup-hint", "Results will appear here as you type, grouped by where they were found."));
       return;
     }
     if (state.mode === "words" && !state.searchHebrew && !state.searchGloss) {
-      message("alert alert-warning", "Turn on at least one of Search Hebrew / Search Gloss.");
+      message("alert alert-warning", "Select at least one of Hebrew or English meaning under Match.");
       return;
     }
     const shownSections = SECTIONS.filter((s) => state.sections.has(s.id) && (state.mode === "words" || s.id === "vocab"));
     if (state.sections.size === 0) {
-      message("alert alert-warning", "Choose at least one place to look in.");
+      message("alert alert-warning", "Select at least one place under Look in.");
       return;
     }
     if (state.mode !== "words" && !state.sections.has("vocab")) {
@@ -488,19 +445,6 @@ function render(content, sidebarExtra, navigate) {
   function bannerEl() {
     const b = el("div", "alert alert-info lookup-banner");
     b.appendChild(el("span", "", state.banner.text + " "));
-    if (state.banner.root) {
-      const show = el("button", "btn btn-outline btn-sm", "Show words with this root");
-      show.type = "button";
-      show.addEventListener("click", () => {
-        state.mode = "assigned";
-        state.query = state.banner.root;
-        state.selectedKeys.clear();
-        state.banner = null;
-        again();
-        rememberSearch();
-      });
-      b.appendChild(show);
-    }
     if (getLastRootChange()) {
       const undo = el("button", "btn btn-secondary btn-sm lookup-undo", "Undo last assignment");
       undo.type = "button";
@@ -644,8 +588,10 @@ function render(content, sidebarExtra, navigate) {
       rootBtn.addEventListener("click", () => {
         const rows = selectedRows();
         if (!rows.length) return;
-        // In a root search the box starts with the letters just searched (reusing an existing spelling of the same root).
-        const letters = isRoot ? rootLetters(query) : "";
+        // When what was searched is Hebrew letters only (two or more), the box starts with those consonants (reusing an
+        // existing spelling of the same root), so searching שמר and choosing the words that belong is one short path.
+        const hebrewOnly = /^[\s\u0590-\u05FF]+$/.test(query);
+        const letters = hebrewOnly && rootLetters(query).length >= 2 ? rootLetters(query) : "";
         const prefill = letters ? findExistingRoot(letters) || letters : "";
         openBulkRootEditor(
           rows,

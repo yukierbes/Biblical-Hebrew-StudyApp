@@ -3,7 +3,7 @@
 // A right answer the learner was unsure about is worth less than a confident one: it is not promoted as far
 // (see markItemUnsure in srs.js), so it comes back sooner. The question only appears after a CORRECT answer
 // (a wrong answer already comes back soon), and ignoring it counts as "sure". It can be turned off in
-// My Progress → Backup & settings.
+// My Progress → Backup & Settings.
 
 import { markItemUnsure } from "./srs.js";
 

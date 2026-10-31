@@ -182,35 +182,70 @@ function resumeHtml(lastVisit, recent) {
   `;
 }
 
-// ---------------- Area tiles ----------------
+// ---------------- Foundations ----------------
 
-function tileHtml({ area, stats }) {
+/** The share of Foundations mastered: each of the five areas counts for an equal 20%, so 34 of 34 consonants is all of its 20%. */
+function foundationsPct(allStats) {
+  if (!allStats.length) return 0;
+  const sum = allStats.reduce((n, { stats }) => n + (stats.total ? stats.mastered / stats.total : 0), 0);
+  return Math.round((sum / allStats.length) * 100);
+}
+
+/** One area's row: its name, a chip (due / new / caught up), one thin bar, and its practice buttons. */
+function foundationsRowHtml({ area, stats }) {
   const fresh = stats.tracked === 0 && stats.total > 0;
-  const learning = Math.max(0, stats.tracked - stats.mastered);
-  const status = fresh
-    ? `<span class="area-tile-flag">Start here</span>`
+  const chip = fresh
+    ? `<span class="bible-home-chip is-new">New</span>`
     : stats.due > 0
-      ? `<span class="pill pill-warn area-tile-due">${stats.due} due</span>`
-      : `<span class="pill pill-good area-tile-due">Caught up</span>`;
-  const caption = fresh
-    ? `Nothing practised yet — ${stats.total.toLocaleString()} ${esc(area.noun)} to learn`
-    : `${stats.mastered.toLocaleString()} of ${stats.total.toLocaleString()} mastered · ${learning.toLocaleString()} learning`;
+      ? `<span class="pill pill-warn found-chip">${stats.due} due</span>`
+      : `<span class="pill pill-good found-chip">Caught up</span>`;
   const buttons = area.buttons
-    .map((b) => {
-      // On a brand-new area, Flashcards is the suggested first step.
-      const primary = fresh && b.label === "Flashcards";
-      return `<button class="btn btn-sm ${primary ? "" : "btn-outline"}" data-goto="${b.page}" title="${esc(b.tip)}">${b.label}</button>`;
-    })
+    .map((b) => `<button class="bible-home-page${fresh && b.label === "Flashcards" ? " is-suggested" : ""}" data-goto="${b.page}" title="${esc(b.tip)}" type="button"><span class="bible-home-name">${b.label}</span></button>`)
     .join("");
   return `
-    <div class="area-tile${fresh ? " area-tile-new" : ""}" data-home-section="${area.id}">
-      <div class="area-tile-head"><h2>${area.title}</h2>${status}</div>
-      <div class="area-tile-pct">${stats.pct}%<span> mastered</span></div>
-      <div class="daily-goal-bar" role="img" aria-label="${stats.pct}% of ${esc(area.noun)} mastered"><div class="daily-goal-fill" style="width:${stats.pct}%"></div></div>
+    <div class="found-row" data-home-section="${area.id}">
+      <div class="found-row-head">
+        <h3>${area.title}</h3>${chip}
+        <span class="caption found-row-count">${stats.mastered.toLocaleString()} of ${stats.total.toLocaleString()} ${esc(area.noun)} mastered · ${stats.pct}%</span>
+      </div>
+      <div class="daily-goal-bar found-bar" role="img" aria-label="${stats.pct}% of ${esc(area.noun)} mastered"><div class="daily-goal-fill" style="width:${stats.pct}%"></div></div>
+      <div class="bible-home-pages">${buttons}</div>
+    </div>`;
+}
+
+/** The Foundations box: five areas, each worth 20% of the headline, in the same layout as the Bible in Context box. */
+function foundationsTileHtml(allStats) {
+  const pct = foundationsPct(allStats);
+  const fresh = allStats.every(({ stats }) => stats.tracked === 0);
+  const due = allStats.reduce((n, { stats }) => n + stats.due, 0);
+  const mastered = allStats.reduce((n, { stats }) => n + stats.mastered, 0);
+  const tracked = allStats.reduce((n, { stats }) => n + stats.tracked, 0);
+  const learning = Math.max(0, tracked - mastered);
+  const status = fresh
+    ? `<span class="area-tile-flag">Start here</span>`
+    : due > 0
+      ? `<span class="pill pill-warn area-tile-due">${due} due</span>`
+      : `<span class="pill pill-good area-tile-due">Caught up</span>`;
+  const caption = fresh
+    ? "Nothing practised yet: letters, vowels, vocabulary, verbs and accents"
+    : `${mastered.toLocaleString()} items mastered · ${learning.toLocaleString()} still learning`;
+  // Next up: the area with the most due; otherwise the first area never started.
+  const byDue = allStats.filter(({ stats }) => stats.due > 0).sort((x, y) => y.stats.due - x.stats.due)[0];
+  const untouched = allStats.find(({ stats }) => stats.tracked === 0 && stats.total > 0);
+  const target = byDue || untouched;
+  const flash = target ? target.area.buttons.find((b) => b.label === "Flashcards") || target.area.buttons[0] : null;
+  const next = target
+    ? `<button class="btn btn-sm" data-goto="${flash.page}" title="${byDue ? "The area with the most due for review" : "An area you have not started"}" type="button">${byDue ? "Next up:" : "Start with"} ${esc(target.area.title)}${byDue ? ` (${byDue.stats.due} due)` : ""}</button>`
+    : "";
+  return `
+    <div class="area-tile bible-home-tile foundations-tile${fresh ? " area-tile-new" : ""}" data-home-section="foundations">
+      <div class="area-tile-head"><h2>Foundations</h2>${status}</div>
+      <div class="area-tile-pct">${pct}%<span> of Foundations mastered (each of the five areas counts for 20%)</span></div>
+      <div class="daily-goal-bar" role="img" aria-label="${pct}% of Foundations mastered"><div class="daily-goal-fill" style="width:${pct}%"></div></div>
       <div class="caption area-tile-caption">${caption}</div>
-      <div class="area-tile-actions">${buttons}</div>
-    </div>
-  `;
+      ${allStats.map(foundationsRowHtml).join("")}
+      <div class="area-tile-actions">${next}<button class="btn btn-sm btn-outline" data-progress-tab="mastery" type="button">See details in My Progress</button></div>
+    </div>`;
 }
 
 // ---------------- Bible in Context ----------------
@@ -377,11 +412,16 @@ export function mount({ content, navigate }) {
     ${planCardHtml(getPlanToday())}
     ${todayCardHtml(due, suggestion, streak)}
     ${resumeHtml(lastVisit, recent)}
-    <div class="home-guide-row"><span class="caption">Welcome guide:</span>
-      <button class="btn btn-sm btn-outline" data-tour type="button">Take the app tour</button>
-      <button class="btn btn-sm btn-outline" data-welcome type="button">Set up a first week</button></div>
+    <div class="resume-row guide-row">
+      <div class="resume-main">
+        <div class="resume-title">Welcome guide</div>
+        <div class="resume-page">A short tour of the app, or a suggested first week</div>
+      </div>
+      <button class="btn btn-outline" data-tour type="button">Take the app tour</button>
+      <button class="btn btn-outline" data-welcome type="button">Set up a first week</button>
+    </div>
 
-    <div class="area-tiles">${allStats.map(tileHtml).join("")}</div>
+    <div class="area-tiles bible-home-row">${foundationsTileHtml(allStats)}</div>
     <div class="area-tiles bible-home-row">${bibleTileHtml(bibleAll, bibleSummary)}</div>
 
     <div class="home-duo">

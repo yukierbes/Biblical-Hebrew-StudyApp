@@ -170,9 +170,9 @@ assert(localStorage.getItem("hebrewVerbApp:test:a") === "A" && r.written === 2, 
 
 navigateTo(document, "progress");
 await wait(150);
-click([...content.querySelectorAll(".pm-tab")].find((t) => t.textContent.trim() === "Backup & settings"));
+click([...content.querySelectorAll(".pm-tab")].find((t) => t.textContent.trim() === "Backup & Settings"));
 await wait(100);
-assert(!!content.querySelector("#backup-file") && /Download backup/.test(content.textContent), "My Progress has a Backup & settings tab with download and restore");
+assert(!!content.querySelector("#backup-file") && /Download backup/.test(content.textContent), "My Progress has a Backup & Settings tab with download and restore");
 const cb = content.querySelector("#confidence-setting");
 cb.checked = false;
 cb.dispatchEvent(new document.defaultView.Event("change", { bubbles: true }));

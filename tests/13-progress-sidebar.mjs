@@ -58,6 +58,8 @@ assert(!document.getElementById("reset-progress") && !document.getElementById("d
 
 navigateTo(document, "progress");
 await new Promise((r) => setTimeout(r, 60));
+click([...content.querySelectorAll(".pm-tab")].find((t) => /Backup/.test(t.textContent))); // Settings live on the Backup & Settings tab
+await new Promise((r) => setTimeout(r, 60));
 const goalInput = content.querySelector("#pm-daily-goal");
 assert(!!goalInput && goalInput.value === "15", "My Progress has the daily goal, at its default of 15");
 goalInput.value = "25";

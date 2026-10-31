@@ -31,13 +31,14 @@
   --bad-border: #E7C7C0;
   --warn-border: #E0D2AC;
 
-  /* Every text font lists the Hebrew fonts right after its Latin font. The Latin fonts have no Hebrew
-     letters, so the browser moves on to 'Hebrew Text' (SBL Hebrew) and then Cardo for just those letters
-     and nothing else changes. This makes Hebrew inside English text (a title like "Interrogative ה", a
-     definition, an instruction box) use the Hebrew font even when it is not wrapped in lang="he". */
-  --font-display: 'Fraunces', 'Hebrew Text', 'Cardo', 'Iowan Old Style', serif;
-  --font-body: 'IBM Plex Sans', 'Hebrew Text', 'Cardo', system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', 'Hebrew Text', 'Cardo', ui-monospace, monospace;
+  /* Every text font lists the installed SBL Hebrew right after its Latin font. The Latin fonts have no Hebrew
+     letters, so the browser moves on to 'Hebrew Text' for just those letters and nothing else changes: Hebrew inside
+     English text (a title like "Interrogative ה", a definition, an instruction box) uses the Hebrew font even when it
+     is not wrapped in lang="he". Cardo is deliberately NOT in these lists: a Latin letter the first font lacks would
+     fall through to it and be drawn at a different size (see js/latin-marks.js). */
+  --font-display: 'Fraunces', 'Hebrew Text', 'Iowan Old Style', serif;
+  --font-body: 'IBM Plex Sans', 'Hebrew Text', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Hebrew Text', ui-monospace, monospace;
   --font-hebrew: 'SBL Hebrew', 'Cardo', serif;
 
   --radius: 4px;
@@ -3804,4 +3805,71 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 .tour-highlight { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; position: relative; z-index: 5; }
 .plan-card { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin: 12px 0; padding: 12px 16px; border: 1px solid var(--accent); border-radius: var(--radius); background: var(--accent-soft); }
 .plan-card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.home-guide-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0; }
+
+/* Home: the Foundations box (same layout as the Bible in Context box): one thin bar per area. */
+.found-row { padding: 10px 0; border-top: 1px solid var(--hairline); }
+.found-row:first-of-type { margin-top: 6px; }
+.found-row-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-bottom: 6px; }
+.found-row-head h3 { margin: 0; font-size: 1rem; font-family: var(--font-display); }
+.found-row-count { margin-left: auto; }
+.found-bar { height: 6px; margin: 0 0 8px; }
+.found-bar .daily-goal-fill { height: 100%; }
+.found-chip { font-size: 0.72rem; }
+.bible-home-page.is-suggested { border-color: var(--accent); background: var(--accent-soft); }
+.guide-row .btn { white-space: nowrap; }
+
+/* Reading: on the chosen passage's dark button the percentage takes the button's own (light) text colour. */
+.choice-btn.selected .reading-know,
+.choice-btn[aria-pressed="true"] .reading-know { color: inherit; border-color: currentColor; background: transparent; }
+
+/* Print tab: the question-count stepper. */
+.bp-stepper { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.bp-stepper-label { font-size: 0.9rem; }
+.bp-step-btn { min-width: 44px; min-height: 40px; font-size: 1.2rem; line-height: 1; }
+.bp-stepper-value { font-size: 1.3rem; font-weight: 600; min-width: 2ch; text-align: center; }
+
+/* ---- Sidebar: only the streak stays on show; the rest is behind the Settings gear ---- */
+.settings-gear {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; min-height: 40px; padding: 8px 12px;
+  font: inherit; font-size: 0.9rem; color: var(--ink);
+  background: var(--paper-raised); border: 1px solid var(--hairline-strong); border-radius: var(--radius);
+  cursor: pointer;
+}
+.settings-gear:hover { background: var(--accent-soft); }
+.settings-gear[aria-expanded="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.settings-gear-icon { font-size: 1.1rem; line-height: 1; }
+.settings-popover {
+  position: absolute; left: 12px; right: 12px; bottom: calc(100% + 6px); z-index: 30;
+  max-height: min(70vh, 560px); overflow-y: auto; overscroll-behavior: contain;
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 12px; background: var(--paper-raised); color: var(--ink);
+  border: 1px solid var(--hairline-strong); border-radius: 8px; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+.settings-popover[hidden] { display: none; }
+@media (max-width: 720px) {
+  /* On a phone the footer is not pinned, so open the pop-over below the gear instead of above it. */
+  .settings-popover { position: static; box-shadow: none; max-height: none; }
+}
+
+/* ---- Word Lookup: one clear search bar, options as selectable boxes ---- */
+.lookup-searchbox { max-width: 760px; margin: 4px auto 18px; padding: 16px 18px 14px; border: 1px solid var(--hairline-strong); border-radius: 8px; background: var(--paper-raised); }
+.lookup-search-label { display: block; margin: 0 0 6px; font: 600 0.78rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+.lookup-search-row { display: flex; gap: 10px; align-items: stretch; }
+.lookup-input {
+  flex: 1 1 auto; min-width: 0; padding: 13px 16px; font-size: 1.15rem;
+  font-family: var(--font-hebrew), var(--font-body); color: var(--ink);
+  background: var(--paper); border: 2px solid var(--ink-soft); border-radius: 8px;
+}
+.lookup-input::placeholder { color: var(--ink-faint); font-family: var(--font-body); font-size: 1rem; }
+.lookup-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.lookup-kb-btn { flex: 0 0 auto; white-space: nowrap; }
+.lookup-option-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-top: 12px; }
+.lookup-option-label { min-width: 4.5em; margin: 0; }
+.lookup-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.lookup-chip { min-height: 40px; padding: 6px 14px; }
+.lookup-hint { text-align: center; color: var(--ink-soft); padding: 22px 10px; margin: 0; }
+.lookup-searchbox .lookup-recent { margin-top: 12px; text-align: left; }
+/* The heading's own gold square is dropped: the section button already has its arrow. */
+.lookup-section-heading::before { content: none; display: none; }
+@media (max-width: 560px) { .lookup-search-row { flex-direction: column; } .lookup-kb-btn { width: 100%; } }

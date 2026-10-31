@@ -176,7 +176,7 @@ await wait();
 navigateTo(document, "progress");
 await wait(120);
 assert(content.querySelector(".page-title").textContent === "My Progress", "title");
-assert(tabs().map((t) => t.textContent.trim()).join() === "Overview,Mastery,Strengths,Quizzes,Bible in Context,Achievements,Backup & settings", "seven tabs");
+assert(tabs().map((t) => t.textContent.trim()).join() === "Overview,Mastery,Strengths,Quizzes,Bible in Context,Achievements,Backup & Settings", "seven tabs");
 assert(tab("Overview").getAttribute("aria-selected") === "true" && panel().getAttribute("aria-labelledby") === "pm-tab-overview", "opens on Overview");
 assert(!/stored in your browser only/i.test(content.textContent), "no stale 'browser only' note");
 assert(!document.querySelector('.nav-btn[data-page="achievements"]'), "Achievements has no sidebar button of its own");
@@ -274,7 +274,7 @@ console.log("\nAchievements tab");
 
 console.log("\nTabs by keyboard");
 {
-  const t = tab("Backup & settings"); // the last tab
+  const t = tab("Backup & Settings"); // the last tab
   t.focus();
   t.dispatchEvent(new document.defaultView.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
   await wait();

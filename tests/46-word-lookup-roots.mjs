@@ -31,9 +31,13 @@ assert(rs.matchWord("צַד", "צדק", { weak: true }) === null, "a missing str
 console.log("\nThe page");
 navigateTo(document, "search");
 await wait();
-const modes = [...content.querySelectorAll('input[name="lookup-mode"]')];
-assert(modes.length === 3, "three kinds of search: words, root letters, assigned root");
-for (const s of ["Verb Forms", "Vocabulary", "Accents", "Consonants", "Vowels"]) assert(content.querySelector(".lookup-sections").textContent.includes(s), `can choose to look in ${s}`);
+assert(!content.querySelector('input[name="lookup-mode"]') && content.querySelectorAll('input[type="text"]').length === 1, "one search bar, and no choice of kinds of search above it");
+assert(!content.querySelector('.lookup-searchbox input[type="checkbox"], .lookup-searchbox input[type="radio"]'), "the options are selectable boxes, not check boxes");
+const chipRows = [...content.querySelectorAll(".lookup-option-row")];
+assert(chipRows.length === 2 && chipRows[0].textContent.includes("Hebrew") && chipRows[0].textContent.includes("English meaning") && chipRows[0].textContent.includes("Ignore vowel points"), "beneath it: what to match (Hebrew, English meaning, vowel points)");
+for (const s of ["Verb Forms", "Vocabulary", "Accents", "Consonants", "Vowels"]) assert(chipRows[1].textContent.includes(s), `can choose to look in ${s}`);
+assert([...content.querySelectorAll(".lookup-chip")].every((c) => c.getAttribute("aria-pressed") === "true" && c.classList.contains("selected")), "every box starts selected");
+assert(/Results will appear here/.test(content.querySelector(".lookup-hint").textContent) && !content.querySelector(".lookup-results .alert"), "the empty state is a quiet hint, not a box that looks like a field");
 
 let input = content.querySelector('input[type="text"]');
 type(input, "קָטַל");
@@ -56,25 +60,22 @@ assert(content.querySelectorAll('.lookup-section[data-section="vocab"] .tray-col
 assert(content.querySelector('.lookup-section[data-section="vocab"] .note-col'), "and a My note column");
 
 console.log("\nChoosing where to look");
-const verbBox = content.querySelector('.lookup-sections label[data-section="verbs"] input');
-verbBox.checked = false;
-verbBox.dispatchEvent(new document.defaultView.Event("change", { bubbles: true }));
-assert(!content.querySelector('.lookup-section[data-section="verbs"]'), "unticking a part removes its results");
-verbBox.checked = true;
-verbBox.dispatchEvent(new document.defaultView.Event("change", { bubbles: true }));
+const verbChip = content.querySelector('.lookup-chip[data-section="verbs"]');
+click(verbChip);
+assert(verbChip.getAttribute("aria-pressed") === "false" && !verbChip.classList.contains("selected"), "selecting a box again turns it off");
+assert(!content.querySelector('.lookup-section[data-section="verbs"]'), "turning a place off removes its results");
+click(verbChip);
+assert(!!content.querySelector('.lookup-section[data-section="verbs"]'), "and on again brings them back");
+const firstHeading = content.querySelector(".lookup-section-heading");
+assert(firstHeading.querySelector(".lookup-section-toggle") && firstHeading.className.includes("lookup-section-heading"), "each result heading is just the collapsible button");
 
-console.log("\nRoot letters search");
-choose(modes.find((m) => m.value === "root"));
-await wait();
+console.log("\nSearching a root's letters, then choosing the words that belong");
 input = content.querySelector('input[type="text"]');
 type(input, "שמר");
 await wait();
-assert(sections.length && content.querySelectorAll(".lookup-section").length === 1, "a root search looks only in Vocabulary");
 const vocabRows = () => [...content.querySelectorAll('.lookup-section[data-section="vocab"] tbody tr')];
 const nShamar = vocabRows().length;
-assert(nShamar >= 3, `finds words with the consonants שמר in order (${nShamar})`);
-assert(!content.querySelector('.lookup-section[data-section="vocab"] .lookup-section-body').hidden, "the only section with matches opens by itself");
-assert(content.querySelector('.lookup-section[data-section="vocab"] thead').textContent.includes("Match"), "each match says how the letters sit in the word");
+assert(nShamar >= 3, `a plain Hebrew search for שמר (no vowels) finds the vocabulary words that contain it (${nShamar})`);
 assert(vocabRows().every((tr) => !tr.querySelector(".lookup-row-select").checked), "nothing is ticked until you choose");
 const setRootBtn = () => content.querySelector(".lookup-set-root");
 assert(setRootBtn().disabled && /Set root \(0 selected\)/.test(setRootBtn().textContent), "Set root (0 selected) waits for a selection");
@@ -124,7 +125,7 @@ await wait();
 assert(vr.getRootForWord(another) === "" && vr.getRootForWord(byKey(firstTwo[0])) === "זזז", "undo puts every word back as it was");
 assert(vr.getLastRootChange() === null, "and there is nothing more to undo");
 
-console.log("\nReplacing, and finding the family afterwards");
+console.log("\nReplacing");
 click([...content.querySelectorAll(".lookup-bulkbar button")].find((b) => b.textContent.startsWith("Select all matches")));
 click(setRootBtn());
 await wait();
@@ -133,13 +134,7 @@ choose(modal2.querySelector('input[name="root-conflict-choice"][value="replace"]
 click([...modal2.querySelectorAll("button")].find((b) => /^Set Root for/.test(b.textContent)));
 await wait();
 assert(vr.getRootForWord(byKey(firstTwo[0])) === "שמר", "replacing changes the words that had another root");
-const showBtn = [...content.querySelectorAll(".lookup-banner button")].find((b) => /Show words with this root/.test(b.textContent));
-click(showBtn);
-await wait();
-assert(content.querySelector('input[name="lookup-mode"][value="assigned"]').checked, "Show words with this root switches to the assigned-root search");
-assert(vocabRows().length === nShamar, `it lists the whole family (${nShamar})`);
-type(content.querySelector('input[type="text"]'), "שׁמר");
-assert(vocabRows().length === nShamar, "the assigned-root search ignores points");
+assert(![...content.querySelectorAll(".lookup-banner button")].some((b) => /Show words with this root/.test(b.textContent)), "(the old assigned-root search is gone, so the banner no longer offers it)");
 vr.undoLastRootChange();
 
 console.log("\nEdit in place");

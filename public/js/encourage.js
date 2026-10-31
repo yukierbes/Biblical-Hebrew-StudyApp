@@ -133,7 +133,7 @@ export function homeMessage(facts, seed = 0) {
 export function resultMessage(percent, seed = 0) {
   const p = Number.isFinite(percent) ? percent : 0;
   if (p >= 100) {
-    return { tone: "cheer", text: pick(["Perfect! יִישַׁר כֹּחַ!", "Flawless. Yasher koach!"], seed) };
+    return { tone: "cheer", text: pick(["Perfect score! Well done.", "Flawless. Excellent work."], seed) };
   }
   if (p >= 90) return { tone: "cheer", text: pick(["Excellent work!", "Very strong. Nearly perfect."], seed) };
   if (p >= 75) return { tone: "cheer", text: pick(["Nice work! You clearly know this.", "Solid. A little more and it is locked in."], seed) };

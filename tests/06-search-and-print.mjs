@@ -14,7 +14,7 @@ const input = content.querySelector('input[type="text"]');
 assert(!!input, "search input is present");
 
 // No query yet -> prompt, not results.
-assert(content.textContent.includes("Start typing to search"), "shows a prompt before any query is entered");
+assert(content.textContent.includes("Results will appear here"), "shows a quiet hint before any query is entered");
 
 // Search by Hebrew substring.
 input.value = "קָטַל";
@@ -29,13 +29,8 @@ rows = content.querySelectorAll("table.custom-table tbody tr");
 assert(rows.length > 0, "searching an English gloss returns matching rows");
 
 // Turning off both search targets should show a warning, not a stale table.
-content.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
-  if (cb.checked) {
-    cb.checked = false;
-    cb.dispatchEvent(new Event("change", { bubbles: true }));
-  }
-});
-assert(content.textContent.includes("Turn on at least one"), "warns when both search targets are disabled");
+for (const opt of ["hebrew", "gloss"]) content.querySelector(`.lookup-chip[data-option="${opt}"]`).click();
+assert(content.textContent.includes("Select at least one of Hebrew or English meaning"), "warns when both search targets are switched off");
 
 // Re-enable and confirm the Print button triggers window.print() without throwing.
 // (Navigate away first — clicking a nav link for the page you're already

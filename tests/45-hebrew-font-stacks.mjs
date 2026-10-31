@@ -12,7 +12,7 @@ for (const name of ["font-body", "font-display", "font-mono"]) {
   const s = stack(name);
   const iHebrew = s.indexOf("'Hebrew Text'");
   assert(iHebrew > 0, `--${name} lists the Hebrew font`);
-  assert(s.indexOf("'Cardo'") > iHebrew, `--${name}: Cardo follows as the second Hebrew choice`);
+  assert(!s.includes("Cardo"), `--${name}: Cardo is not in it (a Latin letter the first font lacks would be drawn from Cardo, at another size)`);
   assert(iHebrew < s.search(/system-ui|ui-monospace|serif|sans-serif|monospace/) || /^'(Fraunces|IBM Plex)/.test(s.trim()), `--${name}: the Latin font still comes first`);
   assert(/^'(Fraunces|IBM Plex Sans|IBM Plex Mono)'/.test(s.trim()), `--${name}: English letters still use the original font`);
 }

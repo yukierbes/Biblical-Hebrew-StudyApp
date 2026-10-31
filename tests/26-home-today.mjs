@@ -25,14 +25,21 @@ const ck = (i) => consonants.rowKey(consonants.rows()[i]);
 
 console.log("\nA brand-new learner");
 await goHome();
-const tiles = [...content.querySelectorAll(".area-tile:not(.bible-home-tile)")]; // the Bible in Context tile is tested in test 41
+const boxes = [...content.querySelectorAll(".area-tile")].map((t) => t.dataset.homeSection);
+assert(JSON.stringify(boxes) === JSON.stringify(["foundations", "bible"]) || boxes.join() === "foundations,bible", `two boxes, Foundations first and then Bible in Context (${boxes.join()})`);
+const foundations = content.querySelector(".foundations-tile");
+assert(/Start here/.test(foundations.querySelector(".area-tile-head").textContent), "a brand-new learner's Foundations box says Start here");
+assert(!content.querySelector(".area-tiles .area-tile:not(.bible-home-tile)"), "the five separate area tiles are gone");
+const tiles = [...foundations.querySelectorAll(".found-row")]; // one row for each area
 assert(
   JSON.stringify(tiles.map((t) => t.dataset.homeSection)) === JSON.stringify(["consonants", "vowels", "vocabulary", "verbs", "accents"]),
-  "five area tiles in the order Consonants, Vowels, Vocabulary, Verbs, Accents"
+  "five area rows in the order Consonants, Vowels, Vocabulary, Verbs, Accents"
 );
-assert(tiles.every((t) => t.querySelectorAll("[data-goto]").length === 4), "every tile has four quick buttons");
-assert(tiles.every((t) => /Start here/.test(t.textContent)), "an untouched area says Start here");
-assert(tiles.every((t) => /0%/.test(t.textContent)), "an untouched area shows 0%");
+assert(tiles.every((t) => t.querySelectorAll("[data-goto]").length === 4), "every row has four quick buttons");
+assert(tiles.every((t) => t.querySelectorAll(".found-bar").length === 1), "one thin bar for each row");
+assert(tiles.every((t) => /New/.test(t.textContent)), "an untouched area says New");
+assert(tiles.every((t) => /0%/.test(t.textContent)) && /0%/.test(foundations.querySelector(".area-tile-pct").textContent), "an untouched area shows 0%, and so does the headline");
+assert(/20%/.test(foundations.querySelector(".area-tile-pct").textContent), "the headline says each of the five areas counts for 20%");
 assert(/all caught up/i.test(text(".today-card-due")), "nothing is due yet");
 assert(findButtonByText(content, "Start here"), "Study now offers a place to start");
 assert(/Consonants Flashcards/.test(text(".today-card-sub")), "...Consonants Flashcards first");

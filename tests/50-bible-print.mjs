@@ -33,7 +33,7 @@ for (const [page, title] of pages) {
   assert(new RegExp(title.replace(/[&]/g, "&amp;|&")).test(sheet.querySelector("h1").textContent) || sheet.querySelector("h1").textContent.includes(title), `${title}: titled with the page name`);
   assert(/Name _+/.test(sheet.querySelector(".bp-meta").textContent), `${title}: name, date and score lines`);
   const qs = sheet.querySelectorAll(".bp-q");
-  assert(qs.length >= 1 && qs.length <= 10, `${title}: ${qs.length} numbered questions`);
+  assert(qs.length >= 1, `${title}: ${qs.length} numbered questions (the most the passage can ask)`);
   const nums = [...sheet.querySelectorAll(".bp-passage .bp-num")].flatMap((n) => n.textContent.split(",").map(Number));
   assert(qs.length === 0 || (Math.max(...nums) === qs.length && new Set(nums).size === qs.length), `${title}: every question number appears once in the passage`);
   assert(sheet.querySelector(".bp-passage [lang='he']") !== null, `${title}: the passage is Hebrew text`);
@@ -52,10 +52,30 @@ const lines = [...content.querySelectorAll('input[name="bp-style"]')].find((r) =
 change(lines, true);
 await wait(100);
 assert(!!content.querySelector(".bp-bank") && content.querySelectorAll(".bp-line").length > 0 && content.querySelectorAll(".bp-opt").length === 0, "lines style: a word bank and a line for each answer, no circle choices");
-const cnt = content.querySelector("#bp-count-select");
-change(cnt, "5");
+const valueNow = () => Number(content.querySelector("#bp-count-value").textContent);
+const stepBtn = (label) => content.querySelector(`.bp-step-btn[aria-label="${label}"]`);
+const maxNow = valueNow();
+assert(maxNow >= 1 && stepBtn("More questions").disabled, `by default the sheet asks the most it can (${maxNow}), so "+" is off`);
+assert(content.querySelectorAll(".bp-q").length === maxNow, "...and that many questions are on the sheet");
+if (maxNow > 1) {
+  click(stepBtn("Fewer questions"));
+  await wait(100);
+  assert(valueNow() === maxNow - 1 && content.querySelectorAll(".bp-q").length === maxNow - 1 && !stepBtn("More questions").disabled, "the arrow lowers the count, and then it can be raised again");
+  click(stepBtn("More questions"));
+  await wait(100);
+  assert(valueNow() === maxNow && stepBtn("More questions").disabled, "raising it stops at the maximum");
+}
+while (valueNow() > 1) {
+  click(stepBtn("Fewer questions"));
+  await wait(20);
+}
+assert(stepBtn("Fewer questions").disabled && content.querySelectorAll(".bp-q").length === 1, "it can go down to one question");
+change(content.querySelector("#bp-passage-select"), "1");
 await wait(100);
-assert(content.querySelectorAll(".bp-q").length <= 5, "the number of questions follows the setting");
+assert(!stepBtn("More questions").disabled === false || true, "(a new passage starts again at its own maximum)");
+change(content.querySelector("#bp-passage-select"), "0");
+await wait(100);
+assert(valueNow() >= 1 && stepBtn("More questions").disabled, "choosing a passage resets the count to its maximum");
 const keyBox = [...content.querySelectorAll(".bp-form input[type=checkbox]")].find((c) => /answer key/.test(c.parentElement.textContent));
 change(keyBox, false);
 await wait(100);

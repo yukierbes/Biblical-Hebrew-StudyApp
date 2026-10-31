@@ -37,7 +37,7 @@ assert(sum.next.attempts === 0, "next up is a page never tried while there is on
 console.log("\nHome");
 navigateTo(document, "home");
 await wait();
-const tile = content.querySelector(".bible-home-tile");
+const tile = content.querySelector('.bible-home-tile[data-home-section="bible"]');
 assert(!!tile, "Home has a Bible in Context tile");
 assert(tile.querySelectorAll(".bible-home-page").length === 15, "a button for each of the 15 pages");
 assert(tile.querySelectorAll(".bible-home-group").length === 4, "grouped like the sidebar");

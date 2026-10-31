@@ -44,6 +44,8 @@ import { initHebrewKeyboard, isHebrewKeyboardOpen, closeHebrewKeyboard } from ".
 import { initAccentKeyboard, isAccentKeyboardOpen, closeAccentKeyboard } from "./accent-keyboard.js";
 import { initVowelKeyboard, isVowelKeyboardOpen, closeVowelKeyboard } from "./vowel-keyboard.js";
 import { initProgressSidebar } from "./srs.js";
+import { initSettingsPopover } from "./settings-popover.js";
+import { initLatinMarks } from "./latin-marks.js";
 import { initCloudSyncUI, cloudSyncSignedIn, cloudSyncSignedOut, openSignIn } from "./cloud-sync.js";
 import { initSidebarResize } from "./sidebar-resize.js";
 import { initSidebarCollapse } from "./sidebar-collapse.js";
@@ -601,6 +603,8 @@ async function init() {
   initHebrewKeyboard();
   initProgressSidebar();
   initCloudSyncUI();
+  initSettingsPopover();
+  initLatinMarks();
   try {
     await Promise.all([loadAllData(), loadVocabData(), loadAccentData(), loadLetterData()]);
   } catch (e) {

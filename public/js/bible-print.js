@@ -18,7 +18,6 @@ const shuffle = (arr) => {
   return a;
 };
 
-export const QUESTION_COUNTS = [5, 8, 10, 15];
 
 /**
  * Picks up to `count` examples from a passage, spread across the patterns (round robin), in reading order.
@@ -115,7 +114,7 @@ export function buildQuizSheet(ctx, { passageIndex = 0, count = 10, style = "cir
     html += `<p class="bp-note">This passage has nothing to ask about on this page. Choose another passage.</p></section>`;
     return { html, questions: 0, available };
   }
-  if (questions.length < count) html += `<p class="bp-note">This passage has ${questions.length} ${questions.length === 1 ? "question" : "questions"} on this topic.</p>`;
+  if (Number.isFinite(count) && questions.length < count) html += `<p class="bp-note">This passage has ${questions.length} ${questions.length === 1 ? "question" : "questions"} on this topic.</p>`;
   html += `<p class="bp-instructions"><b>${esc(ctx.config.promptText)}</b> The numbers in the passage match the questions. ${lines ? "Write your answer on each line." : "Circle one answer in each row."}</p>`;
 
   if (lines) {
@@ -180,7 +179,7 @@ export function printSheet(html) {
 /** The Print tab: choose a sheet, preview it, print it. */
 export function renderPrintTab(body, ctx) {
   const { el, state, data } = ctx;
-  const opts = (state.printOpts ||= { kind: "quiz", style: "circle", count: 10, answerKey: true, accents: state.showAccents, passage: state.passage });
+  const opts = (state.printOpts ||= { kind: "quiz", style: "circle", count: null, answerKey: true, accents: state.showAccents, passage: state.passage }); // count null = the most the passage can ask
   const redraw = () => ctx.rerender();
 
   body.appendChild(el("p", "", "Print a pattern guide, or a quiz sheet on a passage that students answer on paper."));
@@ -220,23 +219,37 @@ export function renderPrintTab(body, ctx) {
     });
     sel.addEventListener("change", () => {
       opts.passage = Number(sel.value);
+      opts.count = null; // a different passage: start again from its maximum
       redraw();
     });
     form.appendChild(field("Passage", sel, "bp-passage-select"));
 
-    const cnt = document.createElement("select");
-    for (const n of QUESTION_COUNTS) {
-      const o = document.createElement("option");
-      o.value = String(n);
-      o.textContent = `${n} questions`;
-      if (n === opts.count) o.selected = true;
-      cnt.appendChild(o);
-    }
-    cnt.addEventListener("change", () => {
-      opts.count = Number(cnt.value);
-      redraw();
-    });
-    form.appendChild(field("How many questions", cnt, "bp-count-select"));
+    // How many questions: the most the passage can ask by default, lowered (or raised again) with the arrows.
+    const max = Math.max(1, ctx.config.steps(data, data.passages[opts.passage] || data.passages[0]).length);
+    const count = Math.min(opts.count ?? max, max);
+    const stepper = el("div", "bp-field");
+    stepper.appendChild(el("span", "bp-stepper-label", "Number of questions"));
+    const group = el("div", "bp-stepper");
+    group.setAttribute("role", "group");
+    group.setAttribute("aria-label", "Number of questions");
+    const mk = (text, label, disabled, delta) => {
+      const b = el("button", "btn btn-outline bp-step-btn", text);
+      b.type = "button";
+      b.setAttribute("aria-label", label);
+      b.disabled = disabled;
+      b.addEventListener("click", () => {
+        opts.count = Math.max(1, Math.min(max, count + delta));
+        redraw();
+      });
+      return b;
+    };
+    const value = el("span", "bp-stepper-value", `${count}`);
+    value.id = "bp-count-value";
+    value.setAttribute("aria-live", "polite");
+    const of = el("span", "caption", ` of ${max} possible`);
+    group.append(mk("−", "Fewer questions", count <= 1, -1), value, mk("+", "More questions", count >= max, 1), of);
+    stepper.appendChild(group);
+    form.appendChild(stepper);
 
     const styles = el("fieldset", "bp-fieldset");
     styles.appendChild(el("legend", "", "How students answer"));
@@ -280,7 +293,7 @@ export function renderPrintTab(body, ctx) {
   body.appendChild(form);
 
   const built = opts.kind === "quiz"
-    ? buildQuizSheet(ctx, { passageIndex: opts.passage, count: opts.count, style: opts.style, answerKey: opts.answerKey, showAccents: opts.accents })
+    ? buildQuizSheet(ctx, { passageIndex: opts.passage, count: opts.count ?? Infinity, style: opts.style, answerKey: opts.answerKey, showAccents: opts.accents })
     : buildGuideSheet(ctx, { showAccents: opts.accents });
 
   const actions = el("div", "button-row");

@@ -86,9 +86,10 @@ navigateTo(document, "bible-dagesh");
 await wait(400);
 click([...content.querySelectorAll(".bible-tabs .choice-btn")].find((b) => b.textContent.trim() === "Print"));
 await wait(100);
-for (const id of ["bp-passage-select", "bp-count-select"]) {
-  assert(!!document.querySelector(`label[for="${id}"]`), `the ${id.replace("bp-", "").replace("-select", "")} drop-down has a label`);
-}
+assert(!!document.querySelector('label[for="bp-passage-select"]'), "the passage drop-down has a label");
+const stepper = document.querySelector(".bp-stepper");
+assert(stepper.getAttribute("role") === "group" && stepper.getAttribute("aria-label") === "Number of questions", "the question-count control is a labelled group");
+assert([...stepper.querySelectorAll("button")].every((b) => b.getAttribute("aria-label")) && stepper.querySelector("[aria-live]"), "its arrows are named and the number is announced");
 assert(!!content.querySelector('fieldset.bp-fieldset legend'), "the answer-style choice is a fieldset with a legend");
 const root = fs.readFileSync(new URL("../public/js/root-step.js", import.meta.url), "utf8");
 assert(/aria-live/.test(root) && /for="\$\{id\}"/.test(root) && /aria-describedby/.test(root), "the root box has a label, help text and an announced result");

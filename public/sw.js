@@ -34,6 +34,8 @@ const APP_SHELL = [
   "js/daily-data.js",
   "js/confidence.js",
   "js/resume.js",
+  "js/latin-marks.js",
+  "js/settings-popover.js",
   "js/onboarding.js",
   "js/root-step.js",
   "js/bible-print.js",
