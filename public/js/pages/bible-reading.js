@@ -165,8 +165,6 @@ function readingStatsBar() {
 // Read & translate
 // ---------------------------------------------------------------------------------------------
 
-const BOOK_ORDER = ["Gen", "Exod", "Deut", "Ps", "Ruth", "Jonah"];
-
 function knowledgeOf(p) {
   if (!state.vocabIndex || state.vocabIndex.size === 0) return null;
   return passageKnowledge(p.verses, data.verses, state.vocabIndex, state.started);
@@ -184,36 +182,63 @@ function renderRead(body, rerender) {
     rerender();
   });
   easy.appendChild(easyCb);
-  easy.appendChild(document.createTextNode(" Easiest first (most words you know)"));
+  easy.appendChild(document.createTextNode(" Easiest sections first (most words you know)"));
   sortRow.appendChild(easy);
   body.appendChild(sortRow);
 
-  const books = [...new Set(data.passages.map((p) => p.book))].sort((x, y) => (BOOK_ORDER.indexOf(x) + 99) % 99 - (BOOK_ORDER.indexOf(y) + 99) % 99);
-  const picker = el("div", "reading-passages");
-  for (const book of books) {
-    let items = data.passages.map((p, i) => ({ p, i })).filter((x) => x.p.book === book);
-    const know = new Map(items.map((x) => [x.i, knowledgeOf(x.p)]));
-    if (state.sortEasy) items = items.slice().sort((x, y) => (know.get(y.i)?.pct ?? -1) - (know.get(x.i)?.pct ?? -1));
-    const group = el("div", "reading-book");
-    group.appendChild(el("h3", "reading-book-title", esc(items[0].p.bookName)));
-    const row = el("div", "choice-group");
-    for (const { p, i } of items) {
-      const k = know.get(i);
-      const b = el("button", "choice-btn" + (i === state.passage ? " selected" : ""), `<span class="reading-passage-title">${esc(p.title)}</span>${k && k.pct !== null ? ` <span class="reading-know reading-know-${k.pct >= 80 ? "high" : k.pct >= 50 ? "mid" : "low"}">${k.pct}%</span>` : ""}`);
-      b.type = "button";
-      b.setAttribute("aria-pressed", String(i === state.passage));
-      if (k && k.pct !== null) b.setAttribute("aria-label", `${p.title}. You know about ${k.pct} percent of its words.`);
-      b.addEventListener("click", () => {
-        state.passage = i;
-        rerender();
-      });
-      row.appendChild(b);
-    }
-    group.appendChild(row);
-    picker.appendChild(group);
+  // Step 1: which WORK (a chapter or a whole book). Step 2: which SECTION of it to read now.
+  const log0 = getReadLog();
+  const works = readingWorks();
+  const current = data.passages[state.passage] || data.passages[0];
+  const currentWork = works.find((w) => w.id === current.workId) || works[0];
+  const versesOf = (w) => w.passages.flatMap((i) => data.passages[i].verses);
+  const readIn = (verses) => verses.filter((r) => log0.verses[r]).length;
+
+  const workRow = el("div", "choice-group reading-works");
+  workRow.setAttribute("role", "group");
+  workRow.setAttribute("aria-label", "Choose a chapter or book to read");
+  for (const w of works) {
+    const all = versesOf(w);
+    const done = readIn(all);
+    const b = el("button", "choice-btn" + (w.id === currentWork.id ? " selected" : ""), `<span class="reading-passage-title">${esc(w.title)}</span> <span class="caption">${done} of ${all.length} verses read</span>`);
+    b.type = "button";
+    b.setAttribute("aria-pressed", String(w.id === currentWork.id));
+    b.addEventListener("click", () => {
+      // go to the first section with an unread verse, so "Ruth" picks up where you left off
+      const next = w.passages.find((i) => data.passages[i].verses.some((r) => !log0.verses[r]));
+      state.passage = next !== undefined ? next : w.passages[0];
+      rerender();
+    });
+    workRow.appendChild(b);
   }
+  body.appendChild(workRow);
+
+  const sectionsOf = currentWork.passages.map((i) => ({ p: data.passages[i], i }));
+  const know = new Map(sectionsOf.map((x) => [x.i, knowledgeOf(x.p)]));
+  let shownSections = sectionsOf;
+  if (state.sortEasy) shownSections = sectionsOf.slice().sort((x, y) => (know.get(y.i)?.pct ?? -1) - (know.get(x.i)?.pct ?? -1));
+  const picker = el("div", "reading-passages");
+  const group = el("div", "reading-book");
+  const workVerses = versesOf(currentWork);
+  group.appendChild(el("h3", "reading-book-title", `${esc(currentWork.title)} — ${sectionsOf.length} sections · ${readIn(workVerses)} of ${workVerses.length} verses read`));
+  const sectionRow = el("div", "choice-group");
+  for (const { p, i } of shownSections) {
+    const k = know.get(i);
+    const complete = p.verses.every((r) => log0.verses[r]);
+    const b = el("button", "choice-btn" + (i === state.passage ? " selected" : ""), `${complete ? '<span class="reading-section-done" aria-hidden="true">✓ </span>' : ""}<span class="reading-passage-title">${esc(p.title)}</span>${k && k.pct !== null ? ` <span class="reading-know reading-know-${k.pct >= 80 ? "high" : k.pct >= 50 ? "mid" : "low"}">${k.pct}%</span>` : ""}`);
+    b.type = "button";
+    b.setAttribute("aria-pressed", String(i === state.passage));
+    b.setAttribute("aria-label", `${p.title}${complete ? ", all read" : ""}${k && k.pct !== null ? `. You know about ${k.pct} percent of its words.` : ""}`);
+    b.addEventListener("click", () => {
+      state.passage = i;
+      rerender();
+    });
+    sectionRow.appendChild(b);
+  }
+  group.appendChild(sectionRow);
+  picker.appendChild(group);
   body.appendChild(picker);
-  body.appendChild(el("p", "caption", "The percentage is an estimate of how much of each passage you already know. A word counts as known once you have started learning it in Vocabulary (any flashcard, typing or games practice). Names are not counted."));
+  body.appendChild(el("p", "caption", "Each chapter or book is read one section at a time. The percentage is an estimate of how much of a section you already know. A word counts as known once you have started learning it in Vocabulary (any flashcard, typing or games practice). Names are not counted."));
 
   const passage = data.passages[state.passage] || data.passages[0];
   if (passage.note) body.appendChild(el("p", "caption", esc(passage.note)));
@@ -226,7 +251,7 @@ function renderRead(body, rerender) {
   const unread = passage.verses.filter((r) => !log.verses[r]);
   const row = el("div", "button-row");
   if (unread.length) {
-    const all = el("button", "btn btn-outline", `Mark the whole passage as read (${unread.length} ${unread.length === 1 ? "verse" : "verses"})`);
+    const all = el("button", "btn btn-outline", `Mark this section as read (${unread.length} ${unread.length === 1 ? "verse" : "verses"})`);
     all.type = "button";
     all.addEventListener("click", () => {
       for (const r of unread) markVerseRead(r);
@@ -235,9 +260,42 @@ function renderRead(body, rerender) {
     });
     row.appendChild(all);
   } else {
-    row.appendChild(el("div", "bible-feedback is-correct", "You have marked every verse of this passage as read."));
+    row.appendChild(el("div", "bible-feedback is-correct", "You have marked every verse of this section as read."));
   }
   body.appendChild(row);
+
+  // Moving on: the section before and after, in the order of the text.
+  const pos = currentWork.passages.indexOf(state.passage);
+  const nav = el("div", "button-row reading-section-nav");
+  const prevI = pos > 0 ? currentWork.passages[pos - 1] : null;
+  const nextI = pos >= 0 && pos < currentWork.passages.length - 1 ? currentWork.passages[pos + 1] : null;
+  const mk = (text, target) => {
+    const b = el("button", "btn btn-outline", esc(text));
+    b.type = "button";
+    b.addEventListener("click", () => {
+      state.passage = target;
+      rerender();
+      const top = document.querySelector(".reading-works"); // back to the choosers, so the new section starts at the top
+      if (top && top.scrollIntoView) top.scrollIntoView({ block: "start" });
+    });
+    return b;
+  };
+  if (prevI !== null) nav.appendChild(mk(`← Previous: ${data.passages[prevI].title}`, prevI));
+  if (nextI !== null) nav.appendChild(mk(`Next: ${data.passages[nextI].title} →`, nextI));
+  else nav.appendChild(el("p", "caption", `That is the end of ${currentWork.title}.`));
+  body.appendChild(nav);
+}
+
+/** The chapters or books on offer, in order: [{ id, title, passages: [indexes into data.passages] }]. */
+function readingWorks() {
+  if (Array.isArray(data.works) && data.works.length) return data.works;
+  // an older data file without works: one work per book
+  const byBook = new Map();
+  data.passages.forEach((p, i) => {
+    if (!byBook.has(p.book)) byBook.set(p.book, { id: p.book, title: p.bookName, passages: [] });
+    byBook.get(p.book).passages.push(i);
+  });
+  return [...byBook.values()];
 }
 
 /** "You know about 82% of the words in this passage", and the words that are not known yet. */

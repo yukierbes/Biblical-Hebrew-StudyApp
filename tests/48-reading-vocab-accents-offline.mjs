@@ -7,6 +7,7 @@ import { vocabRowKey } from "../public/js/vocab-overrides.js";
 import * as rv from "../public/js/reading-vocab.js";
 import * as ra from "../public/js/reading-accents.js";
 import { offlineDatasets } from "../public/js/reading-offline.js";
+import { parseOsis } from "../scripts/lib/article-rules.mjs";
 
 const { document, localStorage } = await setupApp();
 const content = document.getElementById("content");
@@ -14,13 +15,19 @@ const wait = (ms = 80) => new Promise((r) => setTimeout(r, ms));
 const readJson = (name) => JSON.parse(fs.readFileSync(new URL(`../netlify/functions/data/${name}.json`, import.meta.url), "utf8"));
 const reading = readJson("bible-reading");
 
-console.log("More books");
-const books = [...new Set(reading.passages.map((p) => p.book))];
-assert(["Gen", "Exod", "Ruth", "Deut", "Ps", "Jonah"].every((b) => books.includes(b)), `Genesis, Exodus, Ruth, Deuteronomy, Psalms and Jonah are all there (${books.join(", ")})`);
-assert(reading.passages.filter((p) => p.book === "Jonah").length >= 4 && reading.passages.filter((p) => p.book === "Exod").length >= 3, "Jonah and Exodus have several passages");
-assert(reading.passages.some((p) => p.book === "Gen" && /37:|45:|50:/.test(p.title)), "and so does the Joseph story (Genesis 37 to 50)");
+console.log("What can be read");
+assert(reading.works.map((w) => w.title).join() === "Genesis 1,Ruth,Joshua 24", "three works: Genesis 1, Ruth and Joshua 24");
+const refsOfWork = (w) => w.passages.flatMap((i) => reading.passages[i].verses);
+const counts = reading.works.map((w) => refsOfWork(w).length);
+assert(counts.join() === "31,85,33", `every verse of each: 31, 85 and 33 (${counts.join()})`);
+assert(reading.works.every((w) => w.passages.every((i) => reading.passages[i].workId === w.id)), "each section knows its work");
+assert(reading.works.every((w) => { const r = refsOfWork(w); return new Set(r).size === r.length; }), "no verse is in two sections of the same work");
+assert(reading.works.every((w) => { const r = refsOfWork(w); const nums = r.map((x) => x.split(".").slice(1).map(Number)); return nums.every((n, i) => i === 0 || n[0] > nums[i - 1][0] || (n[0] === nums[i - 1][0] && n[1] === nums[i - 1][1] + 1) || n[1] === 1); }), "sections follow on from each other with no verse missing");
+assert(reading.passages.every((p) => p.verses.length >= 2 && p.verses.length <= 9), "every section is two to nine verses");
+assert(refsOfWork(reading.works[1])[0] === "Ruth.1.1" && refsOfWork(reading.works[1]).slice(-1)[0] === "Ruth.4.22", "Ruth runs from 1:1 to 4:22");
+assert(refsOfWork(reading.works[2])[0] === "Josh.24.1" && refsOfWork(reading.works[2]).slice(-1)[0] === "Josh.24.33", "Joshua 24 runs from 1 to 33");
 assert(reading.passages.every((p) => p.verses.every((v) => reading.verses[v] && reading.english[v])), "every verse has its Hebrew and its English");
-assert(/prepared a great fish/.test(reading.english["Jonah.2.1"]), "Hebrew Jonah 2:1 carries the English verse that matches it (1:17)");
+assert(/In the beginning, God created/.test(reading.english["Gen.1.1"]) && /serve Yahweh/.test(reading.english["Josh.24.15"]), "the English matches the verses");
 
 console.log("\nWords you know");
 const rows = getVocabRows();
@@ -86,23 +93,23 @@ assert(g.words.filter((x) => x.pause && x.pause.name === "silluq").length === 1,
 const noAtnach = ra.analyzeVerse(reading.verses["Ruth.1.16"] ? reading.verses["Ruth.1.16"] : reading.verses["Gen.12.1"], { poetry: false, index: ai });
 assert(noAtnach.main === null || noAtnach.main.accent.group >= 1, "a verse is analysed without error");
 assert(ra.isPoetryBook("Ps") && !ra.isPoetryBook("Gen"), "Psalms use the poetry accents");
-const psWords = reading.verses[reading.passages.find((p) => p.book === "Ps").verses[0]];
+const psXml = fs.readFileSync(new URL("../data-source/bible/Ps.xml", import.meta.url), "utf8");
+const psWords = parseOsis(psXml).find((v) => v.ref === "Ps.1.1").words.map((w) => ({ t: w.text }));
 assert(ra.analyzeVerse(psWords, { poetry: true, index: ai }).words.some((x) => x.pause), "a psalm verse finds its pauses");
 
 console.log("\nThe Reading page");
 navigateTo(document, "bible-reading");
 await wait(700);
-const books2 = [...content.querySelectorAll(".reading-book-title")].map((h) => h.textContent);
-assert(books2.join() === "Genesis,Exodus,Deuteronomy,Psalm,Ruth,Jonah", `passages are grouped by book (${books2.join()})`);
-assert(content.querySelectorAll(".reading-passages .choice-btn").length === reading.passages.length, "every passage is listed once");
-assert(content.querySelectorAll(".reading-know").length > 15, "each passage shows how much of it you know");
+assert(content.querySelectorAll(".reading-works .choice-btn").length === reading.works.length, "each work is listed once");
+assert(content.querySelectorAll(".reading-passages .choice-btn").length === reading.works[0].passages.length, "the sections of the open work are listed");
+assert(content.querySelectorAll(".reading-know").length >= 7, "each section shows how much of it you know");
 assert(/You know about \d+% of the words/.test(content.querySelector(".reading-knowledge").textContent), "the open passage says how much you know");
 const easy = content.querySelector(".reading-sort input");
 easy.checked = true;
 easy.dispatchEvent(new document.defaultView.Event("change", { bubbles: true }));
 await wait(60);
 const pcts = [...content.querySelectorAll(".reading-book")[0].querySelectorAll(".reading-know")].map((s) => parseInt(s.textContent, 10));
-assert(pcts.every((p, i) => i === 0 || pcts[i - 1] >= p), "'Easiest first' orders each book by words known");
+assert(pcts.every((p, i) => i === 0 || pcts[i - 1] >= p), "'Easiest first' orders the sections by words known");
 assert(!!content.querySelector(".reading-offline button"), "there is a Save for offline button");
 // accent overlay
 const divBox = [...document.querySelectorAll("#sidebar-extra input[type=checkbox]")].find((c) => /accent divisions/.test(c.parentElement.textContent));

@@ -3873,3 +3873,10 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 /* The heading's own gold square is dropped: the section button already has its arrow. */
 .lookup-section-heading::before { content: none; display: none; }
 @media (max-width: 560px) { .lookup-search-row { flex-direction: column; } .lookup-kb-btn { width: 100%; } }
+
+/* ---------- Reading: chapters and books read one section at a time ---------- */
+.reading-works { flex-wrap: wrap; margin: 10px 0; }
+.reading-works .choice-btn { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+.reading-section-done { color: var(--good, #2f6f3e); }
+.reading-section-nav { flex-wrap: wrap; justify-content: space-between; margin-top: 12px; }
+.reading-works .choice-btn.selected .caption { color: inherit; opacity: 0.85; }

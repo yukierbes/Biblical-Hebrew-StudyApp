@@ -149,7 +149,7 @@ export function getBibleSummary(all = getAllBibleStats()) {
 // ---------------------------------------------------------------------
 
 /** "Gen.12.8#3#" -> "Genesis 12:8" style reference without loading anything (fallback label). */
-const BOOK_NAMES = { Gen: "Genesis", Exod: "Exodus", Ruth: "Ruth", Deut: "Deuteronomy", Ps: "Psalm" };
+const BOOK_NAMES = { Gen: "Genesis", Exod: "Exodus", Ruth: "Ruth", Deut: "Deuteronomy", Ps: "Psalm", Josh: "Joshua", Jonah: "Jonah" };
 function plainRef(key) {
   const [ref, wi] = String(key).split("#");
   const [book, c, v] = ref.split(".");

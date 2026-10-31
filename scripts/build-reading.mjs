@@ -26,6 +26,7 @@ export const BOOKS = {
   Ps: { file: "Ps.xml", web: "web-psalms.json", name: "Psalm" },
   Jonah: { file: "Jonah.xml", web: "web-jonah.json", name: "Jonah" },
   Exod: { file: "Exod.xml", web: "web-exodus.json", name: "Exodus" },
+  Josh: { file: "Josh.xml", web: "web-joshua.json", name: "Joshua" },
 };
 
 const STEMS = { q: "Qal", N: "Niphal", p: "Piel", P: "Pual", h: "Hiphil", H: "Hophal", t: "Hithpael", o: "Polel", O: "Polal", r: "Hithpolel", m: "Poel", M: "Poal", k: "Palel", K: "Pulal", Q: "Qal passive", l: "Pilpel", L: "Polpal", f: "Hithpalpel", D: "Nithpael", j: "Pealal", i: "Pilel", u: "Hothpaal", c: "Tiphil", v: "Hishtaphel", w: "Nithpalel", y: "Nithpoel", z: "Hithpoel" };
@@ -133,19 +134,19 @@ const warnings = [];
 if (!existsSync(join(SRC, "HebrewStrong.xml"))) errors.push("data-source/bible/HebrewStrong.xml is missing.");
 if (!existsSync(join(SRC, "reading-passages.csv"))) errors.push("data-source/bible/reading-passages.csv is missing.");
 
-const out = { verses: {}, english: {}, passages: [] };
+const out = { verses: {}, english: {}, passages: [], works: [] };
 if (!errors.length) {
   const lexicon = parseLexicon(readFileSync(join(SRC, "HebrewStrong.xml"), "utf8"));
   if (lexicon.size < 8000) errors.push(`The lexicon has only ${lexicon.size} entries (expected about 8,700).`);
   const rows = readCsv(readFileSync(join(SRC, "reading-passages.csv"), "utf8"));
   const head = rows.shift().map((h) => h.trim());
   const idx = Object.fromEntries(head.map((h, i) => [h, i]));
-  for (const need of ["Title", "Book", "Start", "End", "Note"]) if (!(need in idx)) errors.push(`reading-passages.csv is missing the "${need}" heading.`);
+  for (const need of ["Work", "Book", "Section", "Start", "End", "Note"]) if (!(need in idx)) errors.push(`reading-passages.csv is missing the "${need}" heading.`);
   const cache = {};
   const book = (b) => {
     if (cache[b]) return cache[b];
     const def = BOOKS[b];
-    if (!def) { errors.push(`reading-passages.csv: unknown book "${b}" (use Gen, Exod, Ruth, Deut, Ps or Jonah).`); return null; }
+    if (!def) { errors.push(`reading-passages.csv: unknown book "${b}" (use Gen, Exod, Ruth, Deut, Ps, Jonah or Josh).`); return null; }
     const xml = readFileSync(join(SRC, def.file), "utf8");
     const verses = parseOsis(xml);
     const kjv = {};
@@ -165,9 +166,22 @@ if (!errors.length) {
       const a = data.order.indexOf(ref(r[idx.Start]));
       const z = data.order.indexOf(ref(r[idx.End]));
       if (a < 0 || z < 0 || z < a) { errors.push(`reading-passages.csv line ${n + 2}: cannot find ${r[idx.Start]} to ${r[idx.End]} in ${b}.`); return; }
-      if (z - a > 12) warnings.push(`reading-passages.csv line ${n + 2}: "${r[idx.Title]}" is ${z - a + 1} verses long.`);
+      if (z - a > 12) warnings.push(`reading-passages.csv line ${n + 2}: "${r[idx.Section]}" is ${z - a + 1} verses long — consider splitting it.`);
       const refs = data.order.slice(a, z + 1);
-      out.passages.push({ id: `p${n + 1}`, title: r[idx.Title].trim(), book: b, bookName: BOOKS[b].name, note: (r[idx.Note] || "").trim(), verses: refs });
+      // A WORK is what the learner chooses (a chapter or a whole book); its SECTIONS are read one at a time.
+      const workTitle = r[idx.Work].trim();
+      let work = out.works.find((w) => w.title === workTitle);
+      if (!work) {
+        work = { id: `w${out.works.length + 1}`, title: workTitle, book: b, bookName: BOOKS[b].name, passages: [] };
+        out.works.push(work);
+      }
+      if (work.book !== b) errors.push(`reading-passages.csv line ${n + 2}: "${workTitle}" mixes books (${work.book} and ${b}).`);
+      const sections = work.passages;
+      const prev = sections.length ? out.passages[sections[sections.length - 1]] : null;
+      if (prev && data.order.indexOf(prev.verses[prev.verses.length - 1]) + 1 !== a) warnings.push(`reading-passages.csv line ${n + 2}: "${r[idx.Section]}" does not continue straight on from the section before it.`);
+      sections.push(out.passages.length);
+      // "passages" is every section in reading order (each with the work it belongs to), the list the page indexes into.
+      out.passages.push({ id: `p${n + 1}`, workId: work.id, title: r[idx.Section].trim(), book: b, bookName: workTitle, note: (r[idx.Note] || "").trim(), verses: refs });
       for (const vref of refs) {
         if (out.verses[vref]) continue;
         const v = data.verses.find((x) => x.ref === vref);
@@ -202,7 +216,17 @@ if (!errors.length) {
     });
   }
 }
-if (!errors.length && out.passages.length < 3) errors.push("Fewer than three reading passages were built.");
+if (!errors.length && out.passages.length < 3) errors.push("Fewer than three reading sections were built.");
+// every section of a work must be listed together, so "next section" always means the next in the chapter
+if (!errors.length) {
+  const seen = new Set();
+  let last = null;
+  for (const p of out.passages) {
+    if (p.workId !== last && seen.has(p.workId)) errors.push(`reading-passages.csv: the sections of "${p.bookName}" are not all together — keep each work's rows next to each other.`);
+    seen.add(p.workId);
+    last = p.workId;
+  }
+}
 
 if (errors.length) {
   console.error("\nreading build FAILED — nothing was written:");
@@ -217,12 +241,13 @@ const data = {
     license: "CC BY 4.0 (tagging and lexicon); the Westminster Leningrad Codex text is in the public domain",
     english: "World English Bible (public domain)",
   },
+  works: out.works,
   passages: out.passages,
   verses: out.verses,
   english: out.english,
 };
 const json = JSON.stringify(data);
-console.log(`bible-reading: ${data.passages.length} passages, ${Object.keys(data.verses).length} verses, ${Object.keys(data.english).length} with English (${(json.length / 1024).toFixed(0)} KB)`);
+console.log(`bible-reading: ${data.works.length} works, ${data.passages.length} sections, ${Object.keys(data.verses).length} verses, ${Object.keys(data.english).length} with English (${(json.length / 1024).toFixed(0)} KB)`);
 if (!CHECK_ONLY) {
   mkdirSync(OUT, { recursive: true });
   writeFileSync(join(OUT, "bible-reading.json"), json);
