@@ -22,7 +22,7 @@ const page = createPractice({
   dataset: "bible-syllable",
   historyMode: "bible-syllable",
   title: "Syllables & Stress",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "syllable",
   promptText: "Describe the highlighted syllable.",
   answerParts: () => [
@@ -60,7 +60,7 @@ const page = createPractice({
     render: (body, api) => renderDivide(body, api),
   },
   renderGuide: (body, { data, el: mk, showAccents }) => {
-    body.appendChild(mk("p", "", "Syllable patterns with real word examples from Genesis."));
+    body.appendChild(mk("p", "", "Syllable patterns with real word examples from Genesis, Ruth and Jonah."));
     const defs = mk("div", "bible-guide-card");
     defs.appendChild(mk("h3", "", "Open and closed syllables"));
     defs.appendChild(mk("p", "", "Syllables are either open or closed. An open syllable, Cv (consonant + vowel), ends with a vowel or a quiescent consonant (a mater lectionis). A closed syllable, CvC (consonant + vowel + consonant), ends with a consonant. A silent sheva may close a syllable."));

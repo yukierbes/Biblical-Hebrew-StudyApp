@@ -25,7 +25,7 @@ const page = createPractice({
   dataset: "bible-dagesh",
   historyMode: "bible-dagesh",
   title: "Dagesh",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "dagesh",
   promptText: "What is the dot in the highlighted letter?",
   markWord: (w, ex) => ({ markLetter: ex.li }),
@@ -63,11 +63,10 @@ const page = createPractice({
     legend: "Green = correct, dotted green border = missed, red = not that kind of dot.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Dagesh and mappiq patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Dagesh and mappiq patterns with real word examples from Genesis, Ruth and Jonah."));
     for (const p of data.patterns) {
       const card = el("div", "bible-guide-card");
       const h = el("h3", "", p.label);
-      h.insertAdjacentHTML("beforeend", ` <span class="caption">(${(data.totals && data.totals[p.id]) || data.counts[p.id] || 0} in ${data.source.book})</span>`);
       card.appendChild(h);
       card.appendChild(el("p", "", p.explain));
       const ex = data.examples.filter((e) => e.pattern === p.id);

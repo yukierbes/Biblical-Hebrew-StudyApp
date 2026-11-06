@@ -276,7 +276,7 @@ badge({
 });
 badge({
   id: "secret-needle", section: "Secret Badges", icon: "🔍", title: "Needle in a Haystack", tiers: null, target: 1, hidden: true,
-  desc: () => "Find every example of three different rare patterns in Genesis", progress: (ctx) => (ctx.secretFlags.rarePatterns >= 3 ? 1 : 0), page: "bible-article",
+  desc: () => "Find every example of three different rare patterns on the Bible in Context pages", progress: (ctx) => (ctx.secretFlags.rarePatterns >= 3 ? 1 : 0), page: "bible-article",
 });
 badge({
   id: "secret-hattrick", section: "Secret Badges", icon: "🎩", title: "Hat Trick", tiers: null, target: 1, hidden: true,

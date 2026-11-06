@@ -38,6 +38,17 @@ import bibleVavData from "./data/bible-vav.json" with { type: "json" };
 import bibleMinData from "./data/bible-min.json" with { type: "json" };
 import bibleShevaData from "./data/bible-sheva.json" with { type: "json" };
 import bibleReadingData from "./data/bible-reading.json" with { type: "json" };
+import bibleReadingGenData from "./data/bible-reading-gen.json" with { type: "json" };
+import bibleReadingExodData from "./data/bible-reading-exod.json" with { type: "json" };
+import bibleReadingNumData from "./data/bible-reading-num.json" with { type: "json" };
+import bibleReadingDeutData from "./data/bible-reading-deut.json" with { type: "json" };
+import bibleReadingJoshData from "./data/bible-reading-josh.json" with { type: "json" };
+import bibleReadingRuthData from "./data/bible-reading-ruth.json" with { type: "json" };
+import bibleReadingOneSamData from "./data/bible-reading-1sam.json" with { type: "json" };
+import bibleReadingPsData from "./data/bible-reading-ps.json" with { type: "json" };
+import bibleReadingProvData from "./data/bible-reading-prov.json" with { type: "json" };
+import bibleReadingIsaData from "./data/bible-reading-isa.json" with { type: "json" };
+import bibleReadingJonahData from "./data/bible-reading-jonah.json" with { type: "json" };
 import bibleMixedData from "./data/bible-mixed.json" with { type: "json" };
 
 const DATASETS = {
@@ -62,6 +73,17 @@ const DATASETS = {
   "bible-min": bibleMinData,
   "bible-sheva": bibleShevaData,
   "bible-reading": bibleReadingData,
+  "bible-reading-gen": bibleReadingGenData,
+  "bible-reading-exod": bibleReadingExodData,
+  "bible-reading-num": bibleReadingNumData,
+  "bible-reading-deut": bibleReadingDeutData,
+  "bible-reading-josh": bibleReadingJoshData,
+  "bible-reading-ruth": bibleReadingRuthData,
+  "bible-reading-1sam": bibleReadingOneSamData,
+  "bible-reading-ps": bibleReadingPsData,
+  "bible-reading-prov": bibleReadingProvData,
+  "bible-reading-isa": bibleReadingIsaData,
+  "bible-reading-jonah": bibleReadingJonahData,
   "bible-mixed": bibleMixedData,
 };
 

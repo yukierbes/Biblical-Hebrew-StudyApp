@@ -182,7 +182,7 @@ export const INTERROG_TABLE = [
   { form: "הֲ", rule: "Before any non-guttural consonant that has a vowel.", article: "הַ + a dagesh forte in the first letter of the noun", note: "The interrogative has no dagesh; the article doubles the next letter." },
   { form: "הַ", rule: "Before a guttural that has a vowel other than qameṣ or qameṣ-ḥaṭuf.", article: "הַ (implicit doubling), or הָ (compensatory lengthening) before א, ר or ע", note: "The two can look identical: the interrogative keeps its pataḥ, while the article’s guttural rejects the dagesh." },
   { form: "הַ", rule: "Before any consonant that has a vocal sheva.", article: "הַ + a dagesh forte, which may be lost before a SQNMLVY consonant with a vocal sheva", note: "The two can look identical when the dagesh is lost: the interrogative never doubles, the article would double but may lose it." },
-  { form: "הֶ", rule: "Before a guttural that has a qameṣ or qameṣ-ḥaṭuf.", article: "הֶ before an unaccented ה or ע with qameṣ (an Exceptional Form)", note: "The two can look identical: the interrogative takes segol before a guttural with qameṣ, and so does the article in its exceptional form." },
+  { form: "הֶ", rule: "Before a guttural that has a qameṣ or qameṣ-ḥaṭuf.", article: "הֶ before an unaccented ה, ח, or ע with qameṣ (an Exceptional Form)", note: "The two can look identical: the interrogative takes segol before a guttural with qameṣ, and so does the article in its exceptional form." },
 ];
 export function classifyInterrogative(w, mp, ctx) {
   const info = pieceInfo(w, mp);

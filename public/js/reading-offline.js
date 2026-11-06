@@ -6,14 +6,19 @@
 // know" figures), so a flight or a commute works without having opened each page first.
 
 import { authFetch } from "./auth-fetch.js";
+import { loadBibleData } from "./bible-data.js";
 import { BIBLE_PAGES } from "./bible-areas.js";
 import { getPracticeConfig } from "./bible-practice.js";
 
 const KEY = "hebrewApp.offlineSaved";
 
-/** Every dataset Reading can need. */
-export function offlineDatasets() {
+/**
+ * Every dataset Reading can need. `index` is the Reading index ("bible-reading"); each of its books has a data file of its
+ * own, so the books are added when the index is known.
+ */
+export function offlineDatasets(index = null) {
   const names = new Set(["bible-reading", "bible-mixed", "vocabulary", "accents"]);
+  if (index && Array.isArray(index.books)) for (const b of index.books) names.add(b.dataset);
   for (const p of BIBLE_PAGES) {
     const c = getPracticeConfig(p.page);
     names.add(c ? c.dataset : p.page);
@@ -37,7 +42,13 @@ export function getOfflineSaved() {
  * after each one. Returns { ok, failed: [names] }.
  */
 export async function saveReadingForOffline(onProgress = () => {}) {
-  const names = offlineDatasets();
+  let index = null;
+  try {
+    index = await loadBibleData("bible-reading");
+  } catch (e) {
+    /* the book files are then left out, and the result says so below */
+  }
+  const names = offlineDatasets(index);
   const failed = [];
   let done = 0;
   for (const name of names) {
@@ -51,6 +62,7 @@ export async function saveReadingForOffline(onProgress = () => {}) {
     done += 1;
     onProgress(done, names.length);
   }
+  if (!index) failed.push("bible-reading-books");
   const ok = failed.length === 0;
   if (ok) {
     try {

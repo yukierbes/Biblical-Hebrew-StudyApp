@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Builds netlify/functions/data/bible-mixed.json — the verses for the Reading page's "Mixed review":
-// verses in which three or more of the Bible in Context pages each have a practice example, so one verse can ask
+// verses (of Genesis, Ruth and Jonah) in which three or more of the Bible in Context pages each have a practice example, so one verse can ask
 // about the article, the preposition, the vav, the verb and so on, all together.
 //
 // It reads the datasets that build-bible.mjs has just written (run that first) and writes only a short index:
@@ -20,7 +20,9 @@ const CHECK_ONLY = process.argv.includes("--check");
 // The pages, most useful first for a mixed verse (those about whole words come before marks and syllables).
 const PAGES = ["article", "prefix", "vav", "min", "interrog", "verb", "noun", "adj", "pronoun", "demo", "suffix", "dagesh", "qames", "sheva", "syllable"];
 const MAX_QUESTIONS = 4;
-const MAX_VERSES = 250;
+// A spread over each book (Genesis is far larger than Ruth or Jonah, so each book gets its own allowance and Ruth and Jonah
+// are not drowned out). A book with fewer qualifying verses than its allowance contributes all of them.
+const MAX_VERSES = { Gen: 200, Ruth: 60, Jonah: 40 };
 
 const errors = [];
 const byRef = new Map(); // ref -> { page -> [ex] }
@@ -62,13 +64,20 @@ for (const [ref, pages] of byRef) {
   if (picks.length >= 3) verses.push({ ref, picks });
 }
 verses.sort((a, b) => (a.ref < b.ref ? -1 : 1));
-// keep a spread over the whole text when there are more than we need
-const step = Math.max(1, Math.floor(verses.length / MAX_VERSES));
-const kept = verses.filter((_, i) => i % step === 0).slice(0, MAX_VERSES);
+// keep a spread over the whole text of each book when there are more than we need
+const kept = [];
+const perBook = {};
+for (const book of Object.keys(MAX_VERSES)) {
+  const mine = verses.filter((v) => v.ref.startsWith(`${book}.`));
+  const step = Math.max(1, Math.ceil(mine.length / MAX_VERSES[book]));
+  const some = mine.filter((_, i) => i % step === 0).slice(0, MAX_VERSES[book]);
+  perBook[book] = some.length;
+  kept.push(...some);
+}
 if (kept.length < 20) {
   console.error(`mixed-review build FAILED: only ${kept.length} verses have three or more kinds of example.`);
   process.exit(1);
 }
 const json = JSON.stringify({ verses: kept });
-console.log(`bible-mixed: ${kept.length} verses with 3–${MAX_QUESTIONS} questions each (${(json.length / 1024).toFixed(0)} KB)`);
+console.log(`bible-mixed: ${kept.length} verses with 3–${MAX_QUESTIONS} questions each (${Object.entries(perBook).map(([b, n]) => `${b} ${n}`).join(", ")}; ${(json.length / 1024).toFixed(0)} KB)`);
 if (!CHECK_ONLY) writeFileSync(join(DATA, "bible-mixed.json"), json);

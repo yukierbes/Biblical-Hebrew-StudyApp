@@ -12,7 +12,7 @@ const page = createPractice({
   dataset: "bible-suffix",
   historyMode: "bible-suffix",
   title: "Pronominal Suffixes",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "suffix",
   promptText: "Which type of suffix, and which person, gender and number, is on the highlighted word?",
   mainPartTitle: "Type",
@@ -51,7 +51,7 @@ const page = createPractice({
   },
   renderGuide: (body, { data, el, showAccents }) => {
     tableForDescribe = data.table;
-    body.appendChild(el("p", "", "Pronominal suffix patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Pronominal suffix patterns with real word examples from Genesis, Ruth and Jonah."));
 
     const diff = el("div", "bible-guide-card");
     diff.appendChild(el("h3", "", "Type 1 and Type 2"));

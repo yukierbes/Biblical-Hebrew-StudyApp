@@ -14,7 +14,7 @@ assert(c("הָ", "עֵץ") === "compensatory", "הָ before ע");
 assert(c("הַ", "חֹשֶׁךְ") === "implicit", "הַ before ח = implicit doubling");
 assert(c("הַ", "הוּא") === "implicit", "הַ before ה = implicit doubling");
 assert(c("הַ", "עַרְקִי") === "implicit", "ע may show implicit doubling too");
-assert(c("הֶ", "הָרִים") === "exceptional_segol" && c("הֶ", "עָרִים") === "exceptional_segol", "הֶ before ה / ע is an Exceptional Form (vowel dissimilation)");
+assert(c("הֶ", "הָרִים") === "exceptional_segol" && c("הֶ", "עָרִים") === "exceptional_segol" && c("הֶ", "חָמָס") === "exceptional_segol", "הֶ before ה / ח / ע is an Exceptional Form (vowel dissimilation)");
 assert(c("הַ", "יְבוּסִי") === "sqnmlvy_sheva", "SQNMLVY: י with vocal sheva");
 assert(c("הַ", "מְדַבֵּר") === "sqnmlvy_sheva", "SQNMLVY: מ with vocal sheva");
 assert(c("הַ", "צִפֹּר") === "sqnmlvy_extended", "SQNMLVY extended: short vowel before a doubled letter");
@@ -39,13 +39,21 @@ const counts = {};
 for (const a of found) counts[a.pattern || "held"] = (counts[a.pattern || "held"] || 0) + 1;
 assert(counts.forte === 847 && counts.pausal === 2 && counts.exceptional_segol === 8 && counts.exceptional_qamets === 3 && counts.compensatory === 546 && counts.implicit === 91 && counts.sqnmlvy_sheva === 19 && counts.sqnmlvy_extended === 6, "counts per pattern match the audit sheet and your SQNMLVY rule");
 
+// Ruth and Jonah are practised too: they add 1 held-back article (Jonah 3:8) and nothing else that needs a decision
+const threeBooks = ["Gen", "Ruth", "Jonah"].flatMap((b) => parseOsis(readFileSync(new URL(`../data-source/bible/${b}.xml`, import.meta.url), "utf8")));
+const foundAll = findArticles(threeBooks);
+assert(foundAll.length === 1696 && foundAll.filter((a) => !a.pattern).length === 0, "Genesis, Ruth and Jonah: 1,696 articles, none held back");
+assert(foundAll.find((a) => a.ref === "Jonah.3.8" && a.pattern === "exceptional_segol"), "Jonah 3:8 הֶחָמָס is an Exceptional Form");
+assert(foundAll.filter((a) => a.ref.startsWith("Ruth.") || a.ref.startsWith("Jonah.")).every((a) => a.pattern), "every article in Ruth and Jonah fits a pattern");
+
 console.log("Built data file");
 const data = JSON.parse(readFileSync(new URL("../netlify/functions/data/bible-article.json", import.meta.url), "utf8"));
 assert(data.source.attribution.startsWith("Original work of the Open Scriptures Hebrew Bible available at https://github.com/openscriptures/morphhb"), "carries the required OSHB credit line");
 assert(data.examples.length > 1000 && data.examples.every((e) => data.patterns.some((p) => p.id === e.pattern)), "every example has a known pattern");
 assert(data.examples.every((e) => data.verses[e.ref] && data.verses[e.ref][e.wi] && data.verses[e.ref][e.wi].p === e.pattern), "every example points at a real word in a kept verse");
-assert(!data.examples.some((e) => data.verses[e.ref][e.wi].p === "held") && data.held.length === 0, "held-back words are never practice examples");
-assert(data.passages.length === 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "three passages, with all their verses present");
+assert(!data.examples.some((e) => data.verses[e.ref][e.wi].p === "held") && data.held.every((h) => data.verses[h.ref][h.wi].p === "held"), "held-back words are never practice examples");
+assert(data.held.length === 0, "nothing is held back");
+assert(data.passages.length >= 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "the guided passages (Genesis, plus Ruth and Jonah) have all their verses present");
 
 console.log("Text helpers");
 assert(!/[\u0591-\u05AF]/.test(stripAccents("בְּרֵאשִׁ֖ית")) && stripAccents("בְּרֵאשִׁ֖ית").includes("\u05b0"), "hiding accents keeps the vowel points");

@@ -9,7 +9,7 @@ const D = Object.fromEntries(["noun", "pronoun", "demo", "adj", "interrog", "vav
 
 console.log("The data of every page is consistent");
 for (const [k, d] of Object.entries(D)) {
-  assert(d.examples.length > 20 && d.passages.length === 3 && d.passages.every((p) => p.verses.every((r) => d.verses[r])), `${k}: examples and three passages with their verses`);
+  assert(d.examples.length > 20 && d.passages.length >= 3 && d.passages.every((p) => p.verses.every((r) => d.verses[r])), `${k}: examples and guided passages with their verses`);
   assert(d.examples.every((e) => { const w = d.verses[e.ref][e.wi]; return w.x && w.x[0] === e.pattern; }), `${k}: every example points at a real tagged word`);
   assert(d.examples.every((e) => d.patterns.some((p) => p.id === e.pattern)) && d.groups.every((g) => g.patterns.every((id) => d.patterns.some((p) => p.id === id))), `${k}: patterns and answer groups agree`);
 }

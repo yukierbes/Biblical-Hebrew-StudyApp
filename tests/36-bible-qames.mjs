@@ -21,7 +21,7 @@ console.log("Built data");
 const data = JSON.parse(readFileSync(new URL("../netlify/functions/data/bible-qames.json", import.meta.url), "utf8"));
 assert(data.examples.length > 2000 && data.counts.hatuf_closed > 50 && data.counts.hatuf_hataf >= 3 && data.counts.qames_open > 1000, "plenty of examples of the main patterns");
 assert(data.examples.every((e) => data.verses[e.ref][e.wi].q.some((x) => x[0] === e.li && x[1] === e.pattern)), "every example points at a real qameṣ in a kept verse");
-assert(data.passages.length === 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "three passages with all their verses");
+assert(data.passages.length >= 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "the guided passages (Genesis, plus Ruth and Jonah) have all their verses");
 
 console.log("The page");
 const { document } = await setupApp();

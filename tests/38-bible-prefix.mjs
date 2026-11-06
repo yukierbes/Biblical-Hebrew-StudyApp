@@ -27,7 +27,7 @@ console.log("Built data");
 const data = JSON.parse(readFileSync(new URL("../netlify/functions/data/bible-prefix.json", import.meta.url), "utf8"));
 for (const id of ["lexical", "simple_sheva", "compound_sheva", "yod_sheva", "tone_syllable", "article_lexical", "article_compensatory", "yhwh"]) assert((data.counts[id] || 0) > 0, `examples of ${id}`);
 assert(data.examples.every((e) => data.verses[e.ref][e.wi].p && data.verses[e.ref][e.wi].p[0] === e.pattern), "every example points at a real prefixed preposition");
-assert(data.passages.length === 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "three passages with all their verses");
+assert(data.passages.length >= 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "the guided passages (Genesis, plus Ruth and Jonah) have all their verses");
 
 console.log("The page");
 const { document } = await setupApp();

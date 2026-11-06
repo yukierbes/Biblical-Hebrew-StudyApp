@@ -24,7 +24,7 @@ assert(data.examples.length > 500 && data.counts.type1 > 100 && data.counts.type
 assert(data.examples.every((e) => data.verses[e.ref][e.wi].x[0] === e.pattern && typeof e.from === "number"), "every example points at a real suffix word, with where the suffix starts");
 assert(data.examples.every((e) => !data.verses[e.ref][e.wi].xh), "held-back words are never examples");
 assert(data.examples.some((e) => e.stem === "preposition" && e.pattern === "type1") && data.examples.some((e) => e.stem === "preposition" && e.pattern === "type2"), "prepositions with both types are in the data");
-assert(data.passages.length === 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "three passages with all their verses");
+assert(data.passages.length >= 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "the guided passages (Genesis, plus Ruth and Jonah) have all their verses");
 assert(data.table.length === 10, "the table is in the data for the guide");
 
 console.log("The page");

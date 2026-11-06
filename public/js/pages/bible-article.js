@@ -15,7 +15,7 @@ const page = createPractice({
   dataset: "bible-article",
   historyMode: "bible-article",
   title: "Definite Article",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "article",
   promptText: "What is happening at the article in the highlighted word?",
   markWord: (w) => ({ markPiece: w.a }),
@@ -44,12 +44,10 @@ const page = createPractice({
     legend: "Green = correct, dotted green border = missed, red = not an article.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Definite article patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Definite article patterns with real word examples from Genesis, Ruth and Jonah."));
     for (const g of data.groups) {
       const card = el("div", "bible-guide-card");
-      const count = g.patterns.reduce((n, id) => n + (data.counts[id] || 0), 0);
       const h = el("h3", "", g.label);
-      h.insertAdjacentHTML("beforeend", ` <span class="caption">(${count} in ${data.source.book})</span>`);
       card.appendChild(h);
       for (const id of g.patterns) {
         const p = data.patterns.find((x) => x.id === id);

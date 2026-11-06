@@ -3875,8 +3875,22 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 @media (max-width: 560px) { .lookup-search-row { flex-direction: column; } .lookup-kb-btn { width: 100%; } }
 
 /* ---------- Reading: chapters and books read one section at a time ---------- */
-.reading-works { flex-wrap: wrap; margin: 10px 0; }
-.reading-works .choice-btn { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
 .reading-section-done { color: var(--good, #2f6f3e); }
 .reading-section-nav { flex-wrap: wrap; justify-content: space-between; margin-top: 12px; }
-.reading-works .choice-btn.selected .caption { color: inherit; opacity: 0.85; }
+
+/* Reading: a book menu, a chapter menu and a plain list of sections, so the top of the page stays quiet. */
+.reading-picker { display: flex; flex-wrap: wrap; gap: 12px 16px; margin: 14px 0 6px; }
+.reading-pick { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 0 1 240px; }
+.reading-pick-label { font: 600 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+.reading-select { width: 100%; padding: 8px 10px; border-radius: var(--radius); border: 1px solid var(--hairline-strong); background: var(--paper-raised); color: var(--ink); font-family: var(--font-body); font-size: 0.95rem; }
+.reading-passages .reading-book-title { margin: 16px 0 8px; font: 600 1.05rem var(--font-body); text-transform: none; letter-spacing: 0; color: var(--ink); }
+.reading-passages .reading-book-title .caption { margin-left: 8px; font-weight: 400; }
+.reading-section-list { flex-direction: column; flex-wrap: nowrap; gap: 6px; }
+.reading-section-btn { width: 100%; text-align: left; display: flex; align-items: center; gap: 8px; }
+.reading-section-btn .reading-passage-title { flex: 1 1 auto; }
+.reading-section-btn .reading-know { margin-left: auto; }
+.reading-passages .reading-sort { margin: 8px 0 4px; font-size: 0.85rem; color: var(--ink-soft); }
+.reading-more { margin: 22px 0 6px; }
+.reading-more summary { cursor: pointer; color: var(--ink-soft); font-size: 0.9rem; }
+.reading-more .reading-offline { margin-top: 8px; }
+.reading-source { margin-top: 6px; }

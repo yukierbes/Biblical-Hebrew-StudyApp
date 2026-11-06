@@ -13,7 +13,7 @@ const page = createPractice({
   dataset: "bible-prefix",
   historyMode: "bible-prefix",
   title: "Prefixed Prepositions",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "preposition",
   promptText: "Why does the preposition take this form?",
   markWord: (w, ex) => ({ markLetter: ex.li }),
@@ -45,7 +45,7 @@ const page = createPractice({
     legend: "Green = correct, dotted green border = missed, red = no prefixed preposition of that kind.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Prefixed preposition patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Prefixed preposition patterns with real word examples from Genesis, Ruth and Jonah."));
     const card = el("div", "bible-guide-card");
     card.appendChild(el("h3", "", "ל, בּ and כּ"));
     card.appendChild(el("p", "", "These rules apply to all three prepositions. In ב and כ the dagesh lene is shown."));

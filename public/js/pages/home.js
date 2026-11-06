@@ -268,7 +268,7 @@ function bibleTileHtml(all, summary) {
     ? `<span class="area-tile-flag">Start here</span>`
     : `<span class="pill ${summary.passed === summary.pages ? "pill-good" : "pill-warn"} area-tile-due">${summary.passed} of ${summary.pages} passed</span>`;
   const caption = fresh
-    ? `Nothing practised yet — ${summary.pages} pages that use real verses of Genesis`
+    ? `Nothing practised yet — ${summary.pages} pages that use real verses of Genesis, Ruth and Jonah`
     : `${summary.practised} of ${summary.pages} pages practised · ${summary.mastered.toLocaleString()} ${plural(summary.mastered, "word", "words")} mastered · ${summary.learning.toLocaleString()} still learning`;
   const groups = BIBLE_GROUPS.map((g) => {
     const pages = g.pages.map((gp) => all.find((a) => a.page === gp.page)).filter(Boolean);

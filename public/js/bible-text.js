@@ -14,7 +14,7 @@ export function hebrewHtml(text) {
 }
 
 /** "Gen.1.2" -> "Genesis 1:2" */
-const BOOK_NAMES = { Gen: "Genesis", Exod: "Exodus", Ruth: "Ruth", Deut: "Deuteronomy", Ps: "Psalm", Josh: "Joshua", Jonah: "Jonah" };
+const BOOK_NAMES = { Gen: "Genesis", Exod: "Exodus", Num: "Numbers", Ruth: "Ruth", Deut: "Deuteronomy", Ps: "Psalm", Josh: "Joshua", "1Sam": "1 Samuel", Prov: "Proverbs", Isa: "Isaiah", Jonah: "Jonah" };
 export function prettyRef(ref) {
   const [book, c, v] = ref.split(".");
   return `${BOOK_NAMES[book] || book} ${c}:${v}`;

@@ -22,7 +22,7 @@ const data = JSON.parse(readFileSync(new URL("../netlify/functions/data/bible-sh
 for (const p of SHEVA_PATTERNS) assert((data.totals[p.id] || 0) > 0, `Genesis has examples of: ${p.explain.slice(0, 60)}…`);
 assert(data.examples.length > 2000, "plenty of examples");
 assert(data.examples.every((e) => data.verses[e.ref][e.wi].sh.some((x) => x[0] === e.li && x[1] === e.pattern)), "every example points at a real sheva in a kept verse");
-assert(data.passages.length === 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "three passages with all their verses");
+assert(data.passages.length >= 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "the guided passages (Genesis, plus Ruth and Jonah) have all their verses");
 
 console.log("The page");
 const { document } = await setupApp();

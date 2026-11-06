@@ -8,7 +8,7 @@
 //
 //   node scripts/build-bible.mjs --check     (or: npm run check-bible)
 //
-// What it does: finds every definite article the OSHB tags in Genesis, sorts each into one of the
+// What it does: finds every definite article the OSHB tags in Genesis, Ruth and Jonah, sorts each into one of the
 // patterns in scripts/lib/article-rules.mjs (your rule sheets), and writes ONLY the verses the app
 // needs (the guided passages plus verses with a sorted article). Cases that do not match your
 // rules are written to a separate "held" list and are never used as practice examples.
@@ -65,15 +65,22 @@ function parseCsv(text) {
   return rows;
 }
 
-// ---- read Genesis ----
-const genPath = join(SRC, "Gen.xml");
-if (!existsSync(genPath)) errors.push("data-source/bible/Gen.xml is missing.");
+// ---- read Genesis, Ruth and Jonah (the books the practice pages draw on) ----
+// Every page is built from the verses of all three together; a verse is named by its OSIS reference ("Gen.1.1", "Ruth.1.1", "Jonah.1.1").
+const PRACTICE_BOOKS = [
+  { id: "Gen", file: "Gen.xml", name: "Genesis", minVerses: 1500 },
+  { id: "Ruth", file: "Ruth.xml", name: "Ruth", minVerses: 80 },
+  { id: "Jonah", file: "Jonah.xml", name: "Jonah", minVerses: 45 },
+];
 let verses = [];
-if (!errors.length) {
-  const xml = readFileSync(genPath, "utf8");
-  if (!xml.includes("Open Scriptures Hebrew Bible")) errors.push("data-source/bible/Gen.xml does not look like an Open Scriptures Hebrew Bible file.");
-  verses = parseOsis(xml);
-  if (verses.length < 1500) errors.push(`Gen.xml has only ${verses.length} verses (Genesis has 1,533). The file may be cut off.`);
+for (const b of PRACTICE_BOOKS) {
+  const path = join(SRC, b.file);
+  if (!existsSync(path)) { errors.push(`data-source/bible/${b.file} is missing.`); continue; }
+  const xml = readFileSync(path, "utf8");
+  if (!xml.includes("Open Scriptures Hebrew Bible")) errors.push(`data-source/bible/${b.file} does not look like an Open Scriptures Hebrew Bible file.`);
+  const bookVerses = parseOsis(xml);
+  if (bookVerses.length < b.minVerses) errors.push(`${b.file} has only ${bookVerses.length} verses (${b.name} should have at least ${b.minVerses}). The file may be cut off.`);
+  verses = verses.concat(bookVerses);
 }
 
 const found = errors.length ? [] : findArticles(verses);
@@ -95,9 +102,14 @@ function readPassages(file) {
   const idx = Object.fromEntries(head.map((h, i) => [h, i]));
   const order = verses.map((v) => v.ref);
   rows.forEach((r, n) => {
-    const ref = (s) => "Gen." + String(s).trim().replace(":", ".");
+    // Start and End are "chapter:verse" in Genesis, or "Ruth 1:16" / "Jonah 1:9" (a book code, a space, then chapter:verse)
+    const ref = (s) => {
+      const m = /^\s*(?:([A-Za-z0-9]+)\s+)?(\d+):(\d+)\s*$/.exec(String(s));
+      return m ? `${m[1] || "Gen"}.${m[2]}.${m[3]}` : "?";
+    };
     const a = order.indexOf(ref(r[idx.Start])), b = order.indexOf(ref(r[idx.End]));
-    if (a < 0 || b < 0 || b < a) { errors.push(`${file} line ${n + 2}: cannot find ${r[idx.Start]} to ${r[idx.End]} in Genesis.`); return; }
+    if (a < 0 || b < 0 || b < a) { errors.push(`${file} line ${n + 2}: cannot find ${r[idx.Start]} to ${r[idx.End]} in Genesis, Ruth or Jonah.`); return; }
+    if (order[a].split(".")[0] !== order[b].split(".")[0]) { errors.push(`${file} line ${n + 2}: ${r[idx.Start]} to ${r[idx.End]} runs from one book into another.`); return; }
     if (b - a > 12) warnings.push(`${file} line ${n + 2}: "${r[idx.Title]}" is ${b - a + 1} verses long — long passages are tiring to step through.`);
     passages.push({ title: r[idx.Title].trim(), note: (r[idx.Note] || "").trim(), verses: order.slice(a, b + 1) });
   });
@@ -142,7 +154,7 @@ if (!errors.length) {
 
 const output = {
   source: {
-    book: "Genesis",
+    book: "Genesis, Ruth and Jonah",
     name: "Open Scriptures Hebrew Bible",
     attribution: "Original work of the Open Scriptures Hebrew Bible available at https://github.com/openscriptures/morphhb",
     license: "CC BY 4.0 (tagging); the Westminster Leningrad Codex text is in the public domain",
@@ -447,7 +459,7 @@ console.log(`bible-qames: ${qamesData.examples.length} practice examples, ${qame
 console.log(`bible-sheva: ${shevaData.examples.length} practice examples, ${shevaData.held.length} held back, ${shevaPassages.length} passages, ${Object.keys(shevaData.verses).length} verses (${(shevaJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-suffix: ${suffixData.examples.length} practice examples (${suffixData.counts.type1} Type 1, ${suffixData.counts.type2} Type 2), ${suffixData.held.length} held back, ${suffixPassages.length} passages, ${Object.keys(suffixData.verses).length} verses (${(suffixJson.length / 1024).toFixed(0)} KB)`);
 console.log(`bible-dagesh: ${dageshData.examples.length} practice examples (${dageshData.counts.lene} lene, ${dageshData.counts.forte} forte, ${dageshData.counts.mappiq} mappiq), ${dageshData.held.length} held back, ${dageshPassages.length} passages, ${Object.keys(dageshData.verses).length} verses (${(dageshJson.length / 1024).toFixed(0)} KB)`);
-console.log(`bible-article: ${found.length} articles found in Genesis → ${examples.length} practice examples, ${held.length} held back, ${passages.length} passages, ${Object.keys(verseOut).length} verses (${(json.length / 1024).toFixed(0)} KB)`);
+console.log(`bible-article: ${found.length} articles found in Genesis, Ruth and Jonah → ${examples.length} practice examples, ${held.length} held back, ${passages.length} passages, ${Object.keys(verseOut).length} verses (${(json.length / 1024).toFixed(0)} KB)`);
 if (!CHECK_ONLY) {
   mkdirSync(OUT, { recursive: true });
   writeFileSync(join(OUT, "bible-article.json"), json);

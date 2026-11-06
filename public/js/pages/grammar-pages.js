@@ -76,7 +76,7 @@ const nounPage = createPractice({
   dataset: "bible-noun",
   historyMode: "bible-noun",
   title: "Nouns",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "noun",
   promptText: "Is the highlighted noun absolute or construct, and what are its gender and number?",
   answerParts: (data) => [
@@ -97,7 +97,7 @@ const nounPage = createPractice({
     legend: "Green = correct, dotted green border = missed, red = not that kind of noun.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Noun patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Noun patterns with real word examples from Genesis, Ruth and Jonah."));
     const defs = el("div", "bible-guide-card");
     defs.appendChild(el("h3", "", "Absolute and construct"));
     defs.appendChild(el("p", "", "Nouns may occur in two forms, either absolute or construct."));
@@ -125,7 +125,7 @@ const pronounPage = createPractice({
   dataset: "bible-pronoun",
   historyMode: "bible-pronoun",
   title: "Independent Personal Pronouns",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "pronoun",
   promptText: "What are the person, gender and number (PGN) of the highlighted pronoun?",
   markWord: range,
@@ -141,7 +141,7 @@ const pronounPage = createPractice({
     legend: "Green = correct, dotted green border = missed, red = not an independent personal pronoun.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Independent personal pronoun patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Independent personal pronoun patterns with real word examples from Genesis, Ruth and Jonah."));
     body.appendChild(tableCard(el, "Independent personal pronouns", "PGN = person, gender and number (C = common).", ["PGN", "Singular", "Plural"], data.table.map((r) => [r.row, r.singular.join("  /  "), r.plural.join("  /  ")]), [1, 2]));
     const ex = el("div", "bible-guide-card");
     ex.appendChild(el("h3", "", "Examples"));
@@ -156,7 +156,7 @@ const demoPage = createPractice({
   dataset: "bible-demo",
   historyMode: "bible-demo",
   title: "Demonstratives",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "demonstrative",
   promptText: "What type of demonstrative is this, what are its gender and number, and is it near or far?",
   answerParts: () => [
@@ -178,7 +178,7 @@ const demoPage = createPractice({
     legend: "Green = correct, dotted green border = missed, red = not that type of demonstrative.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Demonstrative patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Demonstrative patterns with real word examples from Genesis, Ruth and Jonah."));
     const pron = el("div", "bible-guide-card");
     pron.appendChild(el("h3", "", "Demonstrative pronouns"));
     pron.appendChild(el("p", "", "A demonstrative pronoun stands on its own and points to something near or far."));
@@ -206,7 +206,7 @@ const adjPage = createPractice({
   dataset: "bible-adj",
   historyMode: "bible-adj",
   title: "Adjectives",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "adjective",
   promptText: "What type of adjective is this, and what are its gender and number?",
   answerParts: (data) => [
@@ -227,7 +227,7 @@ const adjPage = createPractice({
     legend: "Green = correct, dotted green border = missed, red = not that type of adjective.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Adjective patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Adjective patterns with real word examples from Genesis, Ruth and Jonah."));
     body.appendChild(tableCard(el, "Adjective endings", "", ["", "Masculine", "Feminine"], [["Singular", "—", CIRCLE + "ָה"], ["Plural", CIRCLE + "ִים", CIRCLE + "וֹת"]], [1, 2]));
     const TEXT = {
       attributive: ["It directly describes a noun (“the old man”).", "It usually stands after the noun it describes.", "It must agree with the noun in gender, number and definiteness."],
@@ -249,7 +249,7 @@ const interrogPage = createPractice({
   dataset: "bible-interrog",
   historyMode: "bible-interrog",
   title: "Interrogative ה",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "interrogative",
   promptText: "Why does the interrogative ה take this form?",
   markWord: () => ({ markLetter: 0 }),
@@ -265,7 +265,7 @@ const interrogPage = createPractice({
     legend: "Green = correct, dotted green border = missed, red = not the interrogative ה.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Interrogative ה patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Interrogative ה patterns with real word examples from Genesis, Ruth and Jonah."));
     body.appendChild(tableCard(el, "The interrogative ה", "", ["Form", "Rule"], data.table.map((r) => [r.form, r.rule]), [0]));
     const side = tableCard(el, "Compared with the definite article", "The interrogative ה and the definite article can look very similar, and sometimes identical, but they look that way for different reasons.", ["Interrogative", "Definite article", "Why they can look alike"], data.table.map((r) => [r.form + " — " + r.rule, r.article, r.note]));
     side.classList.add("bible-watch");
@@ -282,7 +282,7 @@ const vavPage = createPractice({
   dataset: "bible-vav",
   historyMode: "bible-vav",
   title: "Prefixed Vav",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "vav",
   promptText: "Why does the vav take this form?",
   markWord: () => ({ markLetter: 0 }),
@@ -299,7 +299,7 @@ const vavPage = createPractice({
     legend: "Green = correct, dotted green border = missed, red = not that kind of vav.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Prefixed vav patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Prefixed vav patterns with real word examples from Genesis, Ruth and Jonah."));
     body.appendChild(tableCard(el, "Forms of the vav", "", ["Form", "Rule"], data.table.map((r) => [r.forms.join("  "), r.rule]), [0]));
     const note = el("div", "bible-guide-card bible-watch");
     note.appendChild(el("h3", "", "Vav conjunction and vav consecutive"));
@@ -319,7 +319,7 @@ const minPage = createPractice({
   dataset: "bible-min",
   historyMode: "bible-min",
   title: "Prefixed מִן",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "preposition",
   promptText: "Why does the preposition מִן take this form?",
   markWord: (w, ex) => ({ markLetter: [ex.from, ex.to] }),
@@ -335,7 +335,7 @@ const minPage = createPractice({
     legend: "Green = correct, dotted green border = missed, red = no preposition מִן in that word.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Prefixed מִן patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Prefixed מִן patterns with real word examples from Genesis, Ruth and Jonah."));
     body.appendChild(tableCard(el, "Forms of מִן", "", ["Form", "Rule"], data.table.map((r) => [r.forms.join("  "), r.rule]), [0]));
     const ex = el("div", "bible-guide-card");
     ex.appendChild(el("h3", "", "Examples"));
@@ -350,7 +350,7 @@ const verbPage = createPractice({
   dataset: "bible-verb",
   historyMode: "bible-verb",
   title: "Verbs",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "verb",
   promptText: "Parse the highlighted verb.",
   answerParts: (data) => [
@@ -380,7 +380,7 @@ const verbPage = createPractice({
     legend: "Green = correct, dotted green border = missed, red = not that kind of verb.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Verb parsing and verb types, with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Verb parsing and verb types, with real word examples from Genesis, Ruth and Jonah."));
     const parse = el("div", "bible-guide-card");
     parse.appendChild(el("h3", "", "Parsing a verb"));
     parse.appendChild(el("p", "bible-rule", `• Binyan: ${data.binyanim.map((b) => b.label).join(", ")}.`));

@@ -57,9 +57,9 @@ export const ARTICLE_PATTERNS = [
   {
     id: "exceptional_segol",
     group: "exceptional",
-    label: "Exceptional Forms: הֶ before an unaccented הָ or עָ",
+    label: "Exceptional Forms: הֶ before an unaccented הָ, חָ, or עָ",
     explain:
-      "Exceptional form (plural, e.g. הֶהָרִים, “the mountains”). Hebrew avoids two “a” sounds in a row when the second one is unaccented. When the ה or ע has a qameṣ but no accent, the article’s pataḥ changes to segol: הַ becomes הֶ. This is vowel dissimilation.",
+      "Exceptional form (e.g. the plural הֶהָרִים, “the mountains”, and הֶחָמָס, “the violence”). Hebrew avoids two “a” sounds in a row when the second one is unaccented. When the definite article stands in front of a ה, ח, or ע that has a qameṣ but no accent, the article’s pataḥ changes to segol: הַ becomes הֶ. This is vowel dissimilation.",
   },
   {
     id: "sqnmlvy_sheva",
@@ -139,7 +139,7 @@ export function classifyArticle(artSeg, nextSeg, wordText = "") {
 
   if (artVowel === "qamets" && COMPENSATORY.has(n.letter) && n.letter !== "ה") return "compensatory";
   if (artVowel === "patah" && IMPLICIT.has(n.letter)) return "implicit";
-  if (artVowel === "segol" && (n.letter === "ע" || n.letter === "ה")) return "exceptional_segol";
+  if (artVowel === "segol" && (n.letter === "ע" || n.letter === "ה" || n.letter === "ח")) return "exceptional_segol";
   // הָ before a ה that has its own qameṣ (הָהָרָה): the article lengthens because that ה is accented.
   if (artVowel === "qamets" && n.letter === "ה" && n.marks.includes(QAMETS)) return "exceptional_qamets";
 

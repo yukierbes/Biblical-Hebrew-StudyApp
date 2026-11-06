@@ -8,7 +8,7 @@
 //   typed  the same questions typed in              (Hard mode)
 //   parse  a verb form: tap its binyan, mode, person, gender, number
 //   match  match 3-4 items to their categories (consonant category, vowel class, ...)
-//   bible  a verse of Genesis with one word marked and the same answer boxes as its Bible in Context page
+//   bible  a verse of Genesis, Ruth or Jonah with one word marked and the same answer boxes as its Bible in Context page
 //
 // Which items come up is personal: due and weak items first, never-seen items
 // next, plus a few already-mastered ones slipped in for review. The person

@@ -22,7 +22,7 @@ console.log("Built data");
 const data = JSON.parse(readFileSync(new URL("../netlify/functions/data/bible-syllable.json", import.meta.url), "utf8"));
 for (const id of ["CAPL", "OPRL", "CURS", "OAPS", "OOPPS"]) assert((data.counts[id] || 0) > 20, `plenty of ${id} examples`);
 assert(data.examples.every((e) => { const s = data.verses[e.ref][e.wi].y[1][e.k]; return s[5] === e.pattern && !!s[2] === !!e.closed && s[3] === e.tone && s[4] === e.vowel; }), "every example matches its syllable in the data");
-assert(data.passages.length === 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "three passages with all their verses");
+assert(data.passages.length >= 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "the guided passages (Genesis, plus Ruth and Jonah) have all their verses");
 
 console.log("The page");
 const { document } = await setupApp();
@@ -42,7 +42,8 @@ parts[2].querySelectorAll(".bible-choice")[0].click();
 assert(content.querySelector(".bible-feedback").textContent.length > 20, "then the answer and the explanation appear");
 [...document.querySelectorAll(".bible-tabs .choice-btn")][2].click();
 await wait(40);
-assert(document.querySelectorAll(".bible-gap").length >= 3 && document.querySelectorAll(".bible-slot").length >= 4, "Divide the word shows letters with gaps between them");
+// the word is picked at random and can be as short as two letters, so check the shape (one gap between each pair of letters), not fixed counts
+assert(document.querySelectorAll(".bible-slot").length >= 2 && document.querySelectorAll(".bible-gap").length === document.querySelectorAll(".bible-slot").length - 1, "Divide the word shows letters with a gap between each pair");
 const gap = document.querySelector(".bible-gap");
 gap.click();
 assert(gap.classList.contains("is-cut"), "clicking a gap adds a dividing line");

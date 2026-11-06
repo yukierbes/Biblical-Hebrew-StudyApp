@@ -21,13 +21,17 @@ assert(DAGESH_PATTERNS.length === 3 && DAGESH_GROUPS.map((g) => g.label).join() 
 
 console.log("Built data");
 const data = JSON.parse(readFileSync(new URL("../netlify/functions/data/bible-dagesh.json", import.meta.url), "utf8"));
-const verses = parseOsis(readFileSync(new URL("../data-source/bible/Gen.xml", import.meta.url), "utf8"));
-let total = { lene: 0, forte: 0, mappiq: 0, shureq: 0, held: 0 };
-for (const v of verses) for (const w of v.words) if (!w.seg) for (const r of analyzeWord(w.text.split("/").join(""))) total[r.kind === "shureq" ? "shureq" : r.pattern || "held"]++;
+const totalOf = (verses) => {
+  const t = { lene: 0, forte: 0, mappiq: 0, shureq: 0, held: 0 };
+  for (const v of verses) for (const w of v.words) if (!w.seg) for (const r of analyzeWord(w.text.split("/").join(""))) t[r.kind === "shureq" ? "shureq" : r.pattern || "held"]++;
+  return t;
+};
+const total = totalOf(parseOsis(readFileSync(new URL("../data-source/bible/Gen.xml", import.meta.url), "utf8")));
+const totalAll = totalOf(["Gen", "Ruth", "Jonah"].flatMap((b) => parseOsis(readFileSync(new URL(`../data-source/bible/${b}.xml`, import.meta.url), "utf8"))));
 assert(total.lene === 3650 && total.forte === 5193 && total.mappiq === 166 && total.held === 33, `Genesis totals: lene ${total.lene}, forte ${total.forte}, mappiq ${total.mappiq}, held ${total.held}`);
-assert(data.totals.lene === total.lene && data.totals.shureq === total.shureq, "the data file carries the same totals");
+assert(data.totals.lene === totalAll.lene && data.totals.forte === totalAll.forte && data.totals.shureq === totalAll.shureq, "the data file carries the totals of Genesis, Ruth and Jonah together");
 assert(data.examples.length > 2000 && data.examples.every((e) => data.verses[e.ref][e.wi].d.some((d) => d[0] === e.li && d[1] === e.pattern)), "every example points at a real dot in a kept verse");
-assert(data.passages.length === 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "three passages with all their verses");
+assert(data.passages.length >= 3 && data.passages.every((p) => p.verses.every((r) => data.verses[r])), "the guided passages (Genesis, plus Ruth and Jonah) have all their verses");
 assert(!data.examples.some((e) => data.verses[e.ref][e.wi].d.some((d) => d[0] === e.li && d[1] === "held")), "held-back dots are never practice examples");
 assert(shureqIndex("הוּא") === 1 && shureqIndex("הַשָּׁמַיִם") === -1, "shureqIndex finds the šureq vav only");
 assert(letterMarkedHtml("בָּרָא", 0).startsWith('<mark class="bible-mark">בָּ</mark>'), "letterMarkedHtml wraps the letter with its marks");

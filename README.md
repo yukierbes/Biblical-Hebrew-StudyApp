@@ -364,7 +364,7 @@ way to practise just those), **Find the …** (tap what has it; a dotted green b
 
 * **Definite Article.** The Open Scriptures Hebrew Bible (OSHB) tags the article as its own piece of each word; the app only
   *finds* it there and *sorts* it itself, from what is written. Answer choices: Standard Form, Compensatory Lengthening,
-  Implicit Doubling, Exceptional Forms (הָ before an accented qameṣ-ה, as in הָהָרָה; and הֶ before an unaccented הָ or עָ,
+  Implicit Doubling, Exceptional Forms (הָ before an accented qameṣ-ה, as in הָהָרָה; and הֶ before an unaccented הָ, חָ, or עָ,
   vowel dissimilation, as in הֶהָרִים), SQNMLVY (vocal sheva, or short vowel before a doubled letter) and Pausal Lengthening
   (a qameṣ article in a word carrying a pause accent). Owner decisions that the spelling rules cannot make are in
   `ARTICLE_OVERRIDES`: Gen 40:3 is Standard Form (with a note) and Gen 41:24 הָשִׁבֳּלִים is SQNMLVY. Nothing in Genesis is held back now.
@@ -414,7 +414,7 @@ way to practise just those), **Find the …** (tap what has it; a dotted green b
   I-Guttural, I-Aleph, I-Nun, I-Vav/I-Yod, II-Guttural, II-Vav/II-Yod, II-Geminate, III-Guttural, III-Aleph, III-He). A root can have two types (הָיָה is I-Guttural and III-He).
 * **Demonstratives.** A far demonstrative pronoun looks exactly like a third-person personal pronoun, so only far demonstrative ADJECTIVES (with the
   article) are used; a plural near pronoun אֵלֶּה could be masculine or feminine and is held back unless it follows a noun.
-* **Passages** are `data-source/bible/passages.csv` (article), `passages-dagesh.csv`, `passages-suffix.csv`, `passages-qames.csv`, `passages-sheva.csv`, `passages-prefix.csv`, `passages-syllable.csv` and one `passages-<page>.csv` per grammar page: Title, Start, End, Note.
+* **Passages** are `data-source/bible/passages.csv` (article), `passages-dagesh.csv`, `passages-suffix.csv`, `passages-qames.csv`, `passages-sheva.csv`, `passages-prefix.csv`, `passages-syllable.csv` and one `passages-<page>.csv` per grammar page: Title, Start, End, Note. Start and End are `chapter:verse` for Genesis, or a book code, a space and `chapter:verse` for Ruth or Jonah (for example `Ruth 1:16`).
 * **Spacing and hidden controls.** `.btn` sets `display`, which silently beat the `hidden` attribute, so the Next button showed
   under the answers; `.bible-body [hidden]` now wins, and the Next buttons have their own space above them.
 * **Vowel names** in the app use the spelling on the Vowels page (qameṣ, pataḥ, segol, ṣere, ḥireq, šureq …).
@@ -769,3 +769,31 @@ loaded. The Verbs pages are unchanged (they default to the first Strong Verb dat
 * **Reading page** (`public/js/pages/bible-reading.js`): passages from Genesis, Ruth, Deuteronomy 6 and Psalms; tap any word for its parts; your own
   translation; tap-to-reveal English (World English Bible, public domain); mark-as-read streak; Mixed review. Data is built by
   `scripts/build-reading.mjs` and `scripts/build-mixed.mjs` from `data-source/bible/reading-passages.csv`.
+
+
+## Update 21: more Reading passages, and Ruth and Jonah on the practice pages
+
+* **Reading** now covers eleven books: Genesis 1, 2, 3 and 22; Exodus 1, 2, 3 and 20:1–17; Numbers 6:22–26; Deuteronomy 6:1–15;
+  Joshua 24; Ruth 1–4; 1 Samuel 1; Psalms 1, 19, 23, 25, 37, 51, 117, 121 and 150; Proverbs 1–3; Isaiah 6; Jonah 1–4. The page asks for
+  a **Book**, then a **Chapter** (only when the book has more than one), then a section. Next and Previous run on through the
+  chapters of a book.
+* **One data file per book.** `scripts/build-reading.mjs` writes a small index, `bible-reading.json` (books, chapters, sections: no
+  Hebrew), and one file per book, `bible-reading-<book>.json` (for example `bible-reading-gen.json`, `bible-reading-1sam.json`). The
+  page loads a book's file only when the book is opened. Each file is listed in `netlify/functions/get-data.js`. A new book needs
+  its OSHB file in `data-source/bible`, its World English Bible file in `data-source/bible/english`, an entry in `BOOKS` in
+  `build-reading.mjs`, an import and an entry in `get-data.js`, and rows in `reading-passages.csv`.
+* **reading-passages.csv**: `Work` is now the chapter (or stretch of a chapter) inside the book named in `Book`. Keep each book's rows
+  together and each chapter's rows together. Sections stay about 3–9 verses. A section's id is its first verse (for example `Ruth.1.1`).
+* **Hebrew numbering.** Psalms and Jonah follow the Hebrew verse numbers, so a psalm's heading counts as verse 1 (or 1–2 in Psalm 51)
+  and Jonah 2:1 is 1:17 in English. The build matches each Hebrew verse to its English, and gives a psalm heading the World English
+  Bible's heading text. Sections whose numbers differ from English carry a note.
+* **Proverbs** uses the poetic accents (`isPoetryBook` in `reading-accents.js` now lists Ps, Prov and Job).
+* **Practice pages** (all 15) and **Mixed review** now draw on Genesis, Ruth and Jonah. `build-bible.mjs` reads the three books together.
+  Each page also gains one guided passage from Ruth and one from Jonah where the book has a clean example. Genesis content is
+  unchanged. `build-mixed.mjs` gives each book its own share, so Ruth and Jonah are not drowned out by Genesis.
+* **New case, now covered:** Jonah 3:8 הֶחָמָס (a segol article before ח). The Exceptional Forms rule (vowel dissimilation) now reads
+  “הֶ before an unaccented הָ, חָ, or עָ”, and the guide says so. Only the article page changed; the prefix page (preposition + article)
+  still covers ה and ע only.
+* **Pattern guides** no longer show how many times a pattern occurs (the "(n in Genesis)" captions on the Article, Dagesh, Qameṣ and
+  Sheva guides are gone).
+* Test 54 covers the three-book practice data, Mixed review and the removed counts. Tests 33, 34, 43 and 48 were updated.

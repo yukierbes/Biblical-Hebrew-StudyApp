@@ -28,8 +28,8 @@ export function buildAccentIndex(rows) {
   return index;
 }
 
-/** Books whose accents are the poetic set. */
-export const isPoetryBook = (book) => book === "Ps";
+/** Books whose accents are the poetic set (the three poetic books of the Hebrew Bible; Job is not on the Reading page). */
+export const isPoetryBook = (book) => book === "Ps" || book === "Prov" || book === "Job";
 
 /**
  * Reads the accents of one verse (an array of reading words).

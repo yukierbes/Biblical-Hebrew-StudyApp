@@ -10,7 +10,7 @@ const page = createPractice({
   dataset: "bible-sheva",
   historyMode: "bible-sheva",
   title: "Shevas",
-  intro: "Real examples from the Hebrew text of Genesis.",
+  intro: "Real examples from the Hebrew text of Genesis, Ruth and Jonah.",
   noun: "sheva",
   promptText: "Is the sheva under the highlighted consonant vocal or silent?",
   markWord: (w, ex) => ({ markLetter: ex.li }),
@@ -45,12 +45,10 @@ const page = createPractice({
     legend: "Green = correct, dotted green border = missed, red = not that kind of sheva.",
   },
   renderGuide: (body, { data, el, showAccents }) => {
-    body.appendChild(el("p", "", "Vocal and silent sheva patterns with real word examples from Genesis."));
+    body.appendChild(el("p", "", "Vocal and silent sheva patterns with real word examples from Genesis, Ruth and Jonah."));
     for (const g of data.groups) {
       const card = el("div", "bible-guide-card");
-      const total = g.patterns.reduce((n, id) => n + ((data.totals && data.totals[id]) || 0), 0);
       const h = el("h3", "", g.label);
-      h.insertAdjacentHTML("beforeend", ` <span class="caption">(${total} in ${data.source.book})</span>`);
       card.appendChild(h);
       card.appendChild(el("p", "", g.intro));
       for (const id of g.patterns) {

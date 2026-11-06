@@ -2,7 +2,7 @@
 //
 // Every page has the same four tabs, so they look and behave the same:
 //   Guided passage   — steps through every example in a short passage, one question at a time
-//   Pattern quiz     — 10 questions from across Genesis, then a score and a review of the missed ones
+//   Pattern quiz     — 10 questions from across Genesis, Ruth and Jonah, then a score and a review of the missed ones
 //   Find the …       — tap the words that have it
 //   Pattern guide    — the patterns, with real examples
 //
@@ -200,7 +200,7 @@ export function createPractice(config) {
 
   async function mount({ content, sidebarExtra }) {
     state = { tab: "guided", showAccents: getShowAccents(), passage: 0, guided: null, quiz: null, find: null, alive: true };
-    content.innerHTML = '<div class="loading">Loading Genesis…</div>';
+    content.innerHTML = '<div class="loading">Loading the verses…</div>';
     try {
       data = await loadBibleData(config.dataset);
     } catch (e) {
@@ -615,7 +615,7 @@ export function createPractice(config) {
 
   function renderQuiz(body, rerender) {
     if (!state.quiz) {
-      body.appendChild(el("p", "", `${QUIZ_LENGTH} questions from across Genesis. Each shows one verse with one ${config.noun} highlighted. Choose what is happening. All patterns included.`));
+      body.appendChild(el("p", "", `${QUIZ_LENGTH} questions from across Genesis, Ruth and Jonah. Each shows one verse with one ${config.noun} highlighted. Choose what is happening. All patterns included.`));
       const start = el("button", "btn", "Start quiz");
       start.type = "button";
       start.addEventListener("click", () => {
@@ -658,7 +658,7 @@ export function createPractice(config) {
     const total = quiz.questions.length;
     const percent = Math.round((quiz.score / total) * 100);
     if (!quiz.recorded) {
-      recordAttempt(config.historyMode, { score: quiz.score, total, percent, datasets: ["Genesis"], retry: quiz.retry });
+      recordAttempt(config.historyMode, { score: quiz.score, total, percent, datasets: ["Genesis", "Ruth", "Jonah"], retry: quiz.retry });
       quiz.recorded = true;
     }
     body.appendChild(el("h2", "", `Score: ${quiz.score} of ${total} (${percent}%)`));

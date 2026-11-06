@@ -28,7 +28,7 @@ export function mount({ content, sidebarExtra }) {
     el(
       "p",
       "caption",
-      "The Hebrew text is the Westminster Leningrad Codex (public domain). The word-by-word grammatical tagging is licensed CC BY 4.0 (creativecommons.org/licenses/by/4.0). The Hebrew lexicon (Strong’s numbers, dictionary forms and the rough meanings shown on the Reading page) is also from the Open Scriptures project (CC BY 4.0). The practice pages use Genesis; the Reading page uses Genesis 1, Ruth and Joshua 24. The grouping into patterns is this app’s own, and is not endorsed by Open Scriptures."
+      "The Hebrew text is the Westminster Leningrad Codex (public domain). The word-by-word grammatical tagging is licensed CC BY 4.0 (creativecommons.org/licenses/by/4.0). The Hebrew lexicon (Strong’s numbers, dictionary forms and the rough meanings shown on the Reading page) is also from the Open Scriptures project (CC BY 4.0). The practice pages use Genesis, Ruth and Jonah; the Reading page uses passages from Genesis, Exodus, Numbers, Deuteronomy, Joshua, Ruth, 1 Samuel, Psalms, Proverbs, Isaiah and Jonah. The grouping into patterns is this app’s own, and is not endorsed by Open Scriptures."
     )
   );
   content.appendChild(bible);

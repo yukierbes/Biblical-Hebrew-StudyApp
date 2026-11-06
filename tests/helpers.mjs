@@ -1,5 +1,5 @@
 import { JSDOM } from "jsdom";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
 
@@ -102,8 +102,9 @@ export async function setupApp({ mobile = false } = {}) {
         "bible-min": "bible-min.json",
         "bible-sheva": "bible-sheva.json",
       };
-      const filename = filenames[dataset];
-      if (!filename) return { ok: false, status: 400 };
+      // one data file per Reading book: bible-reading-gen, bible-reading-ruth, ...
+      const filename = filenames[dataset] || (/^bible-reading-[a-z0-9]+$/.test(dataset || "") ? `${dataset}.json` : null);
+      if (!filename || !existsSync(path.join(DATA_DIR, filename))) return { ok: false, status: 400 };
       const content = readFileSync(path.join(DATA_DIR, filename), "utf-8");
       return { ok: true, json: async () => JSON.parse(content) };
     }
