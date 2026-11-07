@@ -180,10 +180,11 @@ function makeSw({ online = true, status = 200 } = {}) {
     keys: async () => [...new Set([...store.keys()].map((k) => k.split("|")[0]))],
     delete: async (n) => { for (const k of [...store.keys()]) if (k.startsWith(n + "|")) store.delete(k); return true; },
   };
-  class Resp { constructor(body, init = {}) { this.body = body; this.status = init.status ?? 200; this.ok = this.status < 400; } clone() { return new Resp(this.body, { status: this.status }); } }
+  class Headers { constructor(init) { this.m = new Map(init instanceof Headers ? init.m : Object.entries(init || {})); } get(k) { return this.m.has(k) ? this.m.get(k) : null; } set(k, v) { this.m.set(k, v); } }
+  class Resp { constructor(body, init = {}) { this.body = body; this.status = init.status ?? 200; this.statusText = init.statusText || ""; this.headers = new Headers(init.headers); this.ok = this.status < 400; } clone() { return new Resp(this.body, { status: this.status, headers: this.headers }); } }
   const sandbox = {
     self: { addEventListener: (t, f) => (listeners[t] = f), location: { origin: "https://app.test" }, skipWaiting() {}, clients: { claim() {} } },
-    caches, Response: Resp, URL, Promise, console,
+    caches, Response: Resp, Headers, URL, Promise, console,
     fetch: async (req) => { if (!sandbox.__online) throw new Error("offline"); return new Resp("DATA:" + req.url, { status: sandbox.__status }); },
     __online: online, __status: status,
   };

@@ -3,20 +3,40 @@
 // in main.js, which owns all Netlify Identity init/login/logout
 // events and calls the functions below in response):
 //   1. The sidebar's Account section (status display, sign out, manual sync)
-//   2. Background sync of progress data to Netlify Blobs via /sync
+//   2. Syncing of progress data to Netlify Blobs via /sync
 // If Netlify Identity isn't configured on this deployment at all, the
 // gate in main.js keeps the whole app locked, and this module's UI
 // simply reports that cloud sync isn't available.
+//
+// How syncing works (the rules live in sync-delta.js):
+//   - Every few seconds the app LOOKS at its saved items on this device (nothing is sent by looking).
+//   - It contacts the server only when something changed here (after about 20 seconds of quiet, or at most
+//     every 90 seconds during constant changes), when the tab is hidden or closed, when you return to it, when
+//     the connection comes back, once every few minutes while the tab is open to pick up changes from your
+//     other devices, or when you press Sync Now. A hidden tab never contacts the server on its own.
+//   - What is sent is only the items that changed; what comes back is only the items this device is missing.
 
 import { renderStreakDisplay } from "./srs.js";
 import { authFetch } from "./auth-fetch.js";
 import { setSectionSummary } from "./sidebar-collapse.js";
+import {
+  TIMING,
+  hasChanges,
+  sameSnapshot,
+  runSyncRounds,
+  decideSync,
+  backoffDelay,
+  storageUsage,
+  formatBytes,
+  STORAGE_WARN_BYTES,
+} from "./sync-delta.js";
 
 const SYNC_PREFIX = "hebrewVerbApp:";
 const META_KEY = "hebrewVerbApp:cloudSync:meta";
 const SHADOW_KEY = "hebrewVerbApp:cloudSync:shadow";
 const SYNC_ENDPOINT = "/.netlify/functions/sync";
-const POLL_INTERVAL_MS = 20000;
+// A request sent as the page is closing may only carry about 64 KB; stay well under.
+const KEEPALIVE_LIMIT_BYTES = 60000;
 
 const status = { available: false, signedIn: false, email: null, syncing: false, lastSyncedAt: null, error: null };
 const listeners = [];
@@ -74,40 +94,8 @@ function readMeta() {
   return safeGetJSON(META_KEY, {});
 }
 
-/** Compares the current snapshot to the last-known one (the "shadow")
- * to find keys that changed since the last sync, bumping each one's
- * meta timestamp to now. This is what lets the server's per-key merge
- * (see netlify/functions/sync.js) tell "this device's copy is newer"
- * apart from "this device just hasn't touched that key in a while" —
- * without needing to instrument every single localStorage write in
- * the app individually. */
-function updateMetaForLocalChanges() {
-  const shadow = safeGetJSON(SHADOW_KEY, {});
-  const current = readSnapshot();
-  const meta = readMeta();
-  let changed = false;
-
-  for (const [k, v] of Object.entries(current)) {
-    if (shadow[k] !== v) {
-      meta[k] = Date.now();
-      changed = true;
-    }
-  }
-  for (const k of Object.keys(shadow)) {
-    if (!(k in current)) {
-      meta[k] = Date.now();
-      changed = true;
-    }
-  }
-
-  if (changed) {
-    safeSetJSON(META_KEY, meta);
-    safeSetJSON(SHADOW_KEY, current);
-  }
-  return meta;
-}
-
 function applyMergedResult(merged) {
+  // The older, whole-notebook answer (an older server, or an echo in tests): replace everything it names.
   for (const [k, v] of Object.entries(merged.snapshot || {})) {
     try {
       localStorage.setItem(k, v);
@@ -117,23 +105,79 @@ function applyMergedResult(merged) {
   }
   safeSetJSON(META_KEY, merged.meta || {});
   safeSetJSON(SHADOW_KEY, merged.snapshot || {});
-  // The streak/daily-goal widget is the one piece of UI present on
-  // every page, so it's worth refreshing immediately — other pages
-  // just read fresh from localStorage the next time they're opened.
   renderStreakDisplay();
 }
 
+const storageIO = {
+  get: (k) => {
+    try {
+      return localStorage.getItem(k);
+    } catch (e) {
+      return null;
+    }
+  },
+  set: (k, v) => {
+    try {
+      localStorage.setItem(k, v);
+    } catch (e) {
+      /* storage unavailable — not critical */
+    }
+  },
+  remove: (k) => {
+    try {
+      localStorage.removeItem(k);
+    } catch (e) {
+      /* storage unavailable — not critical */
+    }
+  },
+};
+
+function byteLength(text) {
+  return typeof TextEncoder !== "undefined" ? new TextEncoder().encode(text).length : text.length * 3;
+}
+
 let syncInFlight = null;
+// What the quiet-period timer watches (see checkForChanges below).
+let lastSeen = null;
+let firstChangeAt = 0;
+let lastChangeAt = 0;
+let lastContactAt = 0;
+let failures = 0;
+let nextAttemptAt = 0;
+
+/** One sync: see runSyncRounds in sync-delta.js for the steps. */
+async function runSync({ flush = false } = {}) {
+  const { legacy, applied } = await runSyncRounds({
+    storage: { readSnapshot, getJSON: safeGetJSON, setJSON: safeSetJSON, io: storageIO },
+    keys: { shadow: SHADOW_KEY, meta: META_KEY },
+    post: async (request) => {
+      const body = JSON.stringify(request);
+      const res = await authFetch(SYNC_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+        // Closing the tab: ask the browser to finish the request even after the page is gone.
+        keepalive: flush && byteLength(body) < KEEPALIVE_LIMIT_BYTES,
+      });
+      if (!res.ok) throw new Error(`Sync failed (HTTP ${res.status})`);
+      return res.json();
+    },
+  });
+  if (legacy) applyMergedResult(legacy);
+  else if (applied) renderStreakDisplay();
+}
 
 /**
- * Pushes the current local state to the server and immediately re-applies
- * whatever comes back — the server does its own per-key merge against
- * whatever it already had stored (see the function's mergeBundles), so
- * one round trip here is a full two-way sync, not just an upload. Safe
- * to call often; concurrent calls share the same in-flight request.
+ * Syncs now: sends whatever changed on this device and brings back whatever is new from other devices. One
+ * request does both, and an unchanged tab costs the server almost nothing. Safe to call often; concurrent calls
+ * share the same request. Never throws (a problem shows in the Account section).
  */
-export async function syncNow() {
-  if (!status.signedIn) return;
+export function syncNow() {
+  return runGuarded({ manual: true });
+}
+
+function runGuarded({ manual = false, flush = false } = {}) {
+  if (!status.signedIn) return Promise.resolve();
   if (syncInFlight) return syncInFlight;
 
   status.syncing = true;
@@ -141,20 +185,24 @@ export async function syncNow() {
 
   syncInFlight = (async () => {
     try {
-      const meta = updateMetaForLocalChanges();
-      const snapshot = readSnapshot();
-      const res = await authFetch(SYNC_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ snapshot, meta }),
-      });
-      if (!res.ok) throw new Error(`Sync failed (HTTP ${res.status})`);
-      const merged = await res.json();
-      applyMergedResult(merged);
+      await runSync({ flush });
       status.error = null;
       status.lastSyncedAt = Date.now();
+      lastContactAt = Date.now();
+      failures = 0;
+      nextAttemptAt = 0;
+      firstChangeAt = 0;
+      lastChangeAt = 0;
+      lastSeen = null;
     } catch (e) {
       status.error = e.message || "Sync failed";
+      failures++;
+      nextAttemptAt = Date.now() + backoffDelay(failures);
+      // Whatever was waiting is retried as soon as the hold-off ends, without waiting out a fresh quiet period.
+      if (hasChanges(safeGetJSON(SHADOW_KEY, {}), readSnapshot())) {
+        firstChangeAt = firstChangeAt || Date.now();
+        lastChangeAt = 0;
+      }
     } finally {
       status.syncing = false;
       notify();
@@ -163,6 +211,36 @@ export async function syncNow() {
   })();
 
   return syncInFlight;
+}
+
+/** Runs every few seconds while the tab is visible (exported so tests can run it). Looks at this device only; contacts the server only when
+ * decideSync says it is time. */
+export function checkForChanges() {
+  if (!status.signedIn || syncInFlight) return;
+  if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return;
+  const now = Date.now();
+  if (now < nextAttemptAt) return;
+
+  const current = readSnapshot();
+  const shadow = safeGetJSON(SHADOW_KEY, {});
+  const pending = hasChanges(shadow, current);
+  if (lastSeen && !sameSnapshot(lastSeen, current)) lastChangeAt = now;
+  lastSeen = current;
+  // The first time changes are noticed counts as activity, so they wait out the quiet period like any other.
+  if (pending && !firstChangeAt) {
+    firstChangeAt = now;
+    lastChangeAt = now;
+  }
+
+  if (decideSync({ pending, firstChangeAt, lastChangeAt, lastContactAt, now }) === "sync") runGuarded();
+}
+
+/** The tab is being hidden or closed: send what is waiting, now. */
+function flushIfPending() {
+  if (!status.signedIn) return;
+  if (!hasChanges(safeGetJSON(SHADOW_KEY, {}), readSnapshot())) return;
+  runGuarded({ flush: true });
 }
 
 export function openSignIn() {
@@ -213,9 +291,14 @@ function renderAccountUI() {
     ? "Syncing…"
     : `Synced ${timeAgo(status.lastSyncedAt)}`;
 
+  const usage = storageUsage(readSnapshot());
+  const tooBig = usage.bytes >= STORAGE_WARN_BYTES;
+  const usageLine = `<div class="caption" style="margin-bottom:8px;${tooBig ? "color:var(--bad);" : ""}" id="account-storage-line">Saved progress: ${formatBytes(usage.bytes)}${tooBig ? " — getting close to this browser's storage limit; download a backup from My Progress" : ""}</div>`;
+
   section.innerHTML = `
     <div class="caption" style="margin-bottom:6px;">${status.email || "Signed in"}</div>
-    <div class="caption" style="margin-bottom:8px;">${statusLine}</div>
+    <div class="caption" style="margin-bottom:${usageLine ? 4 : 8}px;">${statusLine}</div>
+    ${usageLine}
     <button id="account-sync-btn" type="button" class="btn btn-outline btn-sm btn-block" style="margin-bottom:6px;">Sync Now</button>
     <button id="account-signout-btn" type="button" class="btn btn-outline btn-sm btn-block">Sign Out</button>
   `;
@@ -251,11 +334,22 @@ export function cloudSyncSignedIn(email) {
 
   if (!pollingStarted) {
     pollingStarted = true;
-    setInterval(() => {
-      if (status.signedIn) syncNow();
-    }, POLL_INTERVAL_MS);
+    setInterval(checkForChanges, TIMING.CHECK_MS);
     document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible" && status.signedIn) syncNow();
+      if (!status.signedIn) return;
+      if (document.visibilityState === "hidden") {
+        flushIfPending();
+      } else if (Date.now() - lastContactAt >= TIMING.RETURN_MS || hasChanges(safeGetJSON(SHADOW_KEY, {}), readSnapshot())) {
+        runGuarded();
+      }
+    });
+    // iPhone Safari is more reliable about "pagehide" than "visibilitychange" when a tab is closed.
+    window.addEventListener("pagehide", flushIfPending);
+    window.addEventListener("online", () => {
+      if (status.signedIn) {
+        nextAttemptAt = 0;
+        runGuarded();
+      }
     });
   }
 }
@@ -265,5 +359,11 @@ export function cloudSyncSignedOut() {
   status.signedIn = false;
   status.email = null;
   status.lastSyncedAt = null;
+  lastSeen = null;
+  firstChangeAt = 0;
+  lastChangeAt = 0;
+  lastContactAt = 0;
+  failures = 0;
+  nextAttemptAt = 0;
   notify();
 }

@@ -21,7 +21,7 @@ usable on an arbitrary static file host the way earlier versions were (see
 ├── netlify/
 │   └── functions/
 │       ├── sync.js                # Identity-protected progress sync (reads/writes Netlify Blobs)
-│       ├── get-data.js              # Identity-protected dataset server (verbs/vocabulary/accents/consonants/vowels)
+│       ├── get-data.js              # Identity-protected dataset server; loads only the file asked for
 │       ├── merge-logic.js             # shared per-key "newest wins" merge, used by sync.js
 │       ├── report.js                    # "Report a mistake": students add flags; only the owner reads them
 │       ├── report-logic.js                # report checks: cleaning, who is the owner, per-student limits
@@ -168,12 +168,12 @@ Setup:
 
 With that done: opening the site shows a sign-in screen first. Only people
 you've invited can create an account and get past it. Once signed in,
-progress syncs automatically every ~20 seconds and whenever the tab becomes
-visible again (plus a manual *Sync Now* button in the sidebar's Account
-section). Signing in on a second device pulls that account's data down and
-merges it — per data category, not all-or-nothing, so studying on a phone
-right before opening a laptop won't cause either device to lose its most
-recent work.
+progress syncs in the background, **only when something has changed** (see
+*Update 22* at the end of this file for exactly when), and there is a manual
+*Sync Now* button in the sidebar's Account section. Signing in on a second
+device pulls that account's data down and merges it — per saved item, not
+all-or-nothing, so studying on a phone right before opening a laptop won't
+cause either device to lose its most recent work.
 
 If Identity isn't enabled, or the environment variables aren't set, the
 app shows a clear message on the sign-in screen (or the sync function
@@ -781,7 +781,7 @@ loaded. The Verbs pages are unchanged (they default to the first Strong Verb dat
   Hebrew), and one file per book, `bible-reading-<book>.json` (for example `bible-reading-gen.json`, `bible-reading-1sam.json`). The
   page loads a book's file only when the book is opened. Each file is listed in `netlify/functions/get-data.js`. A new book needs
   its OSHB file in `data-source/bible`, its World English Bible file in `data-source/bible/english`, an entry in `BOOKS` in
-  `build-reading.mjs`, an import and an entry in `get-data.js`, and rows in `reading-passages.csv`.
+  `build-reading.mjs`, one line in the `LOADERS` table in `get-data.js`, and rows in `reading-passages.csv`.
 * **reading-passages.csv**: `Work` is now the chapter (or stretch of a chapter) inside the book named in `Book`. Keep each book's rows
   together and each chapter's rows together. Sections stay about 3–9 verses. A section's id is its first verse (for example `Ruth.1.1`).
 * **Hebrew numbering.** Psalms and Jonah follow the Hebrew verse numbers, so a psalm's heading counts as verse 1 (or 1–2 in Psalm 51)
@@ -797,3 +797,59 @@ loaded. The Verbs pages are unchanged (they default to the first Strong Verb dat
 * **Pattern guides** no longer show how many times a pattern occurs (the "(n in Genesis)" captions on the Article, Dagesh, Qameṣ and
   Sheva guides are gone).
 * Test 54 covers the three-book practice data, Mixed review and the removed counts. Tests 33, 34, 43 and 48 were updated.
+
+
+## Update 22: lighter syncing, and saved data reused until the next release
+
+**Why:** the app used to send a person's whole saved progress to Netlify every 20 seconds for as long as a tab was open, even
+with nothing changed and even in a hidden tab, and every time a page opened it asked the function for its dataset again. Both
+cost Netlify credits and both grow with the number of users and the amount of content. This update changes how the app talks to
+the server; nothing a learner sees changes, except one new line in the Account section.
+
+* **When the app contacts the sync function now** (all in `public/js/cloud-sync.js`, rules in `public/js/sync-delta.js`):
+  * Every 5 seconds the app *looks* at its saved items on this device. Looking sends nothing.
+  * When something changed, it sends after 20 seconds of quiet, or at most every 90 seconds during constant changes.
+  * When the tab is hidden, or closed (`pagehide`), anything waiting is sent at once (marked `keepalive` so the browser finishes it).
+  * When you return to the tab (if the last contact was over a minute ago, or something is waiting), and when the connection comes back.
+  * While the tab is open and visible with nothing changed, once every 5 minutes, to pick up changes from your other devices.
+  * Sync Now always contacts the server.
+  * **A hidden tab never contacts the server on its own.** After a failure the app waits 15 seconds, then 30, then 60, up to 5 minutes.
+* **What is sent:** only the saved items that changed (and the times of any that were deleted), plus a short list of the times
+  of everything this device knows. **What comes back:** only the items this device is missing or has older. The rule per item is
+  unchanged: the newer change wins. The merge rules are in `netlify/functions/merge-logic.js` (`processSyncPost`).
+* **The server only rewrites the stored copy when something changed**, so an idle sync costs one read and no write.
+* **Self-repair:** if the server's copy is ever lost or older, the response lists those items (`need`) and the device sends them in
+  the same sync.
+* **Older copies of the app still work.** A request without `"v": 2` gets the old whole-notebook answer; a newer app talking to an
+  older server falls back the same way.
+* **Closing a tab:** the send when a tab is hidden or closed is the one most easily lost, because the browser may stop the page
+  mid-request. In a real browser, a request that had to pass through the service worker was lost about 1 time in 4; the worker now
+  tells browsers that support it (`addRoutes`, Chrome and Edge) to send the sync request straight to the network, which brought it
+  to about 1 in 24 in testing. Nothing is lost when a send fails: the change stays on the device and goes out the next time the app
+  is open. The same applies if the sign-in token has expired at that moment, or if a sync was already in progress when the tab closed.
+* **Saved datasets** (`public/sw.js`): a dataset saved by the *current* release is used with no request at all. Every deploy gets a
+  new `CACHE_VERSION` (see `stamp-sw.mjs`), so each dataset is downloaded about once per release. A copy from an older release is
+  fetched again but kept as the offline fallback. If you serve the site some other way than Netlify (so the version is not stamped),
+  change `CACHE_VERSION` by hand when the data changes.
+* **Account section** now shows "Saved progress: n KB", and turns red at 3 MB (browsers hold about 5 MB per site) with a pointer to
+  the backup on My Progress. Saved progress is bounded by the amount of content (each item has one small record, and history lists
+  are capped at 20 entries), not by how long someone studies, so nothing is deleted automatically. Adding many more practice
+  passages makes the number grow; this readout is how you will see it.
+* **Tests:** 55 (the server rules, the device rules, and whole conversations between two devices and the server, run with the same
+  loop the app uses), 56 (the sync module in a pretend browser, the storage readout, and the service worker reusing saved
+  datasets). `tests/helpers.mjs` now answers sync calls with the real merge rules and keeps a copy in memory; tests 48 and 51 were
+  adjusted (headers in the service-worker harness; a brand-new person now has nothing saved on the fake server either).
+
+
+## Update 23: the data function loads one file at a time
+
+* `netlify/functions/get-data.js` used to import all 33 data files (about 7 MB) every time the function woke up, though a request
+  needs one. It now has a table of one-line loaders (`LOADERS`) and loads a file the first time it is asked for, then keeps its
+  text for as long as the function stays awake. The answers, headers and sign-in check are unchanged.
+* **To add a dataset** (a new Reading book, say): the build writes its file in `netlify/functions/data`, then add one line to
+  `LOADERS`. Test 57 fails if a file in that folder has no line, or a line points at a missing file.
+* Test 57 also checks that every dataset is served exactly as built, that signed-out requests get 401, and that odd names
+  (`../sync`, `__proto__`) are refused.
+* **Deploying this one:** it is the only change that depends on how Netlify bundles the function, so deploy it on a branch first
+  (branch deploys are free), open the app there, and check that Vocabulary, Verbs, a Bible page and Reading all load.
+  Rolling back means restoring the previous `get-data.js` from GitHub Desktop.

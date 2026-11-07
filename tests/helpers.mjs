@@ -2,6 +2,7 @@ import { JSDOM } from "jsdom";
 import { readFileSync, existsSync } from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
+import { processSyncPost } from "../netlify/functions/merge-logic.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -74,6 +75,8 @@ export async function setupApp({ mobile = false } = {}) {
   // The Verb Parsing root step is off unless a test is about it (49): older tests drive the parsing fields directly.
   storageData["hebrewApp.parsingAskRoot"] = "0";
 
+  const fakeServer = { stored: null, calls: 0 };
+  global.fakeSyncServer = fakeServer;
   global.fetch = async (url, opts) => {
     const u = String(url);
     if (u.includes("/.netlify/functions/get-data")) {
@@ -109,10 +112,13 @@ export async function setupApp({ mobile = false } = {}) {
       return { ok: true, json: async () => JSON.parse(content) };
     }
     if (u.includes("/.netlify/functions/sync")) {
-      // No real backend in tests — just echo back whatever was pushed,
-      // as if the server had nothing else stored yet.
+      // No real backend in tests - but the same merge rules the real server runs (netlify/functions/merge-logic.js),
+      // against a copy kept in memory for this test.
       const body = opts && opts.body ? JSON.parse(opts.body) : { snapshot: {}, meta: {} };
-      return { ok: true, json: async () => ({ ...body, updatedAt: Date.now() }) };
+      const { status, response, toStore } = processSyncPost(body, fakeServer.stored);
+      if (toStore) fakeServer.stored = toStore;
+      fakeServer.calls++;
+      return { ok: status < 400, status, json: async () => response };
     }
     return { ok: false, status: 404 };
   };

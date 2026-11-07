@@ -1,91 +1,64 @@
-// GET /.netlify/functions/get-data?dataset=verbs|vocabulary|accents|consonants|vowels
+// GET /.netlify/functions/get-data?dataset=<name>  -> the named dataset as JSON, for signed-in users only.
 //
-// Requires a signed-in Netlify Identity user (any invited user — no
-// specific role needed, since registration is invite-only already).
-// The datasets themselves live at netlify/functions/data/*.json —
-// inside the Function's own bundle, never inside public/ (the site's
-// publish directory) — so there is no plain URL that serves them
-// without going through this auth check first.
+// The datasets (vocabulary, verbs, accents, the Bible practice pages, one file per Reading book, and so on) sit in
+// ./data and are written by the build (scripts/build-*.mjs). They are never served as plain files, so only
+// people signed in through Netlify Identity can get them.
 //
-// Classic (Lambda-compatible) function, same reasoning as sync.js: this
-// format is what gets `context.clientContext.user` populated from the
-// Identity JWT automatically.
+// Each file is loaded only when it is first asked for, not all at once when the function wakes up. The function
+// holds about 7 MB of data in all, and an ordinary request needs one file of it (a page of Reading is 0.2 MB), so
+// loading everything on every wake-up was wasted work. A file that has been asked for is kept (as text) for as
+// long as the function stays awake.
 //
-// The datasets are imported statically below, using the standard
-// JSON import-attribute syntax, rather than loaded at request time via
-// createRequire(import.meta.url) — that approach crashed in Netlify's
-// deployed function environment with "The argument 'filename' must be
-// a file URL object... Received undefined", because import.meta.url
-// comes back undefined there. A static import has no such dependency.
-import verbsData from "./data/verbs.json" with { type: "json" };
-import vocabularyData from "./data/vocabulary.json" with { type: "json" };
-import accentsData from "./data/accents.json" with { type: "json" };
-import consonantsData from "./data/consonants.json" with { type: "json" };
-import vowelsData from "./data/vowels.json" with { type: "json" };
-import bibleArticleData from "./data/bible-article.json" with { type: "json" };
-import bibleDageshData from "./data/bible-dagesh.json" with { type: "json" };
-import bibleSuffixData from "./data/bible-suffix.json" with { type: "json" };
-import bibleQamesData from "./data/bible-qames.json" with { type: "json" };
-import biblePrefixData from "./data/bible-prefix.json" with { type: "json" };
-import bibleSyllableData from "./data/bible-syllable.json" with { type: "json" };
-import bibleNounData from "./data/bible-noun.json" with { type: "json" };
-import biblePronounData from "./data/bible-pronoun.json" with { type: "json" };
-import bibleDemoData from "./data/bible-demo.json" with { type: "json" };
-import bibleAdjData from "./data/bible-adj.json" with { type: "json" };
-import bibleVerbData from "./data/bible-verb.json" with { type: "json" };
-import bibleInterrogData from "./data/bible-interrog.json" with { type: "json" };
-import bibleVavData from "./data/bible-vav.json" with { type: "json" };
-import bibleMinData from "./data/bible-min.json" with { type: "json" };
-import bibleShevaData from "./data/bible-sheva.json" with { type: "json" };
-import bibleReadingData from "./data/bible-reading.json" with { type: "json" };
-import bibleReadingGenData from "./data/bible-reading-gen.json" with { type: "json" };
-import bibleReadingExodData from "./data/bible-reading-exod.json" with { type: "json" };
-import bibleReadingNumData from "./data/bible-reading-num.json" with { type: "json" };
-import bibleReadingDeutData from "./data/bible-reading-deut.json" with { type: "json" };
-import bibleReadingJoshData from "./data/bible-reading-josh.json" with { type: "json" };
-import bibleReadingRuthData from "./data/bible-reading-ruth.json" with { type: "json" };
-import bibleReadingOneSamData from "./data/bible-reading-1sam.json" with { type: "json" };
-import bibleReadingPsData from "./data/bible-reading-ps.json" with { type: "json" };
-import bibleReadingProvData from "./data/bible-reading-prov.json" with { type: "json" };
-import bibleReadingIsaData from "./data/bible-reading-isa.json" with { type: "json" };
-import bibleReadingJonahData from "./data/bible-reading-jonah.json" with { type: "json" };
-import bibleMixedData from "./data/bible-mixed.json" with { type: "json" };
+// To add a dataset: write its file in ./data (the build does this), then add one line below. The loader needs
+// the literal file name so the bundler includes the file; test 57 checks that every file in ./data has a line.
 
-const DATASETS = {
-  verbs: verbsData,
-  vocabulary: vocabularyData,
-  accents: accentsData,
-  consonants: consonantsData,
-  vowels: vowelsData,
-  "bible-article": bibleArticleData,
-  "bible-dagesh": bibleDageshData,
-  "bible-suffix": bibleSuffixData,
-  "bible-qames": bibleQamesData,
-  "bible-prefix": biblePrefixData,
-  "bible-syllable": bibleSyllableData,
-  "bible-noun": bibleNounData,
-  "bible-pronoun": biblePronounData,
-  "bible-demo": bibleDemoData,
-  "bible-adj": bibleAdjData,
-  "bible-verb": bibleVerbData,
-  "bible-interrog": bibleInterrogData,
-  "bible-vav": bibleVavData,
-  "bible-min": bibleMinData,
-  "bible-sheva": bibleShevaData,
-  "bible-reading": bibleReadingData,
-  "bible-reading-gen": bibleReadingGenData,
-  "bible-reading-exod": bibleReadingExodData,
-  "bible-reading-num": bibleReadingNumData,
-  "bible-reading-deut": bibleReadingDeutData,
-  "bible-reading-josh": bibleReadingJoshData,
-  "bible-reading-ruth": bibleReadingRuthData,
-  "bible-reading-1sam": bibleReadingOneSamData,
-  "bible-reading-ps": bibleReadingPsData,
-  "bible-reading-prov": bibleReadingProvData,
-  "bible-reading-isa": bibleReadingIsaData,
-  "bible-reading-jonah": bibleReadingJonahData,
-  "bible-mixed": bibleMixedData,
+const LOADERS = {
+  verbs: () => import("./data/verbs.json", { with: { type: "json" } }),
+  vocabulary: () => import("./data/vocabulary.json", { with: { type: "json" } }),
+  accents: () => import("./data/accents.json", { with: { type: "json" } }),
+  consonants: () => import("./data/consonants.json", { with: { type: "json" } }),
+  vowels: () => import("./data/vowels.json", { with: { type: "json" } }),
+  "bible-article": () => import("./data/bible-article.json", { with: { type: "json" } }),
+  "bible-dagesh": () => import("./data/bible-dagesh.json", { with: { type: "json" } }),
+  "bible-suffix": () => import("./data/bible-suffix.json", { with: { type: "json" } }),
+  "bible-qames": () => import("./data/bible-qames.json", { with: { type: "json" } }),
+  "bible-prefix": () => import("./data/bible-prefix.json", { with: { type: "json" } }),
+  "bible-syllable": () => import("./data/bible-syllable.json", { with: { type: "json" } }),
+  "bible-noun": () => import("./data/bible-noun.json", { with: { type: "json" } }),
+  "bible-pronoun": () => import("./data/bible-pronoun.json", { with: { type: "json" } }),
+  "bible-demo": () => import("./data/bible-demo.json", { with: { type: "json" } }),
+  "bible-adj": () => import("./data/bible-adj.json", { with: { type: "json" } }),
+  "bible-verb": () => import("./data/bible-verb.json", { with: { type: "json" } }),
+  "bible-interrog": () => import("./data/bible-interrog.json", { with: { type: "json" } }),
+  "bible-vav": () => import("./data/bible-vav.json", { with: { type: "json" } }),
+  "bible-min": () => import("./data/bible-min.json", { with: { type: "json" } }),
+  "bible-sheva": () => import("./data/bible-sheva.json", { with: { type: "json" } }),
+  "bible-reading": () => import("./data/bible-reading.json", { with: { type: "json" } }),
+  "bible-reading-gen": () => import("./data/bible-reading-gen.json", { with: { type: "json" } }),
+  "bible-reading-exod": () => import("./data/bible-reading-exod.json", { with: { type: "json" } }),
+  "bible-reading-num": () => import("./data/bible-reading-num.json", { with: { type: "json" } }),
+  "bible-reading-deut": () => import("./data/bible-reading-deut.json", { with: { type: "json" } }),
+  "bible-reading-josh": () => import("./data/bible-reading-josh.json", { with: { type: "json" } }),
+  "bible-reading-ruth": () => import("./data/bible-reading-ruth.json", { with: { type: "json" } }),
+  "bible-reading-1sam": () => import("./data/bible-reading-1sam.json", { with: { type: "json" } }),
+  "bible-reading-ps": () => import("./data/bible-reading-ps.json", { with: { type: "json" } }),
+  "bible-reading-prov": () => import("./data/bible-reading-prov.json", { with: { type: "json" } }),
+  "bible-reading-isa": () => import("./data/bible-reading-isa.json", { with: { type: "json" } }),
+  "bible-reading-jonah": () => import("./data/bible-reading-jonah.json", { with: { type: "json" } }),
+  "bible-mixed": () => import("./data/bible-mixed.json", { with: { type: "json" } }),
 };
+
+// dataset name -> its JSON text, filled the first time each is asked for
+const bodies = new Map();
+
+async function bodyFor(dataset) {
+  if (!Object.prototype.hasOwnProperty.call(LOADERS, dataset)) return null;
+  if (!bodies.has(dataset)) {
+    const module = await LOADERS[dataset]();
+    bodies.set(dataset, JSON.stringify(module.default));
+  }
+  return bodies.get(dataset);
+}
 
 export const handler = async (event, context) => {
   const user = context.clientContext && context.clientContext.user;
@@ -98,20 +71,27 @@ export const handler = async (event, context) => {
   }
 
   const dataset = (event.queryStringParameters || {}).dataset;
-  const data = DATASETS[dataset];
-  if (!data) {
+  let body;
+  try {
+    body = await bodyFor(dataset);
+  } catch (e) {
+    return {
+      statusCode: 500,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ error: `Could not load dataset "${dataset}": ${e.message}` }),
+    };
+  }
+  if (body === null) {
     return {
       statusCode: 400,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ error: `Unknown dataset "${dataset}". Expected verbs, vocabulary, accents, consonants, vowels, bible-article, bible-dagesh, bible-suffix, bible-qames, bible-sheva, bible-prefix, bible-syllable, or one of the other bible-… datasets.` }),
+      body: JSON.stringify({ error: `Unknown dataset "${dataset}". Expected one of: ${Object.keys(LOADERS).join(", ")}.` }),
     };
   }
 
   return {
     statusCode: 200,
-    // Cached only in the requester's own browser (never a shared/CDN
-    // cache), since the response requires their personal auth token.
     headers: { "Content-Type": "application/json", "Cache-Control": "private, max-age=300" },
-    body: JSON.stringify(data),
+    body,
   };
 };

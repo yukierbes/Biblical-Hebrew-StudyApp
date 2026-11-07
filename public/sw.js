@@ -6,6 +6,14 @@ const CACHE_VERSION = "hebrew-verb-app-v39";
 
 // Saved datasets (see the fetch handler). Not tied to the release version, so it survives updates.
 const DATA_CACHE = "hebrew-app-data-v1";
+// Each saved dataset is marked with the release that fetched it (see the fetch handler).
+const RELEASE_HEADER = "x-app-release";
+
+function stampRelease(response) {
+  const headers = new Headers(response.headers);
+  headers.set(RELEASE_HEADER, CACHE_VERSION);
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
 
 const APP_SHELL = [
   "./",
@@ -99,6 +107,7 @@ const APP_SHELL = [
   "js/print-tables.js",
   "js/srs.js",
   "js/cloud-sync.js",
+  "js/sync-delta.js",
   "js/auth-fetch.js",
   "js/table.js",
   "js/widgets.js",
@@ -135,6 +144,16 @@ const APP_SHELL = [
 ];
 
 self.addEventListener("install", (event) => {
+  // Saving progress as a tab closes must not wait on this worker: a request that has to pass through it can be dropped
+  // while the page is going away (about 1 in 4 in testing). Browsers that support static routing send the sync
+  // request straight to the network; others simply carry on as before (the app also sends when a tab is hidden).
+  if (typeof event.addRoutes === "function") {
+    try {
+      event.addRoutes({ condition: { urlPattern: "/.netlify/functions/sync" }, source: "network" });
+    } catch (e) {
+      /* not supported: nothing is lost, the request just passes through this worker as before */
+    }
+  }
   event.waitUntil(
     caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL)).then(() => self.skipWaiting())
   );
@@ -162,24 +181,26 @@ self.addEventListener("fetch", (event) => {
   // complexity with little benefit here.
   if (url.origin !== self.location.origin) return;
 
-  // Datasets (vocabulary, verbs, the Bible text and so on): network first, and the last copy that arrived is kept
-  // so the app, and Reading in particular, still works with no connection. A copy is only kept for a successful
-  // answer, and the copy lives in its own cache so a new release of the app does not throw it away.
+  // Datasets (vocabulary, verbs, the Bible text and so on). They only change when the site is deployed, and every
+  // deploy gets a new CACHE_VERSION, so a copy saved by THIS release is still right and is used with no request
+  // at all. Each file is therefore downloaded about once per release instead of every time a page opens. A copy
+  // from an older release is not trusted: it is fetched again, but kept as the offline fallback so Reading (and
+  // everything else) still works with no connection. The copies live in their own cache, so a new release of
+  // the app does not throw them away. Only a successful answer is ever kept.
   if (url.pathname === "/.netlify/functions/get-data") {
+    const key = url.pathname + url.search;
     event.respondWith(
-      fetch(request)
-        .then((response) => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(DATA_CACHE).then((cache) => cache.put(url.pathname + url.search, copy));
-          }
+      caches.open(DATA_CACHE).then(async (cache) => {
+        const saved = await cache.match(key);
+        if (saved && saved.headers && saved.headers.get(RELEASE_HEADER) === CACHE_VERSION) return saved;
+        try {
+          const response = await fetch(request);
+          if (response.ok) cache.put(key, stampRelease(response.clone()));
           return response;
-        })
-        .catch(() =>
-          caches.open(DATA_CACHE).then((cache) =>
-            cache.match(url.pathname + url.search).then((saved) => saved || new Response("{}", { status: 503, headers: { "Content-Type": "application/json" } }))
-          )
-        )
+        } catch (e) {
+          return saved || new Response("{}", { status: 503, headers: { "Content-Type": "application/json" } });
+        }
+      })
     );
     return;
   }

@@ -1,6 +1,9 @@
 // GET  /.netlify/functions/sync  -> { snapshot, meta, updatedAt } for the signed-in user (or empty if none yet)
-// POST /.netlify/functions/sync  -> body { snapshot, meta }; merges with whatever's already stored
-//                                    (per-key, newest `meta` timestamp wins) and returns the merged result.
+// POST /.netlify/functions/sync  -> body { v: 2, snapshot, meta, known }: only the saved items that changed on this
+//                                    device. Merges them into what is stored (per item, the newest change wins) and
+//                                    answers with only what this device is missing. An older copy of the app that
+//                                    sends a whole { snapshot, meta } still works and gets the whole merged copy back.
+//                                    The stored copy is only rewritten when something changed.
 //
 // This is a classic (Lambda-compatible) Netlify Function, not an Edge
 // Function — that distinction matters here because Netlify Identity only
@@ -20,7 +23,7 @@
 // find/create those.
 
 import { getStore } from "@netlify/blobs";
-import { mergeBundles } from "./merge-logic.js";
+import { processSyncPost } from "./merge-logic.js";
 
 const STORE_NAME = "hebrew-verb-app-sync";
 
@@ -67,12 +70,14 @@ export const handler = async (event, context) => {
         };
       }
 
-      const existing = (await store.get(blobKey, { type: "json" })) || { snapshot: {}, meta: {} };
-      const merged = mergeBundles(incoming, existing);
-      const result = { ...merged, updatedAt: Date.now() };
+      // What is stored for this person (or null the first time). The rules for merging, and for answering with only
+      // what the device is missing, live in merge-logic.js so they can be tested without Netlify.
+      const existing = (await store.get(blobKey, { type: "json" })) || null;
+      const { status, response, toStore } = processSyncPost(incoming, existing);
 
-      await store.set(blobKey, JSON.stringify(result));
-      return { statusCode: 200, headers: { "Content-Type": "application/json" }, body: JSON.stringify(result) };
+      // Only rewrite the stored copy when something actually changed.
+      if (toStore) await store.set(blobKey, JSON.stringify(toStore));
+      return { statusCode: status, headers: { "Content-Type": "application/json" }, body: JSON.stringify(response) };
     }
 
     return {

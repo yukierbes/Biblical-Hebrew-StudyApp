@@ -47,6 +47,7 @@ console.log("\nThe welcome");
 localStorage.removeItem(KEY);
 localStorage.removeItem("hebrewVerbApp:vocab-typing-hebrew");
 for (const k of Array.from({ length: localStorage.length }, (_, i) => localStorage.key(i))) if (k.startsWith("hebrewVerbApp:") && k !== "hebrewVerbApp:confidencePrompt") localStorage.removeItem(k);
+global.fakeSyncServer.stored = null; // a brand-new person has nothing saved on the server either
 navigateTo(document, "home");
 await wait(400);
 assert(!!dialog(), "a brand-new person sees the welcome when Home opens");
