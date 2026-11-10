@@ -9,6 +9,18 @@ const DATA_CACHE = "hebrew-app-data-v1";
 // Each saved dataset is marked with the release that fetched it (see the fetch handler).
 const RELEASE_HEADER = "x-app-release";
 
+/** Drops saved copies of one chapter that were fetched under a different data version. */
+async function pruneOlderVersions(cache, dataset, version) {
+  try {
+    for (const req of await cache.keys()) {
+      const u = new URL(req.url);
+      if (u.searchParams.get("dataset") === dataset && u.searchParams.get("v") !== version) await cache.delete(req);
+    }
+  } catch (e) {
+    /* tidying only: a leftover old copy does no harm */
+  }
+}
+
 function stampRelease(response) {
   const headers = new Headers(response.headers);
   headers.set(RELEASE_HEADER, CACHE_VERSION);
@@ -48,6 +60,7 @@ const APP_SHELL = [
   "js/root-step.js",
   "js/bible-print.js",
   "js/reading-vocab.js",
+  "js/reading-data.js",
   "js/reading-accents.js",
   "js/reading-offline.js",
   "js/backup.js",
@@ -189,13 +202,21 @@ self.addEventListener("fetch", (event) => {
   // the app does not throw them away. Only a successful answer is ever kept.
   if (url.pathname === "/.netlify/functions/get-data") {
     const key = url.pathname + url.search;
+    // A Reading chapter is asked for with the version of the Reading data (…&v=abc123). The version changes only when the
+    // data does, so a saved chapter is right for as long as its address is the same: it survives ordinary releases of
+    // the app. When a newer version of a chapter is saved, the older copies of that chapter are dropped.
+    const dataset = url.searchParams.get("dataset") || "";
+    const version = dataset.startsWith("rd-") ? url.searchParams.get("v") : null;
     event.respondWith(
       caches.open(DATA_CACHE).then(async (cache) => {
         const saved = await cache.match(key);
-        if (saved && saved.headers && saved.headers.get(RELEASE_HEADER) === CACHE_VERSION) return saved;
+        if (saved && (version || (saved.headers && saved.headers.get(RELEASE_HEADER) === CACHE_VERSION))) return saved;
         try {
           const response = await fetch(request);
-          if (response.ok) cache.put(key, stampRelease(response.clone()));
+          if (response.ok) {
+            cache.put(key, stampRelease(response.clone()));
+            if (version) pruneOlderVersions(cache, dataset, version);
+          }
           return response;
         } catch (e) {
           return saved || new Response("{}", { status: 503, headers: { "Content-Type": "application/json" } });

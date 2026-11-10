@@ -11,8 +11,14 @@
 //
 // To add a dataset: write its file in ./data (the build does this), then add one line below. The loader needs
 // the literal file name so the bundler includes the file; test 57 checks that every file in ./data has a line.
+// The chapters of Reading are the exception: scripts/build-reading.mjs writes ./data/reading/ and its own table
+// of loaders (reading-loaders.js), and test 57 checks that table against the folder.
+
+import { READING_LOADERS } from "./data/reading-loaders.js";
 
 const LOADERS = {
+  // one entry per chapter of Reading ("rd-gen-1" ...), written by scripts/build-reading.mjs
+  ...READING_LOADERS,
   verbs: () => import("./data/verbs.json", { with: { type: "json" } }),
   vocabulary: () => import("./data/vocabulary.json", { with: { type: "json" } }),
   accents: () => import("./data/accents.json", { with: { type: "json" } }),
@@ -34,17 +40,6 @@ const LOADERS = {
   "bible-min": () => import("./data/bible-min.json", { with: { type: "json" } }),
   "bible-sheva": () => import("./data/bible-sheva.json", { with: { type: "json" } }),
   "bible-reading": () => import("./data/bible-reading.json", { with: { type: "json" } }),
-  "bible-reading-gen": () => import("./data/bible-reading-gen.json", { with: { type: "json" } }),
-  "bible-reading-exod": () => import("./data/bible-reading-exod.json", { with: { type: "json" } }),
-  "bible-reading-num": () => import("./data/bible-reading-num.json", { with: { type: "json" } }),
-  "bible-reading-deut": () => import("./data/bible-reading-deut.json", { with: { type: "json" } }),
-  "bible-reading-josh": () => import("./data/bible-reading-josh.json", { with: { type: "json" } }),
-  "bible-reading-ruth": () => import("./data/bible-reading-ruth.json", { with: { type: "json" } }),
-  "bible-reading-1sam": () => import("./data/bible-reading-1sam.json", { with: { type: "json" } }),
-  "bible-reading-ps": () => import("./data/bible-reading-ps.json", { with: { type: "json" } }),
-  "bible-reading-prov": () => import("./data/bible-reading-prov.json", { with: { type: "json" } }),
-  "bible-reading-isa": () => import("./data/bible-reading-isa.json", { with: { type: "json" } }),
-  "bible-reading-jonah": () => import("./data/bible-reading-jonah.json", { with: { type: "json" } }),
   "bible-mixed": () => import("./data/bible-mixed.json", { with: { type: "json" } }),
 };
 

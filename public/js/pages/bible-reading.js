@@ -2,21 +2,25 @@
 // "mark as read" streak — plus a Mixed review that asks about the article, the preposition, the vav, the verb and
 // more, all in one verse.
 //
-// The list of books, chapters and sections comes from the small "bible-reading" index; the words, their parsing and the
-// English of each book come from that book's own file ("bible-reading-gen", "bible-reading-ruth" ...), loaded only when
-// the learner opens the book (all built by scripts/build-reading.mjs from reading-passages.csv). The mixed questions are the same questions the practice
+// Every chapter of the books on offer can be read. The small "bible-reading" index lists the books and how many verses
+// each chapter has; one chapter's words, their parsing and its English come from that chapter's own file ("rd-gen-1",
+// "rd-ps-23" ...), loaded when it is opened and the next one fetched quietly in the background (all built by
+// scripts/build-reading.mjs). A chapter is read in sections of about 8 to 12 verses, named by plain references
+// ("Genesis 1:1–9"), and a whole section is marked as read at once. The mixed questions are the same questions the practice
 // pages ask: an index (bible-mixed) says which examples share a verse, and each page's own data and configuration
 // draw the question and its answer boxes.
 
-import { loadBibleData } from "../bible-data.js";
+import { loadBibleData, setDatasetVersion } from "../bible-data.js";
+import { expandChapter, parseRef, chapterDatasetName, plainRef } from "../reading-data.js";
 import { buildVerse, prettyRef, getShowAccents, setShowAccents, hebrewHtml, stripAccents } from "../bible-text.js";
 import { getPracticeConfig, makeBibleQuestion, drawBibleQuestion, noteBibleAnswer } from "../bible-practice.js";
-import { markVerseRead, unmarkVerseRead, getReadLog, getReadingStats } from "../bible-insights.js";
+import { markVersesRead, unmarkVersesRead, getChapterRead, getBookReadCounts, getReadingStats } from "../bible-insights.js";
 import { recordStreakActivity, recordItemResult } from "../srs.js";
 import { bibleSrsMode, exampleKey, pickAdaptiveVerse, describeNeed } from "../bible-areas.js";
 import { createConfidenceAsk } from "../confidence.js";
 import { saveResumePoint } from "../resume.js";
-import { buildVocabIndex, startedVocabKeys, passageKnowledge, describeWord, setWordCheck, getSelfCheck, getMissedWords, verseCheckSummary } from "../reading-vocab.js";
+import { buildVocabIndex, startedVocabKeys, passageKnowledge, describeWord, selfCheckWords, setWordCheck, getSelfCheck, getMissedWords, verseCheckSummary } from "../reading-vocab.js";
+import { vocabRowKey } from "../vocab-overrides.js";
 import { buildAccentIndex, analyzeVerse, isPoetryBook, groupLabel } from "../reading-accents.js";
 import { loadVocabData } from "../vocab-data.js";
 import { loadAccentData, getAccentRows } from "../accent-data.js";
@@ -39,6 +43,14 @@ const shuffle = (arr) => {
   return a;
 };
 
+/** The text of a word as it is READ: for a ketiv/qere pair the qere (the word a person is learning), else the word itself. */
+function readText(w) {
+  if (!w.kq) return w.t.split("/").join("");
+  let out = "";
+  for (const q of w.kq.words) out += q.m ? q.t : (out && !out.endsWith("\u05be") ? " " : "") + q.t.split("/").join("");
+  return out;
+}
+
 const TABS = [
   ["read", "Read & translate"],
   ["mixed", "Mixed review"],
@@ -49,7 +61,7 @@ let data = null;
 let mixedIndex = null;
 
 export async function mount({ content, sidebarExtra }) {
-  state = { mixedMode: "need", lastMixedRef: null, showDivisions: localStorage.getItem("hebrewApp.readingDivisions") === "1", sortEasy: false, vocabIndex: null, accentIndex: null, started: new Set(), tab: "read", passage: 0, showAccents: getShowAccents(), tapped: {}, english: {}, notes: {}, mixed: null, loadError: "", alive: true };
+  state = { mixedMode: "need", lastMixedRef: null, showDivisions: localStorage.getItem("hebrewApp.readingDivisions") === "1", sortEasy: false, vocabIndex: null, accentIndex: null, started: new Set(), tab: "read", loc: { book: "", chapter: 1, section: 0 }, showAccents: getShowAccents(), tapped: {}, english: {}, notes: {}, mixed: null, loadError: "", alive: true };
   content.innerHTML = '<div class="loading">Loading the reading passages…</div>';
   try {
     data = await loadBibleData("bible-reading");
@@ -59,57 +71,93 @@ export async function mount({ content, sidebarExtra }) {
     return;
   }
   if (!state || !state.alive) return;
-  // the index holds no Hebrew: each book's verses are added to these as the books are opened
+  // The index holds no Hebrew: each chapter's verses are added to these as the chapters are opened.
+  setDatasetVersion("rd-", data.version);
   data.verses = data.verses || {};
   data.english = data.english || {};
-  data.loaded = data.loaded || new Set();
+  data.chapters = data.chapters || {};
+  state.loc.book = data.books[0].id;
   // Vocabulary (for "words you know") and accents (for the divisions overlay): helpful, but Reading works without them.
   await Promise.allSettled([loadVocabData(), loadAccentData()]);
   if (!state || !state.alive) return;
   state.vocabIndex = buildVocabIndex();
   state.accentIndex = getAccentRows().length ? buildAccentIndex(getAccentRows()) : null;
   const link = consumeDeepLink();
+  let want = null;
   if (link && link.type === "resume" && link.page === "bible-reading" && link.detail) {
     if (["read", "mixed"].includes(link.detail.tab)) state.tab = link.detail.tab;
-    const at = data.passages.findIndex((p) => p.id === link.detail.passage);
-    if (at >= 0) state.passage = at;
+    if (link.detail.passage) want = parseRef(link.detail.passage);
   }
+  if (want && bookOfId(want.book) && want.chapter >= 1 && want.chapter <= bookOfId(want.book).chapters.length) state.loc = { book: want.book, chapter: want.chapter, section: 0 };
   try {
-    await ensureBook(data.passages[state.passage].book);
+    const ch = await ensureChapter(state.loc.book, state.loc.chapter);
+    if (want && want.verse) state.loc.section = Math.max(0, ch.sections.findIndex((x) => want.verse >= x.from && want.verse <= x.to));
   } catch (e) {
     content.innerHTML = "";
-    content.appendChild(el("div", "alert alert-warning", "Could not load this book. Please check your connection and try again."));
+    content.appendChild(el("div", "alert alert-warning", "Could not load this chapter. Please check your connection and try again."));
     return;
   }
   if (!state || !state.alive) return;
   render(content, sidebarExtra);
 }
 
-/** Loads one book's verses and English (once) and adds them to `data`. */
-async function ensureBook(bookId) {
-  const bk = data.books.find((b) => b.id === bookId);
-  if (!bk || data.loaded.has(bk.id)) return;
-  const part = await loadBibleData(bk.dataset);
-  Object.assign(data.verses, part.verses);
-  Object.assign(data.english, part.english);
-  data.loaded.add(bk.id);
+/** Loads one chapter (once), adds its verses and English to `data`, and returns it (see reading-data.js). */
+async function ensureChapter(bookId, chapter) {
+  const key = `${bookId}.${chapter}`;
+  if (data.chapters[key]) return data.chapters[key];
+  const raw = await loadBibleData(chapterDatasetName(bookId, chapter));
+  const ch = expandChapter(raw);
+  Object.assign(data.verses, ch.verses);
+  Object.assign(data.english, ch.english);
+  data.chapters[key] = ch;
+  return ch;
 }
 
-/** Opens section number `i` (an index into data.passages), loading its book first if need be. */
-async function goPassage(i, rerender) {
-  const p = data.passages[i];
-  if (!p) return;
+/** Where "next" leads from a place: the next section, else the first of the next chapter, else the first of the next book. */
+function stepFrom(loc, delta) {
+  const book = bookOfId(loc.book);
+  const ch = data.chapters[`${loc.book}.${loc.chapter}`];
+  const sections = ch ? ch.sections.length : 1;
+  if (delta > 0) {
+    if (loc.section + 1 < sections) return { book: loc.book, chapter: loc.chapter, section: loc.section + 1 };
+    if (loc.chapter < book.chapters.length) return { book: loc.book, chapter: loc.chapter + 1, section: 0 };
+    const at = data.books.findIndex((b) => b.id === loc.book);
+    return at < data.books.length - 1 ? { book: data.books[at + 1].id, chapter: 1, section: 0 } : null;
+  }
+  if (loc.section > 0) return { book: loc.book, chapter: loc.chapter, section: loc.section - 1 };
+  if (loc.chapter > 1) return { book: loc.book, chapter: loc.chapter - 1, section: -1 }; // -1: the last section, once its chapter is loaded
+  const at = data.books.findIndex((b) => b.id === loc.book);
+  return at > 0 ? { book: data.books[at - 1].id, chapter: data.books[at - 1].chapters.length, section: -1 } : null;
+}
+
+/** Opens a place (a section of a chapter), loading its chapter first if need be. */
+async function goTo(loc, rerender) {
   try {
-    await ensureBook(p.book);
+    const ch = await ensureChapter(loc.book, loc.chapter);
     state.loadError = "";
+    let section = loc.section === -1 ? ch.sections.length - 1 : Math.min(loc.section, ch.sections.length - 1);
+    if (loc.section === -2) {
+      // -2: pick up where you left off, at the first section with a verse not yet read
+      const read = getChapterRead(loc.book, loc.chapter);
+      const at = ch.sections.findIndex((sec) => sec.verses.some((r) => !read[parseRef(r).verse]));
+      section = at < 0 ? 0 : at;
+    }
+    if (!state || !state.alive) return;
+    state.loc = { book: loc.book, chapter: loc.chapter, section };
   } catch (e) {
-    if (state) state.loadError = `Could not load ${bookOfId(p.book).title}. Please check your connection and try again.`;
+    if (state) state.loadError = `Could not load ${bookOfId(loc.book).title} ${loc.chapter}. Please check your connection and try again.`;
     if (state && state.alive) rerender();
     return;
   }
-  if (!state || !state.alive) return;
-  state.passage = i;
   rerender();
+}
+
+/** The section being read, shaped the way the rest of the page expects: { id, book, chapter, title, verses, from, to }. */
+function currentPassage() {
+  const { book, chapter, section } = state.loc;
+  const bk = bookOfId(book);
+  const sec = data.chapters[`${book}.${chapter}`].sections[section];
+  return { id: sec.verses[0], book, chapter, from: sec.from, to: sec.to, title: plainRef(bk.name, chapter, sec.from, sec.to), verses: sec.verses };
 }
 
 const bookOfId = (id) => data.books.find((b) => b.id === id);
@@ -186,7 +234,7 @@ function render(content, sidebarExtra) {
 
   const body = el("div", "bible-body");
   content.appendChild(body);
-  if (state.tab === "read") renderRead(body, again, (i) => goPassage(i, again));
+  if (state.tab === "read") renderRead(body, again, (loc) => goTo(loc, again));
   else renderMixed(body, again);
 
   // quiet things at the bottom of the page: offline use and where the text comes from
@@ -196,16 +244,19 @@ function render(content, sidebarExtra) {
   content.appendChild(more);
   content.appendChild(el("p", "caption reading-source", `Hebrew text and tagging: ${esc(data.source.name)}. English: ${esc(data.source.english)}. See Sources & Credits.`));
 
-  const cur = data.passages[state.passage] || {};
-  const curWork = (bookOfId(cur.book) || { works: [] }).works.find((w) => w.id === cur.workId);
-  const where = state.tab === "read" ? `Read & translate · ${curWork ? curWork.title + " · " : ""}${cur.title || ""}` : "Mixed review";
+  const cur = currentPassage();
+  const where = state.tab === "read" ? `Read & translate · ${cur.title}` : "Mixed review";
   saveResumePoint("bible-reading", { tab: state.tab, passage: cur.id }, where);
+  // quietly fetch the chapter after this one (or the first of the next book), so turning the page is instant
+  const here = bookOfId(state.loc.book);
+  const after = state.loc.chapter < here.chapters.length ? { book: here.id, chapter: state.loc.chapter + 1 } : (() => { const at = data.books.findIndex((b) => b.id === here.id); return at < data.books.length - 1 ? { book: data.books[at + 1].id, chapter: 1 } : null; })();
+  if (after) ensureChapter(after.book, after.chapter).catch(() => {});
 }
 
 function readingStatsBar() {
   const s = getReadingStats();
   const bits = [];
-  bits.push(s.streak > 0 ? `🕯️ ${s.streak}-day reading streak` : "No reading streak yet — mark a verse as read to start one");
+  bits.push(s.streak > 0 ? `🕯️ ${s.streak}-day reading streak` : "No reading streak yet — mark a passage as read to start one");
   if (s.today > 0) bits.push(`${s.today} ${s.today === 1 ? "verse" : "verses"} read today`);
   bits.push(`${s.verses} different ${s.verses === 1 ? "verse" : "verses"} read in all`);
   return el("div", "info-box reading-stats", esc(bits.join(" · ")));
@@ -236,62 +287,56 @@ function selectField(label, cls, options, selected, onChange) {
   return wrap;
 }
 
-/** What a chapter is called in the Chapter menu: "Chapter 2", "20:1–17 The Ten Commandments", "Psalm 23". */
-function chapterLabel(bk, w) {
-  if (bk.id === "Ps") return w.title;
-  const rest = w.title.startsWith(bk.name) ? w.title.slice(bk.name.length).trim() : w.title;
-  return /^\d+$/.test(rest) ? `Chapter ${rest}` : rest;
-}
+/** What a chapter is called in the Chapter menu: "Chapter 2", "Psalm 23". */
+const chapterLabel = (bk, n) => (bk.id === "Ps" ? `Psalm ${n}` : `Chapter ${n}`);
 
 function renderRead(body, rerender, go) {
-  const log0 = getReadLog();
-  const current = data.passages[state.passage] || data.passages[0];
-  const book = bookOfId(current.book);
-  const currentWork = book.works.find((w) => w.id === current.workId) || book.works[0];
-  const versesOf = (w) => w.passages.flatMap((i) => data.passages[i].verses);
-  const readIn = (verses) => verses.filter((r) => log0.verses[r]).length;
-  const isDone = (w) => versesOf(w).every((r) => log0.verses[r]);
-  // go to the first section with an unread verse, so choosing "Ruth 2" picks up where you left off
-  const startOf = (w) => {
-    const next = w.passages.find((i) => data.passages[i].verses.some((r) => !log0.verses[r]));
-    return next !== undefined ? next : w.passages[0];
-  };
+  const loc = state.loc;
+  const book = bookOfId(loc.book);
+  const ch = data.chapters[`${loc.book}.${loc.chapter}`];
+  const counts = Object.fromEntries(data.books.map((b) => [b.id, getBookReadCounts(b.id)]));
+  const isChapterDone = (b, n) => (counts[b.id][n] || 0) >= b.chapters[n - 1];
+  const isBookDone = (b) => b.chapters.every((_, i) => isChapterDone(b, i + 1));
+  const readSet = getChapterRead(book.id, loc.chapter); // { verseNumber: date }
+  const isRead = (ref) => !!readSet[parseRef(ref).verse];
 
   if (state.loadError) body.appendChild(el("div", "alert alert-warning", esc(state.loadError)));
 
-  // Step 1: the book. Step 2: the chapter (only when the book has more than one). Step 3: the section to read now.
+  // Step 1: the book. Step 2: the chapter. Step 3: the section (a few verses) to read now.
   const picker = el("div", "reading-picker");
   picker.appendChild(
-    selectField("Book", "reading-book-select", data.books.map((b) => [b.id, b.title + (b.works.every(isDone) ? " ✓" : "")]), book.id, (id) => {
+    selectField("Book", "reading-book-select", data.books.map((b) => [b.id, b.title + (isBookDone(b) ? " ✓" : "")]), book.id, (id) => {
       const b = bookOfId(id);
-      go(startOf(b.works.find((w) => !isDone(w)) || b.works[0]));
+      const first = b.chapters.findIndex((_, i) => !isChapterDone(b, i + 1));
+      go({ book: id, chapter: first < 0 ? 1 : first + 1, section: -2 });
     })
   );
-  if (book.works.length > 1) {
-    picker.appendChild(
-      selectField("Chapter", "reading-chapter-select", book.works.map((w) => [w.id, chapterLabel(book, w) + (isDone(w) ? " ✓" : "")]), currentWork.id, (id) => {
-        go(startOf(book.works.find((w) => w.id === id)));
-      })
-    );
-  }
+  picker.appendChild(
+    selectField("Chapter", "reading-chapter-select", book.chapters.map((_, i) => [String(i + 1), chapterLabel(book, i + 1) + (isChapterDone(book, i + 1) ? " ✓" : "")]), String(loc.chapter), (n) => {
+      go({ book: book.id, chapter: Number(n), section: -2 });
+    })
+  );
   body.appendChild(picker);
+  if (ch.headings) {
+    body.appendChild(el("p", "caption reading-note", "<b>Hebrew verse numbers.</b> In the Hebrew Bible a psalm’s heading is counted as its first verse (sometimes its first two), so the Hebrew verse numbers here are higher than the English ones. The English shown with each verse is the English for that Hebrew verse."));
+  }
 
-  const sectionsOf = currentWork.passages.map((i) => ({ p: data.passages[i], i }));
+  const sectionsOf = ch.sections.map((sec, i) => ({ i, p: { id: sec.verses[0], title: plainRef(book.name, loc.chapter, sec.from, sec.to), verses: sec.verses } }));
   const know = new Map(sectionsOf.map((x) => [x.i, knowledgeOf(x.p)]));
   let shownSections = sectionsOf;
   if (state.sortEasy) shownSections = sectionsOf.slice().sort((x, y) => (know.get(y.i)?.pct ?? -1) - (know.get(x.i)?.pct ?? -1));
   const group = el("div", "reading-passages");
-  const workVerses = versesOf(currentWork);
-  group.appendChild(el("h2", "reading-book-title", `${esc(currentWork.title)} <span class="caption">${sectionsOf.length} ${sectionsOf.length === 1 ? "section" : "sections"} · ${readIn(workVerses)} of ${workVerses.length} verses read</span>`));
+  const readCount = Object.keys(readSet).length;
+  group.appendChild(el("h2", "reading-book-title", `${esc(book.name)} ${loc.chapter} <span class="caption">${sectionsOf.length} ${sectionsOf.length === 1 ? "section" : "sections"} · ${readCount} of ${ch.count} verses read</span>`));
   const sectionRow = el("div", "choice-group reading-section-list");
   for (const { p, i } of shownSections) {
     const k = know.get(i);
-    const complete = p.verses.every((r) => log0.verses[r]);
-    const b = el("button", "choice-btn reading-section-btn" + (i === state.passage ? " selected" : ""), `${complete ? '<span class="reading-section-done" aria-hidden="true">✓ </span>' : ""}<span class="reading-passage-title">${esc(p.title)}</span>${k && k.pct !== null ? ` <span class="reading-know reading-know-${k.pct >= 80 ? "high" : k.pct >= 50 ? "mid" : "low"}">${k.pct}%</span>` : ""}`);
+    const complete = p.verses.every(isRead);
+    const b = el("button", "choice-btn reading-section-btn" + (i === loc.section ? " selected" : ""), `${complete ? '<span class="reading-section-done" aria-hidden="true">✓ </span>' : ""}<span class="reading-passage-title">${esc(p.title)}</span>${k && k.pct !== null ? ` <span class="reading-know reading-know-${k.pct >= 80 ? "high" : k.pct >= 50 ? "mid" : "low"}">${k.pct}%</span>` : ""}`);
     b.type = "button";
-    b.setAttribute("aria-pressed", String(i === state.passage));
+    b.setAttribute("aria-pressed", String(i === loc.section));
     b.setAttribute("aria-label", `${p.title}${complete ? ", all read" : ""}${k && k.pct !== null ? `. You know about ${k.pct} percent of its words.` : ""}`);
-    b.addEventListener("click", () => go(i));
+    b.addEventListener("click", () => go({ book: book.id, chapter: loc.chapter, section: i }));
     sectionRow.appendChild(b);
   }
   group.appendChild(sectionRow);
@@ -310,36 +355,49 @@ function renderRead(body, rerender, go) {
   }
   body.appendChild(group);
 
-  const passage = data.passages[state.passage] || data.passages[0];
-  if (passage.note) body.appendChild(el("p", "caption", esc(passage.note)));
+  const passage = currentPassage();
   body.appendChild(knowledgePanel(passage));
   body.appendChild(el("p", "caption", "Tap a word to see its parts. Try translating the verse yourself first, then tap “Show English” to check."));
 
-  const log = getReadLog();
-  for (const ref of passage.verses) body.appendChild(verseCard(ref, log, rerender));
+  for (const ref of passage.verses) body.appendChild(verseCard(ref, isRead(ref), rerender));
 
-  const unread = passage.verses.filter((r) => !log.verses[r]);
+  // One button for the whole passage: reading is marked a passage at a time.
+  const unread = passage.verses.filter((r) => !isRead(r));
   const row = el("div", "button-row");
   if (unread.length) {
-    const all = el("button", "btn btn-outline", `Mark this section as read (${unread.length} ${unread.length === 1 ? "verse" : "verses"})`);
+    const all = el("button", "btn btn-outline", `Mark this passage as read (${unread.length} ${unread.length === 1 ? "verse" : "verses"})`);
     all.type = "button";
     all.addEventListener("click", () => {
-      for (const r of unread) markVerseRead(r);
+      markVersesRead(unread);
       recordStreakActivity();
       rerender();
     });
     row.appendChild(all);
   } else {
-    row.appendChild(el("div", "bible-feedback is-correct", "You have marked every verse of this section as read."));
+    row.appendChild(el("div", "bible-feedback is-correct", "You have marked this whole passage as read."));
+    const undo = el("button", "btn btn-sm btn-outline", "Unmark this passage");
+    undo.type = "button";
+    undo.addEventListener("click", () => {
+      unmarkVersesRead(passage.verses);
+      rerender();
+    });
+    row.appendChild(undo);
   }
   body.appendChild(row);
 
-  // Moving on: the section before and after, in the order of the book (a section after the last of a chapter opens the next chapter).
-  const flat = book.works.flatMap((w) => w.passages);
-  const pos = flat.indexOf(state.passage);
+  // Moving on: the section before and after (after the last section of a chapter comes the next chapter, then the next book).
+  const prev = stepFrom(loc, -1);
+  const next = stepFrom(loc, 1);
+  const labelFor = (t) => {
+    const bk = bookOfId(t.book);
+    const c = data.chapters[`${t.book}.${t.chapter}`];
+    if (c && t.section !== -2) {
+      const sec = c.sections[t.section < 0 ? c.sections.length - 1 : t.section];
+      return plainRef(bk.name, t.chapter, sec.from, sec.to);
+    }
+    return `${bk.name} ${t.chapter}`;
+  };
   const nav = el("div", "button-row reading-section-nav");
-  const prevI = pos > 0 ? flat[pos - 1] : null;
-  const nextI = pos >= 0 && pos < flat.length - 1 ? flat[pos + 1] : null;
   const mk = (text, target) => {
     const b = el("button", "btn btn-outline", esc(text));
     b.type = "button";
@@ -350,9 +408,8 @@ function renderRead(body, rerender, go) {
     });
     return b;
   };
-  const label = (i) => (data.passages[i].workId === current.workId ? data.passages[i].title : `${bookOfId(data.passages[i].book).works.find((w) => w.id === data.passages[i].workId).title}: ${data.passages[i].title}`);
-  if (prevI !== null) nav.appendChild(mk(`← Previous: ${label(prevI)}`, prevI));
-  if (nextI !== null) nav.appendChild(mk(`Next: ${label(nextI)} →`, nextI));
+  if (prev) nav.appendChild(mk(`← Previous: ${labelFor(prev)}`, prev));
+  if (next) nav.appendChild(mk(`Next: ${labelFor(next)} →`, next));
   else nav.appendChild(el("p", "caption", `That is the end of ${book.title}.`));
   body.appendChild(nav);
 }
@@ -391,37 +448,58 @@ function knowledgePanel(passage) {
 function offlineBar() {
   const wrap = el("div", "info-box reading-offline");
   const saved = getOfflineSaved();
+  const savedBooks = (saved && saved.books) || {};
   const text = el("span", "reading-offline-text");
   const status = el("span", "caption reading-offline-status");
   status.setAttribute("role", "status");
-  const when = saved ? new Date(saved.when).toLocaleDateString() : "";
+  const names = data.books.filter((b) => savedBooks[b.id]).map((b) => `${b.title}${savedBooks[b.id].version !== data.version ? " (needs updating)" : ""}`);
   text.textContent = isOffline()
-    ? "You are offline. Reading works from the copy saved on this device."
-    : saved
-      ? `Saved for offline reading on ${when}.`
-      : "Going somewhere without a connection? Save Reading to this device first.";
-  const btn = el("button", "btn btn-sm btn-outline", saved ? "Update the saved copy" : "Save for offline reading");
+    ? "You are offline. Reading works from what was saved on this device."
+    : names.length
+      ? `Saved for offline reading: ${names.join(", ")}.`
+      : "Going somewhere without a connection? Save a book to this device first.";
+  // A book is saved at a time (a whole Bible is a lot for a phone); the size is what is downloaded, before the phone compresses it.
+  const pick = document.createElement("select");
+  pick.className = "reading-offline-book";
+  pick.setAttribute("aria-label", "Book to save for offline reading");
+  const mb = (b) => (b.kb < 1024 ? `${b.kb} KB` : `${(b.kb / 1024).toFixed(1)} MB`);
+  for (const b of data.books) {
+    const o = document.createElement("option");
+    o.value = b.id;
+    o.textContent = `${b.title} (${mb(b)})${savedBooks[b.id] ? " ✓" : ""}`;
+    pick.appendChild(o);
+  }
+  pick.value = state.loc.book;
+  const label = () => (savedBooks[pick.value] ? "Update the saved copy" : "Save this book");
+  const btn = el("button", "btn btn-sm btn-outline", label());
+  pick.addEventListener("change", () => {
+    btn.textContent = label();
+  });
   btn.type = "button";
   btn.disabled = isOffline();
   btn.addEventListener("click", async () => {
     btn.disabled = true;
-    const r = await saveReadingForOffline((done, total) => {
-      status.textContent = ` Saving… ${done} of ${total}`;
-    });
-    status.textContent = r.ok ? " Saved. Reading will work without a connection on this device." : ` Some parts could not be saved (${r.failed.length}). Check your connection and try again.`;
+    const book = bookOfId(pick.value);
+    const r = await saveReadingForOffline(
+      (done, total) => {
+        status.textContent = ` Saving ${book.title}… ${done} of ${total}`;
+      },
+      { bookId: book.id }
+    );
+    status.textContent = r.ok ? ` Saved ${book.title}. It will work without a connection on this device.` : ` Some parts could not be saved (${r.failed.length}). Check your connection and try again.`;
     btn.disabled = false;
   });
-  wrap.append(text, document.createTextNode(" "), btn, status);
+  wrap.append(text, document.createTextNode(" "), pick, document.createTextNode(" "), btn, status);
   return wrap;
 }
 
-function verseCard(ref, log, rerender) {
+function verseCard(ref, isRead, rerender) {
   const words = data.verses[ref];
   const card = el("div", "bible-guide-card reading-verse");
   card.dataset.ref = ref;
   const head = el("div", "reading-verse-head");
   head.appendChild(el("strong", "", esc(prettyRef(ref))));
-  if (log.verses[ref]) head.appendChild(el("span", "pill pill-good", "Read"));
+  if (isRead) head.appendChild(el("span", "pill pill-good", "Read"));
   card.appendChild(head);
 
   const tappedWi = state.tapped[ref];
@@ -472,17 +550,6 @@ function verseCard(ref, log, rerender) {
     rerender();
   });
   buttons.appendChild(show);
-  const read = el("button", "btn btn-sm" + (log.verses[ref] ? " btn-outline" : ""), log.verses[ref] ? "Unmark as read" : "Mark as read");
-  read.type = "button";
-  read.addEventListener("click", () => {
-    if (log.verses[ref]) unmarkVerseRead(ref);
-    else {
-      markVerseRead(ref);
-      recordStreakActivity();
-    }
-    rerender();
-  });
-  buttons.appendChild(read);
   card.appendChild(buttons);
 
   if (state.english[ref]) {
@@ -498,7 +565,7 @@ function verseCard(ref, log, rerender) {
 function divisionsNote(words, analysis) {
   const box = el("div", "reading-divisions");
   const wordText = (wi) => {
-    const t = words[wi].t.split("/").join("");
+    const t = readText(words[wi]); // a ketiv/qere pair carries the accents of the qere
     return state.showAccents ? t : stripAccents(t);
   };
   const hebrew = (wi) => `<span lang="he" dir="rtl" class="bible-inline">${esc(wordText(wi))}</span>`;
@@ -532,7 +599,7 @@ function selfCheck(ref, words) {
   const index = state.vocabIndex || new Map();
   const list = el("ul", "reading-selfcheck-list");
   const rows = [];
-  words.forEach((w, wi) => {
+  selfCheckWords(words).forEach(({ w, wi }) => {
     const d = describeWord(w, index);
     if (d.kind !== "word") return;
     const li = el("li", "reading-selfcheck-row");
@@ -583,28 +650,96 @@ function selfCheck(ref, words) {
   return box;
 }
 
-/** What one word is made of: each piece with its label, the dictionary form, a rough meaning and (for verbs) the root. */
-function parsingPanel(w, accent = null) {
-  const box = el("div", "reading-parse");
+const heb = (text) => `<span lang="he" dir="rtl" class="bible-inline">${esc(text)}</span>`;
+
+/**
+ * What the app's own vocabulary list says about a word, shown first so what is learned is what is read: the English
+ * from the list, its lesson, how often it occurs, its part of speech, and whether it has been started. The older
+ * dictionary meaning goes beneath it (see wordBody).
+ */
+function vocabBlock(w) {
+  if (w.a) return el("p", "reading-aramaic", "<b>Aramaic.</b> This word is Aramaic, so it is not in the Hebrew vocabulary list.");
+  if (!w.lem || !state.vocabIndex || state.vocabIndex.size === 0) return null;
+  const d = describeWord(w, state.vocabIndex);
+  if (d.kind === "name") return el("p", "reading-vocab-none", "A name: names are not in the vocabulary list.");
+  const box = el("div", "reading-vocab");
+  if (!d.rows.length) {
+    box.appendChild(el("p", "reading-vocab-none", "<b>Your vocabulary:</b> this word is not in the vocabulary list yet."));
+    return box;
+  }
+  const r = d.rows[0];
+  const started = state.started.has(vocabRowKey(r));
+  const freq = Number(r.Frequency);
+  box.appendChild(
+    el(
+      "p",
+      "reading-vocab-main",
+      `<b>Your vocabulary:</b> ${esc(r.English)}<br><span class="caption">Lesson ${esc(r.Lesson)} · occurs ${Number.isFinite(freq) ? freq.toLocaleString("en-US") : esc(r.Frequency)} times · ${esc(r.POS)}${r.Category ? ` · ${esc(r.Category)}` : ""} · ${started ? "started" : "not started yet"}</span>`
+    )
+  );
+  if (d.rows.length > 1) {
+    box.appendChild(el("p", "caption", `Also in your list with this spelling: ${d.rows.slice(1).map((x) => `${heb(x.Hebrew)} ${esc(x.English)} (lesson ${esc(x.Lesson)})`).join("; ")}`));
+  }
+  return box;
+}
+
+/** The body of one word's panel: its vocabulary entry, the other meaning beneath it, its pieces, root, dictionary form and accent. */
+function wordBody(box, w, accent = null) {
   const strip = (s) => (state.showAccents ? s : stripAccents(s));
-  box.appendChild(el("div", "reading-parse-word", `<span lang="he" dir="rtl" class="bible-inline">${esc(strip(w.t.split("/").join("")))}</span>`));
+  const vocab = vocabBlock(w);
+  if (vocab) box.appendChild(vocab);
+  if (w.gl) box.appendChild(el("p", "reading-gloss", `<b>${vocab && vocab.classList.contains("reading-vocab") ? "Other meaning" : "Rough meaning"}:</b> ${esc(w.gl)} <span class="caption">(the old Strong’s dictionary sense, a starting point rather than a translation)</span>`));
   const table = el("table", "bible-summary reading-parse-table");
   for (const [piece, labelText] of w.parts || []) {
     const tr = el("tr");
-    tr.appendChild(el("td", "", `<span lang="he" dir="rtl" class="bible-inline">${esc(strip(piece))}</span>`));
+    tr.appendChild(el("td", "", heb(strip(piece))));
     tr.appendChild(el("td", "", esc(labelText)));
     table.appendChild(tr);
   }
   box.appendChild(table);
   const facts = [];
-  if (w.root) facts.push(`<b>Root:</b> <span lang="he" dir="rtl" class="bible-inline">${esc(w.root)}</span>`);
-  if (w.lem) facts.push(`<b>Dictionary form:</b> <span lang="he" dir="rtl" class="bible-inline">${esc(w.lem)}</span>`);
-  if (w.gl) facts.push(`<b>Rough meaning:</b> ${esc(w.gl)}`);
+  if (w.root) facts.push(`<b>Root:</b> ${heb(w.root)}`);
+  if (w.lem) facts.push(`<b>Dictionary form:</b> ${heb(w.lem)}`);
   if (accent && accent.accents.length) {
     facts.push(`<b>Accent:</b> ${accent.accents.map((a) => `${esc(a.name)} (${a.disjunctive ? `disjunctive, ${groupLabel(a.group)}` : "conjunctive"})`).join(", ")}`);
   }
   if (facts.length) box.appendChild(el("p", "reading-parse-facts", facts.join("<br>")));
-  box.appendChild(el("p", "caption", "The rough meaning is the old Strong’s dictionary sense, a starting point rather than a translation."));
+}
+
+/** What one word is made of (see wordBody). A ketiv/qere pair gets its own panel (kqPanel). */
+function parsingPanel(w, accent = null) {
+  if (w.kq) return kqPanel(w, accent);
+  const box = el("div", "reading-parse");
+  const strip = (s) => (state.showAccents ? s : stripAccents(s));
+  box.appendChild(el("div", "reading-parse-word", heb(strip(w.t.split("/").join("")))));
+  wordBody(box, w, accent);
+  return box;
+}
+
+/**
+ * A ketiv/qere pair. The verse shows only the consonants that are WRITTEN (the ketiv); here the word that is READ (the
+ * qere) is shown with its vowels and parsed. A pair can also be a word read but not written (a gap in the text), a
+ * word written but not read, or a qere of two or more words.
+ */
+function kqPanel(w, accent = null) {
+  const box = el("div", "reading-parse reading-kq");
+  const strip = (s) => (state.showAccents ? s : stripAccents(s));
+  const qere = w.kq.words.filter((q) => !q.m && !q.s);
+  if (w.kq.gap) {
+    box.appendChild(el("p", "reading-kq-note", `<b>Ketiv/Qere.</b> This word is <b>read but not written</b> in the text. It is read: ${heb(strip(readText(w)))}`));
+  } else if (!qere.length) {
+    box.appendChild(el("div", "reading-parse-word", heb(w.t)));
+    box.appendChild(el("p", "reading-kq-note", "<b>Ketiv/Qere.</b> This word is <b>written but not read</b> aloud: the tradition gives no word to read in its place."));
+  } else {
+    box.appendChild(el("div", "reading-parse-word", heb(w.t)));
+    box.appendChild(el("p", "reading-kq-note", `<b>Ketiv/Qere.</b> What is written (ketiv): ${heb(w.t)}<br>What is read (qere): ${heb(strip(readText(w)))}${qere.length > 1 ? ` <span class="caption">(${qere.length} words)</span>` : ""}`));
+  }
+  qere.forEach((q, n) => {
+    const part = el("div", "reading-kq-word");
+    part.appendChild(el("div", "reading-parse-word", `<span class="caption">Read:</span> ${heb(strip(q.t.split("/").join("")))}`));
+    wordBody(part, q, n === qere.length - 1 ? accent : null);
+    box.appendChild(part);
+  });
   return box;
 }
 

@@ -1,28 +1,37 @@
 #!/usr/bin/env node
 // Builds the data for the Reading page from the Open Scriptures Hebrew Bible files in data-source/bible/, the
-// passages listed in reading-passages.csv, the Strong's lexicon (HebrewStrong.xml) and the public-domain World
-// English Bible in data-source/bible/english/. It writes, into netlify/functions/data/:
-//   bible-reading.json          a small index: the books, their chapters and their sections (no Hebrew text)
-//   bible-reading-<book>.json   one file per book (for example bible-reading-gen.json) with that book's verses
-//                               and English, loaded only when the learner opens the book
+// Strong's lexicon (HebrewStrong.xml) and the public-domain World English Bible in data-source/bible/english/.
+//
+// EVERY chapter of every book listed in BOOKS below is built. It writes, into netlify/functions/data/:
+//   bible-reading.json            a small index: the books, how many verses each chapter has, the data version
+//   reading/rd-<book>-<n>.json    one compact file per chapter (for example rd-gen-1.json): its verses, their parsing
+//                                 and the English. NOT committed to git (see .gitignore): this script makes them on
+//                                 every deploy, and `npm test` runs it first.
+//   reading-loaders.js            one line per chapter file, so the data function can load one chapter at a time
 //
 //   node scripts/build-reading.mjs --check      (writes nothing)
 //
-// Every word of every chosen verse is shipped with a plain-language parsing of each of its pieces (prefix,
-// article, noun, verb with binyan and root, suffix …), worked out from the OSHB tagging. If anything is wrong the
-// script stops with a message and writes nothing, so the site keeps its previous version.
+// A chapter file holds each word once, as a short array, with the repeated labels and dictionary entries kept in two
+// small tables inside the file (see compactWord below); public/js/reading-data.js turns it back into the word objects
+// the page uses. Chapters are split into sections of about 8 to 12 verses here, at a paragraph mark (petuhah or
+// setumah) when one is close. Ketiv/qere pairs, Aramaic words and gaps are explained in scripts/lib/osis-reading.mjs.
+// If anything is wrong the script stops with a message and writes nothing, so the site keeps its previous version.
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, unlinkSync } from "node:fs";
 import { join, dirname } from "node:path";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
-import { parseOsis, morphParts } from "./lib/article-rules.mjs";
+import { morphParts } from "./lib/article-rules.mjs";
+import { parseReadingBook } from "./lib/osis-reading.mjs";
+import { sectionsFor } from "./lib/sections.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const SRC = join(ROOT, "data-source", "bible");
 const OUT = join(ROOT, "netlify", "functions", "data");
+const CHAPTERS_OUT = join(OUT, "reading");
 const CHECK_ONLY = process.argv.includes("--check");
 
-// id: the book code used in the OSHB files and in reading-passages.csv. title: the name in the book menu.
+// id: the book code used in the OSHB files and in references (Gen.1.1). title: the name in the book menu.
 // name: the name used inside a reference (for example "Psalm 23:1"). The menu follows this order.
 export const BOOKS = {
   Gen: { file: "Gen.xml", web: "web-genesis.json", name: "Genesis", title: "Genesis" },
@@ -37,8 +46,8 @@ export const BOOKS = {
   Isa: { file: "Isa.xml", web: "web-isaiah.json", name: "Isaiah", title: "Isaiah" },
   Jonah: { file: "Jonah.xml", web: "web-jonah.json", name: "Jonah", title: "Jonah" },
 };
-/** The name of one book's data file (also its dataset name in get-data.js), e.g. "bible-reading-1sam". */
-export const bookDataset = (b) => `bible-reading-${b.toLowerCase()}`;
+/** The dataset name of one chapter (the file name and the name the app asks get-data for), e.g. "rd-1sam-17". */
+export const chapterDataset = (book, chapter) => `rd-${book.toLowerCase()}-${chapter}`;
 
 const STEMS = { q: "Qal", N: "Niphal", p: "Piel", P: "Pual", h: "Hiphil", H: "Hophal", t: "Hithpael", o: "Polel", O: "Polal", r: "Hithpolel", m: "Poel", M: "Poal", k: "Palel", K: "Pulal", Q: "Qal passive", l: "Pilpel", L: "Polpal", f: "Hithpalpel", D: "Nithpael", j: "Pealal", i: "Pilel", u: "Hothpaal", c: "Tiphil", v: "Hishtaphel", w: "Nithpalel", y: "Nithpoel", z: "Hithpoel" };
 const VTYPES = { p: "perfect", q: "perfect (vav-consecutive)", i: "imperfect", w: "imperfect (vav-consecutive)", h: "cohortative", j: "jussive", v: "imperative", r: "active participle", s: "passive participle", a: "infinitive absolute", c: "infinitive construct" };
@@ -106,27 +115,6 @@ function parseLexicon(xml) {
   return map;
 }
 
-function readCsv(text) {
-  const rows = [];
-  let row = [], cell = "", q = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (q) {
-      if (c === '"' && text[i + 1] === '"') { cell += '"'; i++; } else if (c === '"') q = false; else cell += c;
-    } else if (c === '"') q = true;
-    else if (c === ",") { row.push(cell); cell = ""; }
-    else if (c === "\n" || c === "\r") {
-      if (c === "\r" && text[i + 1] === "\n") i++;
-      row.push(cell); cell = "";
-      if (row.some((x) => x.trim() !== "")) rows.push(row);
-      row = [];
-    } else cell += c;
-  }
-  row.push(cell);
-  if (row.some((x) => x.trim() !== "")) rows.push(row);
-  return rows;
-}
-
 /**
  * The English of one World English Bible JSON file: { verses: { "1.1": "text" }, titles: { 51: "heading" } }.
  * The WEB prints a psalm's heading as a separate "header" item just before the psalm; the Hebrew counts a heading as
@@ -149,28 +137,101 @@ function readEnglish(file) {
   return { verses, titles };
 }
 
+
+// ---------------------------------------------------------------------------------------------
+// Words
+// ---------------------------------------------------------------------------------------------
+
+// What kind of word a piece is, as one letter, so the page can pick the right entry from the vocabulary list when
+// several share a spelling (אֵל "God" and אֶל "to"): N noun, n proper name, V verb, A adjective, U numeral, P pronoun,
+// R preposition, C conjunction, D adverb, T particle.
+function posLetter(code) {
+  const c = code[0];
+  if (c === "N") return code[1] === "p" ? "n" : "N";
+  if (c === "A") return "co".includes(code[1]) ? "U" : "A";
+  return "VPRCDT".includes(c) ? c : "";
+}
+
+/** One OSHB word: its pieces with plain labels, its dictionary entry and a few facts. */
+function analyzeWord(w, lexicon) {
+  const mp = morphParts(w.morph);
+  const sp = w.text.split("/");
+  const lp = (w.lemma || "").split("/");
+  const aligned = mp.length === sp.length;
+  const parts = aligned ? sp.map((p, i) => [p, describePiece(mp[i])]) : [[sp.join(""), mp.map(describePiece).join(" + ")]];
+  // the content piece: the last piece that has a Strong's number
+  let num = null;
+  let ci = -1;
+  for (let i = lp.length - 1; i >= 0; i--) {
+    const d = /^(\d+)/.exec(lp[i]);
+    if (d) { num = d[1]; ci = i; break; }
+  }
+  const lex = num ? lexicon.get(num) : null;
+  let piece = mp[Math.min(Math.max(ci, 0), mp.length - 1)] || "";
+  if (piece[0] === "S" && mp.length > 1) piece = mp[mp.length - 2];
+  const out = { t: w.text, parts, pos: piece ? posLetter(piece) : "", aramaic: w.lang === "A" };
+  if (lex && lex.word) {
+    out.lem = lex.word;
+    out.gl = lex.gloss || "";
+    out.verb = mp.some((c) => c[0] === "V");
+  }
+  return out;
+}
+
+/**
+ * One chapter's words are kept in short arrays. The labels ("Qal · perfect · third person · masculine · singular") and
+ * the dictionary entries repeat a great deal, so each is stored once in a table (L and X) and the words point to them.
+ *   word      [text, [piece, labelNo, piece, labelNo ...], dictionaryNo or -1, flags, kind]
+ *               flags: 1 = a verb (the root is read off the dictionary form), 2 = Aramaic     kind: see posLetter
+ *   maqqef    [1, "־"]          other marks (sof pasuq, paseq, paragraph marks ...)  [2, text]
+ *   ketiv/qere  [3, written consonants, [items of the qere ...], flags]      read but not written  [4, "", [items], flags]
+ */
+function makeCompactor(lexicon) {
+  const labels = [];
+  const labelNo = new Map();
+  const dict = [];
+  const dictNo = new Map();
+  const no = (map, list, value, make) => {
+    if (!map.has(value)) { map.set(value, list.length); list.push(make()); }
+    return map.get(value);
+  };
+  const compactWord = (w) => {
+    const a = analyzeWord(w, lexicon);
+    const flat = [];
+    for (const [piece, label] of a.parts) flat.push(piece, no(labelNo, labels, label, () => label));
+    let x = -1;
+    if (a.lem !== undefined) x = no(dictNo, dict, `${a.lem}\u0001${a.gl}`, () => [a.lem, a.gl]);
+    return [a.t, flat, x, (a.verb ? 1 : 0) + (a.aramaic ? 2 : 0), a.pos];
+  };
+  const compactItem = (it) => {
+    if (it.k === "seg") return [it.type === "x-maqqef" ? 1 : 2, it.text];
+    if (it.k === "w") return compactWord(it);
+    return [it.gap ? 4 : 3, it.written, it.qere.map(compactItem), it.lang === "A" ? 2 : 0];
+  };
+  return { compactItem, labels, dict };
+}
+
+// ---------------------------------------------------------------------------------------------
+// Build
+// ---------------------------------------------------------------------------------------------
+
 const errors = [];
 const warnings = [];
 if (!existsSync(join(SRC, "HebrewStrong.xml"))) errors.push("data-source/bible/HebrewStrong.xml is missing.");
-if (!existsSync(join(SRC, "reading-passages.csv"))) errors.push("data-source/bible/reading-passages.csv is missing.");
 
-// books: [{ id, name, title, dataset, works: [{ id, title, passages: [indexes into passages] }] }]; one data file per book
-const out = { books: [], passages: [], perBook: {} };
+const built = []; // { name, json, book, chapter }
+const index = { books: [] };
+let verseTotal = 0;
+let kqTotal = 0;
+let aramaicWords = 0;
 if (!errors.length) {
   const lexicon = parseLexicon(readFileSync(join(SRC, "HebrewStrong.xml"), "utf8"));
   if (lexicon.size < 8000) errors.push(`The lexicon has only ${lexicon.size} entries (expected about 8,700).`);
-  const rows = readCsv(readFileSync(join(SRC, "reading-passages.csv"), "utf8"));
-  const head = rows.shift().map((h) => h.trim());
-  const idx = Object.fromEntries(head.map((h, i) => [h, i]));
-  for (const need of ["Work", "Book", "Section", "Start", "End", "Note"]) if (!(need in idx)) errors.push(`reading-passages.csv is missing the "${need}" heading.`);
-  const cache = {};
-  const book = (b) => {
-    if (cache[b]) return cache[b];
-    const def = BOOKS[b];
-    if (!def) { errors.push(`reading-passages.csv: unknown book "${b}" (use ${Object.keys(BOOKS).join(", ")}).`); return null; }
-    for (const f of [join(SRC, def.file), join(SRC, "english", def.web)]) if (!existsSync(f)) { errors.push(`${f.replace(ROOT + "/", "")} is missing.`); return null; }
+  for (const [id, def] of Object.entries(BOOKS)) {
+    for (const f of [join(SRC, def.file), join(SRC, "english", def.web)]) if (!existsSync(f)) errors.push(`${f.replace(ROOT + "/", "")} is missing.`);
+    if (errors.length) continue;
     const xml = readFileSync(join(SRC, def.file), "utf8");
-    const verses = parseOsis(xml);
+    const verses = parseReadingBook(xml);
     const kjv = {};
     for (const m of xml.matchAll(/<verse osisID="([^"]+)"([^>]*)>([\s\S]*?)<\/verse>/g)) {
       const note = /<note>KJV:([^<]+)<\/note>/.exec(m[3]);
@@ -180,125 +241,94 @@ if (!errors.length) {
     // A psalm's heading is verse 1 (or verses 1–2) in the Hebrew but has no verse number in English. Those leading
     // Hebrew verses carry no KJV numbering note; the next verse's note says it is English verse 1.
     const titleEnglish = {};
-    for (const m of xml.matchAll(/<verse osisID="([^"]+)"/g)) {
-      const [bk, c, vn] = m[1].split(".");
-      if (kjv[m[1]] || !eng.titles[c]) continue;
+    for (const v of verses) {
+      const [bk, c] = v.ref.split(".");
+      if (kjv[v.ref] || !eng.titles[c]) continue;
       const firstNoted = verses.find((x) => x.ref.startsWith(`${bk}.${c}.`) && kjv[x.ref]);
       if (!firstNoted || kjv[firstNoted.ref] !== `${bk}.${c}.1`) continue;
       const lead = verses.filter((x) => x.ref.startsWith(`${bk}.${c}.`) && !kjv[x.ref] && Number(x.ref.split(".")[2]) < Number(firstNoted.ref.split(".")[2]));
-      if (lead.some((x) => x.ref === m[1])) titleEnglish[m[1]] = lead[0].ref === m[1] ? eng.titles[c] : "(The heading continues from the verse before it; in English it is one sentence.)";
+      if (lead.some((x) => x.ref === v.ref)) titleEnglish[v.ref] = lead[0].ref === v.ref ? eng.titles[c] : "(The heading continues from the verse before it; in English it is one sentence.)";
     }
-    return (cache[b] = { verses, order: verses.map((v) => v.ref), kjv, eng: eng.verses, titleEnglish });
-  };
-  if (!errors.length) {
-    rows.forEach((r, n) => {
-      const b = r[idx.Book].trim();
-      const data = book(b);
-      if (!data) return;
-      const ref = (s) => `${b}.${String(s).trim().replace(":", ".")}`;
-      const a = data.order.indexOf(ref(r[idx.Start]));
-      const z = data.order.indexOf(ref(r[idx.End]));
-      if (a < 0 || z < 0 || z < a) { errors.push(`reading-passages.csv line ${n + 2}: cannot find ${r[idx.Start]} to ${r[idx.End]} in ${b}.`); return; }
-      if (z - a > 12) warnings.push(`reading-passages.csv line ${n + 2}: "${r[idx.Section]}" is ${z - a + 1} verses long — consider splitting it.`);
-      const refs = data.order.slice(a, z + 1);
-      // A BOOK is picked first, then one of its WORKS (a chapter, or a stretch of one: "Exodus 20:1–17"); a work's
-      // SECTIONS are read one at a time.
-      let bk = out.books.find((x) => x.id === b);
-      if (!bk) {
-        bk = { id: b, name: BOOKS[b].name, title: BOOKS[b].title, dataset: bookDataset(b), works: [] };
-        out.books.push(bk);
-        out.perBook[b] = { verses: {}, english: {} };
+    const byChapter = new Map();
+    for (const v of verses) {
+      const [, c, vn] = v.ref.split(".");
+      if (!byChapter.has(Number(c))) byChapter.set(Number(c), []);
+      byChapter.get(Number(c)).push({ ...v, n: Number(vn) });
+    }
+    const chapters = [...byChapter.keys()].sort((a, b) => a - b);
+    if (chapters.some((c, i) => c !== i + 1)) errors.push(`${id}: the chapters are not numbered 1, 2, 3 … in order.`);
+    const entry = { id, name: def.name, title: def.title, chapters: [], bytes: 0 };
+    for (const c of chapters) {
+      const vs = byChapter.get(c);
+      if (vs.some((v, i) => v.n !== i + 1)) { errors.push(`${id} ${c}: the verses are not numbered 1, 2, 3 … in order.`); continue; }
+      const { compactItem, labels, dict } = makeCompactor(lexicon);
+      const chapter = { b: id, c, n: vs.length, s: sectionsFor(vs.length, new Set(vs.filter((v) => v.para).map((v) => v.n))), v: {}, e: {} };
+      for (const v of vs) {
+        chapter.v[v.n] = v.items.map(compactItem);
+        for (const it of v.items) {
+          if (it.k === "kq") kqTotal++;
+          if (it.k === "w" && it.lang === "A") aramaicWords++;
+        }
+        const en = titleEnglish[v.ref] || eng.verses[(kjv[v.ref] || v.ref).split(".").slice(1).join(".")];
+        if (en) chapter.e[v.n] = en;
+        else warnings.push(`No English found for ${v.ref}.`);
       }
-      const workTitle = r[idx.Work].trim();
-      let work = bk.works.find((w) => w.title === workTitle);
-      if (!work) {
-        work = { id: `${b}:${workTitle}`, title: workTitle, passages: [] };
-        bk.works.push(work);
-      }
-      const sections = work.passages;
-      const prev = sections.length ? out.passages[sections[sections.length - 1]] : null;
-      if (prev && data.order.indexOf(prev.verses[prev.verses.length - 1]) + 1 !== a) warnings.push(`reading-passages.csv line ${n + 2}: "${r[idx.Section]}" does not continue straight on from the section before it.`);
-      sections.push(out.passages.length);
-      // "passages" is every section in reading order, the list the page indexes into. Its id stays the same when rows are added.
-      out.passages.push({ id: refs[0], workId: work.id, book: b, title: r[idx.Section].trim(), note: (r[idx.Note] || "").trim(), verses: refs });
-      const target = out.perBook[b];
-      for (const vref of refs) {
-        if (target.verses[vref]) continue;
-        const v = data.verses.find((x) => x.ref === vref);
-        target.verses[vref] = v.words.map((w) => {
-          if (w.seg === "x-maqqef") return { t: w.text, m: 1 };
-          if (w.seg) return { t: w.text, s: 1 };
-          const mp = morphParts(w.morph);
-          const sp = w.text.split("/");
-          const lp = (w.lemma || "").split("/");
-          const aligned = mp.length === sp.length;
-          const parts = aligned ? sp.map((p, i) => [p, describePiece(mp[i])]) : [[w.text.split("/").join(""), mp.map(describePiece).join(" + ")]];
-          // the content piece: the last piece that has a Strong's number
-          let num = null;
-          for (let i = lp.length - 1; i >= 0; i--) { const d = /^(\d+)/.exec(lp[i]); if (d) { num = d[1]; break; } }
-          const lex = num ? lexicon.get(num) : null;
-          const verbIdx = mp.findIndex((c) => c[0] === "V");
-          const word = { t: w.text, parts };
-          if (lex && lex.word) {
-            word.lem = lex.word;
-            if (lex.gloss) word.gl = lex.gloss;
-            if (verbIdx >= 0) {
-              const letters = [...stripMarks(lex.word)];
-              if (letters.length === 3) word.root = letters.join(" – ");
-            }
-          }
-          return word;
-        });
-        const en = data.titleEnglish[vref] || data.eng[(data.kjv[vref] || vref).split(".").slice(1).join(".")];
-        if (en) target.english[vref] = en;
-        else warnings.push(`No English found for ${vref}.`);
-      }
-    });
+      const headings = vs.filter((v) => titleEnglish[v.ref]).length; // a psalm's heading counts as Hebrew verse 1 (or 1–2)
+      if (headings) chapter.h = headings;
+      chapter.L = labels;
+      chapter.X = dict;
+      const name = chapterDataset(id, c);
+      const json = JSON.stringify(chapter);
+      built.push({ name, json });
+      entry.chapters.push(vs.length);
+      entry.bytes += json.length;
+      verseTotal += vs.length;
+    }
+    index.books.push(entry);
   }
 }
-if (!errors.length && out.passages.length < 3) errors.push("Fewer than three reading sections were built.");
-// every section of a work, and every work of a book, must be listed together, so "next section" always means the next in the text
-if (!errors.length) {
-  const seen = new Set();
-  let last = null;
-  for (const p of out.passages) {
-    if (p.workId !== last && seen.has(p.workId)) errors.push(`reading-passages.csv: the sections of "${p.workId.split(":").slice(1).join(":")}" are not all together — keep each chapter's rows next to each other.`);
-    seen.add(p.workId);
-    last = p.workId;
-  }
-  const seenBooks = new Set();
-  let lastBook = null;
-  for (const p of out.passages) {
-    if (p.book !== lastBook && seenBooks.has(p.book)) errors.push(`reading-passages.csv: the rows of the book "${p.book}" are not all together — keep each book's rows next to each other.`);
-    seenBooks.add(p.book);
-    lastBook = p.book;
-  }
-}
+if (!errors.length && built.length < 400) errors.push(`Only ${built.length} chapters were built (expected about 470).`);
 
 if (errors.length) {
   console.error("\nreading build FAILED — nothing was written:");
   for (const e of errors) console.error("  ERROR: " + e);
   process.exit(1);
 }
-for (const w of warnings) console.warn("  warning: " + w);
+const missingEnglish = warnings.filter((w) => w.startsWith("No English"));
+for (const w of warnings.filter((x) => !x.startsWith("No English"))) console.warn("  warning: " + w);
+if (missingEnglish.length) console.warn(`  warning: ${missingEnglish.length} verses have no English (for example ${missingEnglish.slice(0, 3).map((w) => w.replace("No English found for ", "")).join(", ")}).`);
+
+// The version changes only when the Reading data changes, so the app can keep chapters it has saved until then.
+const hash = createHash("sha1");
+for (const b of built) hash.update(b.name).update(b.json);
+const version = hash.digest("hex").slice(0, 12);
 const source = {
   name: "Open Scriptures Hebrew Bible",
   attribution: "Original work of the Open Scriptures Hebrew Bible available at https://github.com/openscriptures/morphhb",
   license: "CC BY 4.0 (tagging and lexicon); the Westminster Leningrad Codex text is in the public domain",
   english: "World English Bible (public domain)",
 };
-const index = { source, books: out.books, passages: out.passages };
-const indexJson = JSON.stringify(index);
-const files = [["bible-reading.json", indexJson]];
-let verseTotal = 0;
-for (const bk of out.books) {
-  const json = JSON.stringify(out.perBook[bk.id]);
-  verseTotal += Object.keys(out.perBook[bk.id].verses).length;
-  files.push([`${bk.dataset}.json`, json]);
-  console.log(`  ${bk.dataset}: ${bk.works.length} chapters, ${Object.keys(out.perBook[bk.id].verses).length} verses (${(json.length / 1024).toFixed(0)} KB)`);
-}
-console.log(`bible-reading: ${out.books.length} books, ${out.passages.length} sections, ${verseTotal} verses; index ${(indexJson.length / 1024).toFixed(0)} KB`);
+const indexJson = JSON.stringify({
+  source,
+  version,
+  books: index.books.map((b) => ({ id: b.id, name: b.name, title: b.title, chapters: b.chapters, kb: Math.round(b.bytes / 1024) })),
+});
+const loaders =
+  `// WRITTEN BY scripts/build-reading.mjs — do not edit. One line per chapter file, so get-data.js can load one chapter at a time.\n` +
+  `// (The chapter files themselves are made on every deploy and are not kept in git.)\n` +
+  `export const READING_LOADERS = {\n` +
+  built.map((b) => `  "${b.name}": () => import("./reading/${b.name}.json", { with: { type: "json" } }),`).join("\n") +
+  `\n};\n`;
+
+const totalKb = built.reduce((n, b) => n + b.json.length, 0) / 1024;
+for (const b of index.books) console.log(`  ${b.id.padEnd(5)} ${String(b.chapters.length).padStart(3)} chapters, ${String(b.chapters.reduce((n, x) => n + x, 0)).padStart(5)} verses, ${(b.bytes / 1024).toFixed(0)} KB`);
+console.log(`bible-reading: ${index.books.length} books, ${built.length} chapters, ${verseTotal} verses, ${(totalKb / 1024).toFixed(1)} MB in all (about ${(totalKb / verseTotal).toFixed(2)} KB a verse); ${kqTotal} ketiv/qere items, ${aramaicWords} Aramaic words; version ${version}; index ${(indexJson.length / 1024).toFixed(0)} KB`);
+
 if (!CHECK_ONLY) {
-  mkdirSync(OUT, { recursive: true });
-  for (const [name, json] of files) writeFileSync(join(OUT, name), json);
+  mkdirSync(CHAPTERS_OUT, { recursive: true });
+  const keep = new Set(built.map((b) => `${b.name}.json`));
+  for (const f of readdirSync(CHAPTERS_OUT)) if (f.endsWith(".json") && !keep.has(f)) unlinkSync(join(CHAPTERS_OUT, f));
+  for (const b of built) writeFileSync(join(CHAPTERS_OUT, `${b.name}.json`), b.json);
+  writeFileSync(join(OUT, "bible-reading.json"), indexJson);
+  writeFileSync(join(OUT, "reading-loaders.js"), loaders);
 }

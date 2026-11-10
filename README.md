@@ -766,14 +766,14 @@ loaded. The Verbs pages are unchanged (they default to the first Strong Verb dat
   comeback badges; four secret badges. Home shows the next three, each with a button to the page that earns it.
 * **Bible items** are now part of Home's weak spots and "Drill these", the Today card's due count, and the 7-day forecast.
 * **Explain my mistake**: after the same wrong answer three times on a Bible page, the app says what is being confused and links to the guide.
-* **Reading page** (`public/js/pages/bible-reading.js`): passages from Genesis, Ruth, Deuteronomy 6 and Psalms; tap any word for its parts; your own
+* **Reading page** (`public/js/pages/bible-reading.js`; *the passages, data files and marking described here were replaced by Update 24*): passages from Genesis, Ruth, Deuteronomy 6 and Psalms; tap any word for its parts; your own
   translation; tap-to-reveal English (World English Bible, public domain); mark-as-read streak; Mixed review. Data is built by
   `scripts/build-reading.mjs` and `scripts/build-mixed.mjs` from `data-source/bible/reading-passages.csv`.
 
 
 ## Update 21: more Reading passages, and Ruth and Jonah on the practice pages
 
-* **Reading** now covers eleven books: Genesis 1, 2, 3 and 22; Exodus 1, 2, 3 and 20:1–17; Numbers 6:22–26; Deuteronomy 6:1–15;
+* **Reading** (*the chosen passages below, the per-book data files and `reading-passages.csv` were replaced by Update 24: every chapter of the eleven books is now read*) now covers eleven books: Genesis 1, 2, 3 and 22; Exodus 1, 2, 3 and 20:1–17; Numbers 6:22–26; Deuteronomy 6:1–15;
   Joshua 24; Ruth 1–4; 1 Samuel 1; Psalms 1, 19, 23, 25, 37, 51, 117, 121 and 150; Proverbs 1–3; Isaiah 6; Jonah 1–4. The page asks for
   a **Book**, then a **Chapter** (only when the book has more than one), then a section. Next and Previous run on through the
   chapters of a book.
@@ -846,10 +846,65 @@ the server; nothing a learner sees changes, except one new line in the Account s
 * `netlify/functions/get-data.js` used to import all 33 data files (about 7 MB) every time the function woke up, though a request
   needs one. It now has a table of one-line loaders (`LOADERS`) and loads a file the first time it is asked for, then keeps its
   text for as long as the function stays awake. The answers, headers and sign-in check are unchanged.
-* **To add a dataset** (a new Reading book, say): the build writes its file in `netlify/functions/data`, then add one line to
-  `LOADERS`. Test 57 fails if a file in that folder has no line, or a line points at a missing file.
+* **To add a dataset**: the build writes its file in `netlify/functions/data`, then add one line to
+  `LOADERS`. (Reading's chapters are the exception: see Update 24.) Test 57 fails if a file in that folder has no line, or a line points at a missing file.
 * Test 57 also checks that every dataset is served exactly as built, that signed-out requests get 401, and that odd names
   (`../sync`, `__proto__`) are refused.
 * **Deploying this one:** it is the only change that depends on how Netlify bundles the function, so deploy it on a branch first
   (branch deploys are free), open the app there, and check that Vocabulary, Verbs, a Bible page and Reading all load.
   Rolling back means restoring the previous `get-data.js` from GitHub Desktop.
+
+
+## Update 24: every chapter of Reading, by book and chapter; ketiv/qere; the vocabulary in the tap panel; a lighter reading log
+
+**What changed for a learner**
+* **Every chapter of the eleven books** (470 chapters, 11,329 verses) can be read. Choose a **Book**, then a **Chapter**; the chapter is read in
+  **sections of about 8 to 12 verses**, named by plain references ("Genesis 1:1–8"). A chapter of up to 12 verses is one section. A section ends at
+  a petuhah or setumah (פ, ס) when one is within two verses of the even split. Previous and Next run on through sections, chapters and books.
+  The hand-written section titles and the chosen passages (and `data-source/bible/reading-passages.csv`, now unused and safe to delete) are gone.
+* **A whole passage is marked as read at once** ("Mark this passage as read (8 verses)", then "Unmark this passage"). The button on each verse is gone.
+* **Ketiv/qere.** A written word whose reading differs shows as bare **consonants** (what is written: no vowels, no accents, no mark). The qere is not
+  shown beside it. Tapping it says **Ketiv/Qere** and shows what is written and what is read, with the qere parsed. A qere with no ketiv (Ruth 3:5)
+  shows a small dashed gap that can be tapped; a ketiv with no qere (Ruth 3:12) says it is written but not read; a qere of two words (Gen 30:11)
+  lists both; a written phrase of two words (1 Sam 20:2) is one item. A pair counts once in "words you know" and in the self-check, as the word that is read.
+  Accent divisions read the accent from the qere. 367 such items in the eleven books. The BHS-style form (ketiv consonants carrying the qere's vowels)
+  is **not** built: the source does not have it, and it needs a reviewed list.
+* **Aramaic** words are flagged (Genesis 31:47 has two). The tap panel says "Aramaic" and does not match them to the Hebrew vocabulary list.
+* **The tap panel starts with your vocabulary**: the English from the vocabulary list, its lesson, how often it occurs, its part of speech and category,
+  and whether it is started; the Strong's meaning follows beneath it as "Other meaning", then the parts. A word the list does not have says so.
+  When several entries share a spelling (אֵל and אֶל) the one of the word's own kind is used (the data now records noun, verb, preposition ...).
+  Final and regular letters are one letter (the list's אֶרֶצ now matches the dictionary's אֶרֶץ). "Words you know" uses the same matching, so it is a little more exact.
+* **Save for offline reading** is now a **book** at a time, with its size beside it ("Genesis (1.4 MB)"), and shows which books are saved and which need updating.
+* Psalms whose heading counts as verse 1 or 1–2 carry a note that the Hebrew verse numbers are higher than the English.
+
+**The data (`scripts/build-reading.mjs`)**
+* It builds **one small file per chapter** (`netlify/functions/data/reading/rd-gen-1.json` ...), about 10 MB in all (0.94 KB a verse, a third of the old size), a small
+  index `bible-reading.json` (books, verses per chapter, a **data version**, and each book's size), and `reading-loaders.js`. The chapter files are **not kept in
+  git** (see `.gitignore`): the build makes them on every deploy and `npm test` (`tests/run-all.mjs`) runs it first. `npm run build-reading` does it by hand;
+  a single test file needs it done first. The index and `reading-loaders.js` are kept in git (small).
+* In a chapter file each word is a short array, and the repeated labels and dictionary entries are stored once per chapter (`L` and `X`);
+  `public/js/reading-data.js` turns it back into the word objects the page uses. Its header explains the format.
+* `scripts/lib/osis-reading.mjs` reads the source for Reading (ketiv/qere, Aramaic, paragraph marks). It is separate from `parseOsis` on purpose: the practice
+  pages are built from that one and remember words by position, so it was **not changed**. `scripts/lib/sections.mjs` is the section rule.
+* `get-data.js` serves a chapter by name (`rd-gen-1`) through the table in `reading-loaders.js`, one file at a time. **A new book** needs its OSHB and World
+  English Bible files, an entry in `BOOKS` in `build-reading.mjs`, and its name in `BOOK_NAMES` in `bible-text.js` and in `bible-areas.js` (the names shown with a verse reference). Run the build;
+  nothing else (no CSV rows, no loader lines).
+* **Saved chapters are kept by data version, not by release.** The page asks for `…dataset=rd-gen-1&v=<version>`; the version changes only when the Reading data does,
+  so `sw.js` keeps a saved chapter until then (it survives ordinary deploys) and drops the older copy of a chapter when a newer one arrives. Other datasets are still
+  kept by release (Update 22).
+* The page loads the index, then **one chapter at a time**, and quietly fetches the chapter after the one being read.
+
+**The reading log (`public/js/bible-insights.js`)**
+* One item per **book** (`hebrewVerbApp:bibleRead:Gen`) holding runs of verses per chapter with the day read (`{"1": [[1, 8, "2026-11-08"]]}`), and one item for the days
+  (`hebrewVerbApp:bibleReadDays`). All of Genesis fits in about 2 KB (the old way: about 40 times more), and reading a passage changes only that book's item, so only that syncs.
+  Two devices marking the same book while both are offline overwrite each other (the later wins); the app syncs when a tab is shown, so this is rare.
+* The old single log (`bibleReadLog`) is **read once and folded in**, never written. A fingerprint of it is kept on that device only; if a device that still has the old version
+  adds to it, the additions are folded in later. A verse unmarked after the move stays unmarked.
+* `getReadLog()`, `getReadingStats()`, `markVerseRead()` and `unmarkVerseRead()` work as before (badges, Home and My Progress are unchanged); `markVersesRead`, `unmarkVersesRead`,
+  `getChapterRead` and `getBookReadCounts` are new.
+
+**Deleting files.** A zip cannot delete, so delete these by hand in GitHub Desktop: `netlify/functions/data/bible-reading-*.json` (11 files: Gen, Exod, Num, Deut, Josh, Ruth, 1sam, Ps, Prov, Isa, Jonah) and,
+optionally, `data-source/bible/reading-passages.csv`. If left, they are ignored (test 57 notes them).
+
+**Tests:** 43 (the page, rewritten), 48 (the data, vocabulary matching, accents, offline; rewritten), 57 (chapters served), 58 (the reading log and the move from the old one),
+59 (the Reading build and its reader), 60 (what the page asks the server for, and saving a book). 42, 55 and 56 are unchanged.

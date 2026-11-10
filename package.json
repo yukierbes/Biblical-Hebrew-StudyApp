@@ -8,6 +8,7 @@
     "build-data": "node scripts/build-data.mjs",
     "check-data": "node scripts/build-data.mjs --check",
     "build-bible": "node scripts/build-bible.mjs",
+    "build-reading": "node scripts/build-reading.mjs",
     "check-bible": "node scripts/build-bible.mjs --check && node scripts/build-reading.mjs --check"
   },
   "dependencies": {

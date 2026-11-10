@@ -105,11 +105,15 @@ export async function setupApp({ mobile = false } = {}) {
         "bible-min": "bible-min.json",
         "bible-sheva": "bible-sheva.json",
       };
-      // one data file per Reading book: bible-reading-gen, bible-reading-ruth, ...
-      const filename = filenames[dataset] || (/^bible-reading-[a-z0-9]+$/.test(dataset || "") ? `${dataset}.json` : null);
+      // one data file per Reading chapter: rd-gen-1, rd-ruth-2, ... (made by scripts/build-reading.mjs, in data/reading/)
+      global.fakeDataRequests = global.fakeDataRequests || [];
+      global.fakeDataRequests.push(u);
+      const isChapter = /^rd-[a-z0-9]+-\d+$/.test(dataset || "");
+      if (isChapter && !existsSync(path.join(DATA_DIR, "reading"))) throw new Error("The Reading chapters have not been built: run  node scripts/build-reading.mjs  first (npm test does this).");
+      const filename = filenames[dataset] || (isChapter ? `reading/${dataset}.json` : null);
       if (!filename || !existsSync(path.join(DATA_DIR, filename))) return { ok: false, status: 400 };
       const content = readFileSync(path.join(DATA_DIR, filename), "utf-8");
-      return { ok: true, json: async () => JSON.parse(content) };
+      return { ok: true, json: async () => JSON.parse(content), arrayBuffer: async () => new ArrayBuffer(content.length) };
     }
     if (u.includes("/.netlify/functions/sync")) {
       // No real backend in tests - but the same merge rules the real server runs (netlify/functions/merge-logic.js),

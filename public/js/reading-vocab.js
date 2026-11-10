@@ -2,6 +2,9 @@
 //
 // A reading word is matched to your vocabulary list by its dictionary form, compared by consonants only
 // (vowels and accents are ignored, and each vocabulary entry's several forms, such as "אִישׁ ; אֲנָשִׁים", are all tried).
+// Final and regular letters are the same letter (ץ and צ), and when several entries share a spelling the one whose
+// part of speech matches the word is used (אֵל "God" and אֶל "to"). An Aramaic word is not a Hebrew vocabulary word, so
+// it is neither matched nor counted. A ketiv/qere pair counts as the word that is READ (the qere).
 // A word counts as KNOWN when its vocabulary word has been started: it appears in your review schedule in
 // any vocabulary mode (flashcards, typing or games). Proper names are left out of the percentage, as are
 // words with no dictionary form. This is an estimate: a few dictionary forms differ from the vocabulary
@@ -10,6 +13,7 @@
 import { getVocabRows } from "./vocab-data.js";
 import { vocabRowKey } from "./vocab-overrides.js";
 import { getScheduleEntries, recordItemResult } from "./srs.js";
+import { readWords } from "./reading-data.js";
 
 /** Every vocabulary spaced-repetition mode a word can be started in. */
 export const VOCAB_MODES = [
@@ -23,11 +27,27 @@ export const VOCAB_MODES = [
 /** The mode a missed reading word is sent to (the one the Daily Challenge and Study Session draw vocabulary from). */
 export const REVIEW_MODE = "vocab-typing-hebrew";
 
-// The lexicon files one root where the vocabulary list uses another (Strong's H3212 "to go" is the same verb as הָלַךְ).
-const ALIASES = { ילך: "הלך" };
-
 export const consonants = (s) => (s || "").replace(/[^\u05d0-\u05ea]/g, "");
-const canon = (s) => ALIASES[consonants(s)] || consonants(s);
+const FINAL = { ך: "כ", ם: "מ", ן: "נ", ף: "פ", ץ: "צ" };
+/** Consonants with final letters written as regular ones (ץ as צ), so the two spellings meet. */
+const regular = (s) => consonants(s).replace(/[ךםןףץ]/g, (m) => FINAL[m]);
+
+// The lexicon files one root where the vocabulary list uses another (Strong's H3212 "to go" is the same verb as הָלַךְ).
+const ALIASES = { [regular("ילך")]: regular("הלך") };
+
+/** The key a word is looked up by: its consonants, final letters made regular, and the lexicon's alias applied. */
+export const canonical = (s) => ALIASES[regular(s)] || regular(s);
+const canon = canonical;
+
+// The vocabulary list's part of speech, as the one-letter kind the Reading data gives each word (see build-reading.mjs).
+const POS_LETTER = { Noun: "N", "Proper Noun": "n", Verb: "V", Adjective: "A", Numeral: "U", Adverb: "D", Preposition: "R", Particle: "T", Interjection: "T", Pronoun: "P", Conjunction: "C" };
+
+/** Of the entries that share a word's spelling, those whose part of speech matches (all of them when none does or the kind is unknown). */
+export function pickRows(w, rows) {
+  if (!w || !w.pos || rows.length < 2) return rows;
+  const same = rows.filter((r) => POS_LETTER[r.POS] === w.pos);
+  return same.length ? same : rows;
+}
 
 /** Map of consonants -> vocabulary rows, every form of every entry. */
 export function buildVocabIndex(rows = getVocabRows()) {
@@ -58,9 +78,26 @@ const isName = (w) => (w.parts || []).some((p) => /proper name/.test(p[1] || "")
 /** What a reading word is: a counted word with its vocabulary matches, or something left out. */
 export function describeWord(w, index) {
   if (!w || isJoiner(w)) return { kind: "skip", rows: [] };
+  if (w.a) return { kind: "aramaic", rows: [] };
   if (!w.lem) return { kind: "skip", rows: [] };
   if (isName(w)) return { kind: "name", rows: [] };
-  return { kind: "word", rows: index.get(canon(w.lem)) || [] };
+  return { kind: "word", rows: pickRows(w, index.get(canon(w.lem)) || []) };
+}
+
+/**
+ * The words of a verse that can be marked "Got it / Missed it": each ordinary word, and for a ketiv/qere pair the first
+ * word of the qere (what is read). Returns [{ w, wi }] where wi is the position of the item in the verse.
+ */
+export function selfCheckWords(words) {
+  const out = [];
+  words.forEach((w, wi) => {
+    if (w.m || w.s) return;
+    if (w.kq) {
+      const first = w.kq.words.find((q) => !q.m && !q.s && (q.lem || q.a));
+      if (first) out.push({ w: first, wi });
+    } else out.push({ w, wi });
+  });
+  return out;
 }
 
 /**
@@ -80,10 +117,10 @@ export function passageKnowledge(refs, verses, index, started) {
   let names = 0;
   const unknown = [];
   for (const ref of refs) {
-    (verses[ref] || []).forEach((w, wi) => {
+    for (const { w, wi } of readWords(verses[ref] || [])) {
       const d = describeWord(w, index);
       if (d.kind === "name") names += 1;
-      if (d.kind !== "word") return;
+      if (d.kind !== "word") continue;
       words += 1;
       if (d.rows.some((r) => started.has(vocabRowKey(r)))) known += 1;
       else {
@@ -91,7 +128,7 @@ export function passageKnowledge(refs, verses, index, started) {
         else notInList += 1;
         unknown.push({ ref, wi, lem: w.lem, gl: w.gl || "", inList: d.rows.length > 0 });
       }
-    });
+    }
   }
   return { words, known, notStarted, notInList, names, pct: words ? Math.round((known / words) * 100) : null, unknown };
 }

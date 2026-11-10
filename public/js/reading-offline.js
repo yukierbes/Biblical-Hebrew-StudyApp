@@ -1,34 +1,37 @@
 // Reading without a connection.
 //
 // The service worker (sw.js) keeps a copy of every dataset the app downloads and serves that copy when the
-// network is not there. "Save for offline" asks for everything Reading needs in one go (the passages, the
-// Mixed review and the practice data its questions draw on, plus vocabulary and accents for the "words you
-// know" figures), so a flight or a commute works without having opened each page first.
+// network is not there. "Save for offline" asks for what Reading needs in one go, so a flight or a commute works
+// without having opened each chapter first. Because a whole Bible is a lot to keep on a phone, a BOOK is saved at a
+// time: that book's chapters, plus the shared pieces (the index, the Mixed review and the practice data its
+// questions draw on, vocabulary and accents for the "words you know" figures).
 
 import { authFetch } from "./auth-fetch.js";
-import { loadBibleData } from "./bible-data.js";
+import { loadBibleData, setDatasetVersion, datasetUrl } from "./bible-data.js";
 import { BIBLE_PAGES } from "./bible-areas.js";
 import { getPracticeConfig } from "./bible-practice.js";
+import { chapterDatasetName } from "./reading-data.js";
 
 const KEY = "hebrewApp.offlineSaved";
 
 /**
- * Every dataset Reading can need. `index` is the Reading index ("bible-reading"); each of its books has a data file of its
- * own, so the books are added when the index is known.
+ * The datasets to save for one book: the shared ones, then every chapter of the book. `index` is the Reading index
+ * ("bible-reading"); without it only the shared ones are listed.
  */
-export function offlineDatasets(index = null) {
+export function offlineDatasets(index = null, bookId = null) {
   const names = new Set(["bible-reading", "bible-mixed", "vocabulary", "accents"]);
-  if (index && Array.isArray(index.books)) for (const b of index.books) names.add(b.dataset);
   for (const p of BIBLE_PAGES) {
     const c = getPracticeConfig(p.page);
     names.add(c ? c.dataset : p.page);
   }
+  const book = index && Array.isArray(index.books) ? index.books.find((b) => b.id === bookId) : null;
+  if (book) for (let n = 1; n <= book.chapters.length; n++) names.add(chapterDatasetName(book.id, n));
   return [...names];
 }
 
 export const isOffline = () => typeof navigator !== "undefined" && navigator.onLine === false;
 
-/** { when, count } of the last successful save on this device, or null. */
+/** { when, count, books: { Gen: { when, version } } } for what has been saved on this device, or null. */
 export function getOfflineSaved() {
   try {
     return JSON.parse(localStorage.getItem(KEY) || "null");
@@ -38,35 +41,44 @@ export function getOfflineSaved() {
 }
 
 /**
- * Downloads every dataset (the service worker stores each as it arrives). `onProgress(done, total)` is called
- * after each one. Returns { ok, failed: [names] }.
+ * Downloads one book (the service worker stores each file as it arrives), a few at a time. `onProgress(done, total)`
+ * is called as files finish. Returns { ok, failed: [names] }.
  */
-export async function saveReadingForOffline(onProgress = () => {}) {
+export async function saveReadingForOffline(onProgress = () => {}, { bookId = null } = {}) {
   let index = null;
   try {
     index = await loadBibleData("bible-reading");
+    setDatasetVersion("rd-", index.version);
   } catch (e) {
-    /* the book files are then left out, and the result says so below */
+    /* the chapters are then left out, and the result says so below */
   }
-  const names = offlineDatasets(index);
+  const names = offlineDatasets(index, bookId);
   const failed = [];
   let done = 0;
-  for (const name of names) {
-    try {
-      const res = await authFetch(`/.netlify/functions/get-data?dataset=${encodeURIComponent(name)}`);
-      if (!res.ok) failed.push(name);
-      else await res.arrayBuffer(); // read it through so the copy is complete
-    } catch (e) {
-      failed.push(name);
+  let next = 0;
+  const worker = async () => {
+    while (next < names.length) {
+      const name = names[next++];
+      try {
+        const res = await authFetch(datasetUrl(name));
+        if (!res.ok) failed.push(name);
+        else await res.arrayBuffer(); // read it through so the copy is complete
+      } catch (e) {
+        failed.push(name);
+      }
+      done += 1;
+      onProgress(done, names.length);
     }
-    done += 1;
-    onProgress(done, names.length);
-  }
-  if (!index) failed.push("bible-reading-books");
+  };
+  await Promise.all(Array.from({ length: Math.min(4, names.length) }, worker));
+  if (!index) failed.push("bible-reading-chapters");
   const ok = failed.length === 0;
   if (ok) {
     try {
-      localStorage.setItem(KEY, JSON.stringify({ when: Date.now(), count: names.length }));
+      const before = getOfflineSaved() || {};
+      const books = { ...(before.books || {}) };
+      if (bookId) books[bookId] = { when: Date.now(), version: index.version };
+      localStorage.setItem(KEY, JSON.stringify({ when: Date.now(), count: names.length, books }));
     } catch (e) {
       /* not critical */
     }

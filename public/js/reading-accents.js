@@ -43,15 +43,18 @@ export function analyzeVerse(words, { poetry = false, index }) {
   words.forEach((w, i) => {
     if (!w.m && !w.s) last = i;
   });
+  // A ketiv/qere pair is written without accents; the accents belong to the qere (what is read), so they are read from it.
+  const textOf = (w) => (w.kq ? w.kq.words.map((q) => q.t || "").join("") : w.t || "");
   const out = words.map((w, wi) => {
     const accents = [];
     if (!w.m && !w.s) {
-      for (const ch of w.t || "") {
+      const text = textOf(w);
+      for (const ch of text) {
         if (ch === SILLUQ) continue; // handled below: silluq only on the last word
         const a = set.get(ch);
         if (a && !accents.includes(a)) accents.push(a);
       }
-      if (wi === last && (w.t || "").includes(SILLUQ)) {
+      if (wi === last && text.includes(SILLUQ)) {
         const sil = set.get(SILLUQ);
         if (sil) accents.push(sil);
       }

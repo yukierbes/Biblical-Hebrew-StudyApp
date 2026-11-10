@@ -3533,6 +3533,9 @@ html[data-pattern="weave"] #sidebar {
 button.bible-word { cursor: pointer; border: 1px solid transparent; }
 button.bible-word:hover { border-color: var(--hairline-strong); }
 .bible-joiner { margin-inline-start: -0.35em; padding: 0; }
+/* a word that is read but not written (a qere with no ketiv): a small dashed gap, which can be tapped */
+.bible-gap { display: inline-block; width: 0.7em; height: 0.9em; border-bottom: 2px dashed var(--hairline-strong); vertical-align: baseline; }
+.bible-kq-gap { min-width: 1.2em; }
 .bible-mark { background: var(--accent-soft); color: var(--accent-text); border-radius: 3px; padding: 0 2px; outline: 1px solid var(--accent); }
 .bible-inline { font-family: var(--font-hebrew); font-size: 1.15em; unicode-bidi: isolate; }
 .bible-passage { margin: 12px 0 18px; }

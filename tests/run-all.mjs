@@ -9,6 +9,16 @@ const testFiles = readdirSync(__dirname)
   .filter((f) => /^\d+.*\.mjs$/.test(f))
   .sort();
 
+// The Reading chapters are made by the build, not kept in git: make them first (about two seconds).
+try {
+  execFileSync("node", [path.join(__dirname, "..", "scripts", "build-reading.mjs")], { encoding: "utf-8" });
+} catch (e) {
+  process.stdout.write(e.stdout || "");
+  process.stderr.write(e.stderr || "");
+  console.error("\nThe Reading build failed, so the tests were not run.");
+  process.exit(1);
+}
+
 let allPassed = true;
 const results = [];
 

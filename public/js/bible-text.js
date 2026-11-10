@@ -141,7 +141,16 @@ export function buildVerse(words, { showAccents = true, mark = null, markLetter 
     const span = document.createElement(onWord && !joiner ? "button" : "span");
     if (onWord && !joiner) span.type = "button";
     span.className = "bible-word" + (joiner ? " bible-joiner" : "");
-    span.innerHTML = wordHtml(w, { markPiece: mark ? mark(wi, w) : -1, markLetter: markLetter ? markLetter(wi, w) : -1, showAccents });
+    if (w.kq && w.kq.gap) {
+      // A word that is READ but not written (a qere with no ketiv): a small dashed gap stands where it would be.
+      span.className += " bible-kq bible-kq-gap";
+      span.innerHTML = '<span class="bible-gap" aria-hidden="true"></span>';
+      span.setAttribute("aria-label", "A word that is read but not written here. Tap to see it.");
+    } else {
+      span.innerHTML = wordHtml(w, { markPiece: mark ? mark(wi, w) : -1, markLetter: markLetter ? markLetter(wi, w) : -1, showAccents });
+      // A ketiv/qere pair shows the consonants that are written (nothing else marks it: the missing vowels do).
+      if (w.kq) span.className += " bible-kq";
+    }
     span.dataset.wi = String(wi);
     if (onWord && !joiner) span.addEventListener("click", () => onWord(wi, w, span));
     el.appendChild(span);

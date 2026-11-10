@@ -1,0 +1,84 @@
+import { setupApp, assert, summary, navigateTo, click } from "./helpers.mjs";
+import { getOfflineSaved } from "../public/js/reading-offline.js";
+
+// What the Reading page asks the server for (one chapter at a time, with the data version), and saving a book offline.
+
+const { document } = await setupApp();
+const content = document.getElementById("content");
+const wait = (ms = 150) => new Promise((r) => setTimeout(r, ms));
+const requests = () => (global.fakeDataRequests || []).map((u) => String(u)).filter((u) => /dataset=rd-/.test(u));
+const version = JSON.parse((await import("node:fs")).readFileSync(new URL("../netlify/functions/data/bible-reading.json", import.meta.url), "utf8")).version;
+
+console.log("Opening Reading");
+global.fakeDataRequests = [];
+navigateTo(document, "bible-reading");
+await wait(600);
+const first = requests();
+assert(first.some((u) => /dataset=rd-gen-1&/.test(u)), "opening Reading asks for Genesis 1, the chapter shown");
+assert(first.some((u) => /dataset=rd-gen-2&/.test(u)), "...and quietly for Genesis 2, the next one, so turning the page is instant");
+assert(first.length <= 3, `...and for nothing else: not the other 468 chapters (${first.length} asked for)`);
+assert(first.every((u) => u.includes(`&v=${version}`)), "each chapter is asked for with the version of the Reading data (so a saved copy is kept until the data changes)");
+assert(!(global.fakeDataRequests || []).some((u) => /dataset=bible-reading-/.test(String(u))), "the old one-file-per-book data is no longer asked for");
+
+console.log("\nMoving on");
+global.fakeDataRequests = [];
+const next = [...content.querySelectorAll(".reading-section-nav button")].find((b) => /^Next:/.test(b.textContent));
+click(next);
+await wait();
+assert(requests().length <= 1, "moving to the next section of a loaded chapter asks for at most one more chapter (the one after)");
+const Ev = document.defaultView.Event;
+const chapterSel = content.querySelector(".reading-chapter-select");
+global.fakeDataRequests = [];
+chapterSel.value = "40";
+chapterSel.dispatchEvent(new Ev("change", { bubbles: true }));
+await wait(500);
+assert(requests().some((u) => /dataset=rd-gen-40&/.test(u)) && requests().length <= 2, "choosing Genesis 40 asks for that chapter (and the one after)");
+assert(content.querySelector(".reading-verse").dataset.ref === "Gen.40.1", "...and opens it");
+chapterSel.value = "40";
+global.fakeDataRequests = [];
+const bookSel = content.querySelector(".reading-book-select");
+bookSel.value = "Gen";
+bookSel.dispatchEvent(new Ev("change", { bubbles: true }));
+await wait(300);
+assert(requests().length === 0 || requests().every((u) => /rd-gen-/.test(u)), "a chapter that has already been opened is not asked for again");
+
+console.log("\nSaving a book for offline reading");
+const bar = content.querySelector(".reading-offline");
+const pick = bar.querySelector("select");
+const options = [...pick.options].map((o) => o.textContent);
+assert(options.length === 11 && /^Genesis \(\d/.test(options[0]) && /Ruth \(\d+ KB\)/.test(options.find((o) => /Ruth/.test(o))), `a book is chosen to save, with its size (${options.slice(0, 2).join(", ")} …)`);
+assert(/MB\)/.test(options[0]) && /KB\)/.test(options.find((o) => /Jonah/.test(o))), "...in KB for a small book and MB for a large one");
+assert(pick.value === "Gen", "it starts on the book being read");
+assert(/Save a book|Going somewhere/.test(bar.textContent) && [...bar.querySelectorAll("button")][0].textContent === "Save this book", "nothing is saved yet, and the button says Save this book");
+pick.value = "Ruth";
+global.fakeDataRequests = [];
+click([...bar.querySelectorAll("button")][0]);
+await wait(900);
+const saved = requests();
+const chapterNames = saved.map((u) => /dataset=(rd-[a-z0-9-]+)&/.exec(u)[1]).sort();
+assert(chapterNames.join() === "rd-ruth-1,rd-ruth-2,rd-ruth-3,rd-ruth-4", `saving Ruth fetches its four chapters and no others (${chapterNames})`);
+assert(saved.every((u) => u.includes(`&v=${version}`)), "...under the current data version");
+assert((global.fakeDataRequests || []).some((u) => /dataset=vocabulary/.test(String(u))) && (global.fakeDataRequests || []).some((u) => /dataset=bible-mixed/.test(String(u))), "...with the shared pieces (vocabulary, Mixed review) it needs");
+assert(/Saved Ruth/.test(content.querySelector(".reading-offline-status").textContent), "the page says Ruth was saved");
+const info = getOfflineSaved();
+assert(info && info.books && info.books.Ruth && info.books.Ruth.version === version && !info.books.Gen, "which book was saved, and under which data version, is remembered");
+click(content.querySelector(".reading-chapter-select") ? content.querySelector(".reading-section-nav button") : null);
+await wait(100);
+navigateTo(document, "home");
+await wait(100);
+navigateTo(document, "bible-reading");
+await wait(500);
+assert(/Saved for offline reading: Ruth\./.test(content.querySelector(".reading-offline").textContent), "the page lists what is saved: Ruth");
+assert([...content.querySelectorAll(".reading-offline option")].find((o) => /Ruth/.test(o.textContent)).textContent.endsWith("✓"), "...and ticks it in the list");
+const pick2 = content.querySelector(".reading-offline select");
+pick2.value = "Ruth";
+pick2.dispatchEvent(new Ev("change", { bubbles: true }));
+assert([...content.querySelectorAll(".reading-offline button")][0].textContent === "Update the saved copy", "a book that is saved offers to update it");
+localStorage.setItem("hebrewApp.offlineSaved", JSON.stringify({ when: 1, count: 1, books: { Ruth: { when: 1, version: "old000old000" } } }));
+navigateTo(document, "home");
+await wait(100);
+navigateTo(document, "bible-reading");
+await wait(500);
+assert(/Ruth \(needs updating\)/.test(content.querySelector(".reading-offline").textContent), "a book saved under an older data version is marked as needing an update");
+
+summary();
