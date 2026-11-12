@@ -31,6 +31,7 @@ import * as dailyChallengePage from "./pages/daily-challenge.js";
 import * as studySessionPage from "./pages/study-session.js";
 import * as bibleArticlePage from "./pages/bible-article.js";
 import * as bibleReadingPage from "./pages/bible-reading.js";
+import * as bibleMixedPage from "./pages/bible-mixed.js";
 import * as bibleDageshPage from "./pages/bible-dagesh.js";
 import * as bibleSuffixPage from "./pages/bible-suffix.js";
 import * as biblePrefixPage from "./pages/bible-prefix.js";
@@ -84,6 +85,7 @@ const PAGES = {
   "daily-challenge": dailyChallengePage,
   "study-session": studySessionPage,
   "bible-reading": bibleReadingPage,
+  "bible-mixed": bibleMixedPage,
   "bible-article": bibleArticlePage,
   "bible-dagesh": bibleDageshPage,
   "bible-suffix": bibleSuffixPage,

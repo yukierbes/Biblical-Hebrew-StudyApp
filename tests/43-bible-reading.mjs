@@ -1,10 +1,9 @@
 import { setupApp, assert, summary, navigateTo, click } from "./helpers.mjs";
 import { getReadingStats, getReadLog, getChapterRead } from "../public/js/bible-insights.js";
-import { getScheduleEntries } from "../public/js/srs.js";
 
 // The Reading page: every chapter of eleven books, chosen by book and then chapter and read a short passage at a time,
 // tap-any-word parsing with the vocabulary list first, ketiv/qere and Aramaic words, your own translation,
-// tap-to-reveal English, marking a passage as read, and Mixed review.
+// tap-to-reveal English and marking a passage as read.
 
 const { document } = await setupApp();
 const content = document.getElementById("content");
@@ -17,32 +16,43 @@ navigateTo(document, "bible-reading");
 await wait(400);
 assert(content.querySelector("h1").textContent === "Reading", "the page opens");
 const Ev = document.defaultView.Event;
-const bookSel = () => content.querySelector(".reading-book-select");
-const chapterSel = () => content.querySelector(".reading-chapter-select");
-const choose = async (sel, value) => {
-  sel.value = value;
-  sel.dispatchEvent(new Ev("change", { bubbles: true }));
+// the navigator: a Book button that opens a panel of books, a Chapter button that opens a panel of chapter numbers,
+// and a row of passages (see reading-navigator.js)
+const bookNow = () => content.querySelector(".reading-book-btn .reading-nav-value").textContent;
+const chapterNow = () => content.querySelector(".reading-chapter-btn .reading-nav-value").textContent;
+const chapterItems = () => [...content.querySelectorAll(".reading-chapter-item")];
+const pickBook = async (id) => {
+  click(content.querySelector(".reading-book-btn"));
+  click(content.querySelector(`.reading-book-item[data-book="${id}"]`));
   await wait(400);
 };
-const sections = () => [...content.querySelectorAll(".reading-passages .choice-btn")];
+const pickChapter = async (n) => {
+  click(content.querySelector(".reading-chapter-btn"));
+  click(content.querySelector(`.reading-chapter-item[data-chapter="${n}"]`));
+  await wait(400);
+};
+const sections = () => [...content.querySelectorAll(".reading-chip")];
 // opens the section of the current chapter that holds a verse (sections are named "Genesis 31:46–54")
 const openSectionWith = async (verse) => {
   const b = sections().find((x) => {
-    const m = /:(\d+)(?:–(\d+))?$/.exec(x.querySelector(".reading-passage-title").textContent);
+    const m = /:(\d+)(?:–(\d+))?$/.exec(x.title);
     return m && verse >= Number(m[1]) && verse <= Number(m[2] || m[1]);
   });
   click(b);
   await wait(300);
 };
-const bookNames = [...bookSel().options].map((o) => o.textContent.replace(" ✓", ""));
-assert(bookNames.join() === "Genesis,Exodus,Numbers,Deuteronomy,Joshua,Ruth,1 Samuel,Psalms,Proverbs,Isaiah,Jonah", `eleven books to choose from, in Bible order (${bookNames.join()})`);
-assert(bookSel().value === "Gen", "the page opens at Genesis");
-const chapters = [...chapterSel().options].map((o) => o.textContent);
-assert(chapters.length === 50 && chapters[0] === "Chapter 1" && chapters[49] === "Chapter 50", "Genesis offers all of its 50 chapters");
-assert(/0 of 31 verses read/.test(content.querySelector(".reading-book-title").textContent), "the chapter shows its verse count: 31");
-assert(sections().length === 4, `Genesis 1 is read in four sections of about eight verses (${sections().length})`);
-const titles = sections().map((b) => b.querySelector(".reading-passage-title").textContent);
-assert(titles.every((t) => /^Genesis 1:\d+(–\d+)?$/.test(t)), `sections are named by plain references: ${titles.join(", ")}`);
+const bookItems = [...content.querySelectorAll(".reading-book-item")];
+const bookIds = bookItems.map((b) => b.dataset.book);
+assert(bookIds.join() === "Gen,Exod,Lev,Num,Deut,Josh,Judg,1Sam,2Sam,1Kgs,2Kgs,Isa,Jer,Ezek,Hos,Joel,Amos,Obad,Jonah,Mic,Nah,Hab,Zeph,Hag,Zech,Mal,Ps,Job,Prov,Ruth,Song,Eccl,Lam,Esth,Dan,Ezra,Neh,1Chr,2Chr", `all 39 books to choose from, in the order of the Hebrew Bible (${bookIds.length})`);
+assert(bookNow() === "Genesis", "the page opens at Genesis");
+assert(chapterNow() === "1" && chapterItems().length === 50 && chapterItems()[49].textContent === "50", "Genesis offers all of its 50 chapters");
+const heading = content.querySelector(".reading-where").textContent;
+assert(/Chapter 1 has 31 verses/.test(heading) && /0 read/.test(heading) && /passage 1 of 4/.test(heading), `the chapter shows its verse count and progress (${heading})`);
+assert(sections().length === 4, `Genesis 1 is read in four passages of about eight verses (${sections().length})`);
+const titles = sections().map((b) => b.title);
+assert(titles.every((t) => /^Genesis 1:\d+(–\d+)?$/.test(t)), `passages are named by plain references: ${titles.join(", ")}`);
+assert(content.querySelector(".reading-passage-heading").textContent === titles[0], "the passage being read is named above its verses");
+assert(sections().map((b) => b.querySelector(".reading-chip-range").textContent.trim()).every((t) => /^\d+–\d+$/.test(t)), "the passage buttons show the verse ranges");
 const firstEnd = Number(/–(\d+)$/.exec(titles[0])[1]);
 assert(content.querySelectorAll(".reading-verse").length === firstEnd, `the first section shows its ${firstEnd} verses, not the whole chapter`);
 assert(titles[1].startsWith(`Genesis 1:${firstEnd + 1}–`) && titles[3].endsWith("–31"), "the sections follow one another and end at verse 31");
@@ -91,8 +101,10 @@ assert(getReadingStats().verses === firstEnd && !!getReadLog().verses["Gen.1.1"]
 assert(!getReadLog().verses[`Gen.1.${firstEnd + 1}`], "...and no more than that");
 assert(getReadingStats().streak === 1 && /1-day reading streak/.test(content.textContent), "the streak starts at one day");
 assert(/marked this whole passage as read/.test(content.textContent) && !markBtn(), "the page says so");
-assert(new RegExp(`${firstEnd} of 31 verses read`).test(content.querySelector(".reading-book-title").textContent), "the chapter shows its progress");
-assert(!!content.querySelector(".reading-passages .choice-btn .reading-section-done"), "a finished section is ticked");
+assert(new RegExp(`${firstEnd} read`).test(content.querySelector(".reading-where").textContent), "the chapter shows its progress");
+assert(!!content.querySelector(".reading-chip.done .reading-tick") && sections().filter((b) => b.classList.contains("done")).length === 1, "a finished passage is ticked");
+assert(content.querySelector(".reading-chapter-item.partial") && content.querySelector('.reading-chapter-item[data-chapter="1"]').classList.contains("partial"), "a chapter that is partly read is marked in the chapter grid");
+assert(content.querySelector('.reading-book-item[data-book="Gen"] .reading-book-bar span').style.width !== "0%", "...and the book shows how much of it has been read");
 assert(content.querySelectorAll(".reading-verse .pill-good").length === firstEnd, "each verse of it shows Read");
 assert(!!localStorage.getItem("hebrewVerbApp:bibleRead:Gen") && !localStorage.getItem("hebrewVerbApp:bibleReadLog"), "it is kept in one small item for the book, not in the old single log");
 click([...content.querySelectorAll("button")].find((b) => b.textContent === "Unmark this passage"));
@@ -114,26 +126,26 @@ await wait();
 assert(/^Next: Genesis 2/.test(nextBtn().textContent), "after the last section of Genesis 1, Next leads into Genesis 2");
 click(nextBtn());
 await wait(400);
-assert(chapterSel().value === "2" && content.querySelector(".reading-verse").dataset.ref === "Gen.2.1", "and opens Genesis 2");
+assert(chapterNow() === "2" && content.querySelector(".reading-verse").dataset.ref === "Gen.2.1", "and opens Genesis 2");
 assert(/Previous: Genesis 1:24–31/.test(prevBtn().textContent), "Previous leads back across the chapter to the last section of Genesis 1");
 click(prevBtn());
 await wait(400);
-assert(chapterSel().value === "1" && sections().some((b) => b.classList.contains("selected") && /24–31/.test(b.textContent)), "...and opens that last section");
-await choose(chapterSel(), "2");
+assert(chapterNow() === "1" && sections().some((b) => b.classList.contains("selected") && /24–31/.test(b.textContent)), "...and opens that last section");
+await pickChapter(2);
 assert(content.querySelector(".reading-verse").dataset.ref === "Gen.2.1", "choosing a chapter opens its first passage");
-await choose(chapterSel(), "1");
-assert(sections().find((b) => b.classList.contains("selected")).textContent.includes(`1:${firstEnd + 1}`), "choosing a chapter picks up at the first passage not yet read");
+await pickChapter(1);
+assert(sections().find((b) => b.classList.contains("selected")).title.includes(`1:${firstEnd + 1}`), "choosing a chapter picks up at the first passage not yet read");
 
 console.log("\nOther books");
-await choose(bookSel(), "Josh");
-assert([...chapterSel().options].length === 24, "Joshua offers its 24 chapters");
-await choose(chapterSel(), "24");
+await pickBook("Josh");
+assert(chapterItems().length === 24, "Joshua offers its 24 chapters");
+await pickChapter(24);
 assert(/Joshua 24:1/.test(content.textContent) && sections().length === 4, "Joshua 24 (33 verses) opens in four sections");
-await choose(bookSel(), "Ruth");
-assert([...chapterSel().options].map((o) => o.textContent).join() === "Chapter 1,Chapter 2,Chapter 3,Chapter 4", "Ruth offers its four chapters");
-await choose(bookSel(), "Ps");
-assert([...chapterSel().options].length === 150 && chapterSel().options[0].textContent === "Psalm 1", "Psalms offers all 150 psalms, each named as a psalm");
-await choose(chapterSel(), "51");
+await pickBook("Ruth");
+assert(chapterItems().map((o) => o.textContent).join() === "1,2,3,4", "Ruth offers its four chapters");
+await pickBook("Ps");
+assert(chapterItems().length === 150 && content.querySelector(".reading-nav-label").textContent === "Book" && [...content.querySelectorAll(".reading-nav-label")][1].textContent === "Psalm" && /Psalm/.test(content.querySelector(".reading-chapter-btn").getAttribute("aria-label")), "Psalms offers all 150 psalms, each named as a psalm");
+await pickChapter(51);
 assert(/Hebrew verse numbers/.test(content.textContent), "Psalm 51 explains that the Hebrew verse numbers are higher than the English");
 click(content.querySelector('.reading-verse[data-ref="Ps.51.3"]').querySelectorAll(".button-row button")[0]);
 await wait();
@@ -141,15 +153,15 @@ assert(/Have mercy on me, God/.test(content.querySelector('.reading-verse[data-r
 click(content.querySelector('.reading-verse[data-ref="Ps.51.1"]').querySelectorAll(".button-row button")[0]);
 await wait();
 assert(/For the Chief Musician/.test(content.querySelector('.reading-verse[data-ref="Ps.51.1"] .reading-english').textContent), "the psalm's heading is the English of the Hebrew heading verse");
-await choose(chapterSel(), "1");
+await pickChapter(1);
 assert(!/Hebrew verse numbers/.test(content.textContent), "Psalm 1 has no heading, so no such note");
-await choose(bookSel(), "Jonah");
-await choose(chapterSel(), "2");
+await pickBook("Jonah");
+await pickChapter(2);
 assert(content.querySelector(".reading-verse").dataset.ref === "Jonah.2.1", "Jonah 2 opens at its first (Hebrew) verse");
 
 console.log("\nKetiv/Qere: written consonants, read word");
-await choose(bookSel(), "Ruth");
-await choose(chapterSel(), "2");
+await pickBook("Ruth");
+await pickChapter(2);
 const kq = content.querySelector('.reading-verse[data-ref="Ruth.2.1"] .bible-kq');
 assert(!!kq && kq.textContent === "מידע", "Ruth 2:1 shows the ketiv as bare consonants: מידע");
 assert(!/[\u05B0-\u05C7\u0591-\u05AF]/.test(kq.textContent), "...with no vowels and no accents");
@@ -167,7 +179,7 @@ const words21 = content.querySelectorAll('.reading-verse[data-ref="Ruth.2.1"] .b
 assert(words21 >= 5, `the verse has its words (${words21}), the pair counted once`);
 
 console.log("\nKetiv/Qere: read but not written, and written but not read");
-await choose(chapterSel(), "3");
+await pickChapter(3);
 const gap = content.querySelector('.reading-verse[data-ref="Ruth.3.5"] .bible-kq-gap');
 assert(!!gap && !!gap.querySelector(".bible-gap") && gap.textContent === "", "Ruth 3:5 shows a small gap where a word is read but not written");
 assert(/read but not written/.test(gap.getAttribute("aria-label")), "...described for a screen reader");
@@ -175,7 +187,7 @@ click(gap);
 await wait();
 kqPanel = content.querySelector('.reading-verse[data-ref="Ruth.3.5"] .reading-kq');
 assert(!!kqPanel && /read but not written/.test(kqPanel.textContent) && /אֵלַ/.test(kqPanel.textContent), "tapping the gap shows the word that is read");
-await choose(chapterSel(), "3");
+await pickChapter(3);
 await openSectionWith(12);
 const ketivOnly = content.querySelector('.reading-verse[data-ref="Ruth.3.12"] .bible-kq');
 assert(!!ketivOnly && ketivOnly.textContent === "אם", "Ruth 3:12 shows a ketiv with no qere: אם");
@@ -184,8 +196,8 @@ await wait();
 assert(/written but not read/.test(content.querySelector('.reading-verse[data-ref="Ruth.3.12"] .reading-kq').textContent), "...and the panel says it is written but not read");
 
 console.log("\nKetiv/Qere: a qere of two words");
-await choose(bookSel(), "Gen");
-await choose(chapterSel(), "30");
+await pickBook("Gen");
+await pickChapter(30);
 await openSectionWith(11);
 const two = content.querySelector('.reading-verse[data-ref="Gen.30.11"] .bible-kq');
 assert(!!two && two.textContent === "בגד", "Genesis 30:11 shows the single written word בגד");
@@ -195,7 +207,7 @@ const twoPanel = content.querySelector('.reading-verse[data-ref="Gen.30.11"] .re
 assert(/2 words/.test(twoPanel.textContent) && twoPanel.querySelectorAll(".reading-kq-word").length === 2, "...and its panel shows the two words that are read, each parsed");
 
 console.log("\nAramaic");
-await choose(chapterSel(), "31");
+await pickChapter(31);
 await openSectionWith(47);
 const aram = () => content.querySelector('.reading-verse[data-ref="Gen.31.47"]');
 click(aram().querySelector('.bible-word[data-wi="4"]'));
@@ -204,7 +216,7 @@ assert(/Aramaic/.test(aram().querySelector(".reading-parse").textContent) && /no
 click(aram().querySelector('.bible-word[data-wi="0"]'));
 await wait();
 assert(!/Aramaic/.test(aram().querySelector(".reading-parse").textContent), "...and a Hebrew word beside it is not");
-await choose(bookSel(), "Ruth");
+await pickBook("Ruth");
 
 console.log("\nAccent marks");
 const accents = (s) => /[\u0591-\u05AF]/.test(s);
@@ -217,26 +229,7 @@ if (cb) {
   assert(hasAccentNow && !accents(content.querySelector(".bible-verse").textContent), "the sidebar switch hides the accent marks");
 }
 
-console.log("\nMixed review");
-click([...content.querySelectorAll(".bible-tabs .choice-btn")].find((b) => b.textContent === "Mixed review"));
-await wait();
-click([...content.querySelectorAll("button")].find((b) => b.textContent === "Start a verse"));
-await wait(600);
-assert(/Question 1 of [34]/.test(content.textContent), "a verse with three or four questions starts");
-const total = Number((/Question 1 of (\d)/.exec(content.textContent) || [])[1]);
-for (let q = 0; q < total; q++) {
-  await wait(60);
-  const groups = [...content.querySelectorAll(".bible-question .bible-choices")];
-  assert(groups.length >= 1, `question ${q + 1} has answer boxes`);
-  for (const g of groups) click(g.querySelector(".bible-choice"));
-  await wait(60);
-  assert(!!content.querySelector(".bible-choice.is-correct"), `question ${q + 1} is graded`);
-  click([...content.querySelectorAll("button")].find((b) => /Next question|See results/.test(b.textContent)));
-}
-await wait();
-assert(/\d of \d correct/.test(content.textContent), "a summary of the verse follows");
-const saved = ["article", "prefix", "vav", "min", "interrog", "verb", "noun", "adj", "pronoun", "demo", "suffix", "dagesh", "qames", "sheva", "syllable"].reduce((n, p) => n + Object.keys(getScheduleEntries(`bible:${p}`)).length, 0);
-assert(saved === total, `each answer is saved for review (${saved} of ${total})`);
-assert([...content.querySelectorAll("button")].some((b) => b.textContent === "Another verse"), "another verse can be started");
+console.log("\nNo tabs: Mixed review is a page of its own");
+assert(!content.querySelector(".bible-tabs") && ![...content.querySelectorAll("button")].some((b) => /Mixed review/.test(b.textContent)), "the Reading page has no Mixed review tab any more (see test 62)");
 
 summary();

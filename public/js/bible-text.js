@@ -3,6 +3,8 @@
 // (U+0591–U+05AF) when the person turns them off. Vowel points, dagesh, meteg and
 // maqqef are never touched.
 
+import { BOOK_NAMES } from "./bible-books.js";
+
 const ACCENTS = /[\u0591-\u05AF]/g;
 export const stripAccents = (s) => s.replace(ACCENTS, "");
 
@@ -14,7 +16,6 @@ export function hebrewHtml(text) {
 }
 
 /** "Gen.1.2" -> "Genesis 1:2" */
-const BOOK_NAMES = { Gen: "Genesis", Exod: "Exodus", Num: "Numbers", Ruth: "Ruth", Deut: "Deuteronomy", Ps: "Psalm", Josh: "Joshua", "1Sam": "1 Samuel", Prov: "Proverbs", Isa: "Isaiah", Jonah: "Jonah" };
 export function prettyRef(ref) {
   const [book, c, v] = ref.split(".");
   return `${BOOK_NAMES[book] || book} ${c}:${v}`;

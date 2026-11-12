@@ -12,9 +12,12 @@ export function setDatasetVersion(prefix, version) {
 
 /** The address of a dataset, with the data version added for Reading chapters when it is known. */
 export function datasetUrl(dataset) {
-  const base = `/.netlify/functions/get-data?dataset=${dataset}`;
-  const v = dataset.startsWith("rd-") ? _versions["rd-"] : "";
-  return v ? `${base}&v=${v}` : base;
+  // Reading's chapters come from their own function (get-reading); everything else from get-data.
+  if (dataset.startsWith("rd-")) {
+    const v = _versions["rd-"];
+    return `/.netlify/functions/get-reading?dataset=${dataset}${v ? `&v=${v}` : ""}`;
+  }
+  return `/.netlify/functions/get-data?dataset=${dataset}`;
 }
 
 /**

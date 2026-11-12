@@ -886,7 +886,7 @@ the server; nothing a learner sees changes, except one new line in the Account s
   `public/js/reading-data.js` turns it back into the word objects the page uses. Its header explains the format.
 * `scripts/lib/osis-reading.mjs` reads the source for Reading (ketiv/qere, Aramaic, paragraph marks). It is separate from `parseOsis` on purpose: the practice
   pages are built from that one and remember words by position, so it was **not changed**. `scripts/lib/sections.mjs` is the section rule.
-* `get-data.js` serves a chapter by name (`rd-gen-1`) through the table in `reading-loaders.js`, one file at a time. **A new book** needs its OSHB and World
+* *(Update 25 moved this: chapters are served by `get-reading.js`, from `netlify/functions/reading-chapters/`.)* `get-data.js` served a chapter by name (`rd-gen-1`) through the table in `reading-loaders.js`, one file at a time. **A new book** needs its OSHB and World
   English Bible files, an entry in `BOOKS` in `build-reading.mjs`, and its name in `BOOK_NAMES` in `bible-text.js` and in `bible-areas.js` (the names shown with a verse reference). Run the build;
   nothing else (no CSV rows, no loader lines).
 * **Saved chapters are kept by data version, not by release.** The page asks for `…dataset=rd-gen-1&v=<version>`; the version changes only when the Reading data does,
@@ -906,5 +906,39 @@ the server; nothing a learner sees changes, except one new line in the Account s
 **Deleting files.** A zip cannot delete, so delete these by hand in GitHub Desktop: `netlify/functions/data/bible-reading-*.json` (11 files: Gen, Exod, Num, Deut, Josh, Ruth, 1sam, Ps, Prov, Isa, Jonah) and,
 optionally, `data-source/bible/reading-passages.csv`. If left, they are ignored (test 57 notes them).
 
-**Tests:** 43 (the page, rewritten), 48 (the data, vocabulary matching, accents, offline; rewritten), 57 (chapters served), 58 (the reading log and the move from the old one),
+**Tests:** 43 (the page, rewritten), 48 (the data, vocabulary matching, accents, offline; rewritten), 57 (data served), 58 (the reading log and the move from the old one),
 59 (the Reading build and its reader), 60 (what the page asks the server for, and saving a book). 42, 55 and 56 are unchanged.
+
+
+## Update 25: the whole Hebrew Bible in Reading; Reading stands alone; Mixed Review is its own page; a new way to choose what to read
+
+**The whole Hebrew Bible.** All 39 books (929 chapters, 23,213 verses, as the Hebrew numbers them: Joel has 4 chapters, Malachi 3) in the order of the Hebrew Bible (as in the BHS):
+Torah; Former Prophets (Joshua to 2 Kings); Latter Prophets (Isaiah, Jeremiah, Ezekiel); **The Twelve** (Hosea to Malachi, each its own book); Writings (Psalms, Job, Proverbs, Ruth, Song of Songs, Ecclesiastes,
+Lamentations, Esther, Daniel, Ezra, Nehemiah, 1 and 2 Chronicles). The verse totals match the standard Masoretic counts for every book (tested).
+* **Sources added once** (not downloaded on deploy): `data-source/bible/<Book>.xml` for the 28 new books (Open Scriptures Hebrew Bible, 15.8 MB, same credit line) and
+  `data-source/bible/english/web-<book>.json` (World English Bible, 4.2 MB), fetched from the same places as the first eleven. A new book is an entry in `BOOKS` in `scripts/build-reading.mjs`
+  (with its `division`) and its name in `public/js/bible-books.js`; run the build.
+* **Verse numbering.** Hebrew and English number many verses differently (Joel 3:1 is English 2:28, Malachi 3:19 is 4:1, Jonah 2:1 is 1:17, and so on). The English shown is for the Hebrew verse; the build reads the
+  source's own mapping, and the one place a Hebrew verse is the *second half* of an English verse (1 Kings 22:44, which the source marks `!b`) says so instead of repeating it. Every verse has English (tested).
+* **Aramaic** is flagged from the source (Daniel 2:4b–7:28, Ezra 4:8–6:18 and 7:12–26, Jeremiah 10:11, Genesis 31:47: about 4,800 words) and labelled in the tap panel. **Ketiv/qere**: 1,260 items in all
+  (nine words read but not written, six written but not read, 24 with a qere of several words, 15 written phrases of two words), handled as in Update 24.
+* **Poetic accents.** Psalms, Job and Proverbs use the other accent system; the accent-divisions overlay already treats them as poetry. (Practice pages are still Genesis, Ruth and Jonah.)
+
+**Two functions, so vocabulary and the practice pages stay light.** `get-data.js` (the vocabulary, verbs, accents, practice data and the Reading *index*) is 8 MB and starts in about 60 ms;
+`get-reading.js` serves the chapters (`rd-gen-1` ...), each from a small module that holds the chapter's JSON as one string (`netlify/functions/reading-chapters/rd-*.js`, made by the build, not kept in git;
+`loaders.js` in that folder is kept). Measured with esbuild: 54 MB / 8.8 MB gzipped, about 330 ms to start, 1 ms a chapter; one function with everything in it was 65 MB and 460 ms for every request.
+`datasetUrl()` in `bible-data.js` sends `rd-…` names to get-reading; `sw.js` keeps both by the same rules. `reading-loaders.js` (Update 24) is gone: delete `netlify/functions/data/reading-loaders.js`.
+
+**Navigation.** **Reading** is a button of its own directly under *Bible in Context* (it is not in the group). **Mixed Review** is a page of its own at the top of *Bible in Context*, where Reading used to be
+(`public/js/pages/bible-mixed.js`; the questions, answers and review scheduling are unchanged). The Reading page has no tabs now. An old "continue" point for Reading's Mixed review tab opens Reading.
+
+**Choosing what to read (`public/js/reading-navigator.js`).** One compact panel above the verses:
+* **Book**: a button naming the book; it opens a panel of all 39 books grouped as above, a thin bar under each showing how much is read, a tick on a finished book. Choosing one opens it at the first chapter not yet read.
+* **Chapter**: ‹ and › arrows (which run on across the edge of a book) around a button that opens a grid of the chapter numbers: finished chapters ticked, part-read ones shaded, the current one dark.
+  In the Psalms the step is called **Psalm**.
+* **Passages**: a row of verse ranges ("1–8", "9–16" ...) each with the share of its vocabulary you know and a tick when read; "Easiest first" re-orders them. The passage being read is named above the verses by a plain reference ("Genesis 1:1–8").
+* A panel closes on Escape, on a click elsewhere, or when a choice is made, and focus returns to its button; only one is open at a time. Everything is labelled for a screen reader (finished, % read, current). It uses the app's own colours and fonts, so every theme and dark mode follow.
+
+**Tests:** 61 (get-reading serves all 929 chapters exactly as built), 62 (the Mixed Review page), 63 (the navigator: panels, grouping, progress marks, arrows across books, Psalms, passages, keyboard).
+43, 48, 57, 59, 60 and 19 were updated; 58 (the reading log) is unchanged.
+**Deleting files** (a zip cannot): `netlify/functions/data/reading-loaders.js`. (`bible-reading-*.json` and `reading-passages.csv`, from Update 24, if still there.)

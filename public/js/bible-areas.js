@@ -9,6 +9,7 @@
 import { loadHistory } from "./history.js";
 import { getScheduleEntries, getScheduleSummary } from "./srs.js";
 import { bibleWordLabel } from "./bible-insights.js";
+import { BOOK_NAMES } from "./bible-books.js";
 
 /** The groups, in the order the sidebar shows them. */
 export const BIBLE_GROUPS = [
@@ -149,7 +150,6 @@ export function getBibleSummary(all = getAllBibleStats()) {
 // ---------------------------------------------------------------------
 
 /** "Gen.12.8#3#" -> "Genesis 12:8" style reference without loading anything (fallback label). */
-const BOOK_NAMES = { Gen: "Genesis", Exod: "Exodus", Num: "Numbers", Ruth: "Ruth", Deut: "Deuteronomy", Ps: "Psalm", Josh: "Joshua", "1Sam": "1 Samuel", Prov: "Proverbs", Isa: "Isaiah", Jonah: "Jonah" };
 function plainRef(key) {
   const [ref, wi] = String(key).split("#");
   const [book, c, v] = ref.split(".");

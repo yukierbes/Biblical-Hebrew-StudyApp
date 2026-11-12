@@ -61,6 +61,7 @@ const APP_SHELL = [
   "js/bible-print.js",
   "js/reading-vocab.js",
   "js/reading-data.js",
+  "js/bible-books.js",
   "js/reading-accents.js",
   "js/reading-offline.js",
   "js/backup.js",
@@ -200,7 +201,7 @@ self.addEventListener("fetch", (event) => {
   // from an older release is not trusted: it is fetched again, but kept as the offline fallback so Reading (and
   // everything else) still works with no connection. The copies live in their own cache, so a new release of
   // the app does not throw them away. Only a successful answer is ever kept.
-  if (url.pathname === "/.netlify/functions/get-data") {
+  if (url.pathname === "/.netlify/functions/get-data" || url.pathname === "/.netlify/functions/get-reading") {
     const key = url.pathname + url.search;
     // A Reading chapter is asked for with the version of the Reading data (…&v=abc123). The version changes only when the
     // data does, so a saved chapter is right for as long as its address is the same: it survives ordinary releases of

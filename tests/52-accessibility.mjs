@@ -52,8 +52,13 @@ assert(!card || !card.hasAttribute("aria-label"), "a flashcard is named by what 
 console.log("\nReading");
 navigateTo(document, "bible-reading");
 await wait(700);
-const passageBtns = [...content.querySelectorAll(".reading-passages .choice-btn")];
-assert(passageBtns.every((b) => b.hasAttribute("aria-pressed")), "each passage button says whether it is chosen");
+const passageBtns = [...content.querySelectorAll(".reading-chip")];
+assert(passageBtns.length >= 4 && passageBtns.every((b) => b.hasAttribute("aria-pressed")), "each passage button says whether it is chosen");
+const rbook = content.querySelector(".reading-book-btn"), rch = content.querySelector(".reading-chapter-btn");
+assert(/Book: Genesis/.test(rbook.getAttribute("aria-label")) && rbook.getAttribute("aria-haspopup") === "dialog" && rbook.getAttribute("aria-expanded") === "false", "the Book button names the book and says it opens a panel (closed)");
+assert(/Chapter 1 of 50/.test(rch.getAttribute("aria-label")) && rch.getAttribute("aria-expanded") === "false", "the Chapter button names the chapter and says how many there are");
+assert([...content.querySelectorAll(".reading-prev, .reading-next")].every((b) => !!b.getAttribute("aria-label")), "the chapter arrows have names");
+assert([...content.querySelectorAll(".reading-book-item, .reading-chapter-item")].every((b) => !!(b.getAttribute("aria-label") || b.textContent.trim())) && [...content.querySelectorAll(".reading-popover")].every((p) => p.getAttribute("role") === "dialog" && !!p.getAttribute("aria-label")), "every choice in the panels has a name, and each panel is a labelled dialog");
 assert(passageBtns.some((b) => /You know about \d+ percent/.test(b.getAttribute("aria-label") || "")), "and its name includes how much of it you know, in words");
 const divBox = [...document.querySelectorAll("#sidebar-extra input[type=checkbox]")].find((c) => /accent divisions/.test(c.parentElement.textContent));
 divBox.checked = true;

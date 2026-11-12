@@ -79,7 +79,7 @@ export async function setupApp({ mobile = false } = {}) {
   global.fakeSyncServer = fakeServer;
   global.fetch = async (url, opts) => {
     const u = String(url);
-    if (u.includes("/.netlify/functions/get-data")) {
+    if (u.includes("/.netlify/functions/get-data") || u.includes("/.netlify/functions/get-reading")) {
       const dataset = new URL(u, "http://localhost/").searchParams.get("dataset");
       const filenames = {
         verbs: "verbs.json",
@@ -105,7 +105,8 @@ export async function setupApp({ mobile = false } = {}) {
         "bible-min": "bible-min.json",
         "bible-sheva": "bible-sheva.json",
       };
-      // one data file per Reading chapter: rd-gen-1, rd-ruth-2, ... (made by scripts/build-reading.mjs, in data/reading/)
+      // one data file per Reading chapter: rd-gen-1, rd-ruth-2, ... (made by scripts/build-reading.mjs, in data/reading/);
+      // chapters are asked for from get-reading, everything else from get-data, as in the real app
       global.fakeDataRequests = global.fakeDataRequests || [];
       global.fakeDataRequests.push(u);
       const isChapter = /^rd-[a-z0-9]+-\d+$/.test(dataset || "");

@@ -23,7 +23,8 @@ const EXTRA_WORDS = {
   achievements: "badges goals unlocked",
   credits: "sources references bibliography citations apa",
   // Bible in Context: the group each page sits in, and the longer names behind shortened labels.
-  "bible-reading": "bible read reading translate translation parse parsing mixed review verse english",
+  "bible-reading": "bible read reading translate translation parse parsing verse english book chapter passage",
+  "bible-mixed": "bible mixed review verse questions article preposition vav verb",
   "bible-dagesh": "bible marks syllables lene forte mappiq",
   "bible-qames": "bible marks syllables qamets qames hatuf vs",
   "bible-sheva": "bible marks syllables shewa vocal silent",

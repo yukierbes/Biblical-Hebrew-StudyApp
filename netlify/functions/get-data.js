@@ -11,14 +11,10 @@
 //
 // To add a dataset: write its file in ./data (the build does this), then add one line below. The loader needs
 // the literal file name so the bundler includes the file; test 57 checks that every file in ./data has a line.
-// The chapters of Reading are the exception: scripts/build-reading.mjs writes ./data/reading/ and its own table
-// of loaders (reading-loaders.js), and test 57 checks that table against the folder.
-
-import { READING_LOADERS } from "./data/reading-loaders.js";
+// The chapters of Reading are not served here: get-reading.js serves them (there are 929), so that this function
+// stays small. Only the Reading index (bible-reading) is.
 
 const LOADERS = {
-  // one entry per chapter of Reading ("rd-gen-1" ...), written by scripts/build-reading.mjs
-  ...READING_LOADERS,
   verbs: () => import("./data/verbs.json", { with: { type: "json" } }),
   vocabulary: () => import("./data/vocabulary.json", { with: { type: "json" } }),
   accents: () => import("./data/accents.json", { with: { type: "json" } }),

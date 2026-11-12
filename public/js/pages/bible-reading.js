@@ -1,23 +1,19 @@
 // Reading: real verses to read, with tap-any-word parsing, your own translation, tap-to-reveal English and a
-// "mark as read" streak — plus a Mixed review that asks about the article, the preposition, the vav, the verb and
-// more, all in one verse.
+// "mark as read" streak. (Mixed review, which asks about the article, the preposition, the vav, the verb and more in
+// one verse, is a page of its own: bible-mixed.js.)
 //
-// Every chapter of the books on offer can be read. The small "bible-reading" index lists the books and how many verses
+// Every chapter of every book of the Hebrew Bible can be read. The small "bible-reading" index lists the books and how many verses
 // each chapter has; one chapter's words, their parsing and its English come from that chapter's own file ("rd-gen-1",
 // "rd-ps-23" ...), loaded when it is opened and the next one fetched quietly in the background (all built by
 // scripts/build-reading.mjs). A chapter is read in sections of about 8 to 12 verses, named by plain references
-// ("Genesis 1:1–9"), and a whole section is marked as read at once. The mixed questions are the same questions the practice
-// pages ask: an index (bible-mixed) says which examples share a verse, and each page's own data and configuration
-// draw the question and its answer boxes.
+// ("Genesis 1:1–9"), and a whole section is marked as read at once.
+// Choosing a book, a chapter and a passage is done by the navigator (reading-navigator.js).
 
 import { loadBibleData, setDatasetVersion } from "../bible-data.js";
 import { expandChapter, parseRef, chapterDatasetName, plainRef } from "../reading-data.js";
 import { buildVerse, prettyRef, getShowAccents, setShowAccents, hebrewHtml, stripAccents } from "../bible-text.js";
-import { getPracticeConfig, makeBibleQuestion, drawBibleQuestion, noteBibleAnswer } from "../bible-practice.js";
 import { markVersesRead, unmarkVersesRead, getChapterRead, getBookReadCounts, getReadingStats } from "../bible-insights.js";
-import { recordStreakActivity, recordItemResult } from "../srs.js";
-import { bibleSrsMode, exampleKey, pickAdaptiveVerse, describeNeed } from "../bible-areas.js";
-import { createConfidenceAsk } from "../confidence.js";
+import { recordStreakActivity } from "../srs.js";
 import { saveResumePoint } from "../resume.js";
 import { buildVocabIndex, startedVocabKeys, passageKnowledge, describeWord, selfCheckWords, setWordCheck, getSelfCheck, getMissedWords, verseCheckSummary } from "../reading-vocab.js";
 import { vocabRowKey } from "../vocab-overrides.js";
@@ -26,6 +22,7 @@ import { loadVocabData } from "../vocab-data.js";
 import { loadAccentData, getAccentRows } from "../accent-data.js";
 import { saveReadingForOffline, getOfflineSaved, isOffline } from "../reading-offline.js";
 import { consumeDeepLink } from "../deep-link.js";
+import { buildReadingNavigator, closeNavigatorPanels, chapterLabel } from "../reading-navigator.js";
 
 const el = (tag, className, html) => {
   const e = document.createElement(tag);
@@ -51,17 +48,11 @@ function readText(w) {
   return out;
 }
 
-const TABS = [
-  ["read", "Read & translate"],
-  ["mixed", "Mixed review"],
-];
-
 let state = null;
 let data = null;
-let mixedIndex = null;
 
 export async function mount({ content, sidebarExtra }) {
-  state = { mixedMode: "need", lastMixedRef: null, showDivisions: localStorage.getItem("hebrewApp.readingDivisions") === "1", sortEasy: false, vocabIndex: null, accentIndex: null, started: new Set(), tab: "read", loc: { book: "", chapter: 1, section: 0 }, showAccents: getShowAccents(), tapped: {}, english: {}, notes: {}, mixed: null, loadError: "", alive: true };
+  state = { showDivisions: localStorage.getItem("hebrewApp.readingDivisions") === "1", sortEasy: false, vocabIndex: null, accentIndex: null, started: new Set(), loc: { book: "", chapter: 1, section: 0 }, showAccents: getShowAccents(), tapped: {}, english: {}, notes: {}, loadError: "", alive: true };
   content.innerHTML = '<div class="loading">Loading the reading passages…</div>';
   try {
     data = await loadBibleData("bible-reading");
@@ -85,7 +76,6 @@ export async function mount({ content, sidebarExtra }) {
   const link = consumeDeepLink();
   let want = null;
   if (link && link.type === "resume" && link.page === "bible-reading" && link.detail) {
-    if (["read", "mixed"].includes(link.detail.tab)) state.tab = link.detail.tab;
     if (link.detail.passage) want = parseRef(link.detail.passage);
   }
   if (want && bookOfId(want.book) && want.chapter >= 1 && want.chapter <= bookOfId(want.book).chapters.length) state.loc = { book: want.book, chapter: want.chapter, section: 0 };
@@ -220,22 +210,10 @@ function render(content, sidebarExtra) {
   content.appendChild(el("p", "caption", "Read real verses, tap any word to see how it is built, and try your own translation before you look at the English."));
   content.appendChild(readingStatsBar());
 
-  const tabs = el("div", "choice-group bible-tabs");
-  for (const [id, text] of TABS) {
-    const b = el("button", "choice-btn" + (state.tab === id ? " selected" : ""), esc(text));
-    b.type = "button";
-    b.addEventListener("click", () => {
-      state.tab = id;
-      again();
-    });
-    tabs.appendChild(b);
-  }
-  content.appendChild(tabs);
-
   const body = el("div", "bible-body");
   content.appendChild(body);
-  if (state.tab === "read") renderRead(body, again, (loc) => goTo(loc, again));
-  else renderMixed(body, again);
+  closeNavigatorPanels();
+  renderRead(body, again, (loc) => goTo(loc, again));
 
   // quiet things at the bottom of the page: offline use and where the text comes from
   const more = el("details", "reading-more");
@@ -245,8 +223,7 @@ function render(content, sidebarExtra) {
   content.appendChild(el("p", "caption reading-source", `Hebrew text and tagging: ${esc(data.source.name)}. English: ${esc(data.source.english)}. See Sources & Credits.`));
 
   const cur = currentPassage();
-  const where = state.tab === "read" ? `Read & translate · ${cur.title}` : "Mixed review";
-  saveResumePoint("bible-reading", { tab: state.tab, passage: cur.id }, where);
+  saveResumePoint("bible-reading", { passage: cur.id }, `Reading · ${cur.title}`);
   // quietly fetch the chapter after this one (or the first of the next book), so turning the page is instant
   const here = bookOfId(state.loc.book);
   const after = state.loc.chapter < here.chapters.length ? { book: here.id, chapter: state.loc.chapter + 1 } : (() => { const at = data.books.findIndex((b) => b.id === here.id); return at < data.books.length - 1 ? { book: data.books[at + 1].id, chapter: 1 } : null; })();
@@ -272,88 +249,46 @@ function knowledgeOf(p) {
 }
 
 /** A labelled drop-down: options are [value, text]. */
-function selectField(label, cls, options, selected, onChange) {
-  const wrap = el("label", "reading-pick");
-  wrap.appendChild(el("span", "reading-pick-label", esc(label)));
-  const sel = el("select", `reading-select ${cls}`);
-  for (const [value, text] of options) {
-    const o = el("option", "", esc(text));
-    o.value = value;
-    if (value === selected) o.selected = true;
-    sel.appendChild(o);
-  }
-  sel.addEventListener("change", () => onChange(sel.value));
-  wrap.appendChild(sel);
-  return wrap;
-}
-
-/** What a chapter is called in the Chapter menu: "Chapter 2", "Psalm 23". */
-const chapterLabel = (bk, n) => (bk.id === "Ps" ? `Psalm ${n}` : `Chapter ${n}`);
-
 function renderRead(body, rerender, go) {
   const loc = state.loc;
   const book = bookOfId(loc.book);
   const ch = data.chapters[`${loc.book}.${loc.chapter}`];
   const counts = Object.fromEntries(data.books.map((b) => [b.id, getBookReadCounts(b.id)]));
-  const isChapterDone = (b, n) => (counts[b.id][n] || 0) >= b.chapters[n - 1];
-  const isBookDone = (b) => b.chapters.every((_, i) => isChapterDone(b, i + 1));
   const readSet = getChapterRead(book.id, loc.chapter); // { verseNumber: date }
   const isRead = (ref) => !!readSet[parseRef(ref).verse];
 
   if (state.loadError) body.appendChild(el("div", "alert alert-warning", esc(state.loadError)));
 
-  // Step 1: the book. Step 2: the chapter. Step 3: the section (a few verses) to read now.
-  const picker = el("div", "reading-picker");
-  picker.appendChild(
-    selectField("Book", "reading-book-select", data.books.map((b) => [b.id, b.title + (isBookDone(b) ? " ✓" : "")]), book.id, (id) => {
-      const b = bookOfId(id);
-      const first = b.chapters.findIndex((_, i) => !isChapterDone(b, i + 1));
-      go({ book: id, chapter: first < 0 ? 1 : first + 1, section: -2 });
+  // Choosing what to read: a book, a chapter, then a passage of the chapter (see reading-navigator.js).
+  const sectionsOf = ch.sections.map((sec, i) => ({ i, sec, p: { id: sec.verses[0], title: plainRef(book.name, loc.chapter, sec.from, sec.to), verses: sec.verses } }));
+  const know = new Map(sectionsOf.map((x) => [x.i, knowledgeOf(x.p)]));
+  let shown = sectionsOf;
+  if (state.sortEasy) shown = sectionsOf.slice().sort((x, y) => (know.get(y.i)?.pct ?? -1) - (know.get(x.i)?.pct ?? -1));
+  body.appendChild(
+    buildReadingNavigator({
+      books: data.books,
+      current: loc,
+      counts,
+      passages: shown.map(({ i, sec, p }) => ({ index: i, from: sec.from, to: sec.to, title: p.title, complete: p.verses.every(isRead), pct: know.get(i) ? know.get(i).pct : null })),
+      sortEasy: state.sortEasy,
+      onGo: go,
+      onSort: (on) => {
+        state.sortEasy = on;
+        rerender();
+      },
     })
   );
-  picker.appendChild(
-    selectField("Chapter", "reading-chapter-select", book.chapters.map((_, i) => [String(i + 1), chapterLabel(book, i + 1) + (isChapterDone(book, i + 1) ? " ✓" : "")]), String(loc.chapter), (n) => {
-      go({ book: book.id, chapter: Number(n), section: -2 });
-    })
-  );
-  body.appendChild(picker);
+
+  // Where you are: the passage, and how much of the chapter has been read.
+  const readCount = Object.keys(readSet).length;
+  const here = sectionsOf[loc.section];
+  const heading = el("div", "reading-heading");
+  heading.appendChild(el("h2", "reading-passage-heading", esc(here.p.title)));
+  heading.appendChild(el("p", "caption reading-where", `${esc(chapterLabel(book, loc.chapter))} has ${ch.count} ${ch.count === 1 ? "verse" : "verses"} · ${readCount} read${sectionsOf.length > 1 ? ` · passage ${loc.section + 1} of ${sectionsOf.length}` : ""}`));
+  body.appendChild(heading);
   if (ch.headings) {
     body.appendChild(el("p", "caption reading-note", "<b>Hebrew verse numbers.</b> In the Hebrew Bible a psalm’s heading is counted as its first verse (sometimes its first two), so the Hebrew verse numbers here are higher than the English ones. The English shown with each verse is the English for that Hebrew verse."));
   }
-
-  const sectionsOf = ch.sections.map((sec, i) => ({ i, p: { id: sec.verses[0], title: plainRef(book.name, loc.chapter, sec.from, sec.to), verses: sec.verses } }));
-  const know = new Map(sectionsOf.map((x) => [x.i, knowledgeOf(x.p)]));
-  let shownSections = sectionsOf;
-  if (state.sortEasy) shownSections = sectionsOf.slice().sort((x, y) => (know.get(y.i)?.pct ?? -1) - (know.get(x.i)?.pct ?? -1));
-  const group = el("div", "reading-passages");
-  const readCount = Object.keys(readSet).length;
-  group.appendChild(el("h2", "reading-book-title", `${esc(book.name)} ${loc.chapter} <span class="caption">${sectionsOf.length} ${sectionsOf.length === 1 ? "section" : "sections"} · ${readCount} of ${ch.count} verses read</span>`));
-  const sectionRow = el("div", "choice-group reading-section-list");
-  for (const { p, i } of shownSections) {
-    const k = know.get(i);
-    const complete = p.verses.every(isRead);
-    const b = el("button", "choice-btn reading-section-btn" + (i === loc.section ? " selected" : ""), `${complete ? '<span class="reading-section-done" aria-hidden="true">✓ </span>' : ""}<span class="reading-passage-title">${esc(p.title)}</span>${k && k.pct !== null ? ` <span class="reading-know reading-know-${k.pct >= 80 ? "high" : k.pct >= 50 ? "mid" : "low"}">${k.pct}%</span>` : ""}`);
-    b.type = "button";
-    b.setAttribute("aria-pressed", String(i === loc.section));
-    b.setAttribute("aria-label", `${p.title}${complete ? ", all read" : ""}${k && k.pct !== null ? `. You know about ${k.pct} percent of its words.` : ""}`);
-    b.addEventListener("click", () => go({ book: book.id, chapter: loc.chapter, section: i }));
-    sectionRow.appendChild(b);
-  }
-  group.appendChild(sectionRow);
-  if (sectionsOf.length > 1) {
-    const easy = el("label", "bible-check reading-sort");
-    const easyCb = document.createElement("input");
-    easyCb.type = "checkbox";
-    easyCb.checked = state.sortEasy;
-    easyCb.addEventListener("change", () => {
-      state.sortEasy = easyCb.checked;
-      rerender();
-    });
-    easy.appendChild(easyCb);
-    easy.appendChild(document.createTextNode(" Easiest sections first (most words you know)"));
-    group.appendChild(easy);
-  }
-  body.appendChild(group);
 
   const passage = currentPassage();
   body.appendChild(knowledgePanel(passage));
@@ -741,189 +676,4 @@ function kqPanel(w, accent = null) {
     box.appendChild(part);
   });
   return box;
-}
-
-// ---------------------------------------------------------------------------------------------
-// Mixed review: one verse, several kinds of question
-// ---------------------------------------------------------------------------------------------
-
-async function loadMixed() {
-  if (!mixedIndex) mixedIndex = (await loadBibleData("bible-mixed")).verses;
-  return mixedIndex;
-}
-
-/** Starts a verse: loads the data of each page it asks about and draws its questions. */
-async function startMixed(body, rerender) {
-  body.innerHTML = '<div class="loading">Choosing a verse…</div>';
-  try {
-    const verses = await loadMixed();
-    // "What I need" favours verses whose questions are due for review or weak; "Random" ignores your history.
-    let pick;
-    let need = null;
-    if (state.mixedMode === "random") {
-      pick = verses[Math.floor(Math.random() * verses.length)];
-    } else {
-      const chosen = pickAdaptiveVerse(verses, { avoid: state.lastMixedRef });
-      pick = chosen.verse;
-      need = describeNeed(chosen);
-    }
-    state.lastMixedRef = pick.ref;
-    const questions = [];
-    for (const p of pick.picks) {
-      const config = getPracticeConfig(p.page);
-      if (!config) continue;
-      const pageData = await loadBibleData(config.dataset);
-      questions.push(makeBibleQuestion(config, pageData, p.ex));
-    }
-    if (!state || !state.alive) return;
-    state.mixed = { ref: pick.ref, questions, i: 0, results: [], picked: {}, graded: false, need };
-  } catch (e) {
-    if (!state || !state.alive) return;
-    body.innerHTML = "";
-    body.appendChild(el("div", "alert alert-warning", "Could not load a mixed-review verse. Please try again."));
-    return;
-  }
-  rerender();
-}
-
-function renderMixed(body, rerender) {
-  const m = state.mixed;
-  if (!m) {
-    body.appendChild(
-      el("p", "", "One verse, several questions: the same kinds of question as the practice pages — the article, a prefixed preposition, the vav, the verb, a noun and more — but all in the same verse, the way they meet you when you read.")
-    );
-    const modes = el("div", "choice-group reading-mixed-mode");
-    modes.setAttribute("role", "group");
-    modes.setAttribute("aria-label", "How the verse is chosen");
-    for (const [id, text] of [
-      ["need", "What I need (due and weak first)"],
-      ["random", "Random"],
-    ]) {
-      const b = el("button", "choice-btn" + (state.mixedMode === id ? " selected" : ""), esc(text));
-      b.type = "button";
-      b.setAttribute("aria-pressed", String(state.mixedMode === id));
-      b.addEventListener("click", () => {
-        state.mixedMode = id;
-        rerender();
-      });
-      modes.appendChild(b);
-    }
-    body.appendChild(el("p", "caption", "Choose the verse by:"));
-    body.appendChild(modes);
-    body.appendChild(
-      el(
-        "p",
-        "caption",
-        state.mixedMode === "need"
-          ? "Verses whose questions are due for review, or that you often miss, come up first. Your answers here count toward the same review schedule as the practice pages."
-          : "Any verse, whatever your history."
-      )
-    );
-    const start = el("button", "btn", "Start a verse");
-    start.type = "button";
-    start.addEventListener("click", () => startMixed(body, rerender));
-    body.appendChild(start);
-    return;
-  }
-  if (m.i >= m.questions.length) return renderMixedSummary(body, m, rerender);
-
-  const bq = m.questions[m.i];
-  const config = getPracticeConfig(bq.page);
-  body.appendChild(el("div", "caption", `Question ${m.i + 1} of ${m.questions.length} · ${esc(config ? config.title : "")}`));
-  if (m.need && m.i === 0) body.appendChild(el("p", "caption reading-mixed-why", `Chosen for you: ${esc(m.need)}.`));
-  const bar = el("div", "progress-bar-outer");
-  bar.appendChild(Object.assign(el("div", "progress-bar-inner"), {}));
-  bar.firstChild.style.width = `${(m.i / m.questions.length) * 100}%`;
-  body.appendChild(bar);
-
-  const host = el("div", "bible-question");
-  const feedback = el("div", "bible-feedback");
-  const next = el("button", "btn", m.i === m.questions.length - 1 ? "See results" : "Next question");
-  next.type = "button";
-  next.hidden = !m.graded;
-  next.addEventListener("click", () => {
-    m.i += 1;
-    m.picked = {};
-    m.graded = false;
-    rerender();
-  });
-
-  const draw = () => {
-    host.innerHTML = "";
-    drawBibleQuestion(host, bq, {
-      showAccents: state.showAccents,
-      picked: m.picked,
-      graded: m.graded,
-      onPick: (pi, id) => {
-        m.picked[pi] = id;
-        if (bq.parts.every((_, k) => m.picked[k] !== undefined)) grade();
-      },
-    });
-  };
-  function grade() {
-    const right = bq.parts.every((p, k) => m.picked[k] === p.answer);
-    m.graded = true;
-    m.results[m.i] = { right, page: bq.page };
-    recordStreakActivity();
-    recordItemResult(bibleSrsMode(bq.page), bq.key, right);
-    try {
-      const cfg = getPracticeConfig(bq.page);
-      const pageData = { verses: { [bq.ex.ref]: bq.words }, examples: [] };
-      if (cfg) noteBibleAnswer(cfg, pageData, bq.ex, bq.parts, m.picked);
-    } catch (e) {
-      /* the extra notes never interrupt a question */
-    }
-    draw();
-    feedback.className = "bible-feedback " + (right ? "is-correct" : "is-wrong");
-    feedback.innerHTML = `<strong>${right ? "Correct. " : "Not quite. "}</strong>${bq.explainHtml}`;
-    if (right) {
-      const ask = createConfidenceAsk(bibleSrsMode(bq.page), bq.key);
-      if (ask) feedback.appendChild(ask);
-    }
-    next.hidden = false;
-  }
-  draw();
-  if (m.graded) {
-    // coming back to a graded question after a redraw (for example toggling the accent marks)
-    const right = m.results[m.i] && m.results[m.i].right;
-    feedback.className = "bible-feedback " + (right ? "is-correct" : "is-wrong");
-    feedback.innerHTML = `<strong>${right ? "Correct. " : "Not quite. "}</strong>${bq.explainHtml}`;
-  }
-  body.appendChild(host);
-  body.appendChild(feedback);
-  body.appendChild(next);
-}
-
-function renderMixedSummary(body, m, rerender) {
-  const right = m.results.filter((r) => r && r.right).length;
-  body.appendChild(el("h2", "", `${prettyRef(m.ref)}: ${right} of ${m.questions.length} correct`));
-  const words = m.questions[0].words;
-  body.appendChild(buildVerse(words, { showAccents: state.showAccents }));
-  const list = el("ul", "bible-credit-list");
-  m.questions.forEach((bq, i) => {
-    const cfg = getPracticeConfig(bq.page);
-    const r = m.results[i];
-    const word = bq.words[bq.ex.wi];
-    list.appendChild(
-      el("li", "", `${r && r.right ? "✓" : "✗"} ${esc(cfg ? cfg.title : bq.page)}: <span lang="he" dir="rtl" class="bible-inline">${esc(word.t.split("/").join(""))}</span>`)
-    );
-  });
-  body.appendChild(list);
-  const row = el("div", "button-row");
-  const again = el("button", "btn", "Another verse");
-  again.type = "button";
-  again.addEventListener("click", () => {
-    state.mixed = null;
-    startMixed(body, rerender);
-  });
-  row.appendChild(again);
-  const done = el("button", "btn btn-outline", "Back to reading");
-  done.type = "button";
-  done.addEventListener("click", () => {
-    state.mixed = null;
-    state.tab = "read";
-    rerender();
-  });
-  row.appendChild(done);
-  body.appendChild(row);
 }

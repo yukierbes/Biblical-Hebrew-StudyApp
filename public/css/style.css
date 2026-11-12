@@ -3663,7 +3663,6 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 
 /* ---------- Reading page ---------- */
 .reading-stats { margin: 8px 0; }
-.reading-passages { flex-wrap: wrap; }
 .reading-verse { margin: 12px 0; }
 .reading-verse-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .reading-translation { width: 100%; margin: 10px 0 6px; padding: 8px; border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--paper); color: inherit; font: inherit; }
@@ -3701,7 +3700,6 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 
 /* Reading: passages by book, with how much of each you know. */
 .reading-book { margin: 10px 0 14px; }
-.reading-book-title { margin: 0 0 6px; font-size: 0.8rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
 .reading-sort { margin: 4px 0 8px; }
 .reading-know { font-size: 0.75rem; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--hairline-strong); color: var(--ink); white-space: nowrap; }
 .reading-know-high { border-color: var(--accent-text); font-weight: 600; }
@@ -3882,17 +3880,76 @@ table.bible-suffix-table .he-cell { font-family: var(--font-hebrew); font-size: 
 .reading-section-nav { flex-wrap: wrap; justify-content: space-between; margin-top: 12px; }
 
 /* Reading: a book menu, a chapter menu and a plain list of sections, so the top of the page stays quiet. */
-.reading-picker { display: flex; flex-wrap: wrap; gap: 12px 16px; margin: 14px 0 6px; }
-.reading-pick { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 0 1 240px; }
-.reading-pick-label { font: 600 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
-.reading-select { width: 100%; padding: 8px 10px; border-radius: var(--radius); border: 1px solid var(--hairline-strong); background: var(--paper-raised); color: var(--ink); font-family: var(--font-body); font-size: 0.95rem; }
-.reading-passages .reading-book-title { margin: 16px 0 8px; font: 600 1.05rem var(--font-body); text-transform: none; letter-spacing: 0; color: var(--ink); }
-.reading-passages .reading-book-title .caption { margin-left: 8px; font-weight: 400; }
-.reading-section-list { flex-direction: column; flex-wrap: nowrap; gap: 6px; }
-.reading-section-btn { width: 100%; text-align: left; display: flex; align-items: center; gap: 8px; }
-.reading-section-btn .reading-passage-title { flex: 1 1 auto; }
-.reading-section-btn .reading-know { margin-left: auto; }
-.reading-passages .reading-sort { margin: 8px 0 4px; font-size: 0.85rem; color: var(--ink-soft); }
+/* ---- Reading: choosing a book, a chapter and a passage (reading-navigator.js) ---- */
+.reading-nav { background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 14px 16px; margin: 14px 0 12px; display: grid; gap: 14px; }
+.reading-nav-row { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: flex-end; }
+.reading-nav-passages { align-items: flex-start; padding-top: 14px; border-top: 1px solid var(--hairline); }
+.reading-nav-field { display: flex; flex-direction: column; gap: 6px; position: relative; min-width: 0; }
+.reading-nav-grow { flex: 1 1 280px; }
+.reading-nav-label { font: 600 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+.reading-nav-control { display: flex; align-items: stretch; }
+.reading-nav-btn { display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 40px; padding: 8px 12px; border: 1px solid var(--hairline-strong); border-radius: var(--radius); background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 0.95rem; cursor: pointer; transition: border-color 0.12s ease, background 0.12s ease; }
+.reading-nav-btn:hover:not(:disabled) { border-color: var(--ink); }
+.reading-nav-btn[aria-expanded="true"] { border-color: var(--ink); background: var(--paper-raised); }
+.reading-nav-btn:disabled { color: var(--ink-faint); cursor: default; opacity: 0.55; }
+.reading-book-btn { min-width: 190px; }
+.reading-chapter-btn { min-width: 86px; border-radius: 0; margin: 0 -1px; position: relative; }
+.reading-step { width: 40px; padding: 8px 0; justify-content: center; font-size: 1.15rem; line-height: 1; }
+.reading-prev { border-radius: var(--radius) 0 0 var(--radius); }
+.reading-next { border-radius: 0 var(--radius) var(--radius) 0; }
+.reading-nav-value { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.reading-nav-caret { font-size: 0.7rem; color: var(--ink-soft); }
+.reading-popover { position: absolute; z-index: 40; top: calc(100% + 6px); left: 0; width: min(580px, calc(100vw - 32px)); max-height: min(70vh, 540px); overflow: auto; background: var(--paper-raised); border: 1px solid var(--hairline-strong); border-radius: var(--radius); box-shadow: 0 10px 28px rgba(28, 43, 69, 0.16); padding: 14px; }
+.reading-popover[hidden] { display: none; }
+.reading-chapter-panel { width: min(440px, calc(100vw - 32px)); }
+.reading-pop-group + .reading-pop-group { margin-top: 14px; }
+.reading-pop-heading { margin: 0 0 8px; font: 600 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+.reading-book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 6px; }
+.reading-book-item { position: relative; display: flex; flex-direction: column; gap: 5px; text-align: left; padding: 8px 10px 9px; border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--paper); color: var(--ink); font: 0.92rem var(--font-body); cursor: pointer; }
+.reading-book-item:hover { border-color: var(--ink); }
+.reading-book-item.current { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.reading-book-bar { display: block; height: 3px; border-radius: 2px; background: var(--hairline); overflow: hidden; }
+.reading-book-bar span { display: block; height: 100%; background: var(--accent); }
+.reading-book-item.current .reading-book-bar { background: rgba(255, 255, 255, 0.28); }
+.reading-book-item.current .reading-book-bar span { background: var(--paper); }
+.reading-book-item.done .reading-book-bar span { background: var(--good); }
+.reading-tick { color: var(--good); font-weight: 600; }
+.reading-book-item.current .reading-tick { color: var(--paper); }
+.reading-chapter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 6px; }
+.reading-chapter-item { min-height: 40px; border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--paper); color: var(--ink); font: 0.92rem var(--font-body); font-variant-numeric: tabular-nums; cursor: pointer; }
+.reading-chapter-item:hover { border-color: var(--ink); }
+.reading-chapter-item.partial { background: linear-gradient(to top, var(--accent-soft) 45%, var(--paper) 45%); }
+.reading-chapter-item.done { background: var(--good-soft); border-color: var(--good); color: var(--good); font-weight: 600; }
+.reading-chapter-item.current { background: var(--ink); border-color: var(--ink); color: var(--paper); font-weight: 600; }
+.reading-pop-legend { margin: 12px 0 0; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.reading-legend-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; border: 1px solid var(--hairline-strong); vertical-align: -1px; }
+.reading-legend-swatch.done { background: var(--good-soft); border-color: var(--good); margin-left: 6px; }
+.reading-legend-swatch.partial { background: var(--accent-soft); margin-left: 10px; }
+.reading-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.reading-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 6px 12px; border: 1px solid var(--hairline-strong); border-radius: var(--radius); background: var(--paper); color: var(--ink-soft); font: 0.92rem var(--font-body); font-variant-numeric: tabular-nums; cursor: pointer; transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease; }
+.reading-chip:hover { border-color: var(--ink); color: var(--ink); }
+.reading-chip.selected { background: var(--ink); border-color: var(--ink); color: var(--paper); font-weight: 500; }
+.reading-chip.done:not(.selected) { border-color: var(--good); }
+.reading-chip.selected .reading-tick { color: var(--paper); }
+.reading-chip-know { font-size: 0.72rem; padding: 1px 6px; border-radius: 999px; border: 1px solid var(--hairline-strong); color: var(--ink); line-height: 1.4; }
+.reading-chip-know.reading-know-high { border-color: var(--accent-text); font-weight: 600; }
+.reading-chip-know.reading-know-low { border-style: dashed; }
+.reading-chip.selected .reading-chip-know { color: var(--paper); border-color: currentColor; }
+.reading-sort { margin: 0; align-self: flex-end; font-size: 0.88rem; color: var(--ink-soft); white-space: nowrap; }
+.reading-heading { margin: 18px 0 4px; }
+.reading-passage-heading { margin: 0; font: 500 1.35rem var(--font-display); letter-spacing: -0.005em; color: var(--ink); text-transform: none; }
+.reading-where { margin: 4px 0 0; }
+@media (max-width: 560px) {
+  .reading-nav { padding: 12px; }
+  .reading-nav-row { gap: 12px 16px; }
+  .reading-book-btn { min-width: 0; width: 100%; }
+  .reading-nav-field:first-child { flex: 1 1 100%; }
+  .reading-popover { left: 0; right: 0; width: auto; padding: 10px; }
+  .reading-book-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reading-book-item { font-size: 0.84rem; padding: 7px 8px 8px; }
+  .reading-book-name { overflow-wrap: anywhere; }
+  .reading-chapter-grid { grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); }
+}
 .reading-more { margin: 22px 0 6px; }
 .reading-more summary { cursor: pointer; color: var(--ink-soft); font-size: 0.9rem; }
 .reading-more .reading-offline { margin-top: 8px; }

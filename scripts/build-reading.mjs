@@ -3,11 +3,13 @@
 // Strong's lexicon (HebrewStrong.xml) and the public-domain World English Bible in data-source/bible/english/.
 //
 // EVERY chapter of every book listed in BOOKS below is built. It writes, into netlify/functions/data/:
-//   bible-reading.json            a small index: the books, how many verses each chapter has, the data version
-//   reading/rd-<book>-<n>.json    one compact file per chapter (for example rd-gen-1.json): its verses, their parsing
+//   data/bible-reading.json       a small index: the books, how many verses each chapter has, the data version
+//   data/reading/rd-<book>-<n>.json   one compact file per chapter (for example rd-gen-1.json): its verses, their parsing
 //                                 and the English. NOT committed to git (see .gitignore): this script makes them on
 //                                 every deploy, and `npm test` runs it first.
-//   reading-loaders.js            one line per chapter file, so the data function can load one chapter at a time
+//   reading-chapters/rd-<book>-<n>.js  the same text as a JavaScript string, for the get-reading function (a string is
+//                                 far lighter to bundle and start than JSON turned into objects). Not committed.
+//   reading-chapters/loaders.js   one line per chapter, so get-reading.js can load one chapter at a time (committed)
 //
 //   node scripts/build-reading.mjs --check      (writes nothing)
 //
@@ -29,26 +31,59 @@ const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const SRC = join(ROOT, "data-source", "bible");
 const OUT = join(ROOT, "netlify", "functions", "data");
 const CHAPTERS_OUT = join(OUT, "reading");
+const MODULES_OUT = join(dirname(OUT), "reading-chapters");
 const CHECK_ONLY = process.argv.includes("--check");
 
-// id: the book code used in the OSHB files and in references (Gen.1.1). title: the name in the book menu.
+// id: the book code used in the OSHB files and in references (Gen.1.1). The books are in the order of the Hebrew Bible
+// (as in the BHS): Torah, the Former and Latter Prophets (the Twelve are listed as 12 books), then the Writings.
+// division: torah | former | latter | twelve | writings (how the page groups the book list). title: the name in the book menu.
 // name: the name used inside a reference (for example "Psalm 23:1"). The menu follows this order.
 export const BOOKS = {
-  Gen: { file: "Gen.xml", web: "web-genesis.json", name: "Genesis", title: "Genesis" },
-  Exod: { file: "Exod.xml", web: "web-exodus.json", name: "Exodus", title: "Exodus" },
-  Num: { file: "Num.xml", web: "web-numbers.json", name: "Numbers", title: "Numbers" },
-  Deut: { file: "Deut.xml", web: "web-deuteronomy.json", name: "Deuteronomy", title: "Deuteronomy" },
-  Josh: { file: "Josh.xml", web: "web-joshua.json", name: "Joshua", title: "Joshua" },
-  Ruth: { file: "Ruth.xml", web: "web-ruth.json", name: "Ruth", title: "Ruth" },
-  "1Sam": { file: "1Sam.xml", web: "web-1samuel.json", name: "1 Samuel", title: "1 Samuel" },
-  Ps: { file: "Ps.xml", web: "web-psalms.json", name: "Psalm", title: "Psalms" },
-  Prov: { file: "Prov.xml", web: "web-proverbs.json", name: "Proverbs", title: "Proverbs" },
-  Isa: { file: "Isa.xml", web: "web-isaiah.json", name: "Isaiah", title: "Isaiah" },
-  Jonah: { file: "Jonah.xml", web: "web-jonah.json", name: "Jonah", title: "Jonah" },
+  Gen: { file: "Gen.xml", web: "web-genesis.json", name: "Genesis", title: "Genesis", division: "torah" },
+  Exod: { file: "Exod.xml", web: "web-exodus.json", name: "Exodus", title: "Exodus", division: "torah" },
+  Lev: { file: "Lev.xml", web: "web-leviticus.json", name: "Leviticus", title: "Leviticus", division: "torah" },
+  Num: { file: "Num.xml", web: "web-numbers.json", name: "Numbers", title: "Numbers", division: "torah" },
+  Deut: { file: "Deut.xml", web: "web-deuteronomy.json", name: "Deuteronomy", title: "Deuteronomy", division: "torah" },
+  Josh: { file: "Josh.xml", web: "web-joshua.json", name: "Joshua", title: "Joshua", division: "former" },
+  Judg: { file: "Judg.xml", web: "web-judges.json", name: "Judges", title: "Judges", division: "former" },
+  "1Sam": { file: "1Sam.xml", web: "web-1samuel.json", name: "1 Samuel", title: "1 Samuel", division: "former" },
+  "2Sam": { file: "2Sam.xml", web: "web-2samuel.json", name: "2 Samuel", title: "2 Samuel", division: "former" },
+  "1Kgs": { file: "1Kgs.xml", web: "web-1kings.json", name: "1 Kings", title: "1 Kings", division: "former" },
+  "2Kgs": { file: "2Kgs.xml", web: "web-2kings.json", name: "2 Kings", title: "2 Kings", division: "former" },
+  Isa: { file: "Isa.xml", web: "web-isaiah.json", name: "Isaiah", title: "Isaiah", division: "latter" },
+  Jer: { file: "Jer.xml", web: "web-jeremiah.json", name: "Jeremiah", title: "Jeremiah", division: "latter" },
+  Ezek: { file: "Ezek.xml", web: "web-ezekiel.json", name: "Ezekiel", title: "Ezekiel", division: "latter" },
+  Hos: { file: "Hos.xml", web: "web-hosea.json", name: "Hosea", title: "Hosea", division: "twelve" },
+  Joel: { file: "Joel.xml", web: "web-joel.json", name: "Joel", title: "Joel", division: "twelve" },
+  Amos: { file: "Amos.xml", web: "web-amos.json", name: "Amos", title: "Amos", division: "twelve" },
+  Obad: { file: "Obad.xml", web: "web-obadiah.json", name: "Obadiah", title: "Obadiah", division: "twelve" },
+  Jonah: { file: "Jonah.xml", web: "web-jonah.json", name: "Jonah", title: "Jonah", division: "twelve" },
+  Mic: { file: "Mic.xml", web: "web-micah.json", name: "Micah", title: "Micah", division: "twelve" },
+  Nah: { file: "Nah.xml", web: "web-nahum.json", name: "Nahum", title: "Nahum", division: "twelve" },
+  Hab: { file: "Hab.xml", web: "web-habakkuk.json", name: "Habakkuk", title: "Habakkuk", division: "twelve" },
+  Zeph: { file: "Zeph.xml", web: "web-zephaniah.json", name: "Zephaniah", title: "Zephaniah", division: "twelve" },
+  Hag: { file: "Hag.xml", web: "web-haggai.json", name: "Haggai", title: "Haggai", division: "twelve" },
+  Zech: { file: "Zech.xml", web: "web-zechariah.json", name: "Zechariah", title: "Zechariah", division: "twelve" },
+  Mal: { file: "Mal.xml", web: "web-malachi.json", name: "Malachi", title: "Malachi", division: "twelve" },
+  Ps: { file: "Ps.xml", web: "web-psalms.json", name: "Psalm", title: "Psalms", division: "writings" },
+  Job: { file: "Job.xml", web: "web-job.json", name: "Job", title: "Job", division: "writings" },
+  Prov: { file: "Prov.xml", web: "web-proverbs.json", name: "Proverbs", title: "Proverbs", division: "writings" },
+  Ruth: { file: "Ruth.xml", web: "web-ruth.json", name: "Ruth", title: "Ruth", division: "writings" },
+  Song: { file: "Song.xml", web: "web-songofsolomon.json", name: "Song of Songs", title: "Song of Songs", division: "writings" },
+  Eccl: { file: "Eccl.xml", web: "web-ecclesiastes.json", name: "Ecclesiastes", title: "Ecclesiastes", division: "writings" },
+  Lam: { file: "Lam.xml", web: "web-lamentations.json", name: "Lamentations", title: "Lamentations", division: "writings" },
+  Esth: { file: "Esth.xml", web: "web-esther.json", name: "Esther", title: "Esther", division: "writings" },
+  Dan: { file: "Dan.xml", web: "web-daniel.json", name: "Daniel", title: "Daniel", division: "writings" },
+  Ezra: { file: "Ezra.xml", web: "web-ezra.json", name: "Ezra", title: "Ezra", division: "writings" },
+  Neh: { file: "Neh.xml", web: "web-nehemiah.json", name: "Nehemiah", title: "Nehemiah", division: "writings" },
+  "1Chr": { file: "1Chr.xml", web: "web-1chronicles.json", name: "1 Chronicles", title: "1 Chronicles", division: "writings" },
+  "2Chr": { file: "2Chr.xml", web: "web-2chronicles.json", name: "2 Chronicles", title: "2 Chronicles", division: "writings" },
 };
 /** The dataset name of one chapter (the file name and the name the app asks get-data for), e.g. "rd-1sam-17". */
 export const chapterDataset = (book, chapter) => `rd-${book.toLowerCase()}-${chapter}`;
 
+// Aramaic has its own stems (the Peal is the Aramaic counterpart of the Qal): the names in the Open Scriptures guide to its morphology codes.
+const ARAMAIC_STEMS = { q: "Peal", Q: "Peil", u: "Hithpeel", p: "Pael", P: "Ithpaal", M: "Hithpaal", a: "Aphel", h: "Haphel", s: "Saphel", e: "Shaphel", H: "Hophal", i: "Ithpeel", t: "Hishtaphel", v: "Ishtaphel", w: "Hithaphel", o: "Polel", z: "Ithpoel", r: "Hithpolel", f: "Hithpalpel", b: "Hephal", c: "Tiphel", m: "Poel", l: "Palpel", L: "Ithpalpel", O: "Ithpolel", G: "Ittaphal" };
 const STEMS = { q: "Qal", N: "Niphal", p: "Piel", P: "Pual", h: "Hiphil", H: "Hophal", t: "Hithpael", o: "Polel", O: "Polal", r: "Hithpolel", m: "Poel", M: "Poal", k: "Palel", K: "Pulal", Q: "Qal passive", l: "Pilpel", L: "Polpal", f: "Hithpalpel", D: "Nithpael", j: "Pealal", i: "Pilel", u: "Hothpaal", c: "Tiphil", v: "Hishtaphel", w: "Nithpalel", y: "Nithpoel", z: "Hithpoel" };
 const VTYPES = { p: "perfect", q: "perfect (vav-consecutive)", i: "imperfect", w: "imperfect (vav-consecutive)", h: "cohortative", j: "jussive", v: "imperative", r: "active participle", s: "passive participle", a: "infinitive absolute", c: "infinitive construct" };
 const GENDER = { m: "masculine", f: "feminine", c: "common", b: "masculine or feminine" };
@@ -63,7 +98,7 @@ const join2 = (...xs) => xs.filter(Boolean).join(" · ");
 const pgnWords = (person, g, n) => join2(person && "123".includes(person) ? `${person === "1" ? "first" : person === "2" ? "second" : "third"} person` : "", GENDER[g], NUMBER[n]);
 
 /** One tagged piece (e.g. "Vqp3ms", "Td", "R") as a short plain-language label. */
-export function describePiece(code) {
+export function describePiece(code, lang = "H") {
   const c = code[0];
   if (c === "C") return "conjunction";
   if (c === "D") return "adverb";
@@ -79,7 +114,7 @@ export function describePiece(code) {
     return `pronominal suffix · ${pgnWords(code[2], code[3], code[4])}`;
   }
   if (c === "V") {
-    const stem = STEMS[code[1]] || "verb";
+    const stem = (lang === "A" ? ARAMAIC_STEMS : STEMS)[code[1]] || "verb";
     const type = VTYPES[code[2]] || "";
     if ("rs".includes(code[2])) return join2(stem, type, GENDER[code[3]], NUMBER[code[4]], STATE[code[5]]);
     if ("ac".includes(code[2])) return join2(stem, type);
@@ -158,7 +193,7 @@ function analyzeWord(w, lexicon) {
   const sp = w.text.split("/");
   const lp = (w.lemma || "").split("/");
   const aligned = mp.length === sp.length;
-  const parts = aligned ? sp.map((p, i) => [p, describePiece(mp[i])]) : [[sp.join(""), mp.map(describePiece).join(" + ")]];
+  const parts = aligned ? sp.map((p, i) => [p, describePiece(mp[i], w.lang)]) : [[sp.join(""), mp.map((c) => describePiece(c, w.lang)).join(" + ")]];
   // the content piece: the last piece that has a Strong's number
   let num = null;
   let ci = -1;
@@ -257,7 +292,7 @@ if (!errors.length) {
     }
     const chapters = [...byChapter.keys()].sort((a, b) => a - b);
     if (chapters.some((c, i) => c !== i + 1)) errors.push(`${id}: the chapters are not numbered 1, 2, 3 … in order.`);
-    const entry = { id, name: def.name, title: def.title, chapters: [], bytes: 0 };
+    const entry = { id, name: def.name, title: def.title, division: def.division, chapters: [], bytes: 0 };
     for (const c of chapters) {
       const vs = byChapter.get(c);
       if (vs.some((v, i) => v.n !== i + 1)) { errors.push(`${id} ${c}: the verses are not numbered 1, 2, 3 … in order.`); continue; }
@@ -269,7 +304,12 @@ if (!errors.length) {
           if (it.k === "kq") kqTotal++;
           if (it.k === "w" && it.lang === "A") aramaicWords++;
         }
-        const en = titleEnglish[v.ref] || eng.verses[(kjv[v.ref] || v.ref).split(".").slice(1).join(".")];
+        // The source marks a Hebrew verse that shares an English verse with a suffix: "1Kgs.22.43!b" is the second part of
+        // English 22:43. The first part shows the whole English verse; a later part says where its English is.
+        const mapped = /^(.+)!([a-z])$/.exec(kjv[v.ref] || v.ref);
+        const engRef = mapped ? mapped[1] : kjv[v.ref] || v.ref;
+        let en = titleEnglish[v.ref] || eng.verses[engRef.split(".").slice(1).join(".")];
+        if (en && !titleEnglish[v.ref] && mapped && mapped[2] !== "a") en = `(In English this verse is a later part of ${def.title} ${engRef.split(".").slice(1).join(":")}, which is shown with the verse before it.)`;
         if (en) chapter.e[v.n] = en;
         else warnings.push(`No English found for ${v.ref}.`);
       }
@@ -287,7 +327,7 @@ if (!errors.length) {
     index.books.push(entry);
   }
 }
-if (!errors.length && built.length < 400) errors.push(`Only ${built.length} chapters were built (expected about 470).`);
+if (!errors.length && built.length < 900) errors.push(`Only ${built.length} chapters were built (expected 929).`);
 
 if (errors.length) {
   console.error("\nreading build FAILED — nothing was written:");
@@ -311,13 +351,13 @@ const source = {
 const indexJson = JSON.stringify({
   source,
   version,
-  books: index.books.map((b) => ({ id: b.id, name: b.name, title: b.title, chapters: b.chapters, kb: Math.round(b.bytes / 1024) })),
+  books: index.books.map((b) => ({ id: b.id, name: b.name, title: b.title, division: b.division, chapters: b.chapters, kb: Math.round(b.bytes / 1024) })),
 });
 const loaders =
-  `// WRITTEN BY scripts/build-reading.mjs — do not edit. One line per chapter file, so get-data.js can load one chapter at a time.\n` +
-  `// (The chapter files themselves are made on every deploy and are not kept in git.)\n` +
-  `export const READING_LOADERS = {\n` +
-  built.map((b) => `  "${b.name}": () => import("./reading/${b.name}.json", { with: { type: "json" } }),`).join("\n") +
+  `// WRITTEN BY scripts/build-reading.mjs — do not edit. One line per chapter, so get-reading.js can load one chapter at a time.\n` +
+  `// (The chapter modules themselves are made on every deploy and are not kept in git.)\n` +
+  `export const READING_CHAPTERS = {\n` +
+  built.map((b) => `  "${b.name}": () => import("./${b.name}.js"),`).join("\n") +
   `\n};\n`;
 
 const totalKb = built.reduce((n, b) => n + b.json.length, 0) / 1024;
@@ -326,9 +366,18 @@ console.log(`bible-reading: ${index.books.length} books, ${built.length} chapter
 
 if (!CHECK_ONLY) {
   mkdirSync(CHAPTERS_OUT, { recursive: true });
+  mkdirSync(MODULES_OUT, { recursive: true });
+  // Keep the generated files out of git wherever the repository's own .gitignore is (each folder ignores them itself).
+  writeFileSync(join(CHAPTERS_OUT, ".gitignore"), "# made by scripts/build-reading.mjs on every build: not kept in git\n*\n");
+  writeFileSync(join(MODULES_OUT, ".gitignore"), "# made by scripts/build-reading.mjs on every build: the chapter modules are not kept in git (loaders.js is)\nrd-*.js\n.gitignore\n");
   const keep = new Set(built.map((b) => `${b.name}.json`));
   for (const f of readdirSync(CHAPTERS_OUT)) if (f.endsWith(".json") && !keep.has(f)) unlinkSync(join(CHAPTERS_OUT, f));
-  for (const b of built) writeFileSync(join(CHAPTERS_OUT, `${b.name}.json`), b.json);
+  const keepJs = new Set(built.map((b) => `${b.name}.js`));
+  for (const f of readdirSync(MODULES_OUT)) if (/^rd-.*\.js$/.test(f) && !keepJs.has(f)) unlinkSync(join(MODULES_OUT, f));
+  for (const b of built) {
+    writeFileSync(join(CHAPTERS_OUT, `${b.name}.json`), b.json);
+    writeFileSync(join(MODULES_OUT, `${b.name}.js`), `export default ${JSON.stringify(b.json)};\n`);
+  }
   writeFileSync(join(OUT, "bible-reading.json"), indexJson);
-  writeFileSync(join(OUT, "reading-loaders.js"), loaders);
+  writeFileSync(join(MODULES_OUT, "loaders.js"), loaders);
 }

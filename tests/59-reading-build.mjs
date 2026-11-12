@@ -127,7 +127,10 @@ const run = () => execFileSync("node", [new URL("../scripts/build-reading.mjs", 
 const out1 = run(), out2 = run();
 const v1 = /version (\w{12})/.exec(out1)[1];
 assert(v1 === /version (\w{12})/.exec(out2)[1] && v1 === built.version, `the data version is the same every time (${v1}), so saved chapters are only dropped when the data really changes`);
-assert(/470 chapters, 11329 verses/.test(out1) && /367 ketiv\/qere items, 2 Aramaic words/.test(out1), "the build reports what it made");
+assert(/39 books, 929 chapters, 23213 verses/.test(out1) && /1260 ketiv\/qere items, \d+ Aramaic words/.test(out1), "the build reports what it made: the whole Hebrew Bible");
 assert(!/warning/.test(out1), "and has no warnings (every verse has its English)");
+
+const gi = (f) => fs.readFileSync(new URL(f, import.meta.url), "utf8");
+assert(/^\*$/m.test(gi("../netlify/functions/data/reading/.gitignore")) && /^rd-\*\.js$/m.test(gi("../netlify/functions/reading-chapters/.gitignore")) && /^\.gitignore$/m.test(gi("../netlify/functions/reading-chapters/.gitignore")), "the build leaves a .gitignore in each generated folder, so the chapters stay out of git whatever the repository's own .gitignore says (loaders.js stays in)");
 
 summary();
