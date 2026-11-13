@@ -942,3 +942,15 @@ Lamentations, Esther, Daniel, Ezra, Nehemiah, 1 and 2 Chronicles). The verse tot
 **Tests:** 61 (get-reading serves all 929 chapters exactly as built), 62 (the Mixed Review page), 63 (the navigator: panels, grouping, progress marks, arrows across books, Psalms, passages, keyboard).
 43, 48, 57, 59, 60 and 19 were updated; 58 (the reading log) is unchanged.
 **Deleting files** (a zip cannot): `netlify/functions/data/reading-loaders.js`. (`bible-reading-*.json` and `reading-passages.csv`, from Update 24, if still there.)
+
+
+## Fix: Reading chapters answered 502 once deployed
+
+* **What went wrong:** `get-reading.js` sent a chapter's text as `(await loader()).default`. Run as written that is a string, but when
+  Netlify packages the function it converts the chapter modules to CommonJS and `.default` becomes `{ default: "<json>" }`. A response
+  body must be a string, so Netlify answered 502 ("cannot unmarshal object into … body of type string") and Reading showed "Could not
+  load this chapter". `get-data.js` was not affected.
+* **The fix:** `chapterText()` in `get-reading.js` unwraps the text either way, and refuses (with a readable 500) anything that is not text.
+* **Test 64** checks the unwrapping and, if Netlify's packager is available (`ZIP_IT_DIR=<folder holding @netlify/zip-it-and-ship-it>`),
+  packages the function as a deploy does and asks the packaged copy for chapters. Without the packager that part is skipped; the packager is
+  not a dependency of the app. Running the code unpackaged cannot show this kind of fault.

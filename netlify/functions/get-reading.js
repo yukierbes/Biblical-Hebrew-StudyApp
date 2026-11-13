@@ -10,6 +10,20 @@
 
 import { READING_CHAPTERS } from "./reading-chapters/loaders.js";
 
+/**
+ * The text of a chapter, from what its loader returned. A chapter module is `export default "<json>"`. Run as it is
+ * written, the loader's result has the text as `.default`. When Netlify packages the function it converts the modules to
+ * CommonJS, and `.default` is then the module itself, `{ default: "<json>" }`, one level deeper. A response body must be a
+ * string (an object makes Netlify answer 502, "cannot unmarshal object into ... body of type string"), so unwrap it
+ * either way, and refuse anything that still is not text.
+ */
+export function chapterText(loaded) {
+  let text = loaded && loaded.default;
+  for (let i = 0; i < 3 && text && typeof text === "object" && "default" in text; i++) text = text.default;
+  if (typeof text !== "string") throw new Error("the chapter file did not hold text");
+  return text;
+}
+
 export const handler = async (event, context) => {
   const user = context.clientContext && context.clientContext.user;
   if (!user) {
@@ -21,7 +35,7 @@ export const handler = async (event, context) => {
   }
   let text;
   try {
-    text = (await READING_CHAPTERS[dataset]()).default;
+    text = chapterText(await READING_CHAPTERS[dataset]());
   } catch (e) {
     return { statusCode: 500, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ error: `Could not load chapter "${dataset}": ${e.message}` }) };
   }
